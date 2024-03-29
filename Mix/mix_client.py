@@ -5,15 +5,16 @@
  @ CREDIT : NAN-DEV
 """
 ################################################################
- 
+
 import asyncio
 import importlib
 import os
 import re
 import shlex
 import subprocess
-from io import BytesIO
 import sys
+from io import BytesIO
+
 from pyrogram import *
 from pyrogram.enums import *
 from pyrogram.errors import *
@@ -304,6 +305,7 @@ class ConnectionHandler(logging.Handler):
         for ah in ["OSError", "socket"]:
             if ah in record.getMessage():
                 os.execl(sys.executable, sys.executable, "-m", "Mix")
+
 
 connection_handler = ConnectionHandler()
 logging.addHandler(connection_handler)
