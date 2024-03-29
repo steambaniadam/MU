@@ -143,11 +143,11 @@ async def _(c: nlx, m):
     try:
         if replied.photo:
             media = replied.photo.file_id
-            pat = await c.download_media(media, file_name=f"{user.me.id}.jpg")
+            pat = await c.download_media(media, file_name=f"{c.me.id}.jpg")
             await c.set_profile_photo(photo=pat)
         elif replied.video:
             media = replied.video.file_id
-            pat = await c.download_media(media, file_name=f"{user.me.id}.mp4")
+            pat = await c.download_media(media, file_name=f"{c.me.id}.mp4")
             await c.set_profile_photo(video=pat)
         return await m.reply(cgr("prof_9").format(em.sukses))
         os.remove(pat)
@@ -172,7 +172,7 @@ async def _(c: nlx, m):
         m.id
         async for m in c.search_messages(
             chat_id,
-            from_user=int(m.from_user.id),
+            from_user=int(m.from_c.id),
             limit=n,
         )
     ]
