@@ -5,7 +5,7 @@
  @ CREDIT : NAN-DEV
 """
 ################################################################
-
+import logging
 import asyncio
 import importlib
 import os
@@ -300,7 +300,7 @@ class Userbot(Client):
         LOGGER.info(f"Starting Userbot {self.me.id}|{self.me.mention}")
 
 
-class ConnectionHandler(LOGG.Handler):
+class ConnectionHandler(logging.Handler):
     def emit(self, record):
         for ah in ["OSError", "socket"]:
             if ah in record.getMessage():
@@ -308,7 +308,7 @@ class ConnectionHandler(LOGG.Handler):
 
 
 connection_handler = ConnectionHandler()
-LOGG.addHandler(connection_handler)
+logging.addHandler(connection_handler)
 
 
 class Bot(Client):
