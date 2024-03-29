@@ -82,12 +82,21 @@ def getbyanime(tokoh):
     if res.status_code == 200:
         bisul = res.json()
         results = bisul.get("result", [])
-        ambil1 = random.choice(results)
-        anim = ambil1.get("anime", "")
-        karak = ambil1.get("character", "")
-        kata = ambil1.get("indo", "")
-        akhir = f"***Anime: {anim}\n{karak}:*** {kata}"
-        return akhir
+        percobaan = 15
+        dicoba = 0
+        while dicoba < percobaan:
+            try:
+                bisul = res.json()
+                results = bisul.get("result", [])
+                ambil1 = random.choice(results)
+                anim = ambil1.get("anime", "")
+                karak = ambil1.get("character", "")
+                kata = ambil1.get("indo", "")
+                akhir = f"***Anime: {anim}\n{karak}:*** {kata}"
+                return akhir
+            except IndexError:
+                dicoba += 1
+        return "Maaf sepertinya kata yang kamu cari tidak ada"
     else:
         print(f"error {res.status_code} {res.text}")
 
