@@ -12,14 +12,15 @@ import os
 import re
 import shlex
 import subprocess
-from io import BytesIO
 import sys
+from io import BytesIO
+
 from pyrogram import *
 from pyrogram.enums import *
 from pyrogram.errors import *
 from pyrogram.handlers import *
 from pyrogram.types import *
-from team.nandev.class_log import LOGGER, LOGG
+from team.nandev.class_log import LOGG, LOGGER
 from team.nandev.class_modules import CMD_HELP
 from team.nandev.database import ndB, udB
 
@@ -304,6 +305,7 @@ class ConnectionHandler(LOGG.Handler):
         for ah in ["OSError", "socket"]:
             if ah in record.getMessage():
                 os.execl(sys.executable, sys.executable, "-m", "Mix")
+
 
 connection_handler = ConnectionHandler()
 LOGG.addHandler(connection_handler)
