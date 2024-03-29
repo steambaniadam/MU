@@ -140,7 +140,7 @@ async def _(c: nlx, m):
         cari_kata = carikatanime(arg)
         sleep(0.5)
         await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
-    elif m.command == "list"
+    elif m.command == "list":
         ambil_anime = animelist()
         if len(ambil_anime) > 4096:
             file = open("DaftarAnime.txt", "w+")
