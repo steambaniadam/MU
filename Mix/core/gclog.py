@@ -90,7 +90,6 @@ async def getFinish():
                     can_manage_video_chats=True,
                 ),
             )
-            execvp(executable, [executable, "-m", "Mix"])
         except:
             ndB.del_key("TAG_LOG")
             execvp(executable, [executable, "-m", "Mix"])
