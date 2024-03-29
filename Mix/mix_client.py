@@ -12,15 +12,14 @@ import os
 import re
 import shlex
 import subprocess
-import sys
 from io import BytesIO
-
+import sys
 from pyrogram import *
 from pyrogram.enums import *
 from pyrogram.errors import *
 from pyrogram.handlers import *
 from pyrogram.types import *
-from team.nandev.class_log import LOGGER, logging
+from team.nandev.class_log import LOGGER, LOGG
 from team.nandev.class_modules import CMD_HELP
 from team.nandev.database import ndB, udB
 
@@ -300,15 +299,14 @@ class Userbot(Client):
         LOGGER.info(f"Starting Userbot {self.me.id}|{self.me.mention}")
 
 
-class ConnectionHandler(logging.Handler):
+class ConnectionHandler(LOGG.Handler):
     def emit(self, record):
         for ah in ["OSError", "socket"]:
             if ah in record.getMessage():
                 os.execl(sys.executable, sys.executable, "-m", "Mix")
 
-
 connection_handler = ConnectionHandler()
-logging.addHandler(connection_handler)
+LOGG.addHandler(connection_handler)
 
 
 class Bot(Client):
