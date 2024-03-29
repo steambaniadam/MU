@@ -8,12 +8,11 @@
 ################################################################
 
 import os
-import random
+
 from asyncio import sleep
-
-import requests
-
 from Mix import *
+import requests
+import random
 
 __modles__ = "Katanime"
 __help__ = """
@@ -32,9 +31,8 @@ __help__ = """
 • Penjelasan: Mencari kata anime berdasarkan argumen yang diberikan.
 """
 
-
 def carikatanime(katanya):
-    pea = ["1", "2", "3", "4", "5"]
+    pea = ["1", "2" , "3", "4", "5"]
     hal = random.choice(pea)
     url = f"https://katanime.vercel.app/api/carikata?kata={katanya}&page={hal}"
     res = requests.get(url)
@@ -57,7 +55,6 @@ def carikatanime(katanya):
     else:
         print(f"error {res.status_code} {res.text}")
 
-
 def ambil_katanime():
     url = f"https://katanime.vercel.app/api/getrandom"
     res = requests.get(url)
@@ -73,12 +70,12 @@ def ambil_katanime():
     else:
         return f"Error {res.status_code} {res.text}"
 
-
 def getbyanime(tokoh):
-    pea = ["1", "2", "3", "4", "5"]
+    pea = ["1", "2" , "3", "4", "5"]
     hal = random.choice(pea)
     url = f"https://katanime.vercel.app/api/getbyanime?anime={tokoh}&page={hal}"
     res = requests.get(url)
+    daftar = []
     if res.status_code == 200:
         bisul = res.json()
         results = bisul.get("result", [])
@@ -90,7 +87,6 @@ def getbyanime(tokoh):
         return akhir
     else:
         print(f"error {res.status_code} {res.text}")
-
 
 def animelist():
     url = f"https://katanime.vercel.app/api/getlistanime"
@@ -108,7 +104,6 @@ def animelist():
     else:
         print(f"error {res.status_code} {res.text}")
 
-
 @ky.ubot("kata", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
@@ -117,16 +112,15 @@ async def _(c: nlx, m):
     mek = await m.reply(cgr("proses").format(em.proses))
     if len(m.command) > 1 and not m.reply_to_message:
         cari_kata = getbyanime(arg)
-        sleep(0.5)
+        await sleep(0.5)
         await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
     elif len(m.command) == 1 and m.reply_to_message:
         cari_kata = getbyanime(arg)
-        sleep(0.5)
+        await sleep(0.5)
         await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
     else:
         await m.reply(f"{em.gagal} Silahkan balas pesan atau berikan tokoh karakter")
     await mek.delete()
-
 
 @ky.ubot("katanime", sudo=True)
 async def _(c: nlx, m):
@@ -136,15 +130,15 @@ async def _(c: nlx, m):
     mek = await m.reply(cgr("proses").format(em.proses))
     if len(m.command) > 1 and not m.reply_to_message:
         cari_kata = carikatanime(arg)
-        sleep(0.5)
+        await sleep(0.5)
         await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
     elif len(m.command) == 1 and not m.reply_to_message:
         cari_random = ambil_katanime()
-        sleep(0.5)
+        await sleep(0.5)
         await m.reply(cari_random, reply_to_message_id=ReplyCheck(m))
     elif len(m.command) == 1 and m.reply_to_message:
         cari_kata = carikatanime(arg)
-        sleep(0.5)
+        await sleep(0.5)
         await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
     elif m.command == "list":
         ambil_anime = animelist()
@@ -152,14 +146,11 @@ async def _(c: nlx, m):
             file = open("DaftarAnime.txt", "w+")
             file.write(ambil_anime)
             file.close()
-            await m.reply_document(
-                "DaftarAnime.txt",
-                caption="Ini adalah total kata dan daftar anime beserta karakter.",
-                reply_to_message_id=ReplyCheck(m),
-            )
+            await m.reply_document("DaftarAnime.txt", caption="Ini adalah total kata dan daftar anime beserta karakter.", reply_to_message_id=ReplyCheck(m))
             os.remove("DaftarAnime.txt")
         else:
             await m.reply(ambil_anime)
     else:
         await m.reply(f"{em.gagal} Format salah!! Silahkan lihat bantuan.")
     await mek.delete()
+    
