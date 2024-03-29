@@ -300,18 +300,6 @@ class Userbot(Client):
         LOGGER.info(f"Starting Userbot {self.me.id}|{self.me.mention}")
 
 
-class ConnectionHandler(logging.Handler):
-    def emit(self, record):
-        for ah in ["OSError", "socket"]:
-            if ah in record.getMessage():
-                os.execl(sys.executable, sys.executable, "-m", "Mix")
-
-
-logger = logging.getLogger()
-connection_handler = ConnectionHandler()
-logger.addHandler(connection_handler)
-
-
 class Bot(Client):
     def __init__(self, **kwargs):
         super().__init__(
