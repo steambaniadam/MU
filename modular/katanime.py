@@ -41,7 +41,7 @@ def carikatanime(katanya):
     if res.status_code == 200:
         bisul = res.json()
         results = bisul.get("result", [])
-        percobaan = 5
+        percobaan = 15
         dicoba = 0
         while dicoba < percobaan:
             try:
