@@ -25,8 +25,8 @@ __help__ = """
 • Perintah: `{0}katanime`
 • Penjelasan: Mengambil kata anime  dan karakter secara random
 
-• Perintah: `{0}kata` [karakter]
-• Penjelasan: Mengambil kata dari karakter tersebut.
+• Perintah: `{0}kata` [anime]
+• Penjelasan: Mengambil kata dari anime tersebut.
 
 • Perintah: `{0}katanime` [kata]
 • Penjelasan: Mencari kata anime berdasarkan argumen yang diberikan.
