@@ -7,8 +7,8 @@
 """
 ################################################################
 
+import os
 
-from pyrogram.errors import *
 from asyncio import sleep
 from Mix import *
 import requests
@@ -18,13 +18,13 @@ __modles__ = "Katanime"
 __help__ = """
  Kata Anime
 
-• Perintah: `{0}animelist`
+• Perintah: `{0}katanime` [list]
 • Penjelasan: Melihat Daftar dan total kata anime.
 
 • Perintah: `{0}katanime`
 • Penjelasan: Mengambil kata anime  dan karakter secara random
 
-• Perintah: `{0}katanime` [karakter]
+• Perintah: `{0}kata` [karakter]
 • Penjelasan: Mengambil kata dari karakter tersebut.
 
 • Perintah: `{0}katanime` [kata]
@@ -104,6 +104,23 @@ def animelist():
     else:
         print(f"error {res.status_code} {res.text}")
 
+@ky.ubot("kata", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    arg = c.get_text(m)
+    mek = await m.reply(cgr("proses").format(em.proses))
+    if len(m.command) > 1 and not m.reply_to_message:
+        cari_kata = getbyanime(arg)
+        sleep(0.5)
+        await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
+    elif len(m.command) == 1 and m.reply_to_message:
+        cari_kata = getbyanime(arg)
+        sleep(0.5)
+        await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
+    else:
+        await m.reply(f"{em.gagal} Silahkan balas pesan atau berikan tokoh karakter")
+    await mek.delete()
 
 @ky.ubot("katanime", sudo=True)
 async def _(c: nlx, m):
@@ -114,19 +131,26 @@ async def _(c: nlx, m):
     if len(m.command) > 1 and not m.reply_to_message:
         cari_kata = carikatanime(arg)
         sleep(0.5)
-        await m.reply(ambil, reply_to_message_id=ReplyCheck(m))
-    elif m.command == 1 and not m.reply_to_message:
+        await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
+    elif len(m.command) == 1 and not m.reply_to_message:
         cari_random = ambil_katanime()
         sleep(0.5)
         await m.reply(cari_random, reply_to_message_id=ReplyCheck(m))
-    elif m.command == 1 and m.reply_to_message:
+    elif len(m.command) == 1 and m.reply_to_message:
         cari_kata = carikatanime(arg)
         sleep(0.5)
         await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
     elif m.command == "list"
         ambil_anime = animelist()
         if len(ambil_anime) > 4096:
-            file = open("katanime.txt", "w+")
+            file = open("DaftarAnime.txt", "w+")
             file.write(ambil_anime)
             file.close()
-            await m.reply_document("katanime.txt")
+            await m.reply_document("DaftarAnime.txt", caption="Ini adalah total kata dan daftar anime beserta karakter.", reply_to_message_id=ReplyCheck(m)))
+            os.remove("DaftarAnime.txt")
+        else:
+            await m.reply(ambil_anime)
+    else:
+        await m.reply(f"{em.gagal} Format salah!! Silahkan lihat bantuan.")
+    await mek.delete()
+    
