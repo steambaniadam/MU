@@ -137,25 +137,13 @@ async def _(c: nlx, m):
     await mek.delete()
 
 
-@ky.ubot("katanime", sudo=True)
+@ky.ubot("katanime|katanimelist", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     arg = c.get_text(m)
     mek = await m.reply(cgr("proses").format(em.proses))
-    if len(m.command) > 1 and not m.reply_to_message:
-        cari_kata = carikatanime(arg)
-        await sleep(0.5)
-        await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
-    elif len(m.command) == 1 and not m.reply_to_message:
-        cari_random = ambil_katanime()
-        await sleep(0.5)
-        await m.reply(cari_random, reply_to_message_id=ReplyCheck(m))
-    elif len(m.command) == 1 and m.reply_to_message:
-        cari_kata = carikatanime(arg)
-        await sleep(0.5)
-        await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
-    elif len(m.command) == 1 and not m.reply_to_message and "list" in m.command:
+    if m.command[0] == "katanimelist":
         ambil_anime = animelist()
         if len(ambil_anime) > 4096:
             file = open("DaftarAnime.txt", "w+")
@@ -169,6 +157,18 @@ async def _(c: nlx, m):
             os.remove("DaftarAnime.txt")
         else:
             await m.reply(ambil_anime)
+    elif len(m.command) > 1 and not m.reply_to_message:
+        cari_kata = carikatanime(arg)
+        await sleep(0.5)
+        await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
+    elif len(m.command) == 1 and not m.reply_to_message:
+        cari_random = ambil_katanime()
+        await sleep(0.5)
+        await m.reply(cari_random, reply_to_message_id=ReplyCheck(m))
+    elif len(m.command) == 1 and m.reply_to_message:
+        cari_kata = carikatanime(arg)
+        await sleep(0.5)
+        await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
     else:
         await m.reply(f"{em.gagal} Format salah!! Silahkan lihat bantuan.")
     await mek.delete()
