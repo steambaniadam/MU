@@ -54,10 +54,7 @@ async def _(c: nlx, m):
                 done += 1
                 await asyncio.sleep(0.3)
             except (
-                UserBannedInChannel,
                 SlowmodeWait,
-                PeerIdInvalid,
-                Forbidden,
                 ChatWriteForbidden,
             ):
                 failed += 1
