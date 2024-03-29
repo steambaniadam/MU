@@ -92,7 +92,7 @@ def getbyanime(tokoh):
                 anim = ambil1.get("anime", "")
                 karak = ambil1.get("character", "")
                 kata = ambil1.get("indo", "")
-                akhir = f"**Anime: {anim}**\n*"{karak}:** {kata}"
+                akhir = f"**Anime: {anim}**\n**{karak}:** {kata}"
                 return akhir
             except IndexError:
                 dicoba += 1
