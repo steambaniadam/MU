@@ -29,10 +29,6 @@ from Mix import bot, nlx
 
 
 async def check_logger():
-    if TAG_LOG is not None:
-        return
-    LOGGER.info(f"Check Grup Log User...")
-
     LOGGER.info(f"Creating Grup Log...")
     nama = f"Mix-Userbot Logs"
     des = "Jangan Keluar Dari Grup Log Ini\n\nPowered by: @KynanSupport"
@@ -94,7 +90,6 @@ async def getFinish():
                     can_manage_video_chats=True,
                 ),
             )
-            ndB.set_key("TAG_LOG", kntl)
             execvp(executable, [executable, "-m", "Mix"])
         except:
             ndB.del_key("TAG_LOG")
