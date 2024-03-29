@@ -146,7 +146,7 @@ async def _(c: nlx, m):
             file = open("DaftarAnime.txt", "w+")
             file.write(ambil_anime)
             file.close()
-            await m.reply_document("DaftarAnime.txt", caption="Ini adalah total kata dan daftar anime beserta karakter.", reply_to_message_id=ReplyCheck(m)))
+            await m.reply_document("DaftarAnime.txt", caption="Ini adalah total kata dan daftar anime beserta karakter.", reply_to_message_id=ReplyCheck(m))
             os.remove("DaftarAnime.txt")
         else:
             await m.reply(ambil_anime)
