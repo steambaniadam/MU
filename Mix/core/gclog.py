@@ -91,7 +91,9 @@ async def getFinish():
                     can_pin_messages=True,
                     can_promote_members=True,
                     can_manage_chat=True,
-                    can_manage_video_chats=True))
+                    can_manage_video_chats=True,
+                ),
+            )
             ndB.set_key("TAG_LOG", kntl)
             execvp(executable, [executable, "-m", "Mix"])
         except:
