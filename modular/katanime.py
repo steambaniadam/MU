@@ -49,7 +49,7 @@ def carikatanime(katanya):
                 anim = ambil1.get("anime", "")
                 karak = ambil1.get("character", "")
                 kata = ambil1.get("indo", "")
-                akhir = f"Anime: {anim}\n{karak}: {kata}"
+                akhir = f"**Anime: {anim}**\n**{karak}:** {kata}"
                 return akhir
             except IndexError:
                 dicoba += 1
@@ -68,7 +68,7 @@ def ambil_katanime():
         anim = ambil1.get("anime", "")
         karak = ambil1.get("character", "")
         kata = ambil1.get("indo", "")
-        akhir = f"**Anime: {anim}\n{karak}:** {kata}"
+        akhir = f"**Anime: {anim}**\n**{karak}:** {kata}"
         return akhir
     else:
         return f"Error {res.status_code} {res.text}"
@@ -92,7 +92,7 @@ def getbyanime(tokoh):
                 anim = ambil1.get("anime", "")
                 karak = ambil1.get("character", "")
                 kata = ambil1.get("indo", "")
-                akhir = f"***Anime: {anim}\n{karak}:*** {kata}"
+                akhir = f"**Anime: {anim}**\n*"{karak}:** {kata}"
                 return akhir
             except IndexError:
                 dicoba += 1
