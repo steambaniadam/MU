@@ -1,0 +1,132 @@
+################################################################
+"""
+ Mix-Userbot Open Source . Maintained ? Yes Oh No Oh Yes Ngentot
+ 
+ @ CREDIT : NAN-DEV || MIKIR GOBLOK, TOLOL, IDIOT, NGENTOT, KONTOL, BAJINGAN
+  • JANGAN DIHAPUS YA MONYET-MONYET SIALAN
+"""
+################################################################
+
+
+from pyrogram.errors import *
+from asyncio import sleep
+from Mix import *
+import requests
+import random
+
+__modles__ = "Katanime"
+__help__ = """
+ Kata Anime
+
+• Perintah: `{0}animelist`
+• Penjelasan: Melihat Daftar dan total kata anime.
+
+• Perintah: `{0}katanime`
+• Penjelasan: Mengambil kata anime  dan karakter secara random
+
+• Perintah: `{0}katanime` [karakter]
+• Penjelasan: Mengambil kata dari karakter tersebut.
+
+• Perintah: `{0}katanime` [kata]
+• Penjelasan: Mencari kata anime berdasarkan argumen yang diberikan.
+"""
+
+def carikatanime(katanya):
+    pea = ["1", "2" , "3", "4", "5"]
+    hal = random.choice(pea)
+    url = f"https://katanime.vercel.app/api/carikata?kata={katanya}&page={hal}"
+    res = requests.get(url)
+    if res.status_code == 200:
+        bisul = res.json()
+        results = bisul.get("result", [])
+        percobaan = 5
+        dicoba = 0
+        while dicoba < percobaan:
+            try:
+                ambil1 = random.choice(results)
+                anim = ambil1.get("anime", "")
+                karak = ambil1.get("character", "")
+                kata = ambil1.get("indo", "")
+                akhir = f"Anime: {anim}\n{karak}: {kata}"
+                return akhir
+            except IndexError:
+                dicoba += 1
+        return "Maaf sepertinya kata yang kamu cari tidak ada"
+    else:
+        print(f"error {res.status_code} {res.text}")
+
+def ambil_katanime():
+    url = f"https://katanime.vercel.app/api/getrandom"
+    res = requests.get(url)
+    if res.status_code == 200:
+        bisul = res.json()
+        results = bisul.get("result", [])
+        ambil1 = random.choice(results)
+        anim = ambil1.get("anime", "")
+        karak = ambil1.get("character", "")
+        kata = ambil1.get("indo", "")
+        akhir = f"**Anime: {anim}\n{karak}:** {kata}"
+        return akhir
+    else:
+        return f"Error {res.status_code} {res.text}"
+
+def getbyanime(tokoh):
+    pea = ["1", "2" , "3", "4", "5"]
+    hal = random.choice(pea)
+    url = f"https://katanime.vercel.app/api/getbyanime?anime={tokoh}&page={hal}"
+    res = requests.get(url)
+    daftar = []
+    if res.status_code == 200:
+        bisul = res.json()
+        results = bisul.get("result", [])
+        ambil1 = random.choice(results)
+        anim = ambil1.get("anime", "")
+        karak = ambil1.get("character", "")
+        kata = ambil1.get("indo", "")
+        akhir = f"***Anime: {anim}\n{karak}:*** {kata}"
+        return akhir
+    else:
+        print(f"error {res.status_code} {res.text}")
+
+def animelist():
+    url = f"https://katanime.vercel.app/api/getlistanime"
+    res = requests.get(url)
+    daftar = []
+    if res.status_code == 200:
+        bisul = res.json()
+        results = bisul.get("result", [])
+        for isi in results:
+            anim = isi.get("anime", "")
+            kata = isi.get("totalKata", "")
+            akhir = f"**Anime: {anim}\nTotal Kata:** {kata}\n"
+            daftar.append(akhir)
+        return "".join(daftar)
+    else:
+        print(f"error {res.status_code} {res.text}")
+
+
+@ky.ubot("katanime", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    arg = c.get_text(m)
+    mek = await m.reply(cgr("proses").format(em.proses))
+    if len(m.command) > 1 and not m.reply_to_message:
+        cari_kata = carikatanime(arg)
+        sleep(0.5)
+        await m.reply(ambil, reply_to_message_id=ReplyCheck(m))
+    elif m.command == 1 and not m.reply_to_message:
+        cari_random = ambil_katanime()
+        sleep(0.5)
+        await m.reply(cari_random, reply_to_message_id=ReplyCheck(m))
+    elif m.command == 1 and m.reply_to_message:
+        cari_kata = carikatanime(arg)
+        sleep(0.5)
+        await m.reply(cari_kata, reply_to_message_id=ReplyCheck(m))
+    elif m.command == "list"
+        ambil_anime = animelist()
+        if len(ambil_anime) > 4096:
+            file = open("katanime.txt", "w+")
+            file.write(ambil_anime)
+            file.close()
+            await m.reply_document("katanime.txt")
