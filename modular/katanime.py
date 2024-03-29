@@ -19,7 +19,7 @@ __modles__ = "Katanime"
 __help__ = """
  Kata Anime
 
-• Perintah: `{0}katanime` [list]
+• Perintah: `{0}katanimelist`
 • Penjelasan: Melihat Daftar dan total kata anime.
 
 • Perintah: `{0}katanime`
