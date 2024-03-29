@@ -90,6 +90,17 @@ async def getFinish():
                     can_manage_video_chats=True,
                 ),
             )
+            await bot.send_message(
+                TAG_LOG, f"""
+<b>Userbot Successfully Deploy !!</b>
+
+<b>Modules : {len(CMD_HELP)}</b>
+<b>Python : {pyver.split()[0]}</b>
+<b>Pyrogram : {pyrover}</b>
+<b>Pytgcalls : {pytgver}</b>
+<b>Prefixes : {xx}</b>
+""",
+        )
         except:
             ndB.del_key("TAG_LOG")
             execvp(executable, [executable, "-m", "Mix"])
