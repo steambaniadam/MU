@@ -21,7 +21,12 @@ reboot_1: "Reboot has been initiated successfully! Please wait 1 - 2 minutes for
 supot: "**If you need help, please come to the Support Group Below!!\n\nOr you can see updates on our Channel...**"
 
 # proxy
-prox_1: "{} **Top 2 best proxies:**\n"
+prox_1: "**➣ `{}`**"
+prox_2: "{} <b>Nothing found froxy.</b>"
+prox_3: "{} **List Proxy of `{}` :**\n\n"
+prox_4: "{} **There's no Proxy valid.**"
+prox_5: "{} <b>Commands not valid.\nExample commands {} [`http`|`socks4`|`socks5`]</b>"
+prox_6: "{} <b>Commands not valid.\nExample commands `{}` [`http`|`socks4`|`socks5`]</b>"
 
 # tod
 tod_1: "{} **Dare :**\n\n `{}`"

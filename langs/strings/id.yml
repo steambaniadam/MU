@@ -21,7 +21,12 @@ reboot_1: "Reboot telah berhasil dimulai! Tunggu 1 - 2 menit hingga bot dimulai 
 supot: "**Jika anda butuhkan bantuan silahkan datang ke Grup Support Dibawah!!**\n\n**Atau kamu bisa melihat update di Channel Kami..**"
 
 # proxy
-prox_1: "{} **Top 2 Proxy Terbaik :**\n"
+prox_1: "**➣ `{}`**"
+prox_2: "{} <b>Tidak terdapat proxy yang tersedia.</b>"
+prox_3: "{} **Berikut adalah daftar proxy `{}` :**\n\n"
+prox_4: "{} **Tidak dapat menemukan proxy yang valid.**"
+prox_5: "{} <b>Perintah tidak valid. \nGunakan perintah {} [`http`|`socks4`|`socks5`]</b>"
+prox_6: "{} <b>Perintah tidak valid.\nGunakan perintah `{}` [`http`|`socks4`|`socks5`]</b>"
 
 # tod
 tod_1: "{} **Tantangan :**\n\n `{}`"

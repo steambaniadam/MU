@@ -17,10 +17,10 @@ async def fetch_proxies(proxy_type):
         formatted_proxies = []
         for i, proxy in enumerate(proxies):
             if proxy.strip():
-                formatted_proxies.append(f"**• `{proxy}`**")
+                formatted_proxies.append(cgr("prox_1").format(proxy))
 
         if not formatted_proxies:
-            formatted_proxies.append(f"{em.gagal} No valid proxy found")
+            formatted_proxies.append(cgr("prox_2").format(em.gagal))
 
         return formatted_proxies[:10]
     else:
@@ -31,12 +31,12 @@ async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
     em = Emojik()
     em.initialize()
     if proxies:
-        teks = f"{em.sukses}**Berikut adalah daftar proxy `{proxy_type}` :**\n\n"
+        teks = (cgr("prox_3").format(em.sukses, proxy_type))
         teks += "\n".join(proxies)
         await c.send_message(chat_id, teks)
     else:
         await c.send_message(
-            chat_id, f"{em.gagal} Tidak dapat menemukan proxy yang valid."
+            chat_id, (cgr("prox_4").format(em.gagal))
         )
 
 
@@ -50,7 +50,7 @@ async def get_proxy_command(c: nlx, m):
         if command not in ["http", "socks4", "socks5"]:
             await c.send_message(
                 m.chat.id,
-                f"{em.gagal} <b>Perintah tidak valid. \nGunakan perintah {m.text} [`http`|`socks4`|`socks5`]</b>",
+                (cgr("prox_5").format(em.gagal, m.texy)),
             )
             return
 
@@ -61,6 +61,6 @@ async def get_proxy_command(c: nlx, m):
     except IndexError:
         await c.send_message(
             m.chat.id,
-            f"{em.gagal} <b>Perintah tidak valid.\nGunakan perintah `{m.text}` [`http`|`socks4`|`socks5`]</b>",
+            (cgr("prox_6").format(em.gagal, m.text)),
         )
         await pros.delete()

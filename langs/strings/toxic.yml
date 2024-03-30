@@ -21,7 +21,12 @@ reboot_1: "Reboot telah berhasil dimulai! Tunggu 1 - 2 menit hingga bot dimulai 
 supot: "**Eh Goblok Kalo Lo Buta MAP, Lo dateng bae ke Grup Support Dibawah!!\n\nAtau Lo bisa ke Channel buat liat Apa yg Update..**"
 
 # proxy
-prox_1: "{} **Gue Kasih 2 Biji yang bagus nih :**\n"
+prox_1: "**➣ `{}`**"
+prox_2: "{} <b>Kasian amat, proxy nya lagi kosong.</b>"
+prox_3: "{} **Nih daftar proxy nya jink `{}` :**\n\n"
+prox_4: "{} **Lah kaga ada proxy kek gitu goblok.**"
+prox_5: "{} <b>Perintahnya yang bener lah njink!\nKaya gini nih! {} [`http`|`socks4`|`socks5`]</b>"
+prox_6: "{} <b>Perintahnya yang bener lah njink!\nKaya gini nih! `{}` [`http`|`socks4`|`socks5`]</b>"
 
 # tod
 tod_1: "{} **Dare :**\n\n `{}`"
