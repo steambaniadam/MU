@@ -1,15 +1,17 @@
 import os
+from subprocess import PIPE, Popen
+
 import aiofiles
 import aiohttp
 import requests
 from pyquery import PyQuery as pq
 from pyrogram import *
-from subprocess import Popen, PIPE
 
 from Mix import *
 
 __modles__ = "Pinterest"
 __help__ = get_cgr("help_pint")
+
 
 async def get_download_url_and_download(link, chat_id, caption=None):
     em = Emojik()
@@ -53,20 +55,21 @@ async def get_download_url_and_download(link, chat_id, caption=None):
 
 
 async def convert_to_mp4(input_path, output_path):
-    command = ['ffmpeg', '-i', input_path, '-c', 'copy', output_path]
+    command = ["ffmpeg", "-i", input_path, "-c", "copy", output_path]
     process = Popen(command, stdout=PIPE, stderr=PIPE)
     stdout, stderr = process.communicate()
     if process.returncode != 0:
         print("Error:", stderr.decode())
 
+
 async def convert_m3u8_to_mp4(m3u8_link, mp4_output_path):
     response = requests.get(m3u8_link)
-    with open('temp.ts', 'wb') as f:
+    with open("temp.ts", "wb") as f:
         for chunk in response.iter_content(chunk_size=1024):
             if chunk:
                 f.write(chunk)
-    await convert_to_mp4('temp.ts', mp4_output_path)
-    os.remove('temp.ts')
+    await convert_to_mp4("temp.ts", mp4_output_path)
+    os.remove("temp.ts")
 
 
 @ky.ubot("pint", sudo=True)
