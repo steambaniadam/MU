@@ -9,12 +9,38 @@ __modles__ = "Anime Streaming"
 __help__ = "Anime Streaming"
 
 
+ANIME_LIST = {
+    "Naruto": 20,
+    "Attack on Titan": 16498,
+    "One Piece": 21,
+    "Demon Slayer": 38000,
+    "My Hero Academia": 38408,
+    "Death Note": 1535,
+    "Fullmetal Alchemist": 5114,
+    "Sword Art Online": 11757,
+    "One Punch Man": 30276,
+    "Tokyo Ghoul": 22319,
+}
+
+
 URL_REGEX = re.compile(
     r"""(?i)\b((?:https?://|www\d{0,3}[.]|
-                          [a-z0-9.\-][.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|
-                          (\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\
-                          ()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""".strip()
+              [a-z0-9.\-][.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|
+              (\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\
+              ()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""".strip()
 )
+
+
+@ky.ubot("anime_list", sudo=True)
+async def show_anime_list(c: nlx, m):
+    buttons = [
+        InlineKeyboardButton(anime, callback_data=str(anime_id))
+        for anime, anime_id in ANIME_LIST.items()
+    ]
+    keyboard_markup = InlineKeyboardMarkup(
+        [buttons[i : i + 2] for i in range(0, len(buttons), 2)]
+    )
+    await m.reply_text("Daftar Anime:", reply_markup=keyboard_markup)
 
 
 def get_streaming_links(anime_id):
@@ -70,7 +96,6 @@ def ikb(data, row_width=2):
         else:
             buttons.append(InlineKeyboardButton(text, callback_data=data))
     keyboard_markup = InlineKeyboardMarkup([buttons])
-    print("Keyboard Markup:", keyboard_markup)
     return keyboard_markup
 
 
