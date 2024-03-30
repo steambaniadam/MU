@@ -25,10 +25,7 @@ from Mix.core.stick_tools import EMOJI_PATTERN, convert_video, resize_image
 async def _(self: bot, message):
     prog_msg = await message.reply("Processing...")
     sticker_emojis = "🤔"
-    sticker_emoji = (
-        "".join(set(EMOJI_PATTERN.findall("".join(message.command[1:]))))
-        or sticker_emojis
-    )
+    sticker_emoji = message.command[2] if len(message.command) > 1 else sticker_emojis
     packnum = 0
     packname_found = False
     resize = False
@@ -37,12 +34,6 @@ async def _(self: bot, message):
     convert = False
     reply = message.reply_to_message
     user = await self.resolve_peer(message.from_user.username or message.from_user.id)
-
-    if len(message.command) > 1:
-        sticker_emoji = (
-            "".join(set(EMOJI_PATTERN.findall("".join(message.command[1:]))))
-            or sticker_emoji
-        )
 
     if reply and reply.media:
         if reply.photo:
