@@ -10,10 +10,10 @@ async def fetch_proxies(proxy_type):
     url = f"https://www.proxy-list.download/api/v1/get?type={proxy_type}"
     response = requests.get(url)
     if response.status_code == 200:
-        proxies = response.text.split("\r\n")
+        proxies = response.text.split("\n\n")
         proxies.sort()
         formatted_proxies = [
-            f"**{i}) `{proxy}`**" for i, proxy in enumerate(proxies, start=1)
+            f"**\n\n{i}) `{proxy}`**" for i, proxy in enumerate(proxies, start=1)
         ]
 
         if not formatted_proxies[0]:
@@ -25,13 +25,15 @@ async def fetch_proxies(proxy_type):
 
 
 async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
-    em = Emojik()
-    em.initialize()
+    daf = []
     if proxies:
-        teks = f"**{em.sukses} Berikut adalah daftar proxy `{proxy_type}` :**\n"
-        message = teks + "\n".join(proxies)
+        teks = f"**Berikut adalah daftar proxy {proxy_type} :**\n\n"
+        daf.append(teks)
+        message = "\n".join(daf)
         await c.send_message(chat_id, message)
     else:
+        em = Emojik()
+        em.initialize()
         await c.send_message(
             chat_id, f"{em.gagal} Tidak dapat menemukan proxy yang valid."
         )
