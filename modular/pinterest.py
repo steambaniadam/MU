@@ -22,18 +22,20 @@ async def getJson(html):
 
 
 async def getHtml(url):
-    if "pin.it" in url:
-        url = requests.get(url).url
-
     try:
         response = requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
+        
+        og_image = soup.find("meta", property="og:image")
+        if og_image and og_image["content"]:
+            return og_image["content"], response.text
+        
         img_tag = soup.find("img", class_="hCL kVc L4E MIw")
-        if img_tag:
-            img_url = img_tag.get("currentSrc")
-            return img_url, response.text
-        else:
-            return None, None
+        if img_tag and img_tag.has_attr("currentSrc"):
+            return img_tag["currentSrc"], response.text
+        
+        return None, None
+    
     except Exception as e:
         print(e)
         return None, None
