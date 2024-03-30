@@ -25,7 +25,6 @@ async def fetch_proxies(proxy_type):
         return None
 
 
-
 async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
     em = Emojik()
     em.initialize()
