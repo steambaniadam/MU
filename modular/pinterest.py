@@ -1,4 +1,5 @@
 import os
+
 import aiofiles
 import aiohttp
 import requests
@@ -80,7 +81,9 @@ async def _(c: nlx, m):
     gue = c.me.mention
     try:
         url = m.text.split(maxsplit=1)[1]
-        await download_file_from_url(url, m, caption=cgr("pint_2").format(em.sukses, gue))
+        await download_file_from_url(
+            url, m, caption=cgr("pint_2").format(em.sukses, gue)
+        )
         await pros.delete()
     except Exception as e:
         await m.reply(cgr("err").format(em.gagal, str(e)))
