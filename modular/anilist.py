@@ -36,7 +36,8 @@ async def send_streaming_links(c: nlx, m):
             streaming_links = get_streaming_links(anime_id)
             if streaming_links:
                 buttons_list = [
-                    (link_data["name"], link_data["url"]) for link_data in streaming_links
+                    (link_data["name"], link_data["url"])
+                    for link_data in streaming_links
                 ]
                 keyboard_markup = create_keyboard(buttons_list)
                 await m.reply_text(
@@ -88,6 +89,6 @@ def anime_to_id(anime_name):
         "fullmetal alchemist": 5114,
         "sword art online": 11757,
         "one punch man": 30276,
-        "tokyo ghoul": 22319
+        "tokyo ghoul": 22319,
     }
     return anime_dict.get(anime_name, None)
