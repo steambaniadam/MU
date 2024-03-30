@@ -1,2 +1,2 @@
-rm -rf *.jpg *png *raw *session* *log* pycache *tmp* downloads/* *mp3
+rm -rf *.jpg *png *raw *session* *log* pycache *tmp* downloads/* *mp3 *mp4 Pypin/*
 ls
