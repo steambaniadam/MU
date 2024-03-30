@@ -40,7 +40,7 @@ async def get_download_url_and_download(link, chat_id, caption=None):
                     if caption:
                         await nlx.send_photo(chat_id, file_path, caption=caption)
                     else:
-                        await nlx.send_photo(chat_id, file_path)
+                        await nlx.send_video(chat_id, file_path, caption=caption)
 
                     os.remove(file_path)
 
