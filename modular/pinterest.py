@@ -47,13 +47,17 @@ async def _(c: nlx, m):
         url = m.text.split(maxsplit=1)[1]
 
         if url.endswith((".jpg", ".jpeg", ".png")):
-            await nlx.send_photo(m.chat.id, url, caption=cgr("pint_2").format(em.sukses, gue))
+            await nlx.send_photo(
+                m.chat.id, url, caption=cgr("pint_2").format(em.sukses, gue)
+            )
         elif url.endswith(".m3u8"):
             await download_m3u8_and_convert_to_mp4(
                 url, m.chat.id, caption=cgr("pint_2").format(em.sukses, gue)
             )
         else:
-            await nlx.send_document(m.chat.id, url, caption=cgr("pint_2").format(em.sukses, gue))
+            await nlx.send_document(
+                m.chat.id, url, caption=cgr("pint_2").format(em.sukses, gue)
+            )
 
         await pros.delete()
     except Exception as e:
