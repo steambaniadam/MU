@@ -13,7 +13,7 @@ async def fetch_proxies(proxy_type):
         proxies = response.text.split("\r\n")
         proxies.sort()
         formatted_proxies = [
-            f"**{i})** `{proxy}`" for i, proxy in enumerate(proxies, start=1)
+            f"**{i})** `{proxy}`" for i, proxy in enumerate(proxies, start=0)
         ]
 
         if not formatted_proxies[0]:
