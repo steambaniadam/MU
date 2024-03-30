@@ -1,5 +1,4 @@
 import os
-
 import aiofiles
 import aiohttp
 import requests
@@ -11,28 +10,59 @@ from Mix import *
 __modles__ = "Pinterest"
 __help__ = get_cgr("help_pint")
 
+async def download_file_from_url(url, chat_id, caption=None):
+    em = Emojik()
+    em.initialize()
+    try:
+        post_request = requests.post(
+            "https://www.expertsphp.com/download.php", data={"url": url}
+        )
+        request_content = post_request.content
+        str_request_content = str(request_content, "utf-8")
+        download_url = pq(str_request_content)("table.table-condensed")("tbody")("td")("a").attr("href")
 
-async def get_download_url(link):
-    post_request = requests.post(
-        "https://www.expertsphp.com/download.php", data={"url": link}
-    )
-    request_content = post_request.content
-    str_request_content = str(request_content, "utf-8")
-    download_url = pq(str_request_content)("table.table-condensed")("tbody")("td")(
-        "a"
-    ).attr("href")
-    return download_url
+        if download_url is None:
+            await nlx.send_message(chat_id, cgr("pint_1").format(em.gagal))
+            return
+
+        file_extension = ".mp4" if ".mp4" in download_url else (".jpg" if ".jpg" in download_url else ".m3u8")
+        file_name = f"pinterest_content{file_extension}"
+        file_path = f"Pypin/{file_name}"
+
+        if not os.path.exists("Pypin"):
+            os.makedirs("Pypin")
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get(download_url) as resp:
+                if resp.status == 200:
+                    async with aiofiles.open(file_path, mode="wb") as f:
+                        await f.write(await resp.read())
+
+                    if file_extension == ".jpg":
+                        await nlx.send_photo(chat_id, file_path, caption=caption)
+                    elif file_extension == ".mp4":
+                        if file_extension == ".m3u8":
+                            mp4_path = f"Pypin/pinterest_content.mp4"
+                            await convert_m3u8_to_mp4(file_path, mp4_path)
+                            await nlx.send_video(chat_id, mp4_path, caption=caption)
+                            os.remove(mp4_path)
+                        else:
+                            await nlx.send_video(chat_id, file_path, caption=caption)
+                    else:
+                        await nlx.send_document(chat_id, file_path, caption=caption)
+                    
+                    os.remove(file_path)
+
+    except Exception as e:
+        await nlx.send_message(chat_id, f"Error: {str(e)}")
 
 
-async def download_file(url, file_path, chat_id, caption=None):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as resp:
-            if resp.status == 200:
-                f = await aiofiles.open(file_path, mode="wb")
-                await f.write(await resp.read())
-                await f.close()
-                await nlx.send_message(chat_id, file_path, caption=caption)
-                os.remove(file_path)
+async def convert_m3u8_to_mp4(m3u8_input_path, mp4_output_path):
+    command = ["ffmpeg", "-i", m3u8_input_path, "-c", "copy", mp4_output_path]
+    process = Popen(command, stdout=PIPE, stderr=PIPE)
+    stdout, stderr = process.communicate()
+    if process.returncode != 0:
+        print("Error:", stderr.decode())
 
 
 @ky.ubot("pint", sudo=True)
@@ -43,32 +73,8 @@ async def _(c: nlx, m):
     gue = c.me.first_name
     try:
         url = m.text.split(maxsplit=1)[1]
-        download_url = await get_download_url(url)
-
-        if download_url is None:
-            await m.reply(cgr("pint_1").format(em.gagal))
-            await pros.delete()
-            return
-
-        if ".mp4" in download_url:
-            file_extension = ".mp4"
-        else:
-            file_extension = ".jpg"
-
-        file_name = f"pinterest_content{file_extension}"
-        file_path = f"Pypin/{file_name}"
-
-        if not os.path.exists("Pypin"):
-            os.makedirs("Pypin")
-
-        await download_file(
-            download_url,
-            file_path,
-            m.chat.id,
-            caption=cgr("pint_2").format(em.sukses, gue),
-        )
-
+        await download_file_from_url(url, m.chat.id, caption=cgr("pint_2").format(em.sukses, gue))
         await pros.delete()
     except Exception as e:
-        await m.reply(f"Error: {str(e)}")
+        await m.reply(cgr("err").format(em.gagal, str(e)))
         await pros.delete()
