@@ -1,4 +1,5 @@
 import os
+
 import aiohttp
 import requests
 from pyquery import PyQuery as pq
@@ -8,6 +9,7 @@ from Mix import *
 
 __modles__ = "Pinterest"
 __help__ = get_cgr("help_pint")
+
 
 async def get_download_url_and_download(link, chat_id, caption=None):
     try:
@@ -43,6 +45,7 @@ async def get_download_url_and_download(link, chat_id, caption=None):
 
     except Exception as e:
         await nlx.send_message(chat_id, f"Terjadi kesalahan saat mengunduh: {str(e)}")
+
 
 @ky.ubot("pint", sudo=True)
 async def _(c: nlx, m):
