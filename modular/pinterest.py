@@ -26,9 +26,7 @@ async def get_download_url_and_download(link, chat_id, caption=None):
         ).attr("href")
 
         if download_url is None:
-            await nlx.send_message(
-                chat_id, cgr("pint_3").format(em.gagal, link)
-            )
+            await nlx.send_message(chat_id, cgr("pint_3").format(em.gagal, link))
             return
 
         async with aiohttp.ClientSession() as session:
