@@ -54,5 +54,8 @@ async def get_proxy_command(c: nlx, m):
         await send_proxy(c, m.chat.id, proxies)
         await pros.delete()
     except IndexError:
-        await c.send_message(m.chat.id, f"{em.gagal} Perintah tidak valid.\nGunakan perintah {m.text} [`http`|`socks4`|`socks5`]")
+        await c.send_message(
+            m.chat.id,
+            f"{em.gagal} Perintah tidak valid.\nGunakan perintah {m.text} [`http`|`socks4`|`socks5`]",
+        )
         await pros.delete()
