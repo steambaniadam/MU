@@ -57,7 +57,6 @@ async def _(c: nlx, m):
                 SlowmodeWait,
                 ChatWriteForbidden,
             ):
-                failed += 1
                 continue
             except Exception:
                 failed += 1
