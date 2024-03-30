@@ -13,6 +13,8 @@ __help__ = get_cgr("help_pint")
 
 
 async def get_download_url_and_download(link, chat_id, caption=None):
+    em = Emojik()
+    em.initialize()
     try:
         post_request = requests.post(
             "https://www.expertsphp.com/download.php", data={"url": link}
@@ -25,7 +27,7 @@ async def get_download_url_and_download(link, chat_id, caption=None):
 
         if download_url is None:
             await nlx.send_message(
-                chat_id, f"Gagal mendapatkan tautan unduhan dari {link}"
+                chat_id, cgr("pint_3").format(em.gagal, link)
             )
             return
 
@@ -45,7 +47,7 @@ async def get_download_url_and_download(link, chat_id, caption=None):
                     os.remove(file_path)
 
     except Exception as e:
-        await nlx.send_message(chat_id, f"Terjadi kesalahan saat mengunduh: {str(e)}")
+        await nlx.send_message(chat_id, cgr("pint_4").format(em.gagal, str(e)))
 
 
 @ky.ubot("pint", sudo=True)
@@ -53,7 +55,7 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    gue = c.me.first_name
+    gue = c.me.mention
     try:
         url = m.text.split(maxsplit=1)[1]
         await get_download_url_and_download(
@@ -61,5 +63,5 @@ async def _(c: nlx, m):
         )
         await pros.delete()
     except Exception as e:
-        await m.reply(f"Error: {str(e)}")
+        await m.reply(cgr("err").format(em.gagal, str(e)))
         await pros.delete()

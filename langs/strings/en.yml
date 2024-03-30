@@ -478,6 +478,8 @@ qur_3: "{} There's nothing surah with name '{}' "
 # pinterest
 pint_1: "{} **There's no Image or Video on URL Pinterest**"
 pint_2: "{} **Downloaded by : {}**"
+pint_3: "{} **Failed to catch donwload file from : `{}`**"
+pint_4: "{} **Something error while downloading : `{}`**"
 
 # help_for
 help_afk: " Afk\n\n• Command: `{0}afk` [reason]\n• Description: To activate afk mode.\n\n• Command: `{0}unafk` [reason]\n• Description: To deactivate afk mode."

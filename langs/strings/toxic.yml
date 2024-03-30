@@ -479,6 +479,8 @@ qur_3: "{} Kaga ada surah '{}' Non-Islam lo ya?"
 # pinterest
 pint_1: "{} **Tidak ada gambar atau video yang ditemukan di URL Pinterest**"
 pint_2: "{} **Downloaded by : {}**"
+pint_3: "{} **Gagal download jink : `{}`**"
+pint_4: "{} **Yah kaga bisa tot : `{}`**"
 
 # help_for
 help_afk: " Afk\n\n• Perintah : `{0}afk` [alesan]\n• Penjelasan : Buat mengaktifkan mode afk.\n\n• Perintah : `{0}unafk`\n• Penjelasan : Buat menonaktifkan mode afk."

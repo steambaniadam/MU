@@ -479,6 +479,8 @@ qur_3: "{} Surah dengan nama '{}' tidak ditemukan."
 # pinterest
 pint_1: "{} **Tidak ada gambar atau video yang ditemukan di URL Pinterest**"
 pint_2: "{} **Downloaded by : {}**"
+pint_3: "{} **Gagal mendapatkan tautan unduhan dari {}**"
+pint_4: "{} **Terjadi kesalahan saat mengunduh: `{}`**"
 
 # help_for
 help_afk: " Afk\n\n• Perintah : `{0}afk` [alasan]\n• Penjelasan : Untuk mengaktifkan mode afk.\n\n• Perintah : `{0}unafk`\n• Penjelasan : Untuk menonaktifkan mode afk."
