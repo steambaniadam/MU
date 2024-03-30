@@ -1,5 +1,4 @@
 import os
-
 import aiofiles
 import aiohttp
 import requests
@@ -24,14 +23,14 @@ async def get_download_url(link):
     return download_url
 
 
-async def download_file(c: nlx, url, file_path, chat_id, caption=None):
+async def download_file(url, file_path, chat_id, caption=None):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             if resp.status == 200:
                 f = await aiofiles.open(file_path, mode="wb")
                 await f.write(await resp.read())
                 await f.close()
-                await c.send_document(chat_id, file_path, caption=caption)
+                await nlx.send_document(chat_id, file_path, caption=caption)
                 os.remove(file_path)
 
 
