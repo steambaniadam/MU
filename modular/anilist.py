@@ -51,12 +51,14 @@ __help__ = "Anime Movie"
 
 def get_streaming_links(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
-    script_tag = soup.find("script", {"src": True})
-    if script_tag:
-        src = script_tag["src"]
-        return src
-    else:
-        return None
+    streaming_links = {}
+    divs = soup.find_all("div", class_="streaming-option")
+    for div in divs:
+        option_name = div.find("span").text.strip()
+        link = div["data-src"]
+        streaming_links[option_name] = link
+    return streaming_links
+
 
 
 @ky.ubot("anilist")
@@ -76,7 +78,7 @@ async def anilist_command(c: nlx, m):
             anime_title_display = " ".join(m.command[1:])
             reply_text = f"Berikut adalah tautan untuk menonton `{anime_title_display}` di Samehadaku:"
             reply_markup = InlineKeyboardMarkup(
-                [[InlineKeyboardButton("Streaming di Samehadaku", url=streaming_link)]]
+                [[InlineKeyboardButton(text="Streaming di Samehadaku", url=streaming_link)]]
             )
             await m.reply_text(reply_text, reply_markup=reply_markup)
         else:
