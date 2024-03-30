@@ -176,7 +176,7 @@ def get_streaming_links(anime_id):
 
 @ky.inline("^steam_in")
 async def _(c, iq):
-    ms = "Daftar Streaming Bokep"
+    ms = "Daftar Streaming :"
     q = iq.query.split(None, 1)
     ambilka = get_streaming_links(q[1])
     batin = InlineKeyboard(row_width=2)
