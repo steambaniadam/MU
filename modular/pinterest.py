@@ -1,4 +1,5 @@
 import os
+
 import aiofiles
 import aiohttp
 import requests
@@ -10,6 +11,7 @@ from Mix import *
 __modles__ = "Pinterest"
 __help__ = get_cgr("help_pint")
 
+
 async def download_file_from_url(url, chat_id, caption=None):
     em = Emojik()
     em.initialize()
@@ -19,13 +21,19 @@ async def download_file_from_url(url, chat_id, caption=None):
         )
         request_content = post_request.content
         str_request_content = str(request_content, "utf-8")
-        download_url = pq(str_request_content)("table.table-condensed")("tbody")("td")("a").attr("href")
+        download_url = pq(str_request_content)("table.table-condensed")("tbody")("td")(
+            "a"
+        ).attr("href")
 
         if download_url is None:
             await nlx.send_message(chat_id, cgr("pint_1").format(em.gagal))
             return
 
-        file_extension = ".mp4" if ".mp4" in download_url else (".jpg" if ".jpg" in download_url else ".m3u8")
+        file_extension = (
+            ".mp4"
+            if ".mp4" in download_url
+            else (".jpg" if ".jpg" in download_url else ".m3u8")
+        )
         file_name = f"pinterest_content{file_extension}"
         file_path = f"Pypin/{file_name}"
 
@@ -50,7 +58,7 @@ async def download_file_from_url(url, chat_id, caption=None):
                             await nlx.send_video(chat_id, file_path, caption=caption)
                     else:
                         await nlx.send_document(chat_id, file_path, caption=caption)
-                    
+
                     os.remove(file_path)
 
     except Exception as e:
@@ -73,7 +81,9 @@ async def _(c: nlx, m):
     gue = c.me.first_name
     try:
         url = m.text.split(maxsplit=1)[1]
-        await download_file_from_url(url, m.chat.id, caption=cgr("pint_2").format(em.sukses, gue))
+        await download_file_from_url(
+            url, m.chat.id, caption=cgr("pint_2").format(em.sukses, gue)
+        )
         await pros.delete()
     except Exception as e:
         await m.reply(cgr("err").format(em.gagal, str(e)))
