@@ -1,15 +1,10 @@
-import json
-import mimetypes
-import re
-import aiohttp
-import aiofiles
-import urllib.request
 import os
 
+import aiofiles
+import aiohttp
 import requests
-from bs4 import BeautifulSoup
-from pyrogram import *
 from pyquery import PyQuery as pq
+from pyrogram import *
 
 from Mix import *
 
@@ -18,10 +13,14 @@ __help__ = get_cgr("help_pint")
 
 
 async def get_download_url(link):
-    post_request = requests.post('https://www.expertsphp.com/download.php', data={'url': link})
+    post_request = requests.post(
+        "https://www.expertsphp.com/download.php", data={"url": link}
+    )
     request_content = post_request.content
-    str_request_content = str(request_content, 'utf-8')
-    download_url = pq(str_request_content)('table.table-condensed')('tbody')('td')('a').attr('href')
+    str_request_content = str(request_content, "utf-8")
+    download_url = pq(str_request_content)("table.table-condensed")("tbody")("td")(
+        "a"
+    ).attr("href")
     return download_url
 
 
@@ -29,7 +28,7 @@ async def download_file(url, file_path, chat_id):
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             if resp.status == 200:
-                f = await aiofiles.open(file_path, mode='wb')
+                f = await aiofiles.open(file_path, mode="wb")
                 await f.write(await resp.read())
                 await f.close()
                 await bot.send_message(chat_id, "Download selesai.")
@@ -51,18 +50,23 @@ async def _(c: nlx, m):
             await pros.delete()
             return
 
-        if '.mp4' in download_url:
-            file_extension = '.mp4'
+        if ".mp4" in download_url:
+            file_extension = ".mp4"
         else:
-            file_extension = '.jpg'
+            file_extension = ".jpg"
 
         file_name = f"Pinterest{file_extension}"
         file_path = f"Pypin/{file_name}"
 
-        if not os.path.exists('Pypin'):
-            os.makedirs('Pypin')
+        if not os.path.exists("Pypin"):
+            os.makedirs("Pypin")
 
-        await download_file(download_url, file_path, m.chat.id, caption=cgr("pint_2").format(em.sukses, gue))
+        await download_file(
+            download_url,
+            file_path,
+            m.chat.id,
+            caption=cgr("pint_2").format(em.sukses, gue),
+        )
 
         await m.reply_document(document=file_path)
         await pros.delete()
