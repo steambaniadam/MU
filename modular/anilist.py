@@ -39,25 +39,24 @@ async def anilist_command(c: nlx, m):
         )
 """
 
-
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-from bs4 import BeautifulSoup
 import requests
-from Mix import *
+from bs4 import BeautifulSoup
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
+from Mix import *
 
 __modles__ = "Anime Movie"
 __help__ = "Anime Movie"
 
 
 def get_streaming_link(html_content):
-    soup = BeautifulSoup(html_content, 'html.parser')
-    player_option_title = soup.find('div', {'id': 'player-option-7'}).span.text
+    soup = BeautifulSoup(html_content, "html.parser")
+    player_option_title = soup.find("div", {"id": "player-option-7"}).span.text
     return player_option_title
 
+
 @ky.ubot("anilist")
-async def anilist_command(c :nlx, m):
+async def anilist_command(c: nlx, m):
     if len(m.command) < 2:
         await m.reply_text("Silakan masukkan judul anime setelah perintah /anilist.")
         return
@@ -68,10 +67,18 @@ async def anilist_command(c :nlx, m):
     if response.status_code == 200:
         streaming_link = get_streaming_link(response.content)
         if streaming_link:
-            reply_text = f"Berikut adalah tautan untuk menonton {anime_title} di Samehadaku:"
-            reply_markup = InlineKeyboardMarkup([[InlineKeyboardButton("Streaming di Samehadaku", url=streaming_link)]])
+            reply_text = (
+                f"Berikut adalah tautan untuk menonton {anime_title} di Samehadaku:"
+            )
+            reply_markup = InlineKeyboardMarkup(
+                [[InlineKeyboardButton("Streaming di Samehadaku", url=streaming_link)]]
+            )
             await m.reply_text(reply_text, reply_markup=reply_markup)
         else:
-            await m.reply_text(f"Tidak dapat menemukan tautan streaming untuk {anime_title} di Samehadaku.")
+            await m.reply_text(
+                f"Tidak dapat menemukan tautan streaming untuk {anime_title} di Samehadaku."
+            )
     else:
-        await m.reply_text("Maaf, terjadi kesalahan saat mengambil informasi dari Samehadaku.")
+        await m.reply_text(
+            "Maaf, terjadi kesalahan saat mengambil informasi dari Samehadaku."
+        )
