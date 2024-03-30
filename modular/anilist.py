@@ -54,8 +54,8 @@ def create_keyboard(buttons_list):
     for text, data in buttons_list:
         keyboard_data[text] = data
 
-    keyboard = ikb(keyboard_data)
-    return keyboard
+    keyboard_markup = ikb(keyboard_data)
+    return keyboard_markup
 
 
 def ikb(data, row_width=2):
