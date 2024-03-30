@@ -50,12 +50,12 @@ __help__ = "Anime Movie"
 
 
 def get_streaming_link(html_content):
-    soup = BeautifulSoup(html_content, 'html.parser')
-    player_options = soup.find_all('div', class_='east_player_option')
+    soup = BeautifulSoup(html_content, "html.parser")
+    player_options = soup.find_all("div", class_="east_player_option")
     streaming_links = {}
     for option in player_options:
         option_name = option.span.text.strip()
-        link = option['data-post']
+        link = option["data-post"]
         streaming_links[option_name] = link
     return streaming_links
 
