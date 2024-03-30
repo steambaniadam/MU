@@ -31,7 +31,7 @@ async def download_file(url, file_path, chat_id, caption=None):
                 f = await aiofiles.open(file_path, mode="wb")
                 await f.write(await resp.read())
                 await f.close()
-                await nlx.send_document(chat_id, file_path, caption=caption)
+                await nlx.send_message(chat_id, file_path, caption=caption)
                 os.remove(file_path)
 
 
