@@ -1,5 +1,4 @@
 import os
-
 import aiofiles
 import aiohttp
 import requests
@@ -12,7 +11,7 @@ __modles__ = "Pinterest"
 __help__ = get_cgr("help_pint")
 
 
-async def download_file_from_url(url, message):
+async def download_file_from_url(url, message, caption=None):
     em = Emojik()
     em.initialize()
     try:
@@ -47,17 +46,17 @@ async def download_file_from_url(url, message):
                         await f.write(await resp.read())
 
                     if file_extension == ".jpg":
-                        await message.reply_photo(file_path)
+                        await message.reply_photo(file_path, caption=caption)
                     elif file_extension == ".mp4":
                         if file_extension == ".m3u8":
                             mp4_path = f"Pypin/pinterest_content.mp4"
                             await convert_m3u8_to_mp4(file_path, mp4_path)
-                            await message.reply_video(mp4_path)
+                            await message.reply_video(mp4_path, caption=caption)
                             os.remove(mp4_path)
                         else:
-                            await message.reply_video(file_path)
+                            await message.reply_video(file_path, caption=caption)
                     else:
-                        await message.reply_document(file_path)
+                        await message.reply_document(file_path, caption=caption)
 
                     os.remove(file_path)
 
@@ -78,10 +77,10 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    c.me.mention
+    gue = c.me.mention
     try:
         url = m.text.split(maxsplit=1)[1]
-        await download_file_from_url(url, m)
+        await download_file_from_url(url, m, caption=cgr("pint_2").format(em.sukses, gue))
         await pros.delete()
     except Exception as e:
         await m.reply(cgr("err").format(em.gagal, str(e)))
