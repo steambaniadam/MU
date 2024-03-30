@@ -44,6 +44,7 @@ async def _(self: bot, message):
             or sticker_emoji
         )
 
+
     if reply and reply.media:
         if reply.photo:
             resize = True
