@@ -38,6 +38,12 @@ async def _(self: bot, message):
     reply = message.reply_to_message
     user = await self.resolve_peer(message.from_user.username or message.from_user.id)
 
+    if len(message.command) > 1:
+        sticker_emoji = (
+            "".join(set(EMOJI_PATTERN.findall("".join(message.command[1:]))))
+            or sticker_emoji
+        )
+
     if reply and reply.media:
         if reply.photo:
             resize = True
