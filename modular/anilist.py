@@ -1,6 +1,5 @@
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 import requests
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from Mix import *
 
@@ -31,8 +30,12 @@ async def send_streaming_links(client, message):
                 button = InlineKeyboardButton(name, url=url)
                 buttons.append([button])
             reply_markup = InlineKeyboardMarkup(buttons)
-            await message.reply_text("Pilih platform streaming:", reply_markup=reply_markup)
+            await message.reply_text(
+                "Pilih platform streaming:", reply_markup=reply_markup
+            )
         else:
-            await message.reply_text("Tidak ada informasi streaming untuk anime tersebut.")
+            await message.reply_text(
+                "Tidak ada informasi streaming untuk anime tersebut."
+            )
     else:
         await message.reply_text("Format perintah salah. Gunakan /streaming [ID Anime]")
