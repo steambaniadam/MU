@@ -9,7 +9,6 @@ __help__ = "Anime List"
 
 @ky.ubot("anilist", sudo=True)
 async def anilist_command(c: nlx, m):
-    m.chat.id
     args = m.command
     if len(args) < 2:
         await m.reply("Please provide the name of the anime.")
@@ -24,7 +23,7 @@ async def anilist_command(c: nlx, m):
     if response.status_code == 200:
         data = response.json()
         if data:
-            anime_info = data[0]
+            anime_info = data if isinstance(data, dict) else data[0]
             title = anime_info["title"]
             synopsis = anime_info["synopsis"]
             episodes = anime_info["episodes"]
