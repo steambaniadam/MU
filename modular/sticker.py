@@ -16,6 +16,7 @@ from pyrogram.file_id import *
 from pyrogram.raw.functions.messages import *
 from pyrogram.raw.functions.stickers import *
 from pyrogram.raw.types import *
+from Mix.core.stick_tools import EMOJI_PATTERN, convert_video, resize_image
 
 from Mix import Emojik, bot, cgr, get_cgr, ky, ndB, nlx
 
@@ -88,7 +89,13 @@ async def _(self: nlx, m):
     em = Emojik()
     em.initialize()
     rep = m.reply_to_message
+    sticker_emojis = "😭"
     await nlx.unblock_user(bot.me.username)
+    if len(message.command) > 1:
+        sticker_emoji = (
+            "".join(set(EMOJI_PATTERN.findall("".join(message.command[1:]))))
+            or sticker_emojis
+        )
     if not rep:
         await m.reply(cgr("st_7").format(em.gagal))
         return
