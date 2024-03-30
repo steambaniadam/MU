@@ -25,13 +25,13 @@ async def fetch_proxies(proxy_type):
 
 
 async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
+    em = Emojik()
+    em.initialize()
     if proxies:
-        teks = f"**Berikut adalah daftar proxy {proxy_type} :**\n\n"
+        teks = f"**{em.sukses} Berikut adalah daftar proxy {proxy_type} :**\n\n"
         message = teks + "\n".join(proxies)
         await c.send_message(chat_id, message)
     else:
-        em = Emojik()
-        em.initialize()
         await c.send_message(
             chat_id, f"{em.gagal} Tidak dapat menemukan proxy yang valid."
         )
