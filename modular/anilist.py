@@ -30,23 +30,27 @@ def get_streaming_links(anime_id):
 @ky.ubot("streaming", sudo=True)
 async def send_streaming_links(c: nlx, m):
     if len(m.command) > 1:
-        anime_id = m.command[1]
-        streaming_links = get_streaming_links(anime_id)
-        if streaming_links:
-            buttons_list = [
-                (link_data["name"], link_data["url"]) for link_data in streaming_links
-            ]
-            keyboard_markup = ikb(buttons_list)
-            await m.reply_text(
-                "Pilih platform streaming:", reply_markup=keyboard_markup
-            )
+        anime_name = m.command[1]
+        anime_id = anime_to_id(anime_name.lower())
+        if anime_id:
+            streaming_links = get_streaming_links(anime_id)
+            if streaming_links:
+                buttons_list = [
+                    (link_data["name"], link_data["url"]) for link_data in streaming_links
+                ]
+                keyboard_markup = create_keyboard(buttons_list)
+                await m.reply_text(
+                    "Pilih platform streaming:", reply_markup=keyboard_markup
+                )
+            else:
+                await m.reply_text(
+                    "Tidak ada informasi streaming untuk anime tersebut.",
+                    reply_markup=InlineKeyboardMarkup([]),
+                )
         else:
-            await m.reply_text(
-                "Tidak ada informasi streaming untuk anime tersebut.",
-                reply_markup=InlineKeyboardMarkup([]),
-            )
+            await m.reply_text("Anime tidak ditemukan.")
     else:
-        await m.reply_text("Format perintah salah. Gunakan /streaming [ID Anime]")
+        await m.reply_text("Format perintah salah. Gunakan /streaming [Nama Anime]")
 
 
 def create_keyboard(buttons_list):
@@ -71,3 +75,19 @@ def ikb(data, row_width=2):
 
 def is_url(text):
     return bool(URL_REGEX.search(text))
+
+
+def anime_to_id(anime_name):
+    anime_dict = {
+        "naruto": 20,
+        "attack on titan": 16498,
+        "one piece": 21,
+        "demon slayer": 38000,
+        "my hero academia": 38408,
+        "death note": 1535,
+        "fullmetal alchemist": 5114,
+        "sword art online": 11757,
+        "one punch man": 30276,
+        "tokyo ghoul": 22319
+    }
+    return anime_dict.get(anime_name, None)
