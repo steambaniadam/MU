@@ -98,7 +98,8 @@ async def anilist_command(c: nlx, m):
                         [
                             [
                                 InlineKeyboardButton(
-                                    text=f"Streaming di Oploverz ({option_name})", url=video_url
+                                    text=f"Streaming di Oploverz ({option_name})",
+                                    url=video_url,
                                 )
                             ]
                         ]
