@@ -1,10 +1,8 @@
 import os
-import aiofiles
-import aiohttp
+from subprocess import PIPE, Popen
+
 import requests
-from pyquery import PyQuery as pq
 from pyrogram import *
-from subprocess import Popen, PIPE
 
 from Mix import *
 
@@ -17,22 +15,22 @@ async def download_m3u8_and_convert_to_mp4(m3u8_link, chat_id, caption=None):
     em.initialize()
     try:
         response = requests.get(m3u8_link)
-        with open('temp.m3u8', 'wb') as f:
+        with open("temp.m3u8", "wb") as f:
             f.write(response.content)
-        await convert_m3u8_to_mp4('temp.m3u8', 'temp.mp4')
+        await convert_m3u8_to_mp4("temp.m3u8", "temp.mp4")
         if caption:
-            await nlx.send_video(chat_id, 'temp.mp4', caption=caption)
+            await nlx.send_video(chat_id, "temp.mp4", caption=caption)
         else:
-            await nlx.send_video(chat_id, 'temp.mp4')
-        os.remove('temp.m3u8')
-        os.remove('temp.mp4')
+            await nlx.send_video(chat_id, "temp.mp4")
+        os.remove("temp.m3u8")
+        os.remove("temp.mp4")
 
     except Exception as e:
         await nlx.send_message(chat_id, cgr("pint_4").format(em.gagal, str(e)))
 
 
 async def convert_m3u8_to_mp4(m3u8_input_path, mp4_output_path):
-    command = ['ffmpeg', '-i', m3u8_input_path, '-c', 'copy', mp4_output_path]
+    command = ["ffmpeg", "-i", m3u8_input_path, "-c", "copy", mp4_output_path]
     process = Popen(command, stdout=PIPE, stderr=PIPE)
     stdout, stderr = process.communicate()
     if process.returncode != 0:
@@ -48,9 +46,9 @@ async def _(c: nlx, m):
     try:
         url = m.text.split(maxsplit=1)[1]
 
-        if url.endswith(('.jpg', '.jpeg', '.png')):
+        if url.endswith((".jpg", ".jpeg", ".png")):
             await nlx.send_photo(m.chat.id, url, caption=caption)
-        elif url.endswith('.m3u8'):
+        elif url.endswith(".m3u8"):
             await download_m3u8_and_convert_to_mp4(
                 url, m.chat.id, caption=cgr("pint_2").format(em.sukses, gue)
             )
