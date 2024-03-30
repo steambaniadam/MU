@@ -7,6 +7,8 @@ __help__ = get_cgr("help_prox")
 
 
 async def fetch_proxies(proxy_type):
+    em = Emojik()
+    em.initialize()
     url = f"https://www.proxy-list.download/api/v1/get?type={proxy_type}"
     response = requests.get(url)
     if response.status_code == 200:
@@ -15,10 +17,10 @@ async def fetch_proxies(proxy_type):
         formatted_proxies = []
         for i, proxy in enumerate(proxies):
             if proxy.strip():
-                formatted_proxies.append(f"**{i + 1}) `{proxy}`**")
+                formatted_proxies.append(f"**• `{proxy}`**")
 
         if not formatted_proxies:
-            formatted_proxies.append("1) No valid proxy found")
+            formatted_proxies.append(f"{em.gagal} No valid proxy found")
 
         return formatted_proxies[:10]
     else:
@@ -30,9 +32,8 @@ async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
     em.initialize()
     if proxies:
         teks = f"{em.sukses}**Berikut adalah daftar proxy `{proxy_type}` :**\n\n"
-        formatted_message = teks + "\n".join(proxies)
-        formatted_message = formatted_message.replace("**1)", "**0)")
-        await c.send_message(chat_id, formatted_message)
+        teks += "\n".join(proxies)
+        await c.send_message(chat_id, teks)
     else:
         await c.send_message(
             chat_id, f"{em.gagal} Tidak dapat menemukan proxy yang valid."
