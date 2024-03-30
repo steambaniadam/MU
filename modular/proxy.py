@@ -29,7 +29,7 @@ async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
     em = Emojik()
     em.initialize()
     if proxies:
-        teks = f"{em.sukses}**Berikut adalah daftar proxy {proxy_type} :**\n\n"
+        teks = f"{em.sukses}**Berikut adalah daftar proxy `{proxy_type}` :**\n\n"
         formatted_message = teks + "\n".join(proxies)
         await c.send_message(chat_id, formatted_message)
     else:
