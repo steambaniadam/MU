@@ -68,4 +68,4 @@ def ikb(data, row_width=2):
 
 
 def is_url(text):
-    return bool(URL_REGEX.match(text))
+    return bool(URL_REGEX.search(text))
