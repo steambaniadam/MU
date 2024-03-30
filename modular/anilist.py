@@ -49,7 +49,7 @@ __modles__ = "Anime Movie"
 __help__ = "Anime Movie"
 
 
-def get_streaming_link(html_content):
+def get_streaming_links(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
     script_tag = soup.find("script", {"src": True})
     if script_tag:
@@ -71,15 +71,12 @@ async def anilist_command(c: nlx, m):
     url = f"https://samehadaku.email/{anime_title}/"
     response = requests.get(url)
     if response.status_code == 200:
-        streaming_links = get_streaming_link(response.content)
-        if streaming_links:
+        streaming_link = get_streaming_links(response.content)
+        if streaming_link:
             anime_title_display = " ".join(m.command[1:])
-            reply_text = f"Berikut adalah tautan untuk menonton {anime_title_display} di Samehadaku:"
+            reply_text = f"Berikut adalah tautan untuk menonton `{anime_title_display}` di Samehadaku:"
             reply_markup = InlineKeyboardMarkup(
-                [
-                    [InlineKeyboardButton(option_name, url=streaming_link)]
-                    for option_name, streaming_link in streaming_links.items()
-                ]
+                [[InlineKeyboardButton("Streaming di Samehadaku", url=streaming_link)]]
             )
             await m.reply_text(reply_text, reply_markup=reply_markup)
         else:
