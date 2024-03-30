@@ -303,13 +303,15 @@ async def _(c: nlx, m):
             if m.from_user.id not in DEVS:
                 await m.reply(f"{em.gagal} Maaf, Anda bukan seorang DEVELOPER!")
                 return
+            """
             if not is_channel:
-                req_user_member = await chat.get_members(m.from_user.id)
+                req_user_member = await c.get_chat_member(m.chat.id, m.from_user.id)
                 if req_user_member.privileges is None:
                     await m.reply(
                         f"{em.gagal} Anda bukan seorang admin! Anda tidak bisa menggunakan perintah ini di sini!"
                     )
                     return
+              """
             kick_count = 0
             members_count = chat.members_count
             if members_count <= 200:
