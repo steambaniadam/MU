@@ -12,16 +12,18 @@ async def fetch_proxies(proxy_type):
     if response.status_code == 200:
         proxies = response.text.split("\n")
         proxies.sort()
-        formatted_proxies = [
-            f"**{i + 1}) `{proxy}`**" for i, proxy in enumerate(proxies, start=0)
-        ]
+        formatted_proxies = []
+        for i, proxy in enumerate(proxies, start=1):
+            if proxy.strip():
+                formatted_proxies.append(f"**{i}) `{proxy}`**")
 
-        if not formatted_proxies[0]:
-            formatted_proxies[0] = "1) No valid proxy found"
+        if not formatted_proxies:
+            formatted_proxies.append("1) No valid proxy found")
 
         return formatted_proxies[:10]
     else:
         return None
+
 
 
 async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
