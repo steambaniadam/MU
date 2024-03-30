@@ -66,7 +66,7 @@ async def anilist_command(c: nlx, m):
         await m.reply_text("Silakan masukkan judul anime setelah perintah /anilist.")
         return
 
-    anime_title = " ".join(m.command[1:])
+    anime_title = "-".join(m.command[1:])
     url = f"https://samehadaku.email/{anime_title}/"
     response = requests.get(url)
     if response.status_code == 200:
