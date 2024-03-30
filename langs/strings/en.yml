@@ -475,6 +475,10 @@ qur_1: "{} Please give me name of surah."
 qur_2: "{} Failed to download audio."
 qur_3: "{} There's nothing surah with name '{}' "
 
+# pinterest
+pint_1: "{} **There's no Image or Video on URL Pinterest**"
+pint_2: "{} **Downloaded by : {}**"
+
 # help_for
 help_afk: " Afk\n\n• Command: `{0}afk` [reason]\n• Description: To activate afk mode.\n\n• Command: `{0}unafk` [reason]\n• Description: To deactivate afk mode."
 help_alive: " Alive\n\n• Command: `{0}alive`\n• Description: Alive."
@@ -544,4 +548,6 @@ help_img: " **Image**\n\n• Command: `{0}`img [query]\n• Description: Searchi
 help_tod: " **Truth Or Dare**\n\n• Command: `{0}truth`\n• Description: To provide random questions that must be answered truthfully!\n\n• Command: `{0}dare`\n• Description: To provide a random challenge that must be done!\n"
 help_prox: " **Proxy**\n\n• Command: `{0}getproxy` [`http`|`socks4`|`socks5`]\n• Description: For get Top 2 as random but best.\n"
 help_waif: " **Waifu**\n\n• Command: `{0}waifu` [categori]\n• Description: For getting image/content about waifu/anime.\n"
-help_qur: " **Qur'an**\n\n• Command: `{0}qs [name of surah]`\n• Description: Fetching information of Surah.\n\n• Command: `{0}list-surah`\n• Description: Getting List of Surah Al-Quran.\n"
+help_qur: " **Qur'an**\n\n• Command: `{0}qs [name of surah]`\n• Description: Fetching information of Surah.\n\n• Command: `{0}list_surah`\n• Description: Getting List of Surah Al-Quran.\n"
+help_animstream: " **Anime Streaming**\n\n• Command: `{0}streaming` [Anime Title Movie]\n• Description: For getting link for streaming anime.\n\n• Command: `{0}list_anime`\n• Description: For getting anime list movies\n"
+help_pint: " **Pinterest**\n\n• Command: `{0}pint` [link pinterest]\n• Description: For downloading file on pinterest use link.\n"

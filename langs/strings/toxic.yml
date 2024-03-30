@@ -476,6 +476,10 @@ qur_1: "{} Lo mau cari surah apa si goblok? masukin nama surah nya lah!"
 qur_2: "{} Gagal download audio."
 qur_3: "{} Kaga ada surah '{}' Non-Islam lo ya?"
 
+# pinterest
+pint_1: "{} **Tidak ada gambar atau video yang ditemukan di URL Pinterest**"
+pint_2: "{} **Downloaded by : {}**"
+
 # help_for
 help_afk: " Afk\n\n• Perintah : `{0}afk` [alesan]\n• Penjelasan : Buat mengaktifkan mode afk.\n\n• Perintah : `{0}unafk`\n• Penjelasan : Buat menonaktifkan mode afk."
 help_alive: " Alive\n\n• Perintah : `{0}alive`\n• Penjelasan : Alive."
@@ -546,3 +550,5 @@ help_tod: " **Truth Or Dare**\n\n• Perintah: `{0}truth`\n• Penjelasan: Untuk
 help_prox: " **Proxy**\n\n• Perintah: `{0}getproxy` [`http`|`socks4`|`socks5`]\n• Penjelasan: Buat ngambil proxy ngacak terbaik.\n"
 help_waif: " **Waifu**\n\n• Perintah: `{0}waifu` [kategori]\n• Penjelasan: Untuk mendapatkan gambar waifu/anime sesuai kategori.\n"
 help_qur: " **Qur'an**\n\n• Perintah: `{0}qs [nama surah]`\n• Penjelasan: Untuk mengambil info surah tersebut.\n\n• Perintah: `{0}list-surah`\n• Penjelasan: Untuk mengambil daftar surah.\n"
+help_animstream: " **Anime Streaming**\n\n• Perintah: `{0}streaming` [Judul Film]\n• Penjelasan: Untuk mengambil link streaming film anime\n\n• Perintah: `{0}list_anime`\n• Penjelasan: Untuk mengambil daftar film anime yang tersedia.\n"
+help_pint: " **Pinterest**\n\n• Perintah: `{0}pint` [link pinterest]\n• Penjelasan: Untuk mengunduh file yang terdapat pada link.\n"
