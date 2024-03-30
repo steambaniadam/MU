@@ -49,6 +49,20 @@ __modles__ = "Anime Movie"
 __help__ = "Anime Movie"
 
 
+def get_video_url(url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.content, 'html.parser')
+        iframe = soup.find('iframe')
+        if iframe and 'src' in iframe.attrs:
+            video_src = iframe['src']
+            return video_src
+        else:
+            return None
+    else:
+        return None
+
+
 def get_streaming_links(html_content):
     soup = BeautifulSoup(html_content, "html.parser")
     streaming_links = {}
@@ -62,35 +76,42 @@ def get_streaming_links(html_content):
 
 @ky.ubot("anilist")
 async def anilist_command(c: nlx, m):
-    if len(m.command) < 2:
+    if len(m.command) < 3:
         await m.reply_text(
-            f"Silakan masukkan judul anime setelah perintah `{m.text}` [judul anime]"
+            f"Silakan masukkan judul anime dan episode setelah perintah `{m.text}` [judul anime] [episode]"
         )
         return
 
-    anime_title = "-".join(m.command[1:])
-    url = f"https://samehadaku.email/{anime_title}/"
+    anime_title = "-".join(m.command[1:-1])
+    episode = m.command[-1]
+    url = f"https://oploverz.news/{anime_title}-episode-{episode}/"
     response = requests.get(url)
     if response.status_code == 200:
-        streaming_link = get_streaming_links(response.content)
-        if streaming_link:
-            anime_title_display = " ".join(m.command[1:])
-            reply_text = f"Berikut adalah tautan untuk menonton `{anime_title_display}` di Samehadaku:"
-            reply_markup = InlineKeyboardMarkup(
-                [
+        streaming_links = get_streaming_links(response.content)
+        if streaming_links:
+            video_url = get_video_url(list(streaming_links.values())[0])
+            if video_url:
+                anime_title_display = " ".join(m.command[1:-1])
+                reply_text = f"Berikut adalah tautan untuk menonton `{anime_title_display}` episode `{episode}` di Oploverz:"
+                reply_markup = InlineKeyboardMarkup(
                     [
-                        InlineKeyboardButton(
-                            text="Streaming di Samehadaku", url=streaming_link
-                        )
+                        [
+                            InlineKeyboardButton(
+                                text="Streaming di Oploverz", url=video_url
+                            )
+                        ]
                     ]
-                ]
-            )
-            await m.reply_text(reply_text, reply_markup=reply_markup)
+                )
+                await m.reply_text(reply_text, reply_markup=reply_markup)
+            else:
+                await m.reply_text(
+                    f"Tidak dapat menemukan tautan video untuk {anime_title} episode {episode} di Oploverz."
+                )
         else:
             await m.reply_text(
-                f"Tidak dapat menemukan opsi pemutar untuk {anime_title} di Samehadaku."
+                f"Tidak dapat menemukan opsi pemutar untuk {anime_title} episode {episode} di Oploverz."
             )
     else:
         await m.reply_text(
-            "Maaf, terjadi kesalahan saat mengambil informasi dari Samehadaku."
+            "Maaf, terjadi kesalahan saat mengambil informasi dari Oploverz."
         )
