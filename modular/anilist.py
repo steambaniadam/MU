@@ -1,5 +1,3 @@
-
-
 from Mix import *
 
 __modles__ = "Anime Streaming"
