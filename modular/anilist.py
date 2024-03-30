@@ -66,7 +66,9 @@ def ikb(data, row_width=2):
             buttons.append(InlineKeyboardButton(text, url=data))
         else:
             buttons.append(InlineKeyboardButton(text, callback_data=data))
-    return InlineKeyboardMarkup([buttons])
+    keyboard_markup = InlineKeyboardMarkup([buttons])
+    print("Keyboard Markup:", keyboard_markup)
+    return keyboard_markup
 
 
 def is_url(text):
