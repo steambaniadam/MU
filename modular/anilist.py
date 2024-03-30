@@ -86,7 +86,7 @@ async def anilist_command(c: nlx, m):
             await m.reply_text(reply_text, reply_markup=reply_markup)
         else:
             await m.reply_text(
-                f"Tidak dapat menemukan tautan streaming untuk {anime_title} di Samehadaku."
+                f"Tidak dapat menemukan opsi pemutar untuk {anime_title} di Samehadaku."
             )
     else:
         await m.reply_text(
