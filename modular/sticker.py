@@ -91,9 +91,9 @@ async def _(self: nlx, m):
     rep = m.reply_to_message
     sticker_emojis = "😭"
     await nlx.unblock_user(bot.me.username)
-    if len(message.command) > 1:
+    if len(m.command) > 1:
         sticker_emoji = (
-            "".join(set(EMOJI_PATTERN.findall("".join(message.command[1:]))))
+            "".join(set(EMOJI_PATTERN.findall("".join(m.command[1:]))))
             or sticker_emojis
         )
     if not rep:
