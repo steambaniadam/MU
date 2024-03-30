@@ -9,7 +9,7 @@ __help__ = "Anime List"
 
 @ky.ubot("anilist", sudo=True)
 async def anilist_command(c: nlx, m):
-    chat_id = m.chat.id
+    m.chat.id
     args = m.command
     if len(args) < 2:
         await m.reply("Please provide the name of the anime.")
