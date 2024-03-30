@@ -53,7 +53,7 @@ async def get_proxy_command(c: nlx, m):
 
         proxy_type = command
         proxies = await fetch_proxies(proxy_type)
-        await send_proxy(c, m.chat.id, proxies)
+        await send_proxy(c, m.chat.id, proxy_type, proxies)
         await pros.delete()
     except IndexError:
         await c.send_message(
