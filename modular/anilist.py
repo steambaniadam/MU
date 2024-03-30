@@ -74,9 +74,7 @@ async def anilist_command(c: nlx, m):
         streaming_links = get_streaming_link(response.content)
         if streaming_links:
             anime_title_display = " ".join(m.command[1:])
-            reply_text = (
-                f"Berikut adalah tautan untuk menonton {anime_title_display} di Samehadaku:"
-            )
+            reply_text = f"Berikut adalah tautan untuk menonton {anime_title_display} di Samehadaku:"
             reply_markup = InlineKeyboardMarkup(
                 [
                     [InlineKeyboardButton(option_name, url=streaming_link)]
