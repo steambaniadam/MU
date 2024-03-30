@@ -1,19 +1,20 @@
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-import requests
 import re
 
-from Mix import *
+import requests
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
+from Mix import *
 
 __modles__ = "Anime Streaming"
 __help__ = "Anime Streaming"
 
 
-URL_REGEX = re.compile(r"""(?i)\b((?:https?://|www\d{0,3}[.]|
+URL_REGEX = re.compile(
+    r"""(?i)\b((?:https?://|www\d{0,3}[.]|
                           [a-z0-9.\-][.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|
                           (\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\
-                          ()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""".strip())
+                          ()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""".strip()
+)
 
 
 def get_streaming_links(anime_id):
@@ -32,11 +33,17 @@ async def send_streaming_links(client, message):
         anime_id = message.command[1]
         streaming_links = get_streaming_links(anime_id)
         if streaming_links:
-            buttons_list = [(link_data["name"], link_data["url"]) for link_data in streaming_links]
+            buttons_list = [
+                (link_data["name"], link_data["url"]) for link_data in streaming_links
+            ]
             keyboard_markup = create_keyboard(buttons_list)
-            await message.reply_text("Pilih platform streaming:", reply_markup=keyboard_markup)
+            await message.reply_text(
+                "Pilih platform streaming:", reply_markup=keyboard_markup
+            )
         else:
-            await message.reply_text("Tidak ada informasi streaming untuk anime tersebut.")
+            await message.reply_text(
+                "Tidak ada informasi streaming untuk anime tersebut."
+            )
     else:
         await message.reply_text("Format perintah salah. Gunakan /streaming [ID Anime]")
 
