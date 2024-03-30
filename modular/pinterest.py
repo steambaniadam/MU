@@ -24,14 +24,17 @@ async def get_download_url(link):
     return download_url
 
 
-async def download_file(url, file_path, chat_id):
+async def download_file(url, file_path, chat_id, caption=None):  # Tambahkan argumen caption
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             if resp.status == 200:
-                f = await aiofiles.open(file_path, mode="wb")
+                f = await aiofiles.open(file_path, mode='wb')
                 await f.write(await resp.read())
                 await f.close()
-                await bot.send_message(chat_id, "Download selesai.")
+                if file_path.endswith('.mp4'):
+                    await bot.send_video(TAG_LOG, file_path, caption=caption)
+                else:
+                    await bot.send_photo(TAG_LOG, file_path, caption=caption)
                 os.remove(file_path)
 
 
