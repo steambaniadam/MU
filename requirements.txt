@@ -45,4 +45,4 @@ PySocks
 pexpect
 pyromod==1.5
 proxybroker
-mimetypes
+pyquery
