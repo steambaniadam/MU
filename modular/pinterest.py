@@ -31,7 +31,7 @@ async def download_file(url, file_path, chat_id):
                 f = await aiofiles.open(file_path, mode="wb")
                 await f.write(await resp.read())
                 await f.close()
-                await bot.send_message(chat_id, "Download selesai.")
+                await bot.send_message(TAG_LOG, "Download selesai.")
 
 
 @ky.ubot("pint", sudo=True)
