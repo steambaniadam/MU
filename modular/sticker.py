@@ -97,19 +97,25 @@ async def _(self: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     if len(m.command) == 2:
         ai = await nlx.forward_messages(bot.me.username, m.chat.id, message_ids=rep.id)
-        await nlx.send_message(bot.me.username, f"/kang {cekemo}", reply_to_message_id=ai.id)
+        await nlx.send_message(
+            bot.me.username, f"/kang {cekemo}", reply_to_message_id=ai.id
+        )
         await asyncio.sleep(5)
-        async for tai in nlx.search_messages(bot.me.username, query="Sticker Anda Berhasil Dibuat!", limit=1):
+        async for tai in nlx.search_messages(
+            bot.me.username, query="Sticker Anda Berhasil Dibuat!", limit=1
+        ):
             await asyncio.sleep(5)
             await tai.copy(m.chat.id)
     else:
         ai = await nlx.forward_messages(bot.me.username, m.chat.id, message_ids=rep.id)
         await nlx.send_message(bot.me.username, "/kang", reply_to_message_id=ai.id)
         await asyncio.sleep(5)
-        async for tai in nlx.search_messages(bot.me.username, query="Sticker Anda Berhasil Dibuat!", limit=1):
+        async for tai in nlx.search_messages(
+            bot.me.username, query="Sticker Anda Berhasil Dibuat!", limit=1
+        ):
             await asyncio.sleep(5)
             await tai.copy(m.chat.id)
-        
+
     await pros.delete()
     ulat = await nlx.resolve_peer(bot.me.username)
     await nlx.invoke(DeleteHistory(peer=ulat, max_id=0, revoke=True))
