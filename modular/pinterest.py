@@ -21,7 +21,6 @@ async def get_download_url(link):
     post_request = requests.post('https://www.expertsphp.com/download.php', data={'url': link})
     request_content = post_request.content
     str_request_content = str(request_content, 'utf-8')
-    # Gunakan PyQuery untuk mengambil URL unduhan
     download_url = pq(str_request_content)('table.table-condensed')('tbody')('td')('a').attr('href')
     return download_url
 
