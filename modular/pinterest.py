@@ -78,7 +78,7 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    gue = c.me.first_name
+    gue = c.me.mention
     try:
         url = m.text.split(maxsplit=1)[1]
         await download_file_from_url(
