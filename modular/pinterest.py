@@ -12,39 +12,27 @@ __modles__ = "Pinterest"
 __help__ = get_cgr("help_pint")
 
 
-async def get_download_url_and_download(link, chat_id, caption=None):
-    em = Emojik()
-    em.initialize()
-    try:
-        post_request = requests.post(
-            "https://www.expertsphp.com/download.php", data={"url": link}
-        )
-        request_content = post_request.content
-        str_request_content = str(request_content, "utf-8")
-        download_url = pq(str_request_content)("table.table-condensed")("tbody")("td")(
-            "a"
-        ).attr("href")
+async def get_download_url(link):
+    post_request = requests.post(
+        "https://www.expertsphp.com/download.php", data={"url": link}
+    )
+    request_content = post_request.content
+    str_request_content = str(request_content, "utf-8")
+    download_url = pq(str_request_content)("table.table-condensed")("tbody")("td")(
+        "a"
+    ).attr("href")
+    return download_url
 
-        if download_url is None:
-            await nlx.send_message(chat_id, cgr("pint_3").format(em.gagal, link))
-            return
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(download_url) as resp:
-                if resp.status == 200:
-                    file_path = f"pinterest_content"
-                    async with aiofiles.open(file_path, mode="wb") as f:
-                        await f.write(await resp.read())
-
-                    if caption:
-                        await nlx.send_photo(chat_id, file_path, caption=caption)
-                    else:
-                        await nlx.send_video(chat_id, file_path, caption=caption)
-
-                    os.remove(file_path)
-
-    except Exception as e:
-        await nlx.send_message(chat_id, cgr("pint_4").format(em.gagal, str(e)))
+async def download_file(url, file_path, chat_id, caption=None):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as resp:
+            if resp.status == 200:
+                f = await aiofiles.open(file_path, mode="wb")
+                await f.write(await resp.read())
+                await f.close()
+                await nlx.send_message(chat_id, file_path, caption=caption)
+                os.remove(file_path)
 
 
 @ky.ubot("pint", sudo=True)
@@ -52,13 +40,35 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    gue = c.me.mention
+    gue = c.me.first_name
     try:
         url = m.text.split(maxsplit=1)[1]
-        await get_download_url_and_download(
-            url, m.chat.id, caption=cgr("pint_2").format(em.sukses, gue)
+        download_url = await get_download_url(url)
+
+        if download_url is None:
+            await m.reply(cgr("pint_1").format(em.gagal))
+            await pros.delete()
+            return
+
+        if ".mp4" in download_url:
+            file_extension = ".mp4"
+        else:
+            file_extension = ".jpg"
+
+        file_name = f"pinterest_content{file_extension}"
+        file_path = f"Pypin/{file_name}"
+
+        if not os.path.exists("Pypin"):
+            os.makedirs("Pypin")
+
+        await download_file(
+            download_url,
+            file_path,
+            m.chat.id,
+            caption=cgr("pint_2").format(em.sukses, gue),
         )
+
         await pros.delete()
     except Exception as e:
-        await m.reply(cgr("err").format(em.gagal, str(e)))
+        await m.reply(f"Error: {str(e)}")
         await pros.delete()
