@@ -33,9 +33,11 @@ async def send_streaming_links(client, message):
         anime_id = message.command[1]
         streaming_links = get_streaming_links(anime_id)
         if streaming_links:
+            print("Streaming Links:", streaming_links)
             buttons_list = [
                 (link_data["name"], link_data["url"]) for link_data in streaming_links
             ]
+            print("Buttons List:", buttons_list)
             keyboard_markup = create_keyboard(buttons_list)
             await message.reply_text(
                 "Pilih platform streaming:", reply_markup=keyboard_markup
@@ -46,6 +48,7 @@ async def send_streaming_links(client, message):
             )
     else:
         await message.reply_text("Format perintah salah. Gunakan /streaming [ID Anime]")
+
 
 
 def create_keyboard(buttons_list):
