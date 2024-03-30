@@ -26,9 +26,9 @@ async def _(self: bot, message):
     prog_msg = await message.reply("Processing...")
     sticker_emojis = "🤔"
     sticker_emoji = (
-    "".join(set(EMOJI_PATTERN.findall("".join(message.command[1:]))))
-    or sticker_emojis
-)
+        "".join(set(EMOJI_PATTERN.findall("".join(message.command[1:]))))
+        or sticker_emojis
+    )
     packnum = 0
     packname_found = False
     resize = False
