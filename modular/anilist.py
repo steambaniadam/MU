@@ -36,7 +36,7 @@ async def send_streaming_links(c: nlx, m):
             buttons_list = [
                 (link_data["name"], link_data["url"]) for link_data in streaming_links
             ]
-            keyboard_markup = create_keyboard(buttons_list)
+            keyboard_markup = ikb(buttons_list)
             await m.reply_text(
                 "Pilih platform streaming:", reply_markup=keyboard_markup
             )
