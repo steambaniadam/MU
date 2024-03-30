@@ -9,12 +9,10 @@ __help__ = "Anime List"
 
 @ky.ubot("anilist", sudo=True)
 async def anilist_command(c: nlx, m):
-    m.chat.id
-    message_id = m.message.id
-
+    chat_id = m.chat.id
     args = m.command
     if len(args) < 2:
-        await m.reply_text("Please provide the name of the anime.")
+        await m.reply("Please provide the name of the anime.")
         return
 
     anime_title = " ".join(args[1:])
@@ -33,11 +31,11 @@ async def anilist_command(c: nlx, m):
             score = anime_info["score"]
             url = anime_info["url"]
             message_text = f"Title: {title}\nSynopsis: {synopsis}\nEpisodes: {episodes}\nScore: {score}\nURL: {url}"
-            await m.reply_text(message_text, reply_to_message_id=message_id)
+            await m.reply(message_text, reply_to_message_id=ReplyCheck(m))
         else:
-            await m.reply_text("Anime not found.")
+            await m.reply("Anime not found.")
     else:
-        await m.reply_text(
+        await m.reply(
             f"Failed to fetch data. Status code: {response.status_code}",
-            reply_to_message_id=message_id,
+            reply_to_message_id=ReplyCheck(m),
         )
