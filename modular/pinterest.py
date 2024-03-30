@@ -26,9 +26,16 @@ async def getHtml(url):
         url = requests.get(url).url
 
     try:
-        _id = re.findall(r"/pin/([^/]+)", url)[0]
-        return _id, requests.get(url).text
-    except:
+        response = requests.get(url)
+        soup = BeautifulSoup(response.content, "html.parser")
+        img_tag = soup.find("img")
+        if img_tag:
+            img_url = img_tag.get("src")
+            return img_url, response.text
+        else:
+            return None, None
+    except Exception as e:
+        print(e)
         return None, None
 
 
@@ -54,10 +61,10 @@ async def decideType(jsonData):
 async def _(c: nlx, m):
     try:
         url = m.text.split(maxsplit=1)[1]
-        NAME, HTML = await getHtml(url)
+        MEDIA_URL, HTML = await getHtml(url)
 
-        if NAME is None:
-            await m.reply_text("[ERROR] Bukan URL Pinterest yang valid")
+        if MEDIA_URL is None:
+            await m.reply_text("[ERROR] Tidak ada gambar yang ditemukan di URL Pinterest")
             return
 
         JSON = await getJson(HTML)
@@ -74,7 +81,7 @@ async def _(c: nlx, m):
             await m.reply_text("Tidak dapat menentukan ekstensi file yang sesuai.")
             return
 
-        file_name = f"{NAME}{file_extension}"
+        file_name = f"{MEDIA_URL.split('/')[-1].split('.')[0]}{file_extension}"
         file_path = f"Pypin/{file_name}"
 
         reporthook_called = False
