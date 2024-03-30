@@ -28,7 +28,7 @@ async def getHtml(url):
     try:
         response = requests.get(url)
         soup = BeautifulSoup(response.content, "html.parser")
-        img_tag = soup.find("img")
+        img_tag = soup.find("img", class_="hCL kVc L4E MIw")
         if img_tag:
             img_url = img_tag.get("src")
             return img_url, response.text
