@@ -10,10 +10,10 @@ async def fetch_proxies(proxy_type):
     url = f"https://www.proxy-list.download/api/v1/get?type={proxy_type}"
     response = requests.get(url)
     if response.status_code == 200:
-        proxies = response.text.split("\n\n")
+        proxies = response.text.split("\n")
         proxies.sort()
         formatted_proxies = [
-            f"**\n\n{i + 1}) `{proxy}`**" for i, proxy in enumerate(proxies, start=0)
+            f"**{i + 1}) `{proxy}`**" for i, proxy in enumerate(proxies, start=0)
         ]
 
         if not formatted_proxies[0]:
