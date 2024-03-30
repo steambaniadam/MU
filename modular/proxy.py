@@ -13,9 +13,9 @@ async def fetch_proxies(proxy_type):
         proxies = response.text.split("\n")
         proxies.sort()
         formatted_proxies = []
-        for i, proxy in enumerate(proxies, start=1):
+        for i, proxy in enumerate(proxies):
             if proxy.strip():
-                formatted_proxies.append(f"**{i}) `{proxy}`**")
+                formatted_proxies.append(f"**{i + 1}) `{proxy}`**")
 
         if not formatted_proxies:
             formatted_proxies.append("1) No valid proxy found")
