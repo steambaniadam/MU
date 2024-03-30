@@ -39,7 +39,6 @@ async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
         )
 
 
-
 @ky.ubot("getproxy", sudo=True)
 async def get_proxy_command(c: nlx, m):
     em = Emojik()
