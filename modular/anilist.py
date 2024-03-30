@@ -60,7 +60,6 @@ def get_streaming_links(html_content):
     return streaming_links
 
 
-
 @ky.ubot("anilist")
 async def anilist_command(c: nlx, m):
     if len(m.command) < 2:
@@ -78,7 +77,13 @@ async def anilist_command(c: nlx, m):
             anime_title_display = " ".join(m.command[1:])
             reply_text = f"Berikut adalah tautan untuk menonton `{anime_title_display}` di Samehadaku:"
             reply_markup = InlineKeyboardMarkup(
-                [[InlineKeyboardButton(text="Streaming di Samehadaku", url=streaming_link)]]
+                [
+                    [
+                        InlineKeyboardButton(
+                            text="Streaming di Samehadaku", url=streaming_link
+                        )
+                    ]
+                ]
             )
             await m.reply_text(reply_text, reply_markup=reply_markup)
         else:
