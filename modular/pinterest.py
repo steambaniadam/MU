@@ -1,4 +1,4 @@
-
+import os
 import aiohttp
 import requests
 from pyquery import PyQuery as pq
@@ -8,7 +8,6 @@ from Mix import *
 
 __modles__ = "Pinterest"
 __help__ = get_cgr("help_pint")
-
 
 async def get_download_url_and_download(link, chat_id, caption=None):
     try:
@@ -30,21 +29,20 @@ async def get_download_url_and_download(link, chat_id, caption=None):
         async with aiohttp.ClientSession() as session:
             async with session.get(download_url) as resp:
                 if resp.status == 200:
-                    if ".mp4" in download_url:
-                        file_extension = ".mp4"
-                    else:
-                        file_extension = ".jpg"
-
-                    f"pinterest_content{file_extension}"
+                    file_extension = ".jpg" if ".jpg" in download_url else ".mp4"
+                    file_path = f"pinterest_content{file_extension}"
+                    async with aiofiles.open(file_path, mode="wb") as f:
+                        await f.write(await resp.read())
 
                     if caption:
-                        await nlx.send_photo(chat_id, resp.content, caption=caption)
+                        await nlx.send_photo(chat_id, file_path, caption=caption)
                     else:
-                        await nlx.send_photo(chat_id, resp.content)
+                        await nlx.send_photo(chat_id, file_path)
+
+                    os.remove(file_path)
 
     except Exception as e:
         await nlx.send_message(chat_id, f"Terjadi kesalahan saat mengunduh: {str(e)}")
-
 
 @ky.ubot("pint", sudo=True)
 async def _(c: nlx, m):
