@@ -48,6 +48,7 @@ async def send_streaming_links(client, message):
         await message.reply_text("Format perintah salah. Gunakan /streaming [ID Anime]")
 
 
+
 def create_keyboard(buttons_list):
     keyboard_data = dict()
     for text, data in buttons_list:
