@@ -58,7 +58,7 @@ async def _(c: nlx, m):
         else:
             file_extension = ".jpg"
 
-        file_name = f"Pinterest{file_extension}"
+        file_name = f"pinterest_content{file_extension}"
         file_path = f"Pypin/{file_name}"
 
         if not os.path.exists("Pypin"):
