@@ -1,5 +1,4 @@
 import os
-
 import aiofiles
 import aiohttp
 import requests
@@ -31,10 +30,7 @@ async def download_file(url, file_path, chat_id, caption=None):
                 f = await aiofiles.open(file_path, mode="wb")
                 await f.write(await resp.read())
                 await f.close()
-                if file_path.endswith(".mp4"):
-                    await bot.send_video(TAG_LOG, file_path, caption=caption)
-                else:
-                    await bot.send_photo(TAG_LOG, file_path, caption=caption)
+                await bot.send_document(chat_id, file_path, caption=caption)
                 os.remove(file_path)
 
 
@@ -71,7 +67,6 @@ async def _(c: nlx, m):
             caption=cgr("pint_2").format(em.sukses, gue),
         )
 
-        await m.reply_document(document=file_path)
         await pros.delete()
     except Exception as e:
         await m.reply(f"Error: {str(e)}")
