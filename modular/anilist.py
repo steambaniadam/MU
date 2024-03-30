@@ -43,7 +43,7 @@ async def send_streaming_links(client, message):
         else:
             await message.reply_text(
                 "Tidak ada informasi streaming untuk anime tersebut.",
-                reply_markup=InlineKeyboardMarkup([])
+                reply_markup=InlineKeyboardMarkup([]),
             )
     else:
         await message.reply_text("Format perintah salah. Gunakan /streaming [ID Anime]")
