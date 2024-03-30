@@ -89,20 +89,22 @@ async def anilist_command(c: nlx, m):
     if response.status_code == 200:
         streaming_links = get_streaming_links(response.content)
         if streaming_links:
-            video_url = get_video_url(list(streaming_links.values())[0])
-            if video_url:
-                anime_title_display = " ".join(m.command[1:-1])
-                reply_text = f"Berikut adalah tautan untuk menonton `{anime_title_display}` episode `{episode}` di Oploverz:"
-                reply_markup = InlineKeyboardMarkup(
-                    [
+            for option_name, link in streaming_links.items():
+                video_url = get_video_url(link)
+                if video_url:
+                    anime_title_display = " ".join(m.command[1:-1])
+                    reply_text = f"Berikut adalah tautan untuk menonton `{anime_title_display}` episode `{episode}` di Oploverz ({option_name}):"
+                    reply_markup = InlineKeyboardMarkup(
                         [
-                            InlineKeyboardButton(
-                                text="Streaming di Oploverz", url=video_url
-                            )
+                            [
+                                InlineKeyboardButton(
+                                    text=f"Streaming di Oploverz ({option_name})", url=video_url
+                                )
+                            ]
                         ]
-                    ]
-                )
-                await m.reply_text(reply_text, reply_markup=reply_markup)
+                    )
+                    await m.reply_text(reply_text, reply_markup=reply_markup)
+                    break  # Hanya ambil tautan dari opsi pertama yang berhasil
             else:
                 await m.reply_text(
                     f"Tidak dapat menemukan tautan video untuk {anime_title} episode {episode} di Oploverz."
