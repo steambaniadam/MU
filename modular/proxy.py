@@ -43,7 +43,10 @@ async def get_proxy_command(c: nlx, m):
         pros = await m.reply(cgr("proses").format(em.proses))
         command = m.text.split()[1].lower()
         if command not in ["http", "socks4", "socks5"]:
-            await c.send_message(m.chat.id, f"{em.gagal} Perintah tidak valid. \nGunakan perintah {m.text} [`http`|`socks4`|`socks5`]")
+            await c.send_message(
+                m.chat.id,
+                f"{em.gagal} Perintah tidak valid. \nGunakan perintah {m.text} [`http`|`socks4`|`socks5`]",
+            )
             return
 
         proxy_type = command
