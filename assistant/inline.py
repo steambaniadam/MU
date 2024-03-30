@@ -12,7 +12,7 @@ import os
 from datetime import datetime
 from gc import get_objects
 from time import time
-
+import requests
 from pyrogram import *
 from pyrogram.enums import *
 from pyrogram.errors import *
@@ -157,6 +157,48 @@ async def _(c, iq):
                     title="message",
                     reply_markup=bk,
                     input_message_content=InputTextMessageContent(cgr("cpy_3")),
+                )
+            )
+        ],
+    )
+
+
+def get_streaming_links(anime_id):
+    url = f"https://api.jikan.moe/v4/anime/{anime_id}/streaming"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json().get("data", [])
+        return data
+    else:
+        return []
+
+
+@ky.inline("^steam_in")
+async def _(c, iq):
+    ms = "Daftar Streaming Bokep"
+    q = iq.query.split(None, 1)
+    ambilka = get_streaming_links(q[1])
+    batin = InlineKeyboard(row_width=2)
+    batin.add(
+        *[
+            (
+                Ikb(
+                    f"{link_data['name']}",
+                    url=f"{link_data['url']}",
+                )
+            )
+            for link_data in ambilka
+        ]
+    )
+    await c.answer_inline_query(
+        iq.id,
+        cache_time=0,
+        results=[
+            (
+                InlineQueryResultArticle(
+                    title="message",
+                    reply_markup=batin,
+                    input_message_content=InputTextMessageContent(ms),
                 )
             )
         ],
