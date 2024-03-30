@@ -13,7 +13,7 @@ async def fetch_proxies(proxy_type):
         proxies = response.text.split("\n\n")
         proxies.sort()
         formatted_proxies = [
-            f"**\n\n{i}) `{proxy}`**" for i, proxy in enumerate(proxies, start=1)
+            f"**\n\n{i + 1}) `{proxy}`**" for i, proxy in enumerate(proxies, start=0)
         ]
 
         if not formatted_proxies[0]:
@@ -24,20 +24,18 @@ async def fetch_proxies(proxy_type):
         return None
 
 
+
 async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
-    daf = []
     em = Emojik()
     em.initialize()
     if proxies:
         teks = f"{em.sukses}**Berikut adalah daftar proxy {proxy_type} :**\n\n"
-        daf.append(teks)
-        message = "\n".join(daf)
-        await c.send_message(chat_id, message)
+        formatted_message = teks + "\n".join(proxies)
+        await c.send_message(chat_id, formatted_message)
     else:
         await c.send_message(
             chat_id, f"{em.gagal} Tidak dapat menemukan proxy yang valid."
         )
-
 
 @ky.ubot("getproxy", sudo=True)
 async def get_proxy_command(c: nlx, m):
