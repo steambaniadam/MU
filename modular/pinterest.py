@@ -64,7 +64,9 @@ async def _(c: nlx, m):
         MEDIA_URL, HTML = await getHtml(url)
 
         if MEDIA_URL is None:
-            await m.reply_text("[ERROR] Tidak ada gambar yang ditemukan di URL Pinterest")
+            await m.reply_text(
+                "[ERROR] Tidak ada gambar yang ditemukan di URL Pinterest"
+            )
             return
 
         JSON = await getJson(HTML)
