@@ -52,10 +52,10 @@ __help__ = "Anime Movie"
 def get_video_url(url):
     response = requests.get(url)
     if response.status_code == 200:
-        soup = BeautifulSoup(response.content, 'html.parser')
-        iframe = soup.find('iframe')
-        if iframe and 'src' in iframe.attrs:
-            video_src = iframe['src']
+        soup = BeautifulSoup(response.content, "html.parser")
+        iframe = soup.find("iframe")
+        if iframe and "src" in iframe.attrs:
+            video_src = iframe["src"]
             return video_src
         else:
             return None
