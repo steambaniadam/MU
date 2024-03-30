@@ -31,13 +31,11 @@ async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
     em = Emojik()
     em.initialize()
     if proxies:
-        teks = (cgr("prox_3").format(em.sukses, proxy_type))
+        teks = cgr("prox_3").format(em.sukses, proxy_type)
         teks += "\n".join(proxies)
         await c.send_message(chat_id, teks)
     else:
-        await c.send_message(
-            chat_id, (cgr("prox_4").format(em.gagal))
-        )
+        await c.send_message(chat_id, (cgr("prox_4").format(em.gagal)))
 
 
 @ky.ubot("getproxy", sudo=True)
