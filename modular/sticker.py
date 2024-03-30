@@ -16,9 +16,9 @@ from pyrogram.file_id import *
 from pyrogram.raw.functions.messages import *
 from pyrogram.raw.functions.stickers import *
 from pyrogram.raw.types import *
-from Mix.core.stick_tools import EMOJI_PATTERN, convert_video, resize_image
 
 from Mix import Emojik, bot, cgr, get_cgr, ky, ndB, nlx
+from Mix.core.stick_tools import EMOJI_PATTERN
 
 __modles__ = "Sticker"
 __help__ = get_cgr("help_stick")
