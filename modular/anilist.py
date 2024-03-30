@@ -3,14 +3,14 @@ from pyrogram import *
 
 from Mix import *
 
-__modles__ = "Anime List"
+__modules__ = "Anime List"
 __help__ = "Anime List"
 
 
 @ky.ubot("anilist", sudo=True)
 async def anilist_command(c: nlx, m):
-    m.chat.id
-    message_id = m.message_id
+    chat_id = m.chat.id
+    message_id = m.message.id
 
     args = m.command
     if len(args) < 2:
