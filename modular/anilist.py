@@ -18,9 +18,9 @@ def get_streaming_links(anime_id):
 
 
 @ky.ubot("streaming", sudo=True)
-async def send_streaming_links(client, message):
-    if len(message.command) > 1:
-        anime_id = message.command[1]
+async def send_streaming_links(c :nlx, m):
+    if len(m.command) > 1:
+        anime_id = m.command[1]
         streaming_links = get_streaming_links(anime_id)
         if streaming_links:
             buttons = []
@@ -30,12 +30,12 @@ async def send_streaming_links(client, message):
                 button = InlineKeyboardButton(name, url=url)
                 buttons.append([button])
             reply_markup = InlineKeyboardMarkup(buttons)
-            await message.reply_text(
+            await m.reply(
                 "Pilih platform streaming:", reply_markup=reply_markup
             )
         else:
-            await message.reply_text(
+            await m.reply(
                 "Tidak ada informasi streaming untuk anime tersebut."
             )
     else:
-        await message.reply_text("Format perintah salah. Gunakan /streaming [ID Anime]")
+        await m.reply(f"Format perintah salah. Gunakan `{m.text}` [ID Anime]")
