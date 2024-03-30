@@ -24,7 +24,6 @@ async def fetch_proxies(proxy_type):
         return None
 
 
-
 async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
     em = Emojik()
     em.initialize()
@@ -36,6 +35,7 @@ async def send_proxy(c: nlx, chat_id, proxy_type, proxies):
         await c.send_message(
             chat_id, f"{em.gagal} Tidak dapat menemukan proxy yang valid."
         )
+
 
 @ky.ubot("getproxy", sudo=True)
 async def get_proxy_command(c: nlx, m):
