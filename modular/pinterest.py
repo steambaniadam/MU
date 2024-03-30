@@ -85,6 +85,11 @@ async def _(c: nlx, m):
             url, m, caption=cgr("pint_2").format(em.sukses, gue)
         )
         await pros.delete()
+    except IndexError:
+        await m.reply(
+            f"{em.gagal} **Silahkan tambahkan link Pinterest\nContoh : `{m.text} https://id.pinterest.com/pin/293648838218730162/`**"
+        )
+        await pros.delete()
     except Exception as e:
         await m.reply(cgr("err").format(em.gagal, str(e)))
         await pros.delete()
