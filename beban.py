@@ -156,7 +156,7 @@ async def autor_all():
                 try:
                     await nlx.read_chat_history(bb.chat.id, max_id=0)
                 except (ChannelPrivate, PeerIdInvalid, UserBannedInChannel):
-                    continue
+                    pass
                 except FloodWait as e:
                     await asyncio.sleep(e.value)
                     try:
