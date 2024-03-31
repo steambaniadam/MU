@@ -610,21 +610,29 @@ async def _(c: nlx, m):
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
     total_deleted_messages = 0
-    async for dialog in c.get_dialogs():
+    total_remaining_messages = 0
+    async for dialog in c.iter_dialogs():
         chat_id = dialog.chat.id
-        if dialog.chat.type == ChatType.PRIVATE:
+        if dialog.chat.type == types.ChatType.PRIVATE:
             deleted_messages_count = 0
-            async for hantunya in c.get_chat_history(chat_id, limit=100):
+            remaining_messages_count = 0
+            async for hantunya in c.iter_history(chat_id, limit=100):
                 if hantunya.from_user and hantunya.from_user.is_deleted:
                     try:
-                        ghost = hantunya.from_user.id
-                        info = await c.resolve_peer(ghost)
-                        await c.invoke(DeleteHistory(peer=info, max_id=0, revoke=True))
+                        user_id = hantunya.from_user.id
+                        info = await c.resolve_peer(user_id)
+                        await c.send(
+                            functions.messages.DeleteHistory(
+                                peer=info, max_id=0, revoke=True
+                            )
+                        )
                         deleted_messages_count += 1
                     except PeerIdInvalid:
                         print("ID peer tidak valid atau tidak dikenal")
+                else:
+                    remaining_messages_count += 1
             total_deleted_messages += deleted_messages_count
+            total_remaining_messages += remaining_messages_count
     await m.reply(
-        f"Total riwayat pesan dengan pengguna yang telah dihapus yang berhasil dihapus: `{total_deleted_messages}`"
-    )
+        f"{em.sukses} **Berhasil menghapus : `{total_deleted_messages}`\n{em.gagal} Tersisa yang berlum terhapus : `{total_remaining_messages}`**")
     await pros.delete()
