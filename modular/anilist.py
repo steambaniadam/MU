@@ -95,7 +95,7 @@ async def _(c: nlx, m):
 async def _(c: nlx, m):
     if len(m.command) < 3:
         await m.reply(
-            f"Cara menambahkan list: `{m.text} [nama anime] [my anime list id]`"
+            f"Cara menambahkan list : `{m.text} [my anime list id] [nama anime]`"
         )
         return
 
