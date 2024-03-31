@@ -28,7 +28,7 @@ __help__ = """
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    kimi = c.get_text(m)
+    kimi = c.get_arg(m)
     pros = await m.reply(cgr("proses").format(em.proses))
     if m.command[0] == "emorse":
 
