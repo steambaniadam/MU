@@ -68,7 +68,9 @@ async def _(c: nlx, m):
                     await pros.delete()
                     return
                 else:
-                    await m.reply(f"**Failed to get streaming link for `{anime_name}`.**")
+                    await m.reply(
+                        f"**Failed to get streaming link for `{anime_name}`.**"
+                    )
             except Exception as e:
                 await m.reply(
                     f"**Failed to get streaming link for `{anime_name}`.\n Error:** `{e}`"
