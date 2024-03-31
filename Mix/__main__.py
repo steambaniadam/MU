@@ -17,7 +17,7 @@ async def start_user():
     LOGGER.info(f"Starting Telegram User Client...")
     try:
         await nlx.start()
-        await dasar_laknat()
+        #await dasar_laknat()
     except (SessionExpired, ApiIdInvalid, UserDeactivatedBan):
         LOGGER.info("Check your session or api id!!")
         sys.exit(1)
