@@ -215,6 +215,8 @@ async def _(c, iq):
         await c.send_message(
             iq.from_user.id, f"**Error occurred while processing inline query:** `{e}`"
         )
+    else:
+        await c.delete_messages(iq.from_user.id, [iq.id])
 
 
 # send
