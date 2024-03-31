@@ -13,13 +13,20 @@ loop = asyncio.get_event_loop_policy()
 event_loop = loop.get_event_loop()
 
 
+import traceback
+
 async def start_user():
     LOGGER.info(f"Starting Telegram User Client...")
     try:
         await nlx.start()
         await dasar_laknat(nlx)
-    except (SessionExpired, ApiIdInvalid, UserDeactivatedBan):
+    except (SessionExpired, ApiIdInvalid, UserDeactivatedBan) as e:
+        LOGGER.error(f"An error occurred while starting the user client: {e}")
         LOGGER.info("Check your session or api id!!")
+        sys.exit(1)
+    except Exception as ex:
+        LOGGER.error("An unexpected error occurred:")
+        LOGGER.error(traceback.format_exc())
         sys.exit(1)
 
 
