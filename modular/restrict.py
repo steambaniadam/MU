@@ -604,7 +604,7 @@ async def _(c: nlx, m):
 
 
 from pyrogram.raw import functions
-
+from pyrogram.enums import ChatTpye
 
 @ky.ubot("hantu", sudo=True)
 async def _(c: nlx, m):
@@ -614,13 +614,12 @@ async def _(c: nlx, m):
     total_deleted_messages = 0
     async for dialog in c.get_dialogs():
         chat_id = dialog.chat.id
-        if dialog.chat.type == "private":
+        if dialog.chat.type == "PRIVATE":
             deleted_messages_count = 0
             async for hantunya in c.get_chat_history(chat_id, limit=100):
                 if hantunya.from_user and hantunya.from_user.is_deleted:
                     info = await c.resolve_peer(hantunya.id)
-                    await c.invoke(
-                        functions.messages.DeleteHistory(
+                    await c.invoke(DeleteHistory(
                             peer=info, max_id=0, revoke=True
                         )
                     )
