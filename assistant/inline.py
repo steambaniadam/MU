@@ -212,7 +212,7 @@ async def _(c, iq):
             ],
         )
     except Exception as e:
-        await c.send_message(f"**Error occurred while processing inline query:** `{e}`")
+        await c.send_message(iq.from_user.id, f"**Error occurred while processing inline query:** `{e}`")
 
 
 # send
