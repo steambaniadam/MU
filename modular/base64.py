@@ -2,8 +2,8 @@ import requests
 
 from Mix import *
 
-__modles__ = "Encoder"
-__help__ = "Encoder"
+__modles__ = "Base64"
+__help__ = get_cgr("help_enc")
 
 
 async def process_message(c: nlx, m, text, decode=False):
@@ -17,28 +17,17 @@ async def process_message(c: nlx, m, text, decode=False):
             data = response.json()
             if not decode and "encoded" in data:
                 encoded_text = data["encoded"]
-                await m.reply(
-                    f"{em.sukses} **Successfully encoded :**\n`{encoded_text}`"
-                )
+                await m.reply(cgr("enc_1").format(em.sukses, encoded_text))
             elif decode and "decoded" in data:
                 decoded_text = data["decoded"]
-                await m.reply(
-                    f"{em.sukses} **Successfully decoded :**\n`{decoded_text}`"
-                )
+                await m.reply(cgr("enc_2").format(em.sukses, encoded_text))
             else:
-                await c.send_message(
-                    m.chat.id,
-                    f"{em.gagal} **Failed to {'encode' if not decode else 'decode'} the text**",
-                )
+                gagal = f'encode' if not decode else 'decode'
+                await m.reply(cgr("enc_3").format(em.gagal, gagal))
         else:
-            await c.send_message(
-                m.chat.id,
-                "{} **Failed to fetch data:** `{}`".format(
-                    em.gagal, response.status_code
-                ),
-            )
+            await m.reply(cgr("enc_4").format(em.gagal, response.status_code))
     else:
-        await m.reply(f"{em.gagal} **Silahkan berikan pesan, text, atau balas pesan**")
+        await m.reply(cgr("enc_5").format(em.gagal))
 
 
 @ky.ubot("encode", sudo=True)

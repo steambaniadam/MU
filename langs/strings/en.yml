@@ -481,6 +481,13 @@ pint_2: "{} **Downloaded by : {}**"
 pint_3: "{} **Failed to catch donwload file from : `{}`**"
 pint_4: "{} **Something error while downloading : `{}`**"
 
+# base64
+enc_1: "{} **Successfully encoded :**\n`{}`"
+enc_2: "{} **Successfully decoded :**\n`{}`"
+enc_3: "{} **Failed {} pesan**"
+enc_4: "{} **Failed :** `{}`"
+enc_5: "{} **Please give some text or reply message.**"
+
 # help_for
 help_afk: " Afk\n\n• Command: `{0}afk` [reason]\n• Description: To activate afk mode.\n\n• Command: `{0}unafk` [reason]\n• Description: To deactivate afk mode."
 help_alive: " Alive\n\n• Command: `{0}alive`\n• Description: Alive."
@@ -553,3 +560,4 @@ help_waif: " **Waifu**\n\n• Command: `{0}waifu` [categori]\n• Description: F
 help_qur: " **Qur'an**\n\n• Command: `{0}qs [name of surah]`\n• Description: Fetching information of Surah.\n\n• Command: `{0}list_surah`\n• Description: Getting List of Surah Al-Quran.\n"
 help_animstream: " **Anime Streaming**\n\n• Command: `{0}streaming` [Anime Title Movie]\n• Description: For getting link for streaming anime.\n\n• Command: `{0}list_anime`\n• Description: For getting anime list movies\n"
 help_pint: " **Pinterest**\n\n• Command: `{0}pint` [link pinterest]\n• Description: For downloading file on pinterest use link.\n"
+help_enc: " **Base64 Encoder**\n\n• Command: `{0}encode` [text|reply text]\n• Description: For encoding base64\n\n• Command: `{0}decode` [text|reply text]\n• Description: For Decoding base64.\n"
