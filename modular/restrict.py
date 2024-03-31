@@ -603,8 +603,6 @@ async def _(c: nlx, m):
         return await m.reply_text(cgr("res_33").format(em.gagal))
 
 
-
-
 @ky.ubot("hantu", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
