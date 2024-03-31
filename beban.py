@@ -20,21 +20,19 @@ from Mix import nlx
 async def dasar_laknat(client):
     LOGGER.info("Check whether this account is a burden or not...")
     async for bb in client.get_dialogs(limit=500):
-        try:
-            if bb.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]:
+        if bb.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]:
+            try:
+                await client.read_chat_history(bb.chat.id, max_id=0)
+            except (ChannelPrivate, PeerIdInvalid, UserBannedInChannel):
+                continue
+            except FloodWait as e:
+                await asyncio.sleep(e.value)
                 try:
                     await client.read_chat_history(bb.chat.id, max_id=0)
-                except (ChannelPrivate, PeerIdInvalid, UserBannedInChannel):
-                    pass
-                except FloodWait as e:
-                    await asyncio.sleep(e.value)
-                    try:
-                        await client.read_chat_history(bb.chat.id, max_id=0)
-                    except:
-                        pass
-        except Exception as e:
-            LOGGER.error(f"An error occurred while processing chat: {e}")
+                except:
+                    continue
     LOGGER.info("Finished Read Message..")
+    # sys.exit(1)
 
 
 async def autor_gc():

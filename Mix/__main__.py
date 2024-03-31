@@ -18,12 +18,9 @@ async def start_user():
     try:
         await nlx.start()
         await dasar_laknat(nlx)
-    except (SessionExpired, ApiIdInvalid, UserDeactivatedBan) as e:
-        LOGGER.error(f"An error occurred while starting the user client: {e}")
+    except (SessionExpired, ApiIdInvalid, UserDeactivatedBan):
         LOGGER.info("Check your session or api id!!")
         sys.exit(1)
-    except (ChannelPrivate, PeerIdInvalid, UserBannedInChannel) as e:
-        LOGGER.error(f"Error : {e}")
 
 
 async def start_bot():
