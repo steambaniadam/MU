@@ -44,31 +44,25 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     if len(m.command) > 1:
         anime_name = " ".join(m.command[1:]).strip().lower()
-        anime_name = (
-            anime_name.replace(" i", " II")
-            .replace(" ii", " II")
-            .replace(" iii", " III")
-            .replace(" iv", " IV")
-            .replace(" v", " V")
-        )
-        if anime_name in ANIME_LIST:
-            anime_id = ANIME_LIST[anime_name]
-            try:
-                xi = await c.get_inline_bot_results(
-                    bot.me.username, f"steam_in {anime_id}"
-                )
-                await m.delete()
-                await c.send_inline_bot_result(
-                    m.chat.id,
-                    xi.query_id,
-                    xi.results[0].id,
-                    reply_to_message_id=ReplyCheck(m),
-                )
-                await pros.delete()
-            except Exception as e:
-                await m.edit(f"{e}")
-        else:
-            await m.edit("Anime not found in the list.")
+        for key in ANIME_LIST.keys():
+            if all(part in key for part in anime_name.split()):
+                anime_id = ANIME_LIST[key]
+                try:
+                    xi = await c.get_inline_bot_results(
+                        bot.me.username, f"steam_in {anime_id}"
+                    )
+                    await m.delete()
+                    await c.send_inline_bot_result(
+                        m.chat.id,
+                        xi.query_id,
+                        xi.results[0].id,
+                        reply_to_message_id=ReplyCheck(m),
+                    )
+                    await pros.delete()
+                    return
+                except Exception as e:
+                    await m.edit(f"{e}")
+        await m.edit("Anime not found in the list.")
     else:
         await m.edit("Please provide the name of the anime.")
     await pros.delete()
