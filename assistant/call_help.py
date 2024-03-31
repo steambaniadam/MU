@@ -490,7 +490,7 @@ def unpacked2(inline_message_id: str):
     temp = {
         "dc_id": dc_id,
         "message_id": message_id,
-        "chat_id": int(str(chat_id))
+        "chat_id": int(str(chat_id)),
         "query_id": query_id,
         "inline_message_id": inline_message_id,
     }
