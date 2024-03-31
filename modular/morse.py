@@ -35,7 +35,7 @@ async def _(c: nlx, m):
         uri = f"https://api.safone.dev/morse/encode?text={kimi}"
         pot = requests.get(uri)
         if pot.status_code == 200:
-            res = pot.json()
+            res = pot.json()["encoded"]
             await m.reply(f"{em.sukses} Encode Morse\n\n{res}")
         else:
             await m.reply(f"Error: {pot.status_code}")
@@ -43,7 +43,7 @@ async def _(c: nlx, m):
         uri = f"https://api.safone.dev/morse/decode?text={kimi}"
         pot = requests.get(uri)
         if pot.status_code == 200:
-            res = pot.json()
+            res = pot.json()["decoded"]
             await m.reply(f"{em.sukses} Decode Morse\n\n{res}")
         else:
             await m.reply(f"Error: {pot.status_code}")
