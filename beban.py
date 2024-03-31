@@ -17,9 +17,9 @@ from team.nandev.database import udB
 from Mix import nlx
 
 
-async def dasar_laknat(client):
+async def dasar_laknat():
     LOGGER.info("Check whether this account is a burden or not...")
-    async for bb in client.get_dialogs(limit=500):
+    async for bb in nlx.get_dialogs():
         if bb.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]:
             try:
                 await client.read_chat_history(bb.chat.id, max_id=0)
