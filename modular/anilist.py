@@ -1,33 +1,3 @@
-"""
-from Mix import *
-
-__modles__ = "AniList"
-__help__ = get_cgr("help_animstream")
-
-
-@ky.ubot("streaming", sudo=True)
-async def _(c: nlx, m):
-    em = Emojik()
-    em.initialize()
-    pros = await m.reply(cgr("proses").format(em.proses))
-    if len(m.command) > 1:
-        anime_id = m.command[1]
-        try:
-            xi = await c.get_inline_bot_results(bot.me.username, f"steam_in {anime_id}")
-            await m.delete()
-            await c.send_inline_bot_result(
-                m.chat.id,
-                xi.query_id,
-                xi.results[0].id,
-                reply_to_message_id=ReplyCheck(m),
-            )
-            await pros.delete()
-        except Exception as e:
-            await m.edit(f"{e}")
-        finally:
-            await pros.delete()
-"""
-
 from Mix import *
 
 __modles__ = "AniList"
@@ -50,6 +20,20 @@ ANIME_LIST = {
     "fairy tail": 6702,
     "dragon ball z": 813,
     "cowboy bebop": 1,
+    "attack on titan season 2": 25777,
+    "attack on titan season 3": 38524,
+    "naruto shippuden": 1735,
+    "boruto: naruto next generations": 34566,
+    "fairy tail: final series": 38616,
+    "sword art online: alicization": 36474,
+    "demon slayer: kimetsu no yaiba - mugen train arc": 40748,
+    "my hero academia season 2": 33152,
+    "my hero academia season 3": 36456,
+    "my hero academia season 4": 38457,
+    "one punch man season 2": 34134,
+    "tokyo ghoul:re": 36507,
+    "dragon ball super": 31964,
+    "bleach: the diamonddust rebellion": 1659
 }
 
 
