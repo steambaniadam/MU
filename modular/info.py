@@ -377,7 +377,6 @@ async def _(c, m):
     except ChannelPrivate:
         benet += 1
         dimari.add(dialog.chat.id)
-        pass
 
     end = datetime.now()
     ms = (end - start).seconds
