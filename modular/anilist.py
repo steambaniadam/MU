@@ -28,14 +28,12 @@ async def _(c: nlx, m):
             await pros.delete()
 """
 
-
 import re
+
 from Mix import *
 
 __modles__ = "AniList"
 __help__ = get_cgr("help_animstream")
-
-
 
 
 ANIME_LIST = {
@@ -70,7 +68,9 @@ async def _(c: nlx, m):
         if anime_name in ANIME_LIST:
             anime_id = ANIME_LIST[anime_name]
             try:
-                xi = await c.get_inline_bot_results(bot.me.username, f"steam_in {anime_id}")
+                xi = await c.get_inline_bot_results(
+                    bot.me.username, f"steam_in {anime_id}"
+                )
                 await m.delete()
                 await c.send_inline_bot_result(
                     m.chat.id,
