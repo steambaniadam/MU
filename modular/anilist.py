@@ -41,8 +41,6 @@ def find_matching_anime(anime_name):
     for key in ANIME_LIST:
         if anime_name.lower() == key.lower():
             return ANIME_LIST[key]
-        elif anime_name.lower() in key.lower():
-            return ANIME_LIST[key]
     return None
 
 
@@ -52,7 +50,7 @@ async def _(c: nlx, m):
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
     if len(m.command) > 1:
-        anime_name = " ".join(m.command[1:]).strip().lower()
+        anime_name = " ".join(m.command[1:]).strip()
         anime_id = find_matching_anime(anime_name)
         if anime_id is not None:
             try:
