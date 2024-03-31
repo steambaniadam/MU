@@ -19,8 +19,8 @@ async def process_message(c: nlx, m, text, decode=False):
                 encoded_text = data["encoded"]
                 await m.reply(cgr("enc_1").format(em.sukses, encoded_text))
             elif decode and "decoded" in data:
-                data["decoded"]
-                await m.reply(cgr("enc_2").format(em.sukses, encoded_text))
+                decoded_text = data["decoded"]
+                await m.reply(cgr("enc_2").format(em.sukses, decoded_text))
             else:
                 gagal = f"encode" if not decode else "decode"
                 await m.reply(cgr("enc_3").format(em.gagal, gagal))
