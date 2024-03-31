@@ -180,34 +180,37 @@ async def get_streaming_links(anime_id, c: nlx):
 
 @ky.inline("^steam_in")
 async def _(c, iq):
-    ms = "Daftar Streaming :"
-    q = iq.query.split(None, 1)
-    ambilka = await get_streaming_links(q[1], c)
-    batin = InlineKeyboard(row_width=2)
-    batin.add(
-        *[
-            (
-                Ikb(
-                    f"{link_data['name']}",
-                    url=f"{link_data['url']}",
+    try:
+        ms = "Daftar Streaming Link Streaming :"
+        q = iq.query.split(None, 1)
+        ambilka = await get_streaming_links(q[1], c)
+        batin = InlineKeyboard(row_width=2)
+        batin.add(
+            *[
+                (
+                    Ikb(
+                        f"{link_data['name']}",
+                        url=f"{link_data['url']}",
+                    )
                 )
-            )
-            for link_data in ambilka
-        ]
-    )
-    await c.answer_inline_query(
-        iq.id,
-        cache_time=0,
-        results=[
-            (
-                InlineQueryResultArticle(
-                    title="message",
-                    reply_markup=batin,
-                    input_message_content=InputTextMessageContent(ms),
+                for link_data in ambilka
+            ]
+        )
+        await c.answer_inline_query(
+            iq.id,
+            cache_time=0,
+            results=[
+                (
+                    InlineQueryResultArticle(
+                        title="message",
+                        reply_markup=batin,
+                        input_message_content=InputTextMessageContent(ms),
+                    )
                 )
-            )
-        ],
-    )
+            ],
+        )
+    except Exception as e:
+        await c.send_message(f"Error occurred while processing inline query: {e}")
 
 
 # send
