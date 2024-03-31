@@ -333,6 +333,7 @@ async def _(c: nlx, m):
 
 
 @ky.ubot("me|userstats", sudo=True)
+@ky.devs("userstats")
 async def _(c, m):
     em = Emojik()
     em.initialize()
