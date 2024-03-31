@@ -614,8 +614,8 @@ async def hantu(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    m.chat.id
-    async for dialog in c.iter_dialogs():
+    chat_id = m.chat.id
+    async for dialog in c.get_dialogs():
         if dialog.chat.type == "private":
             await delete_deleted_accounts_messages(c, dialog.chat.id)
     await m.reply("Riwayat pesan dengan pengguna yang telah dihapus telah dihapus.")
