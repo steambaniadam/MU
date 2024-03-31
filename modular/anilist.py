@@ -58,18 +58,17 @@ async def _(c: nlx, m):
                     bot.me.username, f"steam_in {anime_id}"
                 )
                 await m.delete()
-                await c.send_inline_bot_result(
-                    m.chat.id,
-                    xi.query_id,
-                    xi.results[0].id,
-                    reply_to_message_id=ReplyCheck(m),
-                )
-                await pros.delete()
-                return
-            except IndexError:
-                await m.edit(f"Failed to get streaming link for `{anime_name}`.")
+                if xi.results:
+                    await c.send_inline_bot_result(
+                        m.chat.id,
+                        xi.query_id,
+                        xi.results[0].id,
+                        reply_to_message_id=ReplyCheck(m),
+                    )
+                else:
+                    await m.edit(f"Failed to get streaming link for `{anime_name}`.")
             except Exception as e:
-                await m.edit(f"{e}")
+                await m.edit(f"Failed to get streaming link for `{anime_name}`. Error: {e}")
         else:
             await m.edit("Anime not found in the list.")
     else:
