@@ -1,4 +1,5 @@
 import requests
+
 from Mix import *
 
 __modles__ = "Encoder"
@@ -24,7 +25,8 @@ async def process_message(c: nlx, m, text, decode=False):
             await c.send_message(m.chat.id, f"{em.gagal}Response status is not OK")
     else:
         await c.send_message(
-            m.chat.id, "{} Failed to fetch data: {}".format(em.gagal, response.status_code)
+            m.chat.id,
+            "{} Failed to fetch data: {}".format(em.gagal, response.status_code),
         )
 
 
