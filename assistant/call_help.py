@@ -500,11 +500,11 @@ def unpacked2(inline_message_id: str):
 @ky.callback("^close")
 async def _(_, cq):
     unPacked = unpacked2(cq.inline_message_id)
-    if cq.from_user.id == nlx.me.id:
-        await nlx.delete_messages(unPacked.chat_id, unPacked.message_id)
-    else:
-        await cq.answer(f"Jangan Di Pencet Anjeng.", True)
-        return
+    #if cq.from_user.id == nlx.me.id:
+    await nlx.delete_messages(unPacked.chat_id, unPacked.message_id)
+    #else:
+        #await cq.answer(f"Jangan Di Pencet Anjeng.", True)
+        #return
 
 
 def cb_tespeed():
