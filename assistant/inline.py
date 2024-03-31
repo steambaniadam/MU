@@ -174,14 +174,14 @@ async def get_streaming_links(anime_id, c: nlx):
         else:
             return []
     except Exception as e:
-        await c.send_message(f"Error occurred while fetching streaming links: `{e}`")
+        await c.send_message(f"**Error occurred while fetching streaming links:** `{e}`")
         return []
 
 
 @ky.inline("^steam_in")
 async def _(c, iq):
     try:
-        ms = "Daftar Streaming Link Streaming :"
+        ms = "**Daftar Streaming Link Streaming :**"
         q = iq.query.split(None, 1)
         ambilka = await get_streaming_links(q[1], c)
         batin = InlineKeyboard(row_width=2)
@@ -210,7 +210,7 @@ async def _(c, iq):
             ],
         )
     except Exception as e:
-        await c.send_message(f"Error occurred while processing inline query: {e}")
+        await c.send_message(f"**Error occurred while processing inline query:** `{e}`")
 
 
 # send

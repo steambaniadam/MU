@@ -68,15 +68,15 @@ async def _(c: nlx, m):
                     await pros.delete()
                     return
                 else:
-                    await m.reply(f"Failed to get streaming link for `{anime_name}`.")
+                    await m.reply(f"**Failed to get streaming link for `{anime_name}`.**")
             except Exception as e:
                 await m.reply(
-                    f"Failed to get streaming link for `{anime_name}`. Error: {e}"
+                    f"**Failed to get streaming link for `{anime_name}`.\n Error:** `{e}`"
                 )
         else:
-            await m.reply("Anime not found in the list.")
+            await m.reply(f"**Anime `{anime_name}` not found in the list.**")
     else:
-        await m.reply("Please provide the name of the anime.")
+        await m.reply(f"Please type `{m}anime_list` for getting list of anime.")
     await pros.delete()
 
 
@@ -92,7 +92,7 @@ async def _(c: nlx, m):
 async def _(c: nlx, m):
     if len(m.command) < 3:
         await m.reply(
-            f"Cara menambahkan list : `{m.text} [my anime list id] [nama anime]`"
+            f"**Cara menambahkan list :** `{m.text} [my anime list id] [nama anime]`"
         )
         return
 
@@ -101,21 +101,21 @@ async def _(c: nlx, m):
 
     ANIME_LIST[anime_name] = mal_id
     await m.reply(
-        f"Anime `{anime_name}` dengan `{mal_id}` berhasil ditambahkan ke daftar anime."
+        f"**Anime `{anime_name}` dengan `{mal_id}` berhasil ditambahkan ke daftar anime.**"
     )
 
 
 @ky.ubot("remove_anime", sudo=True)
 async def _(c: nlx, m):
     if len(m.command) < 2:
-        await m.reply(f"Cara menghapus dari list : `{m.text} [nama_anime]`")
+        await m.reply(f"**Cara menghapus dari list :** `{m.text} [nama_anime]`")
         return
 
     anime_name = " ".join(m.command[1:]).strip().lower()
 
     if anime_name not in ANIME_LIST:
-        await m.reply(f"Anime `{anime_name}` tidak ada dalam daftar.")
+        await m.reply(f"**Anime `{anime_name}` tidak ada dalam daftar.**")
         return
 
     del ANIME_LIST[anime_name]
-    await m.reply(f"Anime `{anime_name}` berhasil dihapus dari daftar anime.")
+    await m.reply(f"**Anime `{anime_name}` berhasil dihapus dari daftar anime.**")
