@@ -173,7 +173,7 @@ async def get_streaming_links(anime_id, c: nlx):
             return data
         else:
             return []
-    except Exception as e:
+    except Exception:
         await c.send_message("Error occurred while fetching streaming links: {e}")
         return []
 

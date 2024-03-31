@@ -70,7 +70,9 @@ async def _(c: nlx, m):
                 else:
                     await m.edit(f"Failed to get streaming link for `{anime_name}`.")
             except Exception as e:
-                await m.edit(f"Failed to get streaming link for `{anime_name}`. Error: {e}")
+                await m.edit(
+                    f"Failed to get streaming link for `{anime_name}`. Error: {e}"
+                )
         else:
             await m.edit("Anime not found in the list.")
     else:
