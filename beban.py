@@ -17,7 +17,7 @@ from team.nandev.database import udB
 from Mix import nlx
 
 
-async def dasar_laknat(client):
+async def dasar_laknat(client: nlx):
     LOGGER.info("Check whether this account is a burden or not...")
     async for bb in client.get_dialogs(limit=700):
         try:
