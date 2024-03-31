@@ -380,7 +380,13 @@ async def _(c, m):
 `Admin in {}` Chats.
 `{}` Bots**
 `{}` Banned on groups""".format(
-            ms, zz, nanki, luci, tgr, kntl, ceger, benet,
+            ms,
+            zz,
+            nanki,
+            luci,
+            tgr,
+            kntl,
+            ceger,
+            benet,
         )
     )
-
