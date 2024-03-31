@@ -68,7 +68,6 @@ async def _(c: nlx, m):
     await pros.delete()
 
 
-
 @ky.ubot("anime_list", sudo=True)
 async def _(c: nlx, m):
     anime_list_text = "\n".join(
