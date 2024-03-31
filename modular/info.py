@@ -382,10 +382,10 @@ async def _(c, m):
 
     end = datetime.now()
     ms = (end - start).seconds
-    
+
     if not dimari:
         dimari = None
-    
+
     await Nan.edit_text(
         """**succesful extract your data in `{}` seconds
 `{}` Private Messages.
