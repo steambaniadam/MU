@@ -164,13 +164,17 @@ async def _(c, iq):
     )
 
 
-def get_streaming_links(anime_id):
-    url = f"https://api.jikan.moe/v4/anime/{anime_id}/streaming"
-    response = requests.get(url)
-    if response.status_code == 200:
-        data = response.json().get("data", [])
-        return data
-    else:
+async def get_streaming_links(anime_id, c: nlx):
+    try:
+        url = f"https://api.jikan.moe/v4/anime/{anime_id}/streaming"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json().get("data", [])
+            return data
+        else:
+            return []
+    except Exception as e:
+        await c.send_message("Error occurred while fetching streaming links: {e}")
         return []
 
 
@@ -178,7 +182,7 @@ def get_streaming_links(anime_id):
 async def _(c, iq):
     ms = "Daftar Streaming :"
     q = iq.query.split(None, 1)
-    ambilka = get_streaming_links(q[1])
+    ambilka = await get_streaming_links(q[1], c)
     batin = InlineKeyboard(row_width=2)
     batin.add(
         *[

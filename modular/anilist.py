@@ -65,12 +65,12 @@ async def _(c: nlx, m):
                         xi.results[0].id,
                         reply_to_message_id=ReplyCheck(m),
                     )
+                    await pros.delete()
+                    return
                 else:
                     await m.edit(f"Failed to get streaming link for `{anime_name}`.")
             except Exception as e:
-                await m.edit(
-                    f"Failed to get streaming link for `{anime_name}`. Error: {e}"
-                )
+                await m.edit(f"Failed to get streaming link for `{anime_name}`. Error: {e}")
         else:
             await m.edit("Anime not found in the list.")
     else:
