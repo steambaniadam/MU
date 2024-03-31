@@ -37,11 +37,11 @@ ANIME_LIST = {
 }
 
 
-async def find_matching_anime(c, m, anime_name):
+def find_matching_anime(anime_name):
     for key in ANIME_LIST:
         if anime_name.lower() == key.lower():
             return ANIME_LIST[key]
-        elif anime_name.lower() in key.lower().split():
+        elif anime_name.lower() in key.lower():
             return ANIME_LIST[key]
     return None
 
