@@ -603,10 +603,6 @@ async def _(c: nlx, m):
         return await m.reply_text(cgr("res_33").format(em.gagal))
 
 
-from pyrogram import types
-from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
-
-
 @ky.ubot("hantu", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
@@ -615,13 +611,13 @@ async def _(c: nlx, m):
     total_deleted_messages = 0
     async for dialog in c.get_dialogs():
         chat_id = dialog.chat.id
-        if dialog.chat.type == types.ChatType.PRIVATE:
+        if dialog.chat.type == ChatType.PRIVATE:
             deleted_messages_count = 0
             async for hantunya in c.get_chat_history(chat_id, limit=100):
                 if hantunya.from_user and hantunya.from_user.is_deleted:
                     try:
-                        user_id = hantunya.from_user.id
-                        info = await c.resolve_peer(user_id)
+                        ghost = hantunya.from_user.id
+                        info = await c.resolve_peer(ghost)
                         await c.invoke(DeleteHistory(peer=info, max_id=0, revoke=True))
                         deleted_messages_count += 1
                     except PeerIdInvalid:
