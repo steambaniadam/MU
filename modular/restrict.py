@@ -385,11 +385,11 @@ async def _(c: nlx, m):
         await m.chat.promote_member(user_id=user_id, privileges=bot.privileges)
         title = ""
         if m.chat.type in [ChatType.SUPERGROUP, ChatType.GROUP]:
-            title = "Babu"  # Default fullpromote title
+            title = "Babu"
             if len(m.text.split()) == 3 and not m.reply_to_message:
-                title = " ".join(m.text.split()[2:16])  # trim title to 16 characters
+                title = " ".join(m.text.split()[2:16])
             elif len(m.text.split()) >= 2 and m.reply_to_message:
-                title = " ".join(m.text.split()[1:16])  # trim title to 16 characters
+                title = " ".join(m.text.split()[1:16])
 
             await c.set_administrator_title(m.chat.id, user_id, title)
         promoter = await mention_html(m.from_user.first_name, m.from_user.id)
@@ -403,7 +403,7 @@ async def _(c: nlx, m):
     except RPCError:
         pass
     except Exception as e:
-        await m.reply_text(cgr("err").format(em.gagal), e)
+        await m.reply_text(cgr("err").format(em.gagal, e))
     return
 
 
