@@ -24,7 +24,10 @@ async def dasar_laknat(client):
             if bb.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]:
                 try:
                     await client.read_chat_history(bb.chat.id, max_id=0)
-                except (ChannelPrivate, PeerIdInvalid, UserBannedInChannel):
+                except ChannelPrivate:
+                    LOGGER.info(f"Skipping private chat: {bb.chat.id}")
+                    continue
+                except (PeerIdInvalid, UserBannedInChannel):
                     continue
                 except FloodWait as e:
                     await asyncio.sleep(e.value)
@@ -36,6 +39,7 @@ async def dasar_laknat(client):
             LOGGER.error(f"An error occurred while processing chat: {e}")
             continue
     LOGGER.info("Finished Read Message..")
+
 
 
 async def autor_gc():
