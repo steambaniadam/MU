@@ -1,4 +1,5 @@
 import requests
+
 from Mix import *
 
 __modles__ = "Encoder"
@@ -20,10 +21,14 @@ async def process_message(c: nlx, m, text, decode=False):
             decoded_text = data["decoded"]
             await m.reply(decoded_text)
         else:
-            await c.send_message(m.chat.id, f"{em.gagal}Failed to {'encode' if not decode else 'decode'} the text")
+            await c.send_message(
+                m.chat.id,
+                f"{em.gagal}Failed to {'encode' if not decode else 'decode'} the text",
+            )
     else:
         await c.send_message(
-            m.chat.id, "{} Failed to fetch data: {}".format(em.gagal, response.status_code)
+            m.chat.id,
+            "{} Failed to fetch data: {}".format(em.gagal, response.status_code),
         )
 
 
