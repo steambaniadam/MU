@@ -95,7 +95,7 @@ async def _(c: nlx, m):
 @ky.ubot("add_anime", sudo=True)
 async def _(c: nlx, m):
     if len(m.command) < 3:
-        await m.reply("Usage: /add_anime <anime_name> <mal_id>")
+        await m.reply("Usage: /add_anime [anime_name] [mal_id]")
         return
 
     anime_name = m.command[1].lower()
