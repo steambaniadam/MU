@@ -392,10 +392,12 @@ async def _(c, m):
 `{}` Groups.
 `{}` Super Groups.
 `{}` Channels.
-`Admin in {}` Chats.
+`{}` Admin in Chats.
 `{}` Bots
-`{}` Banned on groups :
-Leaving from thin chat : `{}`**""".format(
+`{}` Banned on groups
+
+Leaving from this chat : 
+- `{}`**""".format(
             ms,
             zz,
             nanki,
