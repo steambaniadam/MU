@@ -16,10 +16,10 @@ async def process_message(c: nlx, m, text, decode=False):
         data = response.json()
         if not decode and "encoded" in data:
             encoded_text = data["encoded"]
-            await m.reply(encoded_text)
+            await m.reply(f"{em.sukses} Successfully encoded : `{encoded_text}`")
         elif decode and "decoded" in data:
             decoded_text = data["decoded"]
-            await m.reply(decoded_text)
+            await m.reply(f"{em.sukses} Successfully decoded : `{decoded_text}`")
         else:
             await c.send_message(
                 m.chat.id,
