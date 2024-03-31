@@ -95,43 +95,53 @@ async def _(c: nlx, m):
     bacot = await m.reply(cgr("proses").format(em.proses))
     a_chats = []
     me = await c.get_me()
-    async for dialog in c.get_dialogs():
-        if dialog.chat.type == ChatType.SUPERGROUP:
-            gua = await dialog.chat.get_member(int(me.id))
-            if gua.status in (
-                ChatMemberStatus.OWNER,
-                ChatMemberStatus.ADMINISTRATOR,
-            ):
-                a_chats.append(dialog.chat)
+    
+    try:
+        async for dialog in c.get_dialogs():
+            try:
+                if dialog.chat.type == ChatType.SUPERGROUP:
+                    gua = await dialog.chat.get_member(int(me.id))
+                    if gua.status in (
+                        ChatMemberStatus.OWNER,
+                        ChatMemberStatus.ADMINISTRATOR,
+                    ):
+                        a_chats.append(dialog.chat)
+            except Exception as e:
+                print(f"An error occurred while processing dialog: {e}")
+                continue
 
-    text = ""
-    j = 0
-    for chat in a_chats:
-        try:
-            title = chat.title
-        except Exception:
-            title = "Private Group"
-        if chat.username:
-            text += f"<b>{j + 1}.</b>  [{title}](https://t.me/{chat.username})[`{chat.id}`]\n"
-        else:
-            text += f"<b>{j + 1}. {title}</b> [`{chat.id}`]\n"
-        j += 1
+        text = ""
+        j = 0
+        for chat in a_chats:
+            try:
+                title = chat.title
+            except Exception:
+                title = "Private Group"
+            if chat.username:
+                text += f"<b>{j + 1}.</b>  [{title}](https://t.me/{chat.username})[`{chat.id}`]\n"
+            else:
+                text += f"<b>{j + 1}. {title}</b> [`{chat.id}`]\n"
+            j += 1
 
-    if not text:
-        await bacot.edit_text(cgr("prof_7").format(em.gagal))
-        return
-    elif len(text) > 4096:
-        with BytesIO(str.encode(text)) as out_file:
-            out_file.name = "adminlist.text"
-            await m.reply_document(document=out_file)
-            await bacot.delete()
+        if not text:
+            await bacot.edit_text(cgr("prof_7").format(em.gagal))
             return
-    else:
-        await bacot.edit_text(
-            cgr("prof_8").format(em.sukses, len(a_chats), text),
-            disable_web_page_preview=True,
-        )
-        return
+        elif len(text) > 4096:
+            with BytesIO(str.encode(text)) as out_file:
+                out_file.name = "adminlist.text"
+                await m.reply_document(document=out_file)
+                await bacot.delete()
+                return
+        else:
+            await bacot.edit_text(
+                cgr("prof_8").format(em.sukses, len(a_chats), text),
+                disable_web_page_preview=True,
+            )
+            return
+    except Exception as e:
+        print(f"An error occurred while fetching dialogs: {e}")
+
+
 
 
 @ky.ubot("setpp", sudo=True)

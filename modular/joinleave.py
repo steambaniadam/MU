@@ -105,21 +105,26 @@ async def _(c, m):
     nan = 0
     ceger = [-1001986858575, -1001876092598, -1001812143750]
 
-    async for dialog in c.get_dialogs():
-        if dialog.chat.type in (ChatType.GROUP, ChatType.SUPERGROUP):
-            chat = dialog.chat.id
-            try:
-                chat_info = await c.get_chat_member(chat, "me")
-                user_status = chat_info.status
-                if chat not in ceger and user_status not in (
-                    ChatMemberStatus.OWNER,
-                    ChatMemberStatus.ADMINISTRATOR,
-                ):
-                    nan += 1
-                    await c.leave_chat(chat)
-            except BaseException:
-                luci += 1
+    try:
+        async for dialog in c.get_dialogs():
+            if dialog.chat.type in (ChatType.GROUP, ChatType.SUPERGROUP):
+                chat = dialog.chat.id
+                try:
+                    chat_info = await c.get_chat_member(chat, "me")
+                    user_status = chat_info.status
+                    if chat not in ceger and user_status not in (
+                        ChatMemberStatus.OWNER,
+                        ChatMemberStatus.ADMINISTRATOR,
+                    ):
+                        nan += 1
+                        await c.leave_chat(chat)
+                except BaseException:
+                    luci += 1
+    except Exception as e:
+        print(f"An error occurred while fetching dialogs: {e}")
+
     await xenn.edit(cgr("join_5").format(em.sukses, nan, em.gagal, luci))
+
 
 
 @ky.ubot("leaveallch|kickmeallch", sudo=True)
@@ -131,21 +136,26 @@ async def _(c: nlx, m):
     nan = 0
     ceger = [-1001713457115, -1001818398503, -1001697717236]
 
-    async for dialog in c.get_dialogs():
-        try:
-            if dialog.chat.type == ChatType.CHANNEL:
-                chat = dialog.chat.id
-                try:
-                    chat_info = await c.get_chat_member(chat, "me")
-                    user_status = chat_info.status
-                    if chat not in ceger and user_status not in (
-                        ChatMemberStatus.OWNER,
-                        ChatMemberStatus.ADMINISTRATOR,
-                    ):
-                        luci += 1
-                        await c.leave_chat(chat)
-                except Exception:
-                    nan += 1
-        except Exception:
-            nan += 1
+    try:
+        async for dialog in c.get_dialogs():
+            try:
+                if dialog.chat.type == ChatType.CHANNEL:
+                    chat = dialog.chat.id
+                    try:
+                        chat_info = await c.get_chat_member(chat, "me")
+                        user_status = chat_info.status
+                        if chat not in ceger and user_status not in (
+                            ChatMemberStatus.OWNER,
+                            ChatMemberStatus.ADMINISTRATOR,
+                        ):
+                            luci += 1
+                            await c.leave_chat(chat)
+                    except Exception:
+                        nan += 1
+            except Exception:
+                nan += 1
+    except Exception as e:
+        print(f"An error occurred while fetching dialogs: {e}")
+
     await xenn.edit_text(cgr("join_6").format(em.sukses, luci, em.gagal, nan))
+

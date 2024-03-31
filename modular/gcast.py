@@ -25,9 +25,17 @@ async def digikes_(q):
         "gikes": [ChatType.GROUP, ChatType.SUPERGROUP],
         "gucast": [ChatType.PRIVATE],
     }
-    async for dialog in nlx.get_dialogs():
-        if dialog.chat.type in chat_types[q]:
-            chats.append(dialog.chat.id)
+    try:
+        async for dialog in nlx.get_dialogs():
+            try:
+                if dialog.chat.type in chat_types[q]:
+                    chats.append(dialog.chat.id)
+            except Exception as e:
+                LOGGER.error(f"An error occurred while processing dialog: {e}")
+                pass
+    except Exception as e:
+        LOGGER.error(f"An error occurred while getting dialogs: {e}")
+        pass
 
     return chats
 
