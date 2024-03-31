@@ -22,13 +22,14 @@ async def dasar_laknat():
     async for bb in nlx.get_dialogs():
         if bb.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]:
             try:
-                await client.read_chat_history(bb.chat.id, max_id=0)
+                await nlx.get_chat(bb.chat.id)
+                await nlx.read_chat_history(bb.chat.id, max_id=0)
             except (ChannelPrivate, PeerIdInvalid, UserBannedInChannel):
                 continue
             except FloodWait as e:
                 await asyncio.sleep(e.value)
                 try:
-                    await client.read_chat_history(bb.chat.id, max_id=0)
+                    await nlx.read_chat_history(bb.chat.id, max_id=0)
                 except:
                     continue
     LOGGER.info("Finished Read Message..")
