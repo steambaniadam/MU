@@ -604,7 +604,7 @@ async def _(c: nlx, m):
 
 
 from pyrogram import raw
-from pyrogram.raw import functions
+
 
 @ky.ubot("hantu", sudo=True)
 async def _(c: nlx, m):
@@ -622,7 +622,7 @@ async def _(c: nlx, m):
                         raw.functions.messages.DeleteChatUser(
                             chat_id=chat_id,
                             user_id=hantunya.from_user.id,
-                            revoke_history=True
+                            revoke_history=True,
                         )
                     )
                     deleted_messages_count += 1
