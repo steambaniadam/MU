@@ -9,8 +9,8 @@
 ################################################################
 
 import requests
-from Mix import *
 
+from Mix import *
 
 __modles__ = "Morse"
 __help__ = """
@@ -23,14 +23,15 @@ __help__ = """
 • Penjelasan: Untuk men-decode sandi morse.
 """
 
+
 @ky.ubot("emorse|dmorse")
-async def _(c:nlx, m):
+async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     kimi = c.get_text(m)
     pros = await m.reply(cgr("proses").format(em.proses))
     if m.command[0] == "emorse":
-        
+
         uri = f"https://api.safone.dev/morse/encode?text={kimi}"
         pot = requests.get(url)
         if pot.status_code == 200:
@@ -47,7 +48,8 @@ async def _(c:nlx, m):
         else:
             await m.reply(f"Error: {pot.status_code}")
     else:
-        await m.reply(f"{em.gagal} Perintah yang anda gunakan salah!! Silahkan lihat bantuan.")
+        await m.reply(
+            f"{em.gagal} Perintah yang anda gunakan salah!! Silahkan lihat bantuan."
+        )
     await pros.delete()
     return
-        
