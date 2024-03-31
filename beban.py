@@ -17,9 +17,9 @@ from team.nandev.database import udB
 from Mix import nlx
 
 
-async def dasar_laknat(client: nlx):
+async def dasar_laknat(client):
     LOGGER.info("Check whether this account is a burden or not...")
-    async for bb in client.get_dialogs(limit=700):
+    async for bb in client.get_dialogs(limit=500):
         try:
             if bb.chat.type in [ChatType.GROUP, ChatType.SUPERGROUP]:
                 try:
@@ -34,6 +34,7 @@ async def dasar_laknat(client: nlx):
                         pass
         except Exception as e:
             LOGGER.error(f"An error occurred while processing chat: {e}")
+            pass
     LOGGER.info("Finished Read Message..")
 
 
