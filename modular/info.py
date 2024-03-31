@@ -346,8 +346,9 @@ async def _(c, m):
     ceger = 0
     kntl = 0
     benet = 0
+    dimari = set()
     xenn = await c.get_me()
-
+    
     try:
         async for dialog in c.get_dialogs():
             try:
@@ -369,10 +370,11 @@ async def _(c, m):
                     tgr += 1
             except pyrogram.errors.exceptions.not_acceptable_406.ChannelPrivate:
                 benet += 1
+                dimari.add(dialog.chat.id)
                 continue
     except pyrogram.errors.exceptions.not_acceptable_406.ChannelPrivate:
         benet += 1
-
+    
     end = datetime.now()
     ms = (end - start).seconds
     await Nan.edit_text(
@@ -383,7 +385,8 @@ async def _(c, m):
 `{}` Channels.
 `Admin in {}` Chats.
 `{}` Bots
-`{}` Banned on groups**""".format(
+`{}` Banned on groups :
+`{}`**""".format(
             ms,
             zz,
             nanki,
@@ -392,5 +395,7 @@ async def _(c, m):
             kntl,
             ceger,
             benet,
+            dimari,
         )
     )
+
