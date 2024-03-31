@@ -90,5 +90,5 @@ async def _(c: nlx, m):
 
 @ky.ubot("anime_list", sudo=True)
 async def _(c: nlx, m):
-    anime_list_text = "\n".join([f"{name}" for name in ANIME_LIST.items()])
-    await m.reply(f"List of available anime:\n{anime_list_text}")
+    anime_list_text = "\n".join(ANIME_LIST.keys())
+    await m.reply(f"List of available anime:\n`{anime_list_text}`")
