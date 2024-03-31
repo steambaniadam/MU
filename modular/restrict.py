@@ -605,7 +605,7 @@ async def _(c: nlx, m):
 
 async def delete_deleted_accounts_messages(c, chat_id):
     deleted_messages_count = 0
-    async for message in c.iter_history(chat_id, limit=100, direction='backward'):
+    async for message in c.iter_history(chat_id, limit=100, direction="backward"):
         if message.from_user and message.from_user.is_deleted:
             await c.delete_messages(chat_id, message.message_id)
             deleted_messages_count += 1
