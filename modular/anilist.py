@@ -37,7 +37,6 @@ ANIME_LIST = {
 }
 
 
-
 @ky.ubot("streaming", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
