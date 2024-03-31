@@ -509,6 +509,7 @@ async def _(_, cq):
         )
         return
 
+
 """
 async def _(_, cq):
     unPacked = unpacked2(cq.inline_message_id)
@@ -518,6 +519,7 @@ async def _(_, cq):
         await cq.answer(f"Jangan Di Pencet Anjeng.", True)
         return
 """
+
 
 def cb_tespeed():
     def speed_convert(size):
