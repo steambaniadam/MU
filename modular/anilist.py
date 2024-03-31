@@ -111,9 +111,7 @@ async def _(c: nlx, m):
 @ky.ubot("remove_anime", sudo=True)
 async def _(c: nlx, m):
     if len(m.command) < 2:
-        await m.reply(
-            f"Cara menghapus dari list : `{m.text} [nama_anime]`"
-        )
+        await m.reply(f"Cara menghapus dari list : `{m.text} [nama_anime]`")
         return
 
     anime_name = " ".join(m.command[1:]).strip().lower()
@@ -123,6 +121,4 @@ async def _(c: nlx, m):
         return
 
     del ANIME_LIST[anime_name]
-    await m.reply(
-        f"Anime `{anime_name}` berhasil dihapus dari daftar anime."
-    )
+    await m.reply(f"Anime `{anime_name}` berhasil dihapus dari daftar anime.")
