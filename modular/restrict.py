@@ -604,21 +604,21 @@ async def _(c: nlx, m):
 
 
 @ky.ubot("hantu", sudo=True)
-async def hantu(client, message):
+async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    pros = await message.reply(cgr("proses").format(em.proses))
+    pros = await m.reply(cgr("proses").format(em.proses))
     total_deleted_messages = 0
-    async for dialog in client.get_dialogs():
+    async for dialog in c.get_dialogs():
         chat_id = dialog.chat.id
         if dialog.chat.type == "private":
             deleted_messages_count = 0
-            async for hantunya in client.get_chat_history(chat_id, limit=100):
+            async for hantunya in c.get_chat_history(chat_id, limit=100):
                 if hantunya.from_user and hantunya.from_user.is_deleted:
-                    await client.delete_messages(chat_id, hantunya.message_id)
+                    await c.delete_messages(chat_id, hantunya.message_id)
                     deleted_messages_count += 1
             total_deleted_messages += deleted_messages_count
-    await message.reply(
+    await m.reply(
         f"Total riwayat pesan dengan pengguna yang telah dihapus yang berhasil dihapus: {total_deleted_messages}"
     )
     await pros.delete()
