@@ -347,28 +347,32 @@ async def _(c, m):
     kntl = 0
     benet = 0
     xenn = await c.get_me()
-    async for dialog in c.get_dialogs():
-        try:
-            if dialog.chat.type == ChatType.PRIVATE:
-                zz += 1
-            elif dialog.chat.type == ChatType.BOT:
-                ceger += 1
-            elif dialog.chat.type == ChatType.GROUP:
-                nanki += 1
-            elif dialog.chat.type == ChatType.SUPERGROUP:
-                luci += 1
-                user_s = await dialog.chat.get_member(int(xenn.id))
-                if user_s.status in (
-                    ChatMemberStatus.OWNER,
-                    ChatMemberStatus.ADMINISTRATOR,
-                ):
-                    kntl += 1
-            elif dialog.chat.type == ChatType.CHANNEL:
-                tgr += 1
-        except pyrogram.errors.exceptions.not_acceptable_406.ChannelPrivate:
-            benet += 1
-            continue
-
+    
+    try:
+        async for dialog in c.get_dialogs():
+            try:
+                if dialog.chat.type == ChatType.PRIVATE:
+                    zz += 1
+                elif dialog.chat.type == ChatType.BOT:
+                    ceger += 1
+                elif dialog.chat.type == ChatType.GROUP:
+                    nanki += 1
+                elif dialog.chat.type == ChatType.SUPERGROUP:
+                    luci += 1
+                    user_s = await dialog.chat.get_member(int(xenn.id))
+                    if user_s.status in (
+                        ChatMemberStatus.OWNER,
+                        ChatMemberStatus.ADMINISTRATOR,
+                    ):
+                        kntl += 1
+                elif dialog.chat.type == ChatType.CHANNEL:
+                    tgr += 1
+            except pyrogram.errors.exceptions.not_acceptable_406.ChannelPrivate:
+                benet += 1
+                continue
+    except pyrogram.errors.exceptions.not_acceptable_406.ChannelPrivate:
+        benet += 1
+    
     end = datetime.now()
     ms = (end - start).seconds
     await Nan.edit_text(
@@ -390,3 +394,5 @@ async def _(c, m):
             benet,
         )
     )
+
+
