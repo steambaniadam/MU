@@ -95,7 +95,7 @@ async def _(c: nlx, m):
     bacot = await m.reply(cgr("proses").format(em.proses))
     a_chats = []
     me = await c.get_me()
-    
+
     try:
         async for dialog in c.get_dialogs():
             try:
@@ -140,8 +140,6 @@ async def _(c: nlx, m):
             return
     except Exception as e:
         print(f"An error occurred while fetching dialogs: {e}")
-
-
 
 
 @ky.ubot("setpp", sudo=True)

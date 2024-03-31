@@ -32,10 +32,8 @@ async def digikes_(q):
                     chats.append(dialog.chat.id)
             except Exception as e:
                 LOGGER.error(f"An error occurred while processing dialog: {e}")
-                pass
     except Exception as e:
         LOGGER.error(f"An error occurred while getting dialogs: {e}")
-        pass
 
     return chats
 

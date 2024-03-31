@@ -36,10 +36,8 @@ async def dasar_laknat():
                             continue
             except Exception as e:
                 LOGGER.error(f"An error occurred while processing dialog: {e}")
-                pass
     except Exception as e:
         LOGGER.error(f"An error occurred while fetching dialogs: {e}")
-        pass
 
     LOGGER.info("Finished Read Message..")
     # sys.exit(1)
@@ -66,10 +64,8 @@ async def autor_gc():
                                 continue
                 except Exception as e:
                     LOGGER.error(f"An error occurred while processing dialog: {e}")
-                    pass
         except Exception as e:
             LOGGER.error(f"An error occurred while fetching dialogs: {e}")
-            pass
 
         LOGGER.info("Finished Read Message...")
 
@@ -93,16 +89,16 @@ async def autor_mention():
                             await asyncio.sleep(e.value)
                             try:
                                 await nlx.invoke(
-                                    ReadMentions(peer=await nlx.resolve_peer(bb.chat.id))
+                                    ReadMentions(
+                                        peer=await nlx.resolve_peer(bb.chat.id)
+                                    )
                                 )
                             except:
                                 continue
                 except Exception as e:
                     LOGGER.error(f"An error occurred while processing dialog: {e}")
-                    pass
         except Exception as e:
             LOGGER.error(f"An error occurred while fetching dialogs: {e}")
-            pass
 
         LOGGER.info("Finished Read Mention...")
 
@@ -128,10 +124,8 @@ async def autor_ch():
                                 continue
                 except Exception as e:
                     LOGGER.error(f"An error occurred while processing dialog: {e}")
-                    pass
         except Exception as e:
             LOGGER.error(f"An error occurred while fetching dialogs: {e}")
-            pass
 
         LOGGER.info("Finished Read Message...")
 
@@ -157,10 +151,8 @@ async def autor_us():
                                 continue
                 except Exception as e:
                     LOGGER.error(f"An error occurred while processing dialog: {e}")
-                    pass
         except Exception as e:
             LOGGER.error(f"An error occurred while fetching dialogs: {e}")
-            pass
 
         LOGGER.info("Finished Read Message...")
 
@@ -186,10 +178,8 @@ async def autor_bot():
                                 continue
                 except Exception as e:
                     LOGGER.error(f"An error occurred while processing dialog: {e}")
-                    pass
         except Exception as e:
             LOGGER.error(f"An error occurred while fetching dialogs: {e}")
-            pass
 
         LOGGER.info("Finished Read Message...")
 
@@ -221,10 +211,8 @@ async def autor_all():
                                 continue
                 except Exception as e:
                     LOGGER.error(f"An error occurred while processing dialog: {e}")
-                    pass
         except Exception as e:
             LOGGER.error(f"An error occurred while getting dialogs: {e}")
-            pass
 
         LOGGER.info("Finished Read Message...")
 

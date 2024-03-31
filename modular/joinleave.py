@@ -126,7 +126,6 @@ async def _(c, m):
     await xenn.edit(cgr("join_5").format(em.sukses, nan, em.gagal, luci))
 
 
-
 @ky.ubot("leaveallch|kickmeallch", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
@@ -158,4 +157,3 @@ async def _(c: nlx, m):
         print(f"An error occurred while fetching dialogs: {e}")
 
     await xenn.edit_text(cgr("join_6").format(em.sukses, luci, em.gagal, nan))
-
