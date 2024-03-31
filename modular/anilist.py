@@ -68,15 +68,15 @@ async def _(c: nlx, m):
                     await pros.delete()
                     return
                 else:
-                    await m.edit(f"Failed to get streaming link for `{anime_name}`.")
+                    await m.reply(f"Failed to get streaming link for `{anime_name}`.")
             except Exception as e:
-                await m.edit(
+                await m.reply(
                     f"Failed to get streaming link for `{anime_name}`. Error: {e}"
                 )
         else:
-            await m.edit("Anime not found in the list.")
+            await m.reply("Anime not found in the list.")
     else:
-        await m.edit("Please provide the name of the anime.")
+        await m.reply("Please provide the name of the anime.")
     await pros.delete()
 
 
