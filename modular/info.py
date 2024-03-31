@@ -382,8 +382,8 @@ async def _(c, m):
 `{}` Super Groups.
 `{}` Channels.
 `Admin in {}` Chats.
-`{}` Bots**
-`{}` Banned on groups""".format(
+`{}` Bots
+`{}` Banned on groups**""".format(
             ms,
             zz,
             nanki,
