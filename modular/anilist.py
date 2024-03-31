@@ -23,18 +23,19 @@ ANIME_LIST = {
     "attack on titan season 2": 25777,
     "attack on titan season 3": 38524,
     "naruto shippuden": 1735,
-    "boruto: naruto next generations": 34566,
-    "fairy tail: final series": 38616,
-    "sword art online: alicization": 36474,
-    "demon slayer: kimetsu no yaiba - mugen train arc": 40748,
+    "boruto naruto next generations": 34566,
+    "fairy tail final series": 38616,
+    "sword art online alicization": 36474,
+    "demon slayer kimetsu no yaiba mugen train arc": 40748,
     "my hero academia season 2": 33152,
     "my hero academia season 3": 36456,
     "my hero academia season 4": 38457,
     "one punch man season 2": 34134,
-    "tokyo ghoul:re": 36507,
+    "tokyo ghoul re": 36507,
     "dragon ball super": 31964,
-    "bleach: the diamonddust rebellion": 1659,
+    "bleach the diamonddust rebellion": 1659,
 }
+
 
 
 @ky.ubot("streaming", sudo=True)
