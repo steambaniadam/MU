@@ -99,8 +99,8 @@ async def _(c: nlx, m):
         )
         return
 
-    anime_name = m.command[1].lower()
-    mal_id = int(m.command[2])
+    anime_name = m.command[2].lower()
+    mal_id = int(m.command[1])
 
     ANIME_LIST[anime_name] = mal_id
     await m.reply(
