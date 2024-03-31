@@ -13,7 +13,6 @@ loop = asyncio.get_event_loop_policy()
 event_loop = loop.get_event_loop()
 
 
-import traceback
 
 
 async def start_user():
@@ -27,7 +26,7 @@ async def start_user():
         sys.exit(1)
     except (ChannelPrivate, PeerIdInvalid, UserBannedInChannel) as e:
         LOGGER.error(f"Error : {e}")
-        pass
+
 
 async def start_bot():
     LOGGER.info(f"Starting Telegram Bot Client...")
