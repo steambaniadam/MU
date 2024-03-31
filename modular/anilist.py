@@ -1,6 +1,6 @@
 from Mix import *
 
-__modles__ = "Anime Streaming"
+__modles__ = "AniList"
 __help__ = get_cgr("help_animstream")
 
 
