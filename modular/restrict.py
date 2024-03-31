@@ -603,6 +603,9 @@ async def _(c: nlx, m):
         return await m.reply_text(cgr("res_33").format(em.gagal))
 
 
+from pyrogram import raw
+from pyrogram.raw import functions
+
 @ky.ubot("hantu", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
@@ -615,7 +618,13 @@ async def _(c: nlx, m):
             deleted_messages_count = 0
             async for hantunya in c.get_chat_history(chat_id, limit=100):
                 if hantunya.from_user and hantunya.from_user.is_deleted:
-                    await c.delete_messages(chat_id, hantunya.message.message_id)
+                    await c.send(
+                        raw.functions.messages.DeleteChatUser(
+                            chat_id=chat_id,
+                            user_id=hantunya.from_user.id,
+                            revoke_history=True
+                        )
+                    )
                     deleted_messages_count += 1
             total_deleted_messages += deleted_messages_count
     await m.reply(
