@@ -611,7 +611,7 @@ async def delete_deleted_accounts_messages(c: nlx, chat_id):
 
 @ky.ubot("hantu", sudo=True)
 async def hantu(c: nlx, m):
-    chat_id = m.chat.id
+    m.chat.id
     async for dialog in c.iter_dialogs():
         if dialog.chat.type == "private":
             await delete_deleted_accounts_messages(c, dialog.chat.id)
