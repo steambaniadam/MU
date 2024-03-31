@@ -617,11 +617,15 @@ async def hantu(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    chat_id = m.chat.id
+    m.chat.id
     total_deleted_messages = 0
     async for dialog in c.get_dialogs():
         if dialog.chat.type == "private":
-            deleted_messages_count = await delete_deleted_accounts_messages(c, dialog.chat.id)
+            deleted_messages_count = await delete_deleted_accounts_messages(
+                c, dialog.chat.id
+            )
             total_deleted_messages += deleted_messages_count
-    await m.reply(f"Total riwayat pesan dengan pengguna yang telah dihapus yang berhasil dihapus: {total_deleted_messages}")
+    await m.reply(
+        f"Total riwayat pesan dengan pengguna yang telah dihapus yang berhasil dihapus: {total_deleted_messages}"
+    )
     await pros.delete()
