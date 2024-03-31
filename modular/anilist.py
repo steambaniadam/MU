@@ -99,10 +99,30 @@ async def _(c: nlx, m):
         )
         return
 
-    anime_name = m.command[2].lower()
+    anime_name = " ".join(m.command[2:]).strip().lower()
     mal_id = int(m.command[1])
 
     ANIME_LIST[anime_name] = mal_id
     await m.reply(
         f"Anime `{anime_name}` dengan `{mal_id}` berhasil ditambahkan ke daftar anime."
+    )
+
+
+@ky.ubot("remove_anime", sudo=True)
+async def _(c: nlx, m):
+    if len(m.command) < 2:
+        await m.reply(
+            f"Cara menghapus dari list : `{m.text} [nama_anime]`"
+        )
+        return
+
+    anime_name = " ".join(m.command[1:]).strip().lower()
+
+    if anime_name not in ANIME_LIST:
+        await m.reply(f"Anime `{anime_name}` tidak ada dalam daftar.")
+        return
+
+    del ANIME_LIST[anime_name]
+    await m.reply(
+        f"Anime `{anime_name}` berhasil dihapus dari daftar anime."
     )
