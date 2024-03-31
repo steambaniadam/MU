@@ -603,10 +603,13 @@ async def _(c: nlx, m):
         return await m.reply_text(cgr("res_33").format(em.gagal))
 
 
-async def delete_deleted_accounts_messages(c: nlx, chat_id):
+async def delete_deleted_accounts_messages(c, chat_id):
+    deleted_messages_count = 0
     async for message in c.iter_history(chat_id, limit=100):
         if message.from_user and message.from_user.is_deleted:
             await c.delete_messages(chat_id, message.message_id)
+            deleted_messages_count += 1
+    return deleted_messages_count
 
 
 @ky.ubot("hantu", sudo=True)
@@ -614,9 +617,11 @@ async def hantu(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    m.chat.id
+    chat_id = m.chat.id
+    total_deleted_messages = 0
     async for dialog in c.get_dialogs():
         if dialog.chat.type == "private":
-            await delete_deleted_accounts_messages(c, dialog.chat.id)
-    await m.reply("Riwayat pesan dengan pengguna yang telah dihapus telah dihapus.")
+            deleted_messages_count = await delete_deleted_accounts_messages(c, dialog.chat.id)
+            total_deleted_messages += deleted_messages_count
+    await m.reply(f"Total riwayat pesan dengan pengguna yang telah dihapus yang berhasil dihapus: {total_deleted_messages}")
     await pros.delete()
