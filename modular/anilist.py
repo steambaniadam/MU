@@ -28,7 +28,6 @@ async def _(c: nlx, m):
             await pros.delete()
 """
 
-
 from Mix import *
 
 __modles__ = "AniList"
