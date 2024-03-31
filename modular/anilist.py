@@ -33,7 +33,7 @@ ANIME_LIST = {
     "one punch man season 2": 34134,
     "tokyo ghoul:re": 36507,
     "dragon ball super": 31964,
-    "bleach: the diamonddust rebellion": 1659
+    "bleach: the diamonddust rebellion": 1659,
 }
 
 
