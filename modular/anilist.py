@@ -28,7 +28,6 @@ async def _(c: nlx, m):
             await pros.delete()
 """
 
-import re
 
 from Mix import *
 
@@ -98,9 +97,11 @@ async def _(c: nlx, m):
     if len(m.command) < 3:
         await m.reply("Usage: /add_anime <anime_name> <mal_id>")
         return
-    
+
     anime_name = m.command[1].lower()
     mal_id = int(m.command[2])
-    
+
     ANIME_LIST[anime_name] = mal_id
-    await m.reply(f"Anime '{anime_name}' with MAL ID {mal_id} has been added to the list.")
+    await m.reply(
+        f"Anime '{anime_name}' with MAL ID {mal_id} has been added to the list."
+    )
