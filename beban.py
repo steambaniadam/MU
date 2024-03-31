@@ -38,7 +38,6 @@ async def dasar_laknat(client):
     LOGGER.info("Finished Read Message..")
 
 
-
 async def autor_gc():
     if not udB.get_var(nlx.me.id, "read_gc"):
         return
