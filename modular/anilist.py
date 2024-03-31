@@ -44,7 +44,13 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     if len(m.command) > 1:
         anime_name = " ".join(m.command[1:]).strip().lower()
-        anime_name = anime_name.replace(" i", " II").replace(" ii", " II").replace(" iii", " III").replace(" iv", " IV").replace(" v", " V")
+        anime_name = (
+            anime_name.replace(" i", " II")
+            .replace(" ii", " II")
+            .replace(" iii", " III")
+            .replace(" iv", " IV")
+            .replace(" v", " V")
+        )
         if anime_name in ANIME_LIST:
             anime_id = ANIME_LIST[anime_name]
             try:
