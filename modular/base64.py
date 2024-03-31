@@ -1,11 +1,10 @@
 import requests
-import pyrogram
-from pyrogram import filters
 
 from Mix import *
 
 __modles__ = "Encoder"
 __help__ = "Encoder"
+
 
 async def send_encoded_message(chat_id, encoded_text):
     await nlx.send_message(chat_id, encoded_text)
@@ -22,7 +21,9 @@ async def process_message(c: nlx, m, text):
         else:
             await c.send_message(m.chat.id, "Response status is not OK")
     else:
-        await c.send_message(m.chat.id, "Failed to fetch data: {}".format(response.status_code))
+        await c.send_message(
+            m.chat.id, "Failed to fetch data: {}".format(response.status_code)
+        )
 
 
 @ky.ubot("encode", sudo=True)
