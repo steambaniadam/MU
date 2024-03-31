@@ -47,15 +47,12 @@ ANIME_LIST = {
     "sword art online": 11757,
     "one punch man": 30276,
     "tokyo ghoul": 22319,
+    "bleach": 269,
+    "hunter x hunter": 11061,
+    "fairy tail": 6702,
+    "dragon ball z": 813,
+    "cowboy bebop": 1,
 }
-
-
-URL_REGEX = re.compile(
-    r"""(?i)\b((?:https?://|www\d{0,3}[.]|
-              [a-z0-9.\-][.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|
-              (\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\
-              ()<>]+\)))*\)|[^\s`!()\[\]{};:'".,<>?«»“”‘’]))""".strip()
-)
 
 
 @ky.ubot("streaming", sudo=True)
@@ -94,3 +91,16 @@ async def _(c: nlx, m):
         [f"**{i}) `{name}`" for i, name in enumerate(ANIME_LIST.keys(), start=1)]
     )
     await m.reply(f"**List of available anime:**\n{anime_list_text}")
+
+
+@ky.ubot("add_anime", sudo=True)
+async def _(c: nlx, m):
+    if len(m.command) < 3:
+        await m.reply("Usage: /add_anime <anime_name> <mal_id>")
+        return
+    
+    anime_name = m.command[1].lower()
+    mal_id = int(m.command[2])
+    
+    ANIME_LIST[anime_name] = mal_id
+    await m.reply(f"Anime '{anime_name}' with MAL ID {mal_id} has been added to the list.")
