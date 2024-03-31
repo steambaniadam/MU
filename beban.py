@@ -34,7 +34,6 @@ async def dasar_laknat(client: nlx):
                         pass
         except Exception as e:
             LOGGER.error(f"An error occurred while processing chat: {e}")
-            pass
     LOGGER.info("Finished Read Message..")
 
 
