@@ -25,11 +25,9 @@ async def start_user():
         LOGGER.error(f"An error occurred while starting the user client: {e}")
         LOGGER.info("Check your session or api id!!")
         sys.exit(1)
-    except Exception as e:
-        LOGGER.error(f"An unexpected error occurred: {e}")
-        LOGGER.error(traceback.format_exc())
-        sys.exit(1)
-
+    except (ChannelPrivate, PeerIdInvalid, UserBannedInChannel) as e:
+        LOGGER.error(f"Error : {e}")
+        pass
 
 async def start_bot():
     LOGGER.info(f"Starting Telegram Bot Client...")
