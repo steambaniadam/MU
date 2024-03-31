@@ -11,6 +11,7 @@ import asyncio
 from pyrogram.enums import *
 from pyrogram.errors import *
 from pyrogram.types import ChatPermissions, ChatPrivileges
+from pyrogram.raw.functions.messages import DeleteHistory
 
 from Mix import DEVS, Emojik, cgr, get_cgr, ky, nlx
 from Mix.core.parser import mention_html
@@ -610,21 +611,17 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     total_deleted_messages = 0
     total_remaining_messages = 0
-    async for dialog in c.iter_dialogs():
+    async for dialog in c.get_dialogs():
         chat_id = dialog.chat.id
-        if dialog.chat.type == types.ChatType.PRIVATE:
+        if dialog.chat.type == ChatType.PRIVATE:
             deleted_messages_count = 0
             remaining_messages_count = 0
-            async for hantunya in c.iter_history(chat_id, limit=100):
+            async for hantunya in c.get_chat_history(chat_id, limit=100):
                 if hantunya.from_user and hantunya.from_user.is_deleted:
                     try:
                         user_id = hantunya.from_user.id
                         info = await c.resolve_peer(user_id)
-                        await c.send(
-                            functions.messages.DeleteHistory(
-                                peer=info, max_id=0, revoke=True
-                            )
-                        )
+                        await c.invoke(DeleteHistory(peer=info, max_id=0, revoke=True))
                         deleted_messages_count += 1
                     except PeerIdInvalid:
                         print("ID peer tidak valid atau tidak dikenal")
