@@ -66,6 +66,8 @@ async def _(c: nlx, m):
                 )
                 await pros.delete()
                 return
+            except IndexError:
+                await m.edit(f"Failed to get streaming link for `{anime_name}`.")
             except Exception as e:
                 await m.edit(f"{e}")
         else:
