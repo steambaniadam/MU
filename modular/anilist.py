@@ -53,7 +53,7 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     if len(m.command) > 1:
         anime_name = " ".join(m.command[1:]).strip().lower()
-        anime_id = await find_matching_anime(c, m, anime_name)
+        anime_id = await find_matching_anime(anime_name)
         if anime_id is not None:
             try:
                 xi = await c.get_inline_bot_results(
