@@ -603,11 +603,11 @@ async def _(c: nlx, m):
         return await m.reply_text(cgr("res_33").format(em.gagal))
 
 
-async def delete_deleted_accounts_messages(c, chat_id):
+async def delete_deleted_accounts_messages(nlx, chat_id):
     deleted_messages_count = 0
-    async for message in c.iter_history(chat_id, limit=100, direction="backward"):
-        if message.from_user and message.from_user.is_deleted:
-            await c.delete_messages(chat_id, message.message_id)
+    async for hantunya in nlx.get_chat_history(chat_id, limit=100):
+        if hantunya.from_user and hantunya.from_user.is_deleted:
+            await nlx.delete_messages(chat_id, message.message_id)
             deleted_messages_count += 1
     return deleted_messages_count
 
