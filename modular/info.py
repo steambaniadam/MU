@@ -347,7 +347,7 @@ async def _(c, m):
     kntl = 0
     benet = 0
     xenn = await c.get_me()
-    
+
     try:
         async for dialog in c.get_dialogs():
             try:
@@ -372,7 +372,7 @@ async def _(c, m):
                 continue
     except pyrogram.errors.exceptions.not_acceptable_406.ChannelPrivate:
         benet += 1
-    
+
     end = datetime.now()
     ms = (end - start).seconds
     await Nan.edit_text(
@@ -394,5 +394,3 @@ async def _(c, m):
             benet,
         )
     )
-
-
