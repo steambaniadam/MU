@@ -403,4 +403,3 @@ Leaving from thin chat : `{}`**""".format(
             dimari,
         )
     )
-
