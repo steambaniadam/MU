@@ -40,6 +40,8 @@ async def _(c: nlx, m):
         if pot.status_code == 200:
             res = pot.json().get("encoded")
             await m.reply(f"{em.sukses} Encode Morse\n\n`{res}`")
+        elif pot.status_code == 422:
+            await m.reply(f"{em.gagal} Mohon gunakan teks dan angka, tidak dapat meng-encode morse emoji!!")
         else:
             await m.reply(f"Error: {pot.status_code} {pot.text}")
     elif m.command[0] == "dmorse":
