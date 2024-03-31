@@ -25,13 +25,13 @@ async def dasar_laknat(client):
                 try:
                     await client.read_chat_history(bb.chat.id, max_id=0)
                 except (ChannelPrivate, PeerIdInvalid, UserBannedInChannel):
-                    continue
+                    pass
                 except FloodWait as e:
                     await asyncio.sleep(e.value)
                     try:
                         await client.read_chat_history(bb.chat.id, max_id=0)
                     except:
-                        continue
+                        pass
         except Exception as e:
             LOGGER.error(f"An error occurred while processing chat: {e}")
             continue

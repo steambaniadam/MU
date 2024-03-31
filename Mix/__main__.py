@@ -25,8 +25,8 @@ async def start_user():
         LOGGER.error(f"An error occurred while starting the user client: {e}")
         LOGGER.info("Check your session or api id!!")
         sys.exit(1)
-    except Exception:
-        LOGGER.error("An unexpected error occurred:")
+    except Exception as e:
+        LOGGER.error(f"An unexpected error occurred: {e}")
         LOGGER.error(traceback.format_exc())
         sys.exit(1)
 
