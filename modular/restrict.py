@@ -603,8 +603,9 @@ async def _(c: nlx, m):
         return await m.reply_text(cgr("res_33").format(em.gagal))
 
 
-from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
 from pyrogram import types
+from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid
+
 
 @ky.ubot("hantu", sudo=True)
 async def _(c: nlx, m):
@@ -621,11 +622,7 @@ async def _(c: nlx, m):
                     try:
                         user_id = hantunya.from_user.id
                         info = await c.resolve_peer(user_id)
-                        await c.invoke(
-                            DeleteHistory(
-                                peer=info, max_id=0, revoke=True
-                            )
-                        )
+                        await c.invoke(DeleteHistory(peer=info, max_id=0, revoke=True))
                         deleted_messages_count += 1
                     except PeerIdInvalid:
                         print("ID peer tidak valid atau tidak dikenal")
@@ -634,5 +631,3 @@ async def _(c: nlx, m):
         f"Total riwayat pesan dengan pengguna yang telah dihapus yang berhasil dihapus: `{total_deleted_messages}`"
     )
     await pros.delete()
-
-
