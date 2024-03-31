@@ -603,8 +603,7 @@ async def _(c: nlx, m):
         return await m.reply_text(cgr("res_33").format(em.gagal))
 
 
-from pyrogram.raw import functions
-from pyrogram.enums import ChatTpye
+
 
 @ky.ubot("hantu", sudo=True)
 async def _(c: nlx, m):
@@ -619,10 +618,7 @@ async def _(c: nlx, m):
             async for hantunya in c.get_chat_history(chat_id, limit=100):
                 if hantunya.from_user and hantunya.from_user.is_deleted:
                     info = await c.resolve_peer(hantunya.id)
-                    await c.invoke(DeleteHistory(
-                            peer=info, max_id=0, revoke=True
-                        )
-                    )
+                    await c.invoke(DeleteHistory(peer=info, max_id=0, revoke=True))
                     deleted_messages_count += 1
             total_deleted_messages += deleted_messages_count
     await m.reply(
