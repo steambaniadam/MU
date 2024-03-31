@@ -1,9 +1,12 @@
 import requests
-
 from Mix import *
 
 __modles__ = "Encoder"
 __help__ = "Encoder"
+
+
+async def send_encoded_message(chat_id, encoded_text):
+    await nlx.send_message(chat_id, encoded_text)
 
 
 async def process_message(c: nlx, m, text, decode=False):
@@ -16,13 +19,12 @@ async def process_message(c: nlx, m, text, decode=False):
         data = response.json()
         if data["status"] == "OK":
             encoded_text = data["encoded"]
-            await m.reply(encoded_text)
+            await m.reply(f"{em.sukses} Successfully :\n`{encoded_text}`")
         else:
             await c.send_message(m.chat.id, f"{em.gagal}Response status is not OK")
     else:
         await c.send_message(
-            m.chat.id,
-            "{} Failed to fetch data: {}".format(em.gagal, response.status_code),
+            m.chat.id, "{} Failed to fetch data: {}".format(em.gagal, response.status_code)
         )
 
 
@@ -30,7 +32,7 @@ async def process_message(c: nlx, m, text, decode=False):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    pros = m.reply(cgr("proses").format(em.proses))
+    pros = await m.reply(cgr("proses").format(em.proses))
     if m.reply_to_message and m.reply_to_message.text:
         text = m.reply_to_message.text
     else:
@@ -43,7 +45,7 @@ async def _(c: nlx, m):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    pros = m.reply(cgr("proses").format(em.proses))
+    pros = await m.reply(cgr("proses").format(em.proses))
     if m.reply_to_message and m.reply_to_message.text:
         text = m.reply_to_message.text
     else:
