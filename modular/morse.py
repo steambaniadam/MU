@@ -36,7 +36,7 @@ async def _(c: nlx, m):
         pot = requests.get(uri)
         if pot.status_code == 200:
             res = pot.json().get("encoded")
-            await m.reply(f"{em.sukses} Encode Morse\n\n{res}")
+            await m.reply(f"{em.sukses} Encode Morse\n\n`{res}`")
         else:
             await m.reply(f"Error: {pot.status_code}")
     elif m.command[0] == "dmorse":
@@ -44,7 +44,7 @@ async def _(c: nlx, m):
         pot = requests.get(uri)
         if pot.status_code == 200:
             res = pot.json().get("decoded")
-            await m.reply(f"{em.sukses} Decode Morse\n\n{res}")
+            await m.reply(f"{em.sukses} Decode Morse\n\n`{res}`")
         else:
             await m.reply(f"Error: {pot.status_code} {pot.text}")
     else:
