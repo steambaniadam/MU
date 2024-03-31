@@ -94,7 +94,7 @@ async def _(c: nlx, m):
 @ky.ubot("add_anime", sudo=True)
 async def _(c: nlx, m):
     if len(m.command) < 3:
-        await m.reply("Usage: /add_anime [anime_name] [mal_id]")
+        await m.reply(f"Cara menambahkan list: `{m.text} [nama anime] [my anime list id]`")
         return
 
     anime_name = m.command[1].lower()
@@ -102,5 +102,5 @@ async def _(c: nlx, m):
 
     ANIME_LIST[anime_name] = mal_id
     await m.reply(
-        f"Anime '{anime_name}' with MAL ID {mal_id} has been added to the list."
+        f"Anime `{anime_name}` dengan `{mal_id}` berhasil ditambahkan ke daftar anime."
     )
