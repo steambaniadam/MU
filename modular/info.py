@@ -371,9 +371,14 @@ async def _(c, m):
             except pyrogram.errors.exceptions.not_acceptable_406.ChannelPrivate:
                 benet += 1
                 dimari.add(dialog.chat.id)
+                await c.leave_chat(dialog.chat.id)
+                print(f"Left chat: {dialog.chat.id}")
                 continue
     except pyrogram.errors.exceptions.not_acceptable_406.ChannelPrivate:
         benet += 1
+        dimari.add(dialog.chat.id)
+        await c.leave_chat(dialog.chat.id)
+        print(f"Left chat : {dialog.chat.id}")
 
     end = datetime.now()
     ms = (end - start).seconds
@@ -386,7 +391,7 @@ async def _(c, m):
 `Admin in {}` Chats.
 `{}` Bots
 `{}` Banned on groups :
-`{}`**""".format(
+Leaving from thin chat : `{}`**""".format(
             ms,
             zz,
             nanki,
@@ -398,3 +403,4 @@ async def _(c, m):
             dimari,
         )
     )
+
