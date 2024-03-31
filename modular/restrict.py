@@ -10,7 +10,6 @@ import asyncio
 
 from pyrogram.enums import *
 from pyrogram.errors import *
-from pyrogram.raw.functions.messages import DeleteHistory
 from pyrogram.types import ChatPermissions, ChatPrivileges
 
 from Mix import DEVS, Emojik, cgr, get_cgr, ky, nlx
@@ -634,5 +633,6 @@ async def _(c: nlx, m):
             total_deleted_messages += deleted_messages_count
             total_remaining_messages += remaining_messages_count
     await m.reply(
-        f"{em.sukses} **Berhasil menghapus : `{total_deleted_messages}`\n{em.gagal} Tersisa yang berlum terhapus : `{total_remaining_messages}`**")
+        f"{em.sukses} **Berhasil menghapus : `{total_deleted_messages}`\n{em.gagal} Tersisa yang berlum terhapus : `{total_remaining_messages}`**"
+    )
     await pros.delete()
