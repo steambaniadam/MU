@@ -41,7 +41,7 @@ async def _(c: nlx, m):
             res = pot.json().get("encoded")
             await m.reply(f"{em.sukses} Encode Morse\n\n`{res}`")
         else:
-            await m.reply(f"Error: {pot.status_code}")
+            await m.reply(f"Error: {pot.status_code} {pot.text}")
     elif m.command[0] == "dmorse":
         uri = f"https://api.safone.dev/morse/decode?text={kimi}"
         pot = requests.get(uri)
