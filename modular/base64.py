@@ -1,4 +1,5 @@
 import requests
+
 from Mix import *
 
 __modles__ = "Encoder"
@@ -31,6 +32,7 @@ async def _(c: nlx, m):
         text = " ".join(m.command[1:])
     await process_message(c, m, text)
     await pros.delete()
+
 
 @ky.ubot("decode", sudo=True)
 async def _(c: nlx, m):
