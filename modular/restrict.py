@@ -603,27 +603,22 @@ async def _(c: nlx, m):
         return await m.reply_text(cgr("res_33").format(em.gagal))
 
 
-async def delete_deleted_accounts_messages(nlx, chat_id):
-    deleted_messages_count = 0
-    async for hantunya in nlx.get_chat_history(chat_id, limit=100):
-        if hantunya.from_user and hantunya.from_user.is_deleted:
-            await nlx.delete_messages(chat_id, message.message_id)
-            deleted_messages_count += 1
-    return deleted_messages_count
-
-
 @ky.ubot("hantu", sudo=True)
-async def hantu(c: nlx, m):
+async def hantu(client, message):
     em = Emojik()
     em.initialize()
-    pros = await m.reply(cgr("proses").format(em.proses))
+    pros = await message.reply(cgr("proses").format(em.proses))
     total_deleted_messages = 0
-    async for dialog in c.get_dialogs():
+    async for dialog in client.get_dialogs():
         chat_id = dialog.chat.id
         if dialog.chat.type == "private":
-            deleted_messages_count = await delete_deleted_accounts_messages(c, chat_id)
+            deleted_messages_count = 0
+            async for hantunya in client.get_chat_history(chat_id, limit=100):
+                if hantunya.from_user and hantunya.from_user.is_deleted:
+                    await client.delete_messages(chat_id, hantunya.message_id)
+                    deleted_messages_count += 1
             total_deleted_messages += deleted_messages_count
-    await m.reply(
+    await message.reply(
         f"Total riwayat pesan dengan pengguna yang telah dihapus yang berhasil dihapus: {total_deleted_messages}"
     )
     await pros.delete()
