@@ -613,7 +613,7 @@ async def _(c: nlx, m):
     total_deleted_messages = 0
     async for dialog in c.get_dialogs():
         chat_id = dialog.chat.id
-        if dialog.chat.type == "PRIVATE":
+        if dialog.chat.type == ChatType.PRIVATE:
             deleted_messages_count = 0
             async for hantunya in c.get_chat_history(chat_id, limit=100):
                 if hantunya.from_user and hantunya.from_user.is_deleted:
