@@ -6,18 +6,16 @@
  
  EH KONTOL BAJINGAN !! KALO MO PAKE DIKODE PAKE AJA BANGSAT!! GAUSAH APUS KREDIT NGENTOT
 """
+import asyncio
+import re
 ################################################################
 from base64 import urlsafe_b64decode
 from struct import unpack
-
-from attrify import Attrify as Atr
-
-import asyncio
-import re
 from time import time
 
 import psutil
 import speedtest
+from attrify import Attrify as Atr
 from pyrogram import *
 from pyrogram.enums import *
 from pyrogram.errors import *
@@ -481,6 +479,7 @@ async def _(_, cq):
         )
         return
 
+
 def unpacked2(inline_message_id: str):
     dc_id, message_id, chat_id, query_id = unpack(
         "<iiiq",
@@ -496,6 +495,7 @@ def unpacked2(inline_message_id: str):
         "inline_message_id": inline_message_id,
     }
     return Atr(temp)
+
 
 @ky.callback("^close")
 async def _(_, cq):
