@@ -15,6 +15,7 @@ event_loop = loop.get_event_loop()
 
 import traceback
 
+
 async def start_user():
     LOGGER.info(f"Starting Telegram User Client...")
     try:
@@ -24,7 +25,7 @@ async def start_user():
         LOGGER.error(f"An error occurred while starting the user client: {e}")
         LOGGER.info("Check your session or api id!!")
         sys.exit(1)
-    except Exception as ex:
+    except Exception:
         LOGGER.error("An unexpected error occurred:")
         LOGGER.error(traceback.format_exc())
         sys.exit(1)
