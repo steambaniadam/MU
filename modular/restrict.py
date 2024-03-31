@@ -615,7 +615,7 @@ async def _(c: nlx, m):
             deleted_messages_count = 0
             async for hantunya in c.get_chat_history(chat_id, limit=100):
                 if hantunya.from_user and hantunya.from_user.is_deleted:
-                    await c.delete_messages(chat_id, hantunya.message_id)
+                    await c.delete_messages(chat_id, hantunya.message.message_id)
                     deleted_messages_count += 1
             total_deleted_messages += deleted_messages_count
     await m.reply(
