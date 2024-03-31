@@ -368,17 +368,16 @@ async def _(c, m):
                         kntl += 1
                 elif dialog.chat.type == ChatType.CHANNEL:
                     tgr += 1
-            except pyrogram.errors.exceptions.not_acceptable_406.ChannelPrivate:
+            except ChannelPrivate:
                 benet += 1
                 dimari.add(dialog.chat.id)
                 await c.leave_chat(dialog.chat.id)
                 print(f"Left chat: {dialog.chat.id}")
                 continue
-    except pyrogram.errors.exceptions.not_acceptable_406.ChannelPrivate:
+    except ChannelPrivate:
         benet += 1
         dimari.add(dialog.chat.id)
-        await c.leave_chat(dialog.chat.id)
-        print(f"Left chat : {dialog.chat.id}")
+        pass
 
     end = datetime.now()
     ms = (end - start).seconds
@@ -393,10 +392,10 @@ async def _(c, m):
 `{}` Super Groups.
 `{}` Channels.
 `{}` Admin in Chats.
-`{}` Bots
-`{}` Banned on groups
+`{}` Bots.
+`{}` Group With Trouble
 
-Leaving from this chat : 
+I've trouble with this chat : 
 - `{}`**""".format(
             ms,
             zz,
