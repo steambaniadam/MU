@@ -62,11 +62,17 @@ async def on_message(c: nlx, m):
             if check_spam(member):
                 if c.is_admin(m.chat.id):
                     permissions = await c.get_permissions(m.chat.id, c.me.id)
-                    if permissions.can_restrict_members and permissions.can_delete_messages:
+                    if (
+                        permissions.can_restrict_members
+                        and permissions.can_delete_messages
+                    ):
                         try:
                             await c.delete_messages(m.chat.id, m.message_id)
                             await c.restrict_chat_member(
-                                m.chat.id, member.user.id, permissions=None, until_date=None
+                                m.chat.id,
+                                member.user.id,
+                                permissions=None,
+                                until_date=None,
                             )
                         except FloodWait as e:
                             tunggu = asyncio.sleep(e.value)
@@ -74,5 +80,6 @@ async def on_message(c: nlx, m):
                                 f"Tunggu `{tunggu} detik` sebelum melanjutkan filter pengguna."
                             )
                         except Exception as e:
-                            await m.reply(f"Gagal memute atau menghapus pesan. Error: {e}")
-
+                            await m.reply(
+                                f"Gagal memute atau menghapus pesan. Error: {e}"
+                            )
