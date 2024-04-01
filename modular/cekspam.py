@@ -35,7 +35,9 @@ def check_spam(message):
         is_spam, result = check_user_in_cas(message.from_user.id)
         if is_spam:
             user_id = message.from_user.id
-            message.reply(f"{em.warn} **Pengguna ini `{user_id}` terdeteksi melakukan spam.**")
+            message.reply(
+                f"{em.warn} **Pengguna ini `{user_id}` terdeteksi melakukan spam.**"
+            )
             if "offenses" in result:
                 for url in result["messages"]:
                     message.reply(f"{em.suksesk} Spam URL: `{url}`")
@@ -76,20 +78,24 @@ async def cek_spam(c: nlx, m):
                             )
                             await c.send(
                                 m.chat.id,
-                                f"{em.warn} **Saya harus membatasi `{user_id}` karena terdeteksi melakukan SPAM!**"
+                                f"{em.warn} **Saya harus membatasi `{user_id}` karena terdeteksi melakukan SPAM!**",
                             )
                         except PeerIdInvalid:
                             await pros.edit(
                                 f"{em.gagal} `{user_id}` **tidak berada di dalam grup dan saya mengabaikannya**"
                             )
                         except Exception as e:
-                            await pros.edit(f"{em.gagal} **Tidak dapat membatasi pengguna:**\n`{e}`")
+                            await pros.edit(
+                                f"{em.gagal} **Tidak dapat membatasi pengguna:**\n`{e}`"
+                            )
             except Exception as e:
                 await pros.edit(
                     f"**Terjadi kesalahan saat mengambil anggota obrolan\nKarena :** `{e}`"
                 )
         else:
-            await pros.edit(f"{em.sukses} **Pengguna `{user_id}` tidak terdeteksi melakukan spam.**")
+            await pros.edit(
+                f"{em.sukses} **Pengguna `{user_id}` tidak terdeteksi melakukan spam.**"
+            )
     else:
         await pros.edit(
             f"{em.gagal} **Gunakan perintah `{m.text} [user_id]` untuk melakukan pengecekan spam.**"
@@ -119,13 +125,19 @@ async def check_spam_status(c: nlx, m):
                 await pros.edit(f"{em.gagal} **Filter Spam Bot sudah aktif.**")
             else:
                 filter_active = True
-                await pros.edit(f"{em.sukses} **Berhasil mengaktifkan Filter Spam Bot.**")
+                await pros.edit(
+                    f"{em.sukses} **Berhasil mengaktifkan Filter Spam Bot.**"
+                )
         elif status == "off":
             if not filter_active:
-                await pros.edit(f"{em.gaga} **Saat ini memang belum mengaktifkan Filter Spam Bot.**")
+                await pros.edit(
+                    f"{em.gaga} **Saat ini memang belum mengaktifkan Filter Spam Bot.**"
+                )
             else:
                 filter_active = False
-                await pros.edit(f"{em.sukses} **Filter Spam Bot berhasil di Non-Aktifkan.**")
+                await pros.edit(
+                    f"{em.sukses} **Filter Spam Bot berhasil di Non-Aktifkan.**"
+                )
         else:
             await pros.edit(
                 f"{em.gagal} **Gunakan `{m.text} on` untuk mengaktifkan atau `{m.text} off` untuk menonaktifkan Filter Spam Bot.**"
@@ -163,23 +175,31 @@ async def on_message(c: nlx, m):
                                     permissions=chat_privileges,
                                     until_date=None,
                                 )
-                                await c.send_message(m.chat.id,
-                                    f"**User `{user_id}` telah dibatasi karena terdeteksi melakukan spam.**"
+                                await c.send_message(
+                                    m.chat.id,
+                                    f"**User `{user_id}` telah dibatasi karena terdeteksi melakukan spam.**",
                                 )
                                 return
                         except FloodWait as e:
                             tunggu = asyncio.sleep(e.value)
-                            await c.send_message(m.chat.id,
-                                f"**Tunggu `{tunggu} detik` sebelum melanjutkan filter pengguna.**"
+                            await c.send_message(
+                                m.chat.id,
+                                f"**Tunggu `{tunggu} detik` sebelum melanjutkan filter pengguna.**",
                             )
                             return
                         except Exception as e:
-                            await c.send_message(m.chat.id, f"**Gagal membatasi pengguna karena :** `{e}`")
+                            await c.send_message(
+                                m.chat.id,
+                                f"**Gagal membatasi pengguna karena :** `{e}`",
+                            )
                             return
-                await c.send_message(m.chat.id, f"`{user_id}` **tidak ditemukan dalam grup.**")
+                await c.send_message(
+                    m.chat.id, f"`{user_id}` **tidak ditemukan dalam grup.**"
+                )
             else:
-                await c.send_message(m.chat.id,
-                    f"**Maaf, Anda tidak memiliki izin untuk menggunakan perintah ini di : `{m.chat.id}`**."
+                await c.send_message(
+                    m.chat.id,
+                    f"**Maaf, Anda tidak memiliki izin untuk menggunakan perintah ini di : `{m.chat.id}`**.",
                 )
     else:
         await c.send_message(m.chat.id, "**Filter Cek Spam Bot saat ini tidak aktif.**")
