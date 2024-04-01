@@ -50,7 +50,7 @@ async def cek_spam(c: nlx, m):
                 for url in result["messages"]:
                     message += f"{url}\n"
             await m.reply(message, disable_web_page_preview=True)
-            
+
             chat_member = await c.get_chat_member(m.chat.id, (await c.get_me()).id)
             if chat_member.status in (
                 ChatMemberStatus.ADMINISTRATOR,
