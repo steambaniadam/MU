@@ -77,11 +77,11 @@ async def cek_spam(c: nlx, m):
                             await m.reply(f"Tidak dapat membatasi pengguna: {e}")
             except PeerIdInvalid:
                 await m.reply(
-                    "Terjadi kesalahan saat mengambil anggota obrolan. Harap coba lagi nanti."
+                    f"`{user_id}` tidak berada di dalam grup, maka saya mengabaikannya"
                 )
-            except Exception:
+            except Exception as e:
                 await m.reply(
-                    f"{user_id} tidak berada di dalam grup, maka saya mengabaikannya"
+                    f"Terjadi kesalahan saat mengambil anggota obrolan\nKarena : `{e}`"
                 )
         else:
             await m.reply(f"Pengguna `{user_id}` tidak terdeteksi melakukan spam.")
