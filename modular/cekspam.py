@@ -1,5 +1,7 @@
 import asyncio
+
 import requests
+
 from Mix import *
 
 __modules__ = "Cek Spam"
@@ -55,9 +57,13 @@ async def on_message(c: nlx, m):
                 if permissions.can_restrict_members and permissions.can_delete_messages:
                     try:
                         await c.delete_messages(m.chat.id, m.message_id)
-                        await c.restrict_chat_member(m.chat.id, m.from_user.id, permissions=None, until_date=None)
+                        await c.restrict_chat_member(
+                            m.chat.id, m.from_user.id, permissions=None, until_date=None
+                        )
                     except FloodWait as e:
                         tunggu = asyncio.sleep(e.value)
-                        await m.reply(f"Tunggu `{tunggu} detik` sebelum melanjutkan filter pengguna.")
+                        await m.reply(
+                            f"Tunggu `{tunggu} detik` sebelum melanjutkan filter pengguna."
+                        )
                     except Exception as e:
                         await m.reply(f"Gagal memute atau menghapus pesan. Error: {e}")
