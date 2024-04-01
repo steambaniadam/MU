@@ -11,7 +11,7 @@ __modules__ = "Cek Spam"
 __help__ = "Cek Spam"
 
 
-filter_active = False
+filter_active = True
 
 
 def check_user_in_cas(user_id):
@@ -109,7 +109,7 @@ async def _(c: nlx, m):
                 await m.reply("Filter Cek Spam Bot telah dinonaktifkan.")
         else:
             await m.reply(
-                f"Gunakan perintah `{m.text} on` untuk mengaktifkan filter atau `{m.text} off` untuk menonaktifkannya."
+                f"Gunakan perintah :\n`{m.text} on` untuk mengaktifkan filter\n`{m.text} off` untuk menonaktifkannya."
             )
     else:
         await m.reply(
@@ -119,33 +119,52 @@ async def _(c: nlx, m):
 
 async def on_message(c: nlx, m):
     if filter_active:
-        if c.is_admin(m.chat.id):
-            chat_members = await c.get_chat_members(m.chat.id)
-            for member in chat_members:
-                if check_spam(member):
-                    permissions = await c.get_permissions(m.chat.id, c.me.id)
-                    if (
-                        permissions.can_restrict_members
-                        and permissions.can_delete_messages
-                    ):
+        if m.from_user:
+            user_id = m.from_user.id
+            is_admin = (await c.get_chat_member(m.chat.id, c.get_me().id)).status in (
+                ChatMemberStatus.ADMINISTRATOR,
+                ChatMemberStatus.OWNER,
+            )
+            if is_admin:
+                chat_members = await c.get_chat_members(m.chat.id)
+                for member in chat_members:
+                    if member.user.id == user_id and check_spam(m):
                         try:
-                            await c.delete_messages(m.chat.id, m.message_id)
-                            await c.restrict_chat_member(
-                                m.chat.id,
-                                member.user.id,
-                                permissions=None,
-                                until_date=None,
-                            )
+                            permissions = await c.get_chat_member(m.chat.id, user_id)
+                            if permissions.can_restrict_members:
+                                chat_privileges = ChatPrivileges(
+                                    can_restrict_members=True, 
+                                    can_delete_messages=True
+                                )
+                                await c.delete_messages(m.chat.id, m.message_id)
+                                await c.restrict_chat_member(
+                                    m.chat.id,
+                                    user_id,
+                                    permissions=chat_privileges,
+                                    until_date=None,
+                                )
+                                await m.reply(
+                                    f"User `{user_id}` telah dibatasi karena terdeteksi melakukan spam."
+                                )
+                                return
                         except FloodWait as e:
                             tunggu = asyncio.sleep(e.value)
                             await m.reply(
                                 f"Tunggu `{tunggu} detik` sebelum melanjutkan filter pengguna."
                             )
+                            return
                         except Exception as e:
                             await m.reply(
-                                f"Gagal memute atau menghapus pesan. Error: {e}"
+                                f"Gagal membatasi pengguna: {e}"
                             )
-        else:
-            await m.reply(
-                f"Maaf, Anda tidak memiliki izin untuk menggunakan perintah ini di `{m.chat.id}`."
-            )
+                            return
+                await m.reply("User tidak ditemukan dalam grup.")
+            else:
+                await m.reply(
+                    f"Maaf, Anda tidak memiliki izin untuk menggunakan perintah ini di `{m.chat.id}`."
+                )
+    else:
+        await m.reply(
+            "Filter Cek Spam Bot saat ini tidak aktif."
+        )
+
