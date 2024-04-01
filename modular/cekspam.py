@@ -60,7 +60,6 @@ async def _(c: nlx, m):
         )
 
 
-
 async def on_message(c: nlx, m):
     if filter_active:
         if c.is_admin(m.chat.id):
