@@ -1,4 +1,5 @@
 import asyncio
+
 import requests
 from pyrogram.enums import *
 from pyrogram.types import *
@@ -61,8 +62,7 @@ async def cek_spam(c: nlx, m):
                 if permissions.can_restrict_members:
                     try:
                         chat_privileges = ChatPrivileges(
-                            can_restrict_members=True,
-                            can_delete_messages=True
+                            can_restrict_members=True, can_delete_messages=True
                         )
                         await c.restrict_chat_member(
                             m.chat.id, user_id, permissions=chat_privileges
