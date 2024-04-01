@@ -3,6 +3,7 @@ import asyncio
 import requests
 from pyrogram.enums import *
 from pyrogram.types import *
+from pyrogram.errors import *
 
 from Mix import *
 
@@ -53,32 +54,39 @@ async def cek_spam(c: nlx, m):
                     message += f"{url}\n"
             await m.reply(message, disable_web_page_preview=True)
 
-            chat_member = await c.get_chat_member(m.chat.id, (await c.get_me()).id)
-            if chat_member.status in (
-                ChatMemberStatus.ADMINISTRATOR,
-                ChatMemberStatus.OWNER,
-            ):
-                permissions = await c.get_chat_member(m.chat.id, user_id)
-                if permissions.can_restrict_members:
-                    try:
-                        chat_privileges = ChatPrivileges(
-                            can_restrict_members=True, can_delete_messages=True
-                        )
-                        await c.restrict_chat_member(
-                            m.chat.id, user_id, permissions=chat_privileges
-                        )
-                        await c.send(
-                            m.chat.id,
-                            f"Saya harus membatasi `{user_id}` karena terdeteksi melakukan SPAM!",
-                        )
-                    except Exception as e:
-                        await m.reply(f"Tidak dapat membatasi pengguna: {e}")
+            try:
+                chat_member = await c.get_chat_member(m.chat.id, (await c.get_me()).id)
+                if chat_member.status in (
+                    ChatMemberStatus.ADMINISTRATOR,
+                    ChatMemberStatus.OWNER,
+                ):
+                    permissions = await c.get_chat_member(m.chat.id, user_id)
+                    if permissions.can_restrict_members:
+                        try:
+                            chat_privileges = ChatPrivileges(
+                                can_restrict_members=True, can_delete_messages=True
+                            )
+                            await c.restrict_chat_member(
+                                m.chat.id, user_id, permissions=chat_privileges
+                            )
+                            await c.send(
+                                m.chat.id,
+                                f"Saya harus membatasi `{user_id}` karena terdeteksi melakukan SPAM!",
+                            )
+                        except Exception as e:
+                            await m.reply(f"Tidak dapat membatasi pengguna: {e}")
+            except PeerIdInvalid:
+                await m.reply("Terjadi kesalahan saat mengambil anggota obrolan. Harap coba lagi nanti.")
+            except Exception:
+                await m.reply(f"{user_id} tidak berada di dalam grup, maka saya mengabaikannya")
+                pass
         else:
             await m.reply(f"Pengguna `{user_id}` tidak terdeteksi melakukan spam.")
     else:
         await m.reply(
             f"Gunakan perintah `{m.text} [user_id]` untuk melakukan pengecekan spam."
         )
+
 
 
 @ky.ubot("checkspam", sudo=True)
