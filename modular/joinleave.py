@@ -34,11 +34,16 @@ async def _(c, m):
 async def _(c, m):
     em = Emojik()
     em.initialize()
-    chat_id = m.chat.id
-    inpogc = await c.get_chat(chat_id)
-    namagece = inpogc.title
     ceger = await m.reply(cgr("proses").format(em.proses))
+    
     try:
+        if len(m.command) < 2:
+            chat_id = m.chat.id
+            namagece = m.chat.title
+            await ceger.edit(cgr("join_3").format(em.sukses, c.me.mention, namagece))
+            await c.leave_chat(chat_id)
+            return
+        
         chat_username = m.command[1]
 
         if chat_username.startswith("@"):
@@ -49,8 +54,8 @@ async def _(c, m):
             if chat_id in NO_GCAST:
                 return await ceger.edit(cgr("join_2").format(em.gagal, namagece))
 
-        if str(chat_id).startswith("https://t.me/"):
-            chat_id = chat_id.split("/")[-1]
+        elif chat_username.startswith("https://t.me/"):
+            chat_id = chat_username.split("/")[-1]
             inpogc = await c.get_chat(chat_id)
             namagece = inpogc.title
             if str(chat_id) in NO_GCAST or inpogc.id in NO_GCAST:
@@ -61,24 +66,6 @@ async def _(c, m):
                 await ceger.edit(
                     cgr("join_3").format(em.sukses, c.me.mention, namagece)
                 )
-
-        chat_id = m.chat.id
-        chat_member = await c.get_chat_member(chat_id, m.from_user.id)
-        if chat_member.status in (
-            ChatMemberStatus.OWNER,
-            ChatMemberStatus.ADMINISTRATOR,
-        ):
-            await ceger.edit(cgr("join_7").format(em.gagal, namagece))
-            return
-
-        if chat_id in NO_GCAST:
-            return await ceger.edit(cgr("join_2").format(em.gagal, namagece))
-
-        if len(m.command) < 2:
-            await ceger.edit(cgr("join_4").format(em.sukses, namagece))
-            await m.delete()
-            await c.leave_chat(chat_id)
-            return
 
         else:
             await m.reply(cgr("join_4").format(em.sukses))
