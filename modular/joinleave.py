@@ -36,9 +36,9 @@ async def _(c, m):
     em.initialize()
     ceger = await m.reply(cgr("proses").format(em.proses))
     is_admin = (await c.get_chat_member(m.chat.id, c.get_me().id)).status in (
-                ChatMemberStatus.ADMINISTRATOR,
-                ChatMemberStatus.OWNER,
-            )
+        ChatMemberStatus.ADMINISTRATOR,
+        ChatMemberStatus.OWNER,
+    )
     try:
         if len(m.command) < 2:
             chat_id = m.chat.id
