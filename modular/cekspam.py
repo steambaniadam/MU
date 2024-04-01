@@ -86,8 +86,9 @@ async def cek_spam(c: nlx, m):
                                     f"{em.gagal} **Tidak dapat membatasi pengguna:**\n`{e}`"
                                 )
                     except PeerIdInvalid:
-                        await c.send_message(m.chat.id,
-                            f"{em.gagal} `{user_id}` **tidak berada di dalam grup dan saya mengabaikannya**"
+                        await c.send_message(
+                            m.chat.id,
+                            f"{em.gagal} `{user_id}` **tidak berada di dalam grup dan saya mengabaikannya**",
                         )
                     except Exception as e:
                         await pros.edit(
@@ -102,12 +103,11 @@ async def cek_spam(c: nlx, m):
                         message += f"\n\n{em.sukses} **Spam URL:**\n"
                         for url in result["messages"]:
                             message += f"`{url}`\n"
-                        await pros.edit(
-                            message, disable_web_page_preview=True
-                        )
+                        await pros.edit(message, disable_web_page_preview=True)
                 else:
-                    await c.send_memssage(m.chat.id,
-                        f"{em.gagal} `{user_id}` **tidak berada di dalam grup ini, maka saya abaikan.**"
+                    await c.send_memssage(
+                        m.chat.id,
+                        f"{em.gagal} `{user_id}` **tidak berada di dalam grup ini, maka saya abaikan.**",
                     )
             except Exception as e:
                 await pros.edit(
