@@ -84,4 +84,6 @@ async def on_message(c: nlx, m):
                                 f"Gagal memute atau menghapus pesan. Error: {e}"
                             )
         else:
-            await m.reply(f"Maaf, Anda tidak memiliki izin untuk menggunakan perintah ini di `{m.chat.id}`.")
+            await m.reply(
+                f"Maaf, Anda tidak memiliki izin untuk menggunakan perintah ini di `{m.chat.id}`."
+            )
