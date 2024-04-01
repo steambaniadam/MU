@@ -124,11 +124,16 @@ async def cek_spam(c: nlx, m):
 
 
 @ky.ubot("checkspam", sudo=True)
-async def check_spam_status(c: nlx, m):
+async def _(c: nlx, m):
     global filter_active
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
+    if m.chat.type not in [ChatType.GROUP, ChatType.SUPERGROUP,]:
+        await pros.edit(
+            f"{em.gagal} **Perintah ini hanya dapat digunakan di dalam grup.**"
+        )
+        return
     chat_member = await c.get_chat_member(m.chat.id, m.from_user.id)
     if chat_member.status not in (
         ChatMemberStatus.ADMINISTRATOR,
