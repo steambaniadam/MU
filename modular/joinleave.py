@@ -75,7 +75,7 @@ async def _(c, m):
             return await ceger.edit(cgr("join_2").format(em.gagal, namagece))
 
         if len(m.command) < 2:
-            await ceger.edit(cgr("join_3").format(em.sukses, c.me.mention, namagece))
+            await ceger.edit(cgr("join_4").format(em.sukses, namagece))
             await m.delete()
             await c.leave_chat(chat_id)
             return
