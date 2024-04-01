@@ -59,7 +59,7 @@ async def cek_spam(c: nlx, m):
                 message += f"\n\n{em.sukses} **Spam URL:**\n"
                 for url in result["messages"]:
                     message += f"`{url}`\n"
-            await pros.edit(message, disable_web_page_preview=True)
+            await c.send_message(m.chat.id, message, disable_web_page_preview=True)
 
             try:
                 chat_member = await c.get_chat_member(m.chat.id, (await c.get_me()).id)
@@ -102,9 +102,9 @@ async def cek_spam(c: nlx, m):
                         message += f"\n\n{em.sukses} **Spam URL:**\n"
                         for url in result["messages"]:
                             message += f"`{url}`\n"
-                    await c.send_message(
-                        m.chat.id, message, disable_web_page_preview=True
-                    )
+                        await c.send_message(
+                            m.chat.id, message, disable_web_page_preview=True
+                        )
                 else:
                     await pros.edit(
                         f"{em.gagal} `{user_id}` **tidak berada di dalam grup ini, maka saya abaikan.**"
