@@ -41,12 +41,16 @@ def check_spam(message):
 @ky.ubot("checkspam", sudo=True)
 async def _(c: nlx, m):
     global filter_active
-    if m == "on":
-        filter_active = True
-        await m.reply("Filter Cek Spam Bot telah diaktifkan.")
-    elif m == "off":
-        filter_active = False
-        await m.reply("Filter Cek Spam Bot telah dinonaktifkan.")
+    if len(m.command) > 1:
+        status = m.command[1].lower()
+        if status == "on":
+            filter_active = True
+            await m.reply("Filter Cek Spam Bot telah diaktifkan.")
+        elif status == "off":
+            filter_active = False
+            await m.reply("Filter Cek Spam Bot telah dinonaktifkan.")
+    else:
+        await m.reply(f"Gunakan perintah `{m.text} on` untuk mengaktifkan filter atau `{m.text} off` untuk menonaktifkannya.")
 
 
 async def on_message(c: nlx, m):
