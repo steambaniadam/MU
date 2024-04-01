@@ -41,18 +41,24 @@ def check_spam(message):
 @ky.ubot("checkspam", sudo=True)
 async def _(c: nlx, m):
     global filter_active
-    if len(m.command) > 1:
-        status = m.command[1].lower()
-        if status == "on":
-            filter_active = True
-            await m.reply("Filter Cek Spam Bot telah diaktifkan.")
-        elif status == "off":
-            filter_active = False
-            await m.reply("Filter Cek Spam Bot telah dinonaktifkan.")
+    if c.is_admin(m.chat.id):
+        if len(m.command) > 1:
+            status = m.command[1].lower()
+            if status == "on":
+                filter_active = True
+                await m.reply("Filter Cek Spam Bot telah diaktifkan.")
+            elif status == "off":
+                filter_active = False
+                await m.reply("Filter Cek Spam Bot telah dinonaktifkan.")
+        else:
+            await m.reply(
+                f"Gunakan perintah `{m.text} on` untuk mengaktifkan filter atau `{m.text} off` untuk menonaktifkannya."
+            )
     else:
         await m.reply(
-            f"Gunakan perintah `{m.text} on` untuk mengaktifkan filter atau `{m.text} off` untuk menonaktifkannya."
+            f"Maaf, Anda tidak memiliki izin untuk menggunakan perintah ini di `{m.chat.id}`."
         )
+
 
 
 async def on_message(c: nlx, m):
