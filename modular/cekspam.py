@@ -44,10 +44,26 @@ async def cek_spam(c: nlx, m):
         user_id = m.command[1]
         is_spam, result = check_user_in_cas(user_id)
         if is_spam:
-            await m.reply(f"Pengguna `{user_id}` terdeteksi melakukan spam.")
+            message = f"Pengguna `{user_id}` terdeteksi melakukan spam."
             if "offenses" in result:
+                message += "\n\nSpam URL:\n"
                 for url in result["messages"]:
-                    await m.reply(f"Spam URL: {url}")
+                    message += f"{url}\n"
+            await m.reply(message, disable_web_page_preview=True)
+            
+            chat_member = await c.get_chat_member(m.chat.id, (await c.get_me()).id)
+            if chat_member.status in (
+                ChatMemberStatus.ADMINISTRATOR,
+                ChatMemberStatus.CREATOR,
+            ):
+                permissions = await c.get_permissions(m.chat.id, c.me.id)
+                if permissions.can_restrict_members:
+                    try:
+                        await c.restrict_chat_member(
+                            m.chat.id, user_id, permissions=None, until_date=None
+                        )
+                    except Exception as e:
+                        await m.reply(f"Tidak dapat membatasi pengguna: {e}")
         else:
             await m.reply(f"Pengguna `{user_id}` tidak terdeteksi melakukan spam.")
     else:
