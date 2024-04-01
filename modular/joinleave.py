@@ -34,6 +34,7 @@ async def _(c, m):
 async def _(c, m):
     em = Emojik()
     em.initialize()
+    namagece = m.chat.title
     ceger = await m.reply(cgr("proses").format(em.proses))
     try:
         chat_member = await c.get_chat_member(m.chat.id, m.from_user.id)
@@ -41,18 +42,14 @@ async def _(c, m):
             ChatMemberStatus.ADMINISTRATOR,
             ChatMemberStatus.OWNER,
         ):
-            await ceger.edit(
-                f"{em.gagal} Anda tidak dapat menggunakan perintah ini sebagai ADMIN atau OWNER grup!"
-            )
+            await ceger.edit(cgr("join_7").format(em.gagal, namagece))
             return
 
         if len(m.command) < 2:
             chat_id = m.chat.id
             namagece = m.chat.title
             if chat_id in NO_GCAST:
-                await ceger.edit(
-                    f"{em.gagal} Tidak bisa menggunakan perintah itu di sini!"
-                )
+                await ceger.edit(cgr("join_2").format(em.gagal, namagece))
                 return
             else:
                 await ceger.edit(
