@@ -35,15 +35,21 @@ async def _(c, m):
     em = Emojik()
     em.initialize()
     ceger = await m.reply(cgr("proses").format(em.proses))
-    is_admin = (await c.get_chat_member(m.chat.id, c.get_me().id)).status in (
-        ChatMemberStatus.ADMINISTRATOR,
-        ChatMemberStatus.OWNER,
-    )
     try:
+        chat_member = await c.get_chat_member(m.chat.id, m.from_user.id)
+        if chat_member.status in (
+            ChatMemberStatus.ADMINISTRATOR,
+            ChatMemberStatus.OWNER,
+        ):
+            await ceger.edit(
+                f"{em.gagal} Anda tidak dapat menggunakan perintah ini sebagai ADMIN atau OWNER grup!"
+            )
+            return
+
         if len(m.command) < 2:
             chat_id = m.chat.id
             namagece = m.chat.title
-            if chat_id in NO_GCAST and await is_admin:
+            if chat_id in NO_GCAST:
                 await ceger.edit(
                     f"{em.gagal} Tidak bisa menggunakan perintah itu di sini!"
                 )
@@ -97,6 +103,7 @@ async def _(c, m):
         )
     except Exception as e:
         await ceger.edit(cgr("err").format(em.gagal, e))
+
 
 
 @ky.ubot("leaveallgc|kickmeallgc", sudo=True)
