@@ -82,7 +82,7 @@ async def _(c, m):
         )
     except UserNotParticipant:
         await m.reply(
-            f"{em.gagal} <b>Anda bukan anggota atau member di <code>{namagece}</code></b>"
+            f"{em.gagal} <b>Anda bukan lagi anggota atau member di <code>{namagece}</code></b>"
         )
     except Exception as e:
         await ceger.edit(cgr("err").format(em.gagal, e))
