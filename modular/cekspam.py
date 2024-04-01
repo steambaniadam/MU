@@ -129,7 +129,10 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    if m.chat.type not in [ChatType.GROUP, ChatType.SUPERGROUP,]:
+    if m.chat.type not in [
+        ChatType.GROUP,
+        ChatType.SUPERGROUP,
+    ]:
         await pros.edit(
             f"{em.gagal} **Perintah ini hanya dapat digunakan di dalam grup.**"
         )
