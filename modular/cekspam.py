@@ -50,7 +50,9 @@ async def _(c: nlx, m):
             filter_active = False
             await m.reply("Filter Cek Spam Bot telah dinonaktifkan.")
     else:
-        await m.reply(f"Gunakan perintah `{m.text} on` untuk mengaktifkan filter atau `{m.text} off` untuk menonaktifkannya.")
+        await m.reply(
+            f"Gunakan perintah `{m.text} on` untuk mengaktifkan filter atau `{m.text} off` untuk menonaktifkannya."
+        )
 
 
 async def on_message(c: nlx, m):
