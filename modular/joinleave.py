@@ -41,10 +41,14 @@ async def _(c, m):
             chat_id = m.chat.id
             namagece = m.chat.title
             if chat_id in NO_GCAST:
-                await ceger.edit(f"{em.gagal} Tidak bisa menggunakan perintah itu di sini!")
+                await ceger.edit(
+                    f"{em.gagal} Tidak bisa menggunakan perintah itu di sini!"
+                )
                 return
             else:
-                await ceger.edit(cgr("join_3").format(em.sukses, c.me.mention, namagece))
+                await ceger.edit(
+                    cgr("join_3").format(em.sukses, c.me.mention, namagece)
+                )
                 await c.leave_chat(chat_id)
                 return
 
