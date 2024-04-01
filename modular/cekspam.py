@@ -41,7 +41,7 @@ def check_spam(message):
 @ky.ubot("checkspam", sudo=True)
 async def _(c: nlx, m):
     global filter_active
-    chat_member = c.get_chat_member(m.chat.id, c.get_me().id)
+    chat_member = await c.get_chat_member(m.chat.id, c.get_me().id)
     if chat_member.is_administrator:
         if len(m.command) > 1:
             status = m.command[1].lower()
