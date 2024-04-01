@@ -54,7 +54,7 @@ async def cek_spam(c: nlx, m):
             chat_member = await c.get_chat_member(m.chat.id, (await c.get_me()).id)
             if chat_member.status in (
                 ChatMemberStatus.ADMINISTRATOR,
-                ChatMemberStatus.CREATOR,
+                ChatMemberStatus.OWNER,
             ):
                 permissions = await c.get_permissions(m.chat.id, c.me.id)
                 if permissions.can_restrict_members:
@@ -62,6 +62,7 @@ async def cek_spam(c: nlx, m):
                         await c.restrict_chat_member(
                             m.chat.id, user_id, permissions=None, until_date=None
                         )
+                        await c.send(m.chat.id, f"Saya harus membatasi `{user_id}` karna terdeteksi melakukan SPAM!")
                     except Exception as e:
                         await m.reply(f"Tidak dapat membatasi pengguna: {e}")
         else:
