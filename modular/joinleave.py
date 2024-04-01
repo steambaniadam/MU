@@ -35,39 +35,38 @@ async def _(c, m):
     em = Emojik()
     em.initialize()
     ceger = await m.reply(cgr("proses").format(em.proses))
-
+    
     try:
         if len(m.command) < 2:
             chat_id = m.chat.id
             namagece = m.chat.title
-            await m.delete()
-            await ceger.edit(cgr("join_3").format(em.sukses, c.me.mention, namagece))
             await c.leave_chat(chat_id)
+            await ceger.edit(cgr("join_3").format(em.sukses, c.me.mention, namagece))
             return
+        
+        chat_arg = m.command[1]
 
-        chat_username = m.command[1]
-
-        if chat_username.startswith("@"):
-            inpogc = await c.get_chat(chat_username)
+        if chat_arg.startswith("@"):
+            inpogc = await c.get_chat(chat_arg)
             chat_id = inpogc.id
             namagece = inpogc.title
 
             if chat_id in NO_GCAST:
                 return await ceger.edit(cgr("join_2").format(em.gagal, namagece))
 
-        elif chat_username.startswith("https://t.me/"):
-            chat_id = chat_username.split("/")[-1]
+        elif chat_arg.startswith("https://t.me/"):
+            chat_id = chat_arg.split("/")[-1]
             inpogc = await c.get_chat(chat_id)
             namagece = inpogc.title
             if str(chat_id) in NO_GCAST or inpogc.id in NO_GCAST:
                 await ceger.edit(cgr("join_2").format(em.gagal, namagece))
                 return
             else:
-                await c.leave_chat(chat_id)
                 await ceger.edit(
                     cgr("join_3").format(em.sukses, c.me.mention, namagece)
                 )
-
+                await c.leave_chat(chat_id)
+                
         else:
             await m.reply(cgr("join_4").format(em.sukses))
             await c.leave_chat(chat_id)
