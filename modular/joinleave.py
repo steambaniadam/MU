@@ -74,7 +74,7 @@ async def _(c, m):
         if chat_id in NO_GCAST:
             return await ceger.edit(cgr("join_2").format(em.gagal, namagece))
 
-        if len(m.command) == 1:
+        if len(m.command) < 2:
             await ceger.edit(cgr("join_3").format(em.sukses, c.me.mention, namagece))
             await m.delete()
             await c.leave_chat(chat_id)
@@ -93,7 +93,7 @@ async def _(c, m):
             f"{em.gagal} <b>Anda bukan anggota atau member di <code>{namagece}</code></b>"
         )
     except Exception as e:
-        await m.reply(cgr("err").format(em.gagal, e))
+        await ceger.edit(cgr("err").format(em.gagal, e))
 
 
 @ky.ubot("leaveallgc|kickmeallgc", sudo=True)
