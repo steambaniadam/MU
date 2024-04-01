@@ -1,6 +1,7 @@
 import asyncio
-
 import requests
+from pyrogram.enums import *
+from pyrogram.types import *
 
 from Mix import *
 
@@ -56,15 +57,19 @@ async def cek_spam(c: nlx, m):
                 ChatMemberStatus.ADMINISTRATOR,
                 ChatMemberStatus.OWNER,
             ):
-                permissions = await c.set_chat_permissions(m.chat.id, c.me.id)
+                permissions = await c.get_chat_member(m.chat.id, user_id)
                 if permissions.can_restrict_members:
                     try:
+                        chat_privileges = ChatPrivileges(
+                            can_restrict_members=True,
+                            can_delete_messages=True
+                        )
                         await c.restrict_chat_member(
-                            m.chat.id, user_id, permissions=None, until_date=None
+                            m.chat.id, user_id, permissions=chat_privileges
                         )
                         await c.send(
                             m.chat.id,
-                            f"Saya harus membatasi `{user_id}` karna terdeteksi melakukan SPAM!",
+                            f"Saya harus membatasi `{user_id}` karena terdeteksi melakukan SPAM!",
                         )
                     except Exception as e:
                         await m.reply(f"Tidak dapat membatasi pengguna: {e}")
