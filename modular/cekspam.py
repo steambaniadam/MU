@@ -95,7 +95,9 @@ async def cek_spam(c: nlx, m):
                         )
             except PeerIdInvalid:
                 if is_spam:
-                    message = f"{em.warn} **Pengguna `{user_id}` terdeteksi melakukan spam.**"
+                    message = (
+                        f"{em.warn} **Pengguna `{user_id}` terdeteksi melakukan spam.**"
+                    )
                     if "offenses" in result:
                         message += f"\n\n{em.sukses} **Spam URL:**\n"
                         for url in result["messages"]:
