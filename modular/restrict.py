@@ -365,6 +365,7 @@ async def _(c: nlx, m):
 
 
 @ky.ubot("fullpromote", sudo=True)
+@ky.devs("mfullpromote")
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
@@ -409,6 +410,7 @@ async def _(c: nlx, m):
 
 
 @ky.ubot("promote", sudo=True)
+@ky.devs("mpromote")
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
