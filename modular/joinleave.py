@@ -35,7 +35,7 @@ async def _(c, m):
     em = Emojik()
     em.initialize()
     ceger = await m.reply(cgr("proses").format(em.proses))
-    
+
     try:
         if len(m.command) < 2:
             chat_id = m.chat.id
@@ -43,7 +43,7 @@ async def _(c, m):
             await c.leave_chat(chat_id)
             await ceger.edit(cgr("join_3").format(em.sukses, c.me.mention, namagece))
             return
-        
+
         chat_arg = m.command[1]
 
         if chat_arg.startswith("@"):
@@ -66,7 +66,7 @@ async def _(c, m):
                     cgr("join_3").format(em.sukses, c.me.mention, namagece)
                 )
                 await c.leave_chat(chat_id)
-                
+
         else:
             await m.reply(cgr("join_4").format(em.sukses))
             await c.leave_chat(chat_id)
