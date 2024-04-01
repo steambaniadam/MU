@@ -51,7 +51,9 @@ async def cek_spam(c: nlx, m):
         else:
             await m.reply(f"Pengguna `{user_id}` tidak terdeteksi melakukan spam.")
     else:
-        await m.reply(f"Gunakan perintah `{m.text} [user_id]` untuk melakukan pengecekan spam.")
+        await m.reply(
+            f"Gunakan perintah `{m.text} [user_id]` untuk melakukan pengecekan spam."
+        )
 
 
 @ky.ubot("checkspam", sudo=True)
