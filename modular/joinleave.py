@@ -105,7 +105,6 @@ async def _(c, m):
         await ceger.edit(cgr("err").format(em.gagal, e))
 
 
-
 @ky.ubot("leaveallgc|kickmeallgc", sudo=True)
 async def _(c, m):
     em = Emojik()
