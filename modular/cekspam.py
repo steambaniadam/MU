@@ -50,76 +50,80 @@ async def cek_spam(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    if len(m.command) > 1:
+    if m.reply_to_message:
+        user_id = m.reply_to_message.from_user.id
+    elif len(m.command) > 1:
         user_id = m.command[1]
-        is_spam, result = check_user_in_cas(user_id)
-        if is_spam:
-            message = f"{em.warn} **Pengguna `{user_id}` terdeteksi melakukan spam.**"
-            if "offenses" in result:
-                message += f"\n\n{em.sukses} **Spam URL:**\n"
-                for url in result["messages"]:
-                    message += f"`{url}`\n"
-            await pros.edit(message, disable_web_page_preview=True)
-
-            try:
-                chat_member = await c.get_chat_member(m.chat.id, (await c.get_me()).id)
-                if chat_member.status in (
-                    ChatMemberStatus.ADMINISTRATOR,
-                    ChatMemberStatus.OWNER,
-                ):
-                    try:
-                        permissions = await c.get_chat_member(m.chat.id, user_id)
-                        if permissions.can_restrict_members:
-                            try:
-                                chat_privileges = ChatPrivileges(
-                                    can_restrict_members=True, can_delete_messages=True
-                                )
-                                await c.restrict_chat_member(
-                                    m.chat.id, user_id, permissions=chat_privileges
-                                )
-                                await c.send(
-                                    m.chat.id,
-                                    f"{em.warn} **Saya harus membatasi `{user_id}` karena terdeteksi melakukan SPAM!**",
-                                )
-                            except Exception as e:
-                                await pros.edit(
-                                    f"{em.gagal} **Tidak dapat membatasi pengguna:**\n`{e}`"
-                                )
-                    except PeerIdInvalid:
-                        await c.send_message(
-                            m.chat.id,
-                            f"{em.gagal} `{user_id}` **tidak berada di dalam grup dan saya mengabaikannya**",
-                        )
-                    except Exception as e:
-                        await pros.edit(
-                            f"{em.gagal} **Terjadi kesalahan saat mengambil izin pengguna:**\n`{e}`"
-                        )
-            except PeerIdInvalid:
-                if is_spam:
-                    message = (
-                        f"{em.warn} **Pengguna `{user_id}` terdeteksi melakukan spam.**"
-                    )
-                    if "offenses" in result:
-                        message += f"\n\n{em.sukses} **Spam URL:**\n"
-                        for url in result["messages"]:
-                            message += f"`{url}`\n"
-                        await pros.edit(message, disable_web_page_preview=True)
-                else:
-                    await c.send_memssage(
-                        m.chat.id,
-                        f"{em.gagal} `{user_id}` **tidak berada di dalam grup ini, maka saya abaikan.**",
-                    )
-            except Exception as e:
-                await pros.edit(
-                    f"**Terjadi kesalahan saat mengambil anggota obrolan\nKarena :** `{e}`"
-                )
-        else:
-            await pros.edit(
-                f"{em.sukses} **Pengguna `{user_id}` tidak terdeteksi melakukan spam.**"
-            )
     else:
         await pros.edit(
             f"{em.gagal} **Gunakan perintah `{m.text} [user_id]` untuk melakukan pengecekan spam.**"
+        )
+        return
+
+    is_spam, result = check_user_in_cas(user_id)
+    if is_spam:
+        message = f"{em.warn} **Pengguna `{user_id}` terdeteksi melakukan spam.**"
+        if "offenses" in result:
+            message += f"\n\n{em.sukses} **Spam URL:**\n"
+            for url in result["messages"]:
+                message += f"`{url}`\n"
+        await pros.edit(message, disable_web_page_preview=True)
+
+        try:
+            chat_member = await c.get_chat_member(m.chat.id, (await c.get_me()).id)
+            if chat_member.status in (
+                ChatMemberStatus.ADMINISTRATOR,
+                ChatMemberStatus.OWNER,
+            ):
+                try:
+                    permissions = await c.get_chat_member(m.chat.id, user_id)
+                    if permissions.can_restrict_members:
+                        try:
+                            chat_privileges = ChatPrivileges(
+                                can_restrict_members=True, can_delete_messages=True
+                            )
+                            await c.restrict_chat_member(
+                                m.chat.id, user_id, permissions=chat_privileges
+                            )
+                            await c.send(
+                                m.chat.id,
+                                f"{em.warn} **Saya harus membatasi `{user_id}` karena terdeteksi melakukan SPAM!**",
+                            )
+                        except Exception as e:
+                            await pros.edit(
+                                f"{em.gagal} **Tidak dapat membatasi pengguna:**\n`{e}`"
+                            )
+                except PeerIdInvalid:
+                    await c.send_message(
+                        m.chat.id,
+                        f"{em.gagal} `{user_id}` **tidak berada di dalam grup dan saya mengabaikannya**",
+                    )
+                except Exception as e:
+                    await pros.edit(
+                        f"{em.gagal} **Terjadi kesalahan saat mengambil izin pengguna:**\n`{e}`"
+                    )
+        except PeerIdInvalid:
+            if is_spam:
+                message = (
+                    f"{em.warn} **Pengguna `{user_id}` terdeteksi melakukan spam.**"
+                )
+                if "offenses" in result:
+                    message += f"\n\n{em.sukses} **Spam URL:**\n"
+                    for url in result["messages"]:
+                        message += f"`{url}`\n"
+                    await pros.edit(message, disable_web_page_preview=True)
+            else:
+                await c.send_memssage(
+                    m.chat.id,
+                    f"{em.gagal} `{user_id}` **tidak berada di dalam grup ini, maka saya abaikan.**",
+                )
+        except Exception as e:
+            await pros.edit(
+                f"**Terjadi kesalahan saat mengambil anggota obrolan\nKarena :** `{e}`"
+            )
+    else:
+        await pros.edit(
+            f"{em.sukses} **Pengguna `{user_id}` tidak terdeteksi melakukan spam.**"
         )
 
 
