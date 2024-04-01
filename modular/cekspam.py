@@ -92,29 +92,33 @@ async def cek_spam(c: nlx, m):
 
 
 @ky.ubot("checkspam", sudo=True)
-async def _(c: nlx, m):
+async def check_spam_status(c: nlx, m):
     global filter_active
-    chat_member = await c.get_chat_member(m.chat.id, (await c.get_me()).id)
-    if chat_member.status in (
-        ChatMemberStatus.ADMINISTRATOR,
-        ChatMemberStatus.OWNER,
-    ):
-        if len(m.command) > 1:
-            status = m.command[1].lower()
-            if status == "on":
-                filter_active = True
-                await m.reply("Filter Cek Spam Bot telah diaktifkan.")
-            elif status == "off":
-                filter_active = False
-                await m.reply("Filter Cek Spam Bot telah dinonaktifkan.")
-        else:
-            await m.reply(
-                f"Gunakan perintah :\n`{m.text} on` untuk mengaktifkan filter\n`{m.text} off` untuk menonaktifkannya."
-            )
-    else:
+    chat_member = await c.get_chat_member(m.chat.id, m.from_user.id)
+    if chat_member.status not in (ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER):
         await m.reply(
             f"Maaf, Anda tidak memiliki izin untuk menggunakan perintah ini di `{m.chat.id}`."
         )
+        return
+
+    if len(m.command) > 1:
+        status = m.command[1].lower()
+        if status == "on":
+            if filter_active:
+                await m.reply("Filter Spam Bot sudah aktif.")
+            else:
+                filter_active = True
+                await m.reply("Berhasil mengaktifkan Filter Spam Bot.")
+        elif status == "off":
+            if not filter_active:
+                await m.reply("Saat ini memang belum mengaktifkan Filter Spam Bot.")
+            else:
+                filter_active = False
+                await m.reply("Filter Spam Bot berhasil di Non-Aktifkan.")
+        else:
+            await m.reply("Gunakan `on` untuk mengaktifkan atau `off` untuk menonaktifkan Filter Spam Bot.")
+    else:
+        await m.reply("Gunakan perintah `/checkspam [on/off]` untuk mengaktifkan atau menonaktifkan Filter Spam Bot.")
 
 
 async def on_message(c: nlx, m):
