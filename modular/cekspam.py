@@ -38,6 +38,20 @@ def check_spam(message):
     return False
 
 
+@ky.ubot("cekspam", sudo=True)
+async def cek_spam(c: nlx, m):
+    if len(m.command) > 1:
+        user_id = m.command[1]
+        is_spam, result = check_user_in_cas(user_id)
+        if is_spam:
+            await m.reply(f"Pengguna `{user_id}` terdeteksi melakukan spam.")
+            if "offenses" in result:
+                for url in result["messages"]:
+                    await m.reply(f"Spam URL: {url}")
+        else:
+            await m.reply(f"Pengguna `{user_id}` tidak terdeteksi melakukan spam.")
+    else:
+        await m.reply(f"Gunakan perintah `{m.text} [user_id]` untuk melakukan pengecekan spam.")
 
 
 @ky.ubot("checkspam", sudo=True)
