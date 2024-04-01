@@ -57,10 +57,10 @@ async def _(c: nlx, m):
 
 async def on_message(c: nlx, m):
     if filter_active:
-        chat_members = await c.get_chat_members(m.chat.id)
-        for member in chat_members:
-            if check_spam(member):
-                if c.is_admin(m.chat.id):
+        if c.is_admin(m.chat.id):
+            chat_members = await c.get_chat_members(m.chat.id)
+            for member in chat_members:
+                if check_spam(member):
                     permissions = await c.get_permissions(m.chat.id, c.me.id)
                     if (
                         permissions.can_restrict_members
@@ -83,3 +83,5 @@ async def on_message(c: nlx, m):
                             await m.reply(
                                 f"Gagal memute atau menghapus pesan. Error: {e}"
                             )
+        else:
+            await m.reply(f"Maaf, Anda tidak memiliki izin untuk menggunakan perintah ini di `{m.chat.id}`.")
