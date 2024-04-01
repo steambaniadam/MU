@@ -38,11 +38,13 @@ def check_spam(message):
     return False
 
 
+import pyrogram.enums
+
 @ky.ubot("checkspam", sudo=True)
 async def _(c: nlx, m):
     global filter_active
     chat_member = await c.get_chat_member(m.chat.id, (await c.get_me()).id)
-    if chat_member.is_administrator:
+    if chat_member.status in (ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER,):
         if len(m.command) > 1:
             status = m.command[1].lower()
             if status == "on":
