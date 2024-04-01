@@ -40,8 +40,8 @@ async def _(c, m):
         if len(m.command) < 2:
             chat_id = m.chat.id
             namagece = m.chat.title
-            await c.leave_chat(chat_id)
             await ceger.edit(cgr("join_3").format(em.sukses, c.me.mention, namagece))
+            await c.leave_chat(chat_id)
             return
 
         chat_arg = m.command[1]
@@ -53,6 +53,9 @@ async def _(c, m):
 
             if chat_id in NO_GCAST:
                 return await ceger.edit(cgr("join_2").format(em.gagal, namagece))
+            else:
+                await ceger.edit(cgr("join_3").format(em.sukses, c.me.mention, namagece))
+                await c.leave_chat(chat_id)
 
         elif chat_arg.startswith("https://t.me/"):
             chat_id = chat_arg.split("/")[-1]
