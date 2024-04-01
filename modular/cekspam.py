@@ -95,7 +95,10 @@ async def cek_spam(c: nlx, m):
 async def check_spam_status(c: nlx, m):
     global filter_active
     chat_member = await c.get_chat_member(m.chat.id, m.from_user.id)
-    if chat_member.status not in (ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER):
+    if chat_member.status not in (
+        ChatMemberStatus.ADMINISTRATOR,
+        ChatMemberStatus.OWNER,
+    ):
         await m.reply(
             f"Maaf, Anda tidak memiliki izin untuk menggunakan perintah ini di `{m.chat.id}`."
         )
@@ -116,9 +119,13 @@ async def check_spam_status(c: nlx, m):
                 filter_active = False
                 await m.reply("Filter Spam Bot berhasil di Non-Aktifkan.")
         else:
-            await m.reply("Gunakan `on` untuk mengaktifkan atau `off` untuk menonaktifkan Filter Spam Bot.")
+            await m.reply(
+                "Gunakan `on` untuk mengaktifkan atau `off` untuk menonaktifkan Filter Spam Bot."
+            )
     else:
-        await m.reply("Gunakan perintah `/checkspam [on/off]` untuk mengaktifkan atau menonaktifkan Filter Spam Bot.")
+        await m.reply(
+            "Gunakan perintah `/checkspam [on/off]` untuk mengaktifkan atau menonaktifkan Filter Spam Bot."
+        )
 
 
 async def on_message(c: nlx, m):
