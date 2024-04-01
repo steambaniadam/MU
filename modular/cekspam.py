@@ -2,8 +2,8 @@ import asyncio
 
 import requests
 from pyrogram.enums import *
-from pyrogram.types import *
 from pyrogram.errors import *
+from pyrogram.types import *
 
 from Mix import *
 
@@ -76,17 +76,19 @@ async def cek_spam(c: nlx, m):
                         except Exception as e:
                             await m.reply(f"Tidak dapat membatasi pengguna: {e}")
             except PeerIdInvalid:
-                await m.reply("Terjadi kesalahan saat mengambil anggota obrolan. Harap coba lagi nanti.")
+                await m.reply(
+                    "Terjadi kesalahan saat mengambil anggota obrolan. Harap coba lagi nanti."
+                )
             except Exception:
-                await m.reply(f"{user_id} tidak berada di dalam grup, maka saya mengabaikannya")
-                pass
+                await m.reply(
+                    f"{user_id} tidak berada di dalam grup, maka saya mengabaikannya"
+                )
         else:
             await m.reply(f"Pengguna `{user_id}` tidak terdeteksi melakukan spam.")
     else:
         await m.reply(
             f"Gunakan perintah `{m.text} [user_id]` untuk melakukan pengecekan spam."
         )
-
 
 
 @ky.ubot("checkspam", sudo=True)
