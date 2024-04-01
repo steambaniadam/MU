@@ -56,7 +56,7 @@ async def cek_spam(c: nlx, m):
                 ChatMemberStatus.ADMINISTRATOR,
                 ChatMemberStatus.OWNER,
             ):
-                permissions = await c.get_permissions(m.chat.id, c.me.id)
+                permissions = await c.set_chat_permissions(m.chat.id, c.me.id)
                 if permissions.can_restrict_members:
                     try:
                         await c.restrict_chat_member(
