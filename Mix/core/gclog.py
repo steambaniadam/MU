@@ -24,7 +24,7 @@ from team.nandev.class_log import LOGGER
 from team.nandev.class_modules import CMD_HELP
 from team.nandev.database import ndB
 
-from config *
+from config import *
 from Mix import bot, nlx
 
 
