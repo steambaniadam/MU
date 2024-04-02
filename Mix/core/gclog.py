@@ -24,7 +24,7 @@ from team.nandev.class_log import LOGGER
 from team.nandev.class_modules import CMD_HELP
 from team.nandev.database import ndB
 
-from config import *
+from config *
 from Mix import bot, nlx
 
 
@@ -66,7 +66,7 @@ async def getFinish():
     xx = " ".join(emut)
     try:
         await bot.send_message(
-            TAG_LOG,
+            int(TAG_LOG),
             f"""
 <b>Userbot Successfully Deploy !!</b>
 
