@@ -19,7 +19,7 @@ from pyrogram import __version__ as pyrover
 from pyrogram.errors import *
 from pyrogram.types import ChatPrivileges
 from pytgcalls import __version__ as pytgver
-#from team.nandev.class_handler import TAG_LOG
+from team.nandev.class_handler import TAG_LOG
 from team.nandev.class_log import LOGGER
 from team.nandev.class_modules import CMD_HELP
 from team.nandev.database import ndB
@@ -30,7 +30,7 @@ from Mix import bot, nlx
 ANAK_KONTOL = ndB.get_key("TAG_LOG") if ndB.get_key("TAG_LOG") else log_channel
 
 async def check_logger():
-    if  is not None:
+    if ANAK_KONTOL:
         return
     LOGGER.info(f"Creating Grup Log...")
     nama = f"Mix-Userbot Logs"
@@ -66,7 +66,7 @@ async def getFinish():
     xx = " ".join(emut)
     try:
         await bot.send_message(
-            int(ANAK_KONTOL),
+            TAG_LOG,
             f"""
 <b>Userbot Successfully Deploy !!</b>
 
@@ -80,7 +80,7 @@ async def getFinish():
     except (ChannelInvalid, PeerIdInvalid):
         try:
             await nlx.promote_chat_member(
-                int(ANAK_KONTOL),
+                TAG_LOG,
                 bot.me.username,
                 privileges=ChatPrivileges(
                     can_change_info=True,
@@ -94,7 +94,7 @@ async def getFinish():
                 ),
             )
             await bot.send_message(
-                int(ANAK_KONTOL),
+                TAG_LOG,
                 f"""
 <b>Userbot Successfully Deploy !!</b>
 
