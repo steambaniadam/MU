@@ -29,6 +29,7 @@ from Mix import bot, nlx
 
 ANAK_KONTOL = ndB.get_key("TAG_LOG") if ndB.get_key("TAG_LOG") else log_channel
 
+
 async def check_logger():
     if ANAK_KONTOL:
         return
