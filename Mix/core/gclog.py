@@ -77,13 +77,10 @@ async def getFinish():
 <b>Prefixes : {xx}</b>
 """,
         )
-    # except (ChannelInvalid, PeerIdInvalid):
-    except Exception as e:
-        print(f"{e}")
-        """
+    except (ChannelInvalid, PeerIdInvalid):
         try:
             await nlx.promote_chat_member(
-                TAG_LOG,
+                int(TAG_LOG),
                 bot.me.username,
                 privileges=ChatPrivileges(
                     can_change_info=True,
@@ -97,8 +94,8 @@ async def getFinish():
                 ),
             )
             await bot.send_message(
-                TAG_LOG,
-                f"
+                int(TAG_LOG),
+                f"""
 <b>Userbot Successfully Deploy !!</b>
 
 <b>Modules : {len(CMD_HELP)}</b>
@@ -106,9 +103,8 @@ async def getFinish():
 <b>Pyrogram : {pyrover}</b>
 <b>Pytgcalls : {pytgver}</b>
 <b>Prefixes : {xx}</b>
-",
+""",
             )
         except:
             ndB.del_key("TAG_LOG")
             execvp(executable, [executable, "-m", "Mix"])
-        """
