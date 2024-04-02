@@ -3,7 +3,6 @@ import asyncio
 import uvloop
 
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
-from pyrogram import Client
 
 from config import *
 from Mix.core import *
