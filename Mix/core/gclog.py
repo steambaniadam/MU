@@ -77,7 +77,7 @@ async def getFinish():
 <b>Prefixes : {xx}</b>
 """,
         )
-    #except (ChannelInvalid, PeerIdInvalid):
+    # except (ChannelInvalid, PeerIdInvalid):
     except Exception as e:
         print(f"{e}")
         """
