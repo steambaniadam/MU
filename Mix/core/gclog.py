@@ -31,7 +31,7 @@ ANAK_KONTOL = ndB.get_key("TAG_LOG") or log_channel
 
 
 async def check_logger():
-    LOGS("Check Grup Log...")
+    #LOGS("Check Grup Log...")
     if ANAK_KONTOL is not None:
         return
     LOGGER.info(f"Creating Grup Log...")
