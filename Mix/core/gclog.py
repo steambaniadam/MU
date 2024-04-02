@@ -56,7 +56,6 @@ async def check_logger():
         ndB.set_key("TAG_LOG", kntl)
         await nlx.send_message(kntl, f"<b>Group Log Berhasil Dibuat.</b>")
         LOGGER.info(f"Group Logger Enable...")
-        execvp(executable, [executable, "-m", "Mix"])
     else:
         return
 
