@@ -180,7 +180,7 @@ async def _(c: nlx, m):
         m.id
         async for m in c.search_messages(
             chat_id,
-            from_user=int(m.from_c.id),
+            from_user=int(m.from_user.id),
             limit=n,
         )
     ]
