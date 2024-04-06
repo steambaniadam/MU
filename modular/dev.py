@@ -21,7 +21,6 @@ import psutil
 from psutil._common import bytes2human
 from pyrogram.enums import *
 from pyrogram.errors import *
-from pyrogram.errors import FloodWait
 from pyrogram.types import *
 from pytz import timezone
 
@@ -320,17 +319,26 @@ async def _(c: nlx, m):
                             member.user.id, datetime.now() + timedelta(seconds=30)
                         )
                         kick_count += 1
-                        await m.edit(
-                            f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member. Gagal: <code>{fail_count}</code>"
-                        )
+                        try:
+                            await m.edit(
+                                f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member. Gagal: <code>{fail_count}</code>"
+                            )
+                        except MessageNotModified:
+                            pass
                     except FloodWait as e:
                         fail_count += 1
                         tunggu = e.value
                         await asyncio.sleep(e.value)
-                        await m.edit(f"{em.gagal} Harap tunggu {tunggu} detik lagi")
-                await m.edit(
-                    f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member. Gagal: <code>{fail_count}</code>"
-                )
+                        try:
+                            await m.edit(f"{em.gagal} Harap tunggu {tunggu} detik lagi")
+                        except MessageNotModified:
+                            pass
+                try:
+                    await m.edit(
+                        f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member. Gagal: <code>{fail_count}</code>"
+                    )
+                except MessageNotModified:
+                    pass
             else:
                 loops_count = members_count / 200
                 loops_count = round(loops_count)
@@ -348,20 +356,29 @@ async def _(c: nlx, m):
                                 member.user.id, datetime.now() + timedelta(seconds=30)
                             )
                             kick_count += 1
-                            await m.edit(
-                                f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member. Gagal: <code>{fail_count}</code>"
-                            )
+                            try:
+                                await m.edit(
+                                    f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member. Gagal: <code>{fail_count}</code>"
+                                )
+                            except pyrogram.errors.exceptions.bad_request_400.MessageNotModified:
+                                pass
                         except FloodWait as e:
                             fail_count += 1
                             tunggu = e.value
                             await asyncio.sleep(e.value)
-                            await m.edit(
-                                f"{em.gagal} Silahkan tunggu selama {tunggu} detik!"
-                            )
-                    await asyncio.sleep(15)
-                await m.edit(
-                    f"{em.sukses} Berhasil kick : <code>{kick_count}</code> member! Gagal: <code>{fail_count}</code>"
-                )
+                            try:
+                                await m.edit(
+                                    f"{em.gagal} Silahkan tunggu selama {tunggu} detik!"
+                                )
+                            except MessageNotModified:
+                                pass
+                    await asyncio.sleep(tunggu)
+                try:
+                    await m.edit(
+                        f"{em.sukses} Berhasil kick : <code>{kick_count}</code> member! Gagal: <code>{fail_count}</code>"
+                    )
+                except MessageNotModified:
+                    pass
         else:
             await m.reply(
                 f"{em.gagal} Izin admin Anda tidak cukup untuk menggunakan perintah ini!"
