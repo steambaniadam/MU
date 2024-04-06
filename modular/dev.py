@@ -303,16 +303,8 @@ async def _(c: nlx, m):
             if m.from_user.id not in DEVS:
                 await m.reply(f"{em.gagal} Maaf, Anda bukan seorang DEVELOPER!")
                 return
-            """
-            if not is_channel:
-                req_user_member = await c.get_chat_member(m.chat.id, m.from_user.id)
-                if req_user_member.privileges is None:
-                    await m.reply(
-                        f"{em.gagal} Anda bukan seorang admin! Anda tidak bisa menggunakan perintah ini di sini!"
-                    )
-                    return
-              """
             kick_count = 0
+            fail_count = 0
             members_count = chat.members_count
             if members_count <= 200:
                 async for member in chat.get_members():
@@ -328,12 +320,16 @@ async def _(c: nlx, m):
                             member.user.id, datetime.now() + timedelta(seconds=30)
                         )
                         kick_count += 1
+                        await m.edit(
+                            f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member. Gagal: <code>{fail_count}</code>"
+                        )
                     except FloodWait as e:
+                        fail_count += 1
                         tunggu = e.value
                         await asyncio.sleep(e.value)
-                        await m.reply(f"{em.gagal} Harap tunggu {tunggu} detik lagi")
-                await m.reply(
-                    f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member."
+                        await m.edit(f"{em.gagal} Harap tunggu {tunggu} detik lagi")
+                await m.edit(
+                    f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member. Gagal: <code>{fail_count}</code>"
                 )
             else:
                 loops_count = members_count / 200
@@ -352,15 +348,19 @@ async def _(c: nlx, m):
                                 member.user.id, datetime.now() + timedelta(seconds=30)
                             )
                             kick_count += 1
+                            await m.edit(
+                                f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member. Gagal: <code>{fail_count}</code>"
+                            )
                         except FloodWait as e:
+                            fail_count += 1
                             tunggu = e.value
                             await asyncio.sleep(e.value)
-                            await m.reply(
+                            await m.edit(
                                 f"{em.gagal} Silahkan tunggu selama {tunggu} detik!"
                             )
                     await asyncio.sleep(15)
-                await m.reply(
-                    f"{em.sukses} Berhasil kick : <code>{kick_count}</code> member!"
+                await m.edit(
+                    f"{em.sukses} Berhasil kick : <code>{kick_count}</code> member! Gagal: <code>{fail_count}</code>"
                 )
         else:
             await m.reply(
@@ -372,7 +372,7 @@ async def _(c: nlx, m):
         )
 
 
-async def mak_mek(c, chat_id):
+async def mak_mek(c, chat_id, message):
     em = Emojik()
     em.initialize()
     unban_count = 0
@@ -382,13 +382,16 @@ async def mak_mek(c, chat_id):
                 user_id = meki.user.id
                 await c.unban_chat_member(chat_id, user_id)
                 unban_count += 1
+                await message.edit(
+                    f"{em.proses} Memproses unban... Berhasil unban: {unban_count}"
+                )
             except FloodWait as e:
                 await asyncio.sleep(e.value)
                 await c.send_message(
                     chat_id, f"{em.gagal} Harap tunggu {e.value} detik lagi"
                 )
-    await c.send_message(
-        chat_id, f"{em.sukses} Berhasil unban : <code>{unban_count}</code> member."
+    await message.edit(
+        f"{em.sukses} Berhasil unban : <code>{unban_count}</code> member."
     )
 
 
@@ -401,15 +404,16 @@ async def _(c: nlx, m):
     if dia.status in (ChatMemberStatus.ADMINISTRATOR, ChatMemberStatus.OWNER):
         if m.from_user.id not in DEVS:
             await m.reply(f"{em.gagal} Maaf, Anda bukan seorang DEVELOPER!")
+            await pros.delete()
             return
 
-        await mak_mek(nlx, m.chat.id)
+        await mak_mek(nlx, m.chat.id, pros)
     else:
         await m.reply(
             f"{em.gagal} Anda harus menjadi admin atau memiliki izin yang cukup untuk menggunakan perintah ini!"
         )
-    await pros.delete()
-    return
+        await pros.delete()
+        return
 
 
 async def run_mongodump(uri, password):
