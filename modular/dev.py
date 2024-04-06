@@ -360,7 +360,9 @@ async def _(c: nlx, m):
                                 await m.edit(
                                     f"{em.sukses} Berhasil ban : <code>{kick_count}</code> member. Gagal: <code>{fail_count}</code>"
                                 )
-                            except pyrogram.errors.exceptions.bad_request_400.MessageNotModified:
+                            except (
+                                pyrogram.errors.exceptions.bad_request_400.MessageNotModified
+                            ):
                                 pass
                         except FloodWait as e:
                             fail_count += 1
