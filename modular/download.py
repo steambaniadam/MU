@@ -20,7 +20,7 @@ from pyrogram.raw.functions.messages import *
 from pyrogram.types import *
 from youtubesearchpython import VideosSearch
 
-from Mix import Emojik, YoutubeDownload, cgr, get_cgr, ky, progress
+from Mix import Emojik, YoutubeDownload, cgr, get_cgr, ky, progress, nlx
 
 __modles__ = "Download"
 __help__ = get_cgr("help_download")
