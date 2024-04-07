@@ -11,7 +11,6 @@ import time
 from datetime import timedelta
 from time import time
 
-import requests
 import wget
 from pyrogram.enums import *
 from pyrogram.errors import *
