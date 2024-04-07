@@ -13,21 +13,27 @@ __help__ = "Google"
 def google_search(query, limit=3):
     encoded_query = urllib.parse.quote_plus(query)
     url = f"https://www.google.com/search?q={encoded_query}"
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    }
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        soup = BeautifulSoup(response.text, "html.parser")
-        search_results = soup.find_all("div", class_="tF2Cxc")
+        soup = BeautifulSoup(response.text, 'html.parser')
+        search_results = soup.find_all('div', class_='tF2Cxc')
         results = []
         for result in search_results[:limit]:
-            title = result.find("h3", class_="LC20lb DKV0Md").text
-            link = result.find("a")["href"]
-            results.append({"title": title, "link": link})
+            title_elem = result.find('h3', class_='LC20lb DKV0Md')
+            if title_elem:
+                title = title_elem.text
+            else:
+                title = "Judul tidak ditemukan"
+            link_elem = result.find('a')
+            if link_elem:
+                link = link_elem['href']
+            else:
+                link = "Link tidak ditemukan"
+            results.append({'title': title, 'link': link})
         return results
     else:
-        print("Failed to perform Google search")
+        print("Gagal melakukan pencarian Google")
         return []
 
 
