@@ -46,4 +46,3 @@ pexpect
 pyromod==1.5
 proxybroker
 pyquery
-selenium==3.141.0
