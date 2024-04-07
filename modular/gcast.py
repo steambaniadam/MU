@@ -42,14 +42,14 @@ async def digikes_(q):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    msg = await m.reply(cgr("proses").format(em.proses))
+    done = 0
+    failed = 0
+    msg = await cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
     send = c.get_m(m)
     if not send:
         return await msg.edit(cgr("gcs_1").format(em.gagal))
     blacklist = udB.get_chat(c.me.id)
     chats = await digikes_("gikes")
-    done = 0
-    failed = 0
     original_content = msg.text
     for chat in chats:
         if chat not in blacklist and chat not in NO_GCAST:
@@ -68,7 +68,7 @@ async def _(c: nlx, m):
             except (
                 SlowmodeWait,
                 ChatWriteForbidden,
-                pyrogram.errors.exceptions.bad_request_400.MessageNotModified,
+                MessageNotModified,
             ):
                 continue
             except Exception:
@@ -101,10 +101,6 @@ async def _(c: nlx, m):
                     if updated_content != original_content:
                         await msg.edit(updated_content)
                     await asyncio.sleep(0.3)
-
-    return await msg.edit(
-        cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
-    )
 
 
 @ky.ubot("gucast", sudo=True)
