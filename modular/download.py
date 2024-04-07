@@ -83,7 +83,7 @@ async def download_tiktok_command(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
     tiktok_link = m.text.split(maxsplit=1)[1]
-    pros = await m.reply(cgr("proses").format(em.proses))
+    pros = await m.edit(cgr("proses").format(em.proses))
 
     await download_tiktok_video(c, m.chat.id, tiktok_link)
 
