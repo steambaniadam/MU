@@ -44,13 +44,13 @@ async def _(c: nlx, m):
     em.initialize()
     done = 0
     failed = 0
-    msg = cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
     send = c.get_m(m)
     if not send:
-        return await msg.edit(cgr("gcs_1").format(em.gagal))
+        msg = await m.reply(cgr("gcs_1").format(em.gagal))
+        return
     blacklist = udB.get_chat(c.me.id)
     chats = await digikes_("gikes")
-    original_content = msg
+    msg = None
     for chat in chats:
         if chat not in blacklist and chat not in NO_GCAST:
             try:
@@ -62,7 +62,9 @@ async def _(c: nlx, m):
                 updated_content = cgr("gcs_2").format(
                     em.alive, em.sukses, done, em.gagal, failed
                 )
-                if updated_content != original_content:
+                if msg is None:
+                    msg = await m.reply(updated_content)
+                else:
                     await msg.edit(updated_content)
                 await asyncio.sleep(0.3)
             except (
@@ -76,7 +78,9 @@ async def _(c: nlx, m):
                 updated_content = cgr("gcs_2").format(
                     em.alive, em.sukses, done, em.gagal, failed
                 )
-                if updated_content != original_content:
+                if msg is None:
+                    msg = await m.reply(updated_content)
+                else:
                     await msg.edit(updated_content)
                 await asyncio.sleep(0.3)
             except FloodWait as e:
@@ -90,7 +94,9 @@ async def _(c: nlx, m):
                     updated_content = cgr("gcs_2").format(
                         em.alive, em.sukses, done, em.gagal, failed
                     )
-                    if updated_content != original_content:
+                    if msg is None:
+                        msg = await m.reply(updated_content)
+                    else:
                         await msg.edit(updated_content)
                     await asyncio.sleep(0.3)
                 except Exception:
@@ -98,7 +104,9 @@ async def _(c: nlx, m):
                     updated_content = cgr("gcs_2").format(
                         em.alive, em.sukses, done, em.gagal, failed
                     )
-                    if updated_content != original_content:
+                    if msg is None:
+                        msg = await m.reply(updated_content)
+                    else:
                         await msg.edit(updated_content)
                     await asyncio.sleep(0.3)
 
