@@ -8,7 +8,7 @@ __module__ = "Google"
 __help__ = "Google"
 
 
-def google_search(query, limit=3):
+def google_search(query, limit=10):
     encoded_query = urllib.parse.quote_plus(query)
     url = f"https://www.google.com/search?q={encoded_query}"
     headers = {
@@ -53,7 +53,7 @@ async def google_command(c: nlx, m: Message):
     if results:
         response = f"{em.sukses} **Pertanyaan :** `{query}`\n\n"
         for i, result in enumerate(results, start=1):
-            response += f"{i}. [{result['title']}]({result['link']})\n{result['description']}\n\n"
+            response += f"{i}. [{result['title']}]({result['link']})\n`{result['description']}`\n"
         await m.reply(response, disable_web_page_preview=True)
         await pros.delete()
     else:
