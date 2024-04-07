@@ -62,6 +62,7 @@ async def _(c: nlx, m):
             except (
                 SlowmodeWait,
                 ChatWriteForbidden,
+                MessageNotModified,
             ):
                 continue
             except Exception:
