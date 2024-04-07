@@ -7,6 +7,7 @@
 ################################################################
 
 import asyncio
+import subprocess
 import os
 import time
 from datetime import timedelta
@@ -26,25 +27,54 @@ __modles__ = "Download"
 __help__ = get_cgr("help_download")
 
 
-@ky.ubot("dtik", sudo=False)
-async def _(self: nlx, m):
+def get_video_dimensions(file_path):
+    width, height = 0, 0
+    command = ["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0:s=x", file_path]
+    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    if result.returncode == 0:
+        dimensions = result.stdout.decode().split('x')
+        if len(dimensions) == 2:
+            width, height = map(int, dimensions)
+    return width, height
+
+
+def clear_directory(directory):
+    command = ["rm", "-rf", directory]
+    subprocess.run(command)
+
+
+async def download_tiktok_video(context: Client, chat_id: int, tiktok_link: str):
+    try:
+        output_filename = "media/downloaded_video.%(ext)s"
+        
+        command = [
+            "yt-dlp",
+            "-o", output_filename,
+            tiktok_link
+        ]
+        subprocess.check_call(command)
+        
+        width, height = get_video_dimensions("media/downloaded_video.mp4")
+    
+        with open("media/downloaded_video.mp4", "rb") as video_file:
+            await context.send_video(chat_id=chat_id, video=video_file, width=width, height=height, timeout=120)
+        
+        clear_directory("media")
+    except Exception as e:
+        print(f"Terjadi kesalahan: {e}")
+        await context.send_message(chat_id=chat_id, text="Tautan rusak.")
+
+
+@ky.ubot("dtik", sudo=True)
+async def download_tiktok_command(context: Client, message: Message):
     em = Emojik()
     em.initialize()
-    hm = "luciferbukanrobot_bot"
-    await nlx.unblock_user(hm)
-    await nlx.send_message(hm, f"/tiktok {m.command[1]}", disable_web_page_preview=True)
-    pros = await m.reply(cgr("proses").format(em.proses))
-    ai = await nlx.forward_messages(hm, m.chat.id, message_ids=m.id)
-    await nlx.send_message(hm, "/tiktok", reply_to_message_id=ai.id)
-    await asyncio.sleep(5)
-    async for tai in nlx.search_messages(hm, limit=1):
-        await asyncio.sleep(5)
-        if tai.media:
-            await tai.copy(m.chat.id)
-    await pros.delete()
-    ulat = await nlx.resolve_peer(hm)
-    await nlx.invoke(DeleteHistory(peer=ulat, max_id=0, revoke=True))
-    return
+    tiktok_link = message.command[1] if len(message.command) > 1 else None
+    if tiktok_link:
+        pros = await message.reply(cgr("proses").format(em.proses))
+        await asyncio.sleep(2)
+        await download_tiktok_video(context, message.chat.id, tiktok_link)
+        await pros.delete()
 
 
 @ky.ubot("vtube", sudo=True)
