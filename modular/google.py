@@ -55,7 +55,7 @@ async def google_command(c: nlx, m: Message):
     if results:
         response = f"{em.sukses} **Pertanyaan :** `{query}`\n\n"
         for i, result in enumerate(results, start=1):
-            response += f"{i}. [{result['title']}]({result['link']})\n`{result['description']}`\n"
+            response += f"**{i}. [{result['title']}]({result['link']})\n`{result['description']}`**\n\n"
         await m.reply(response, disable_web_page_preview=True)
         await pros.delete()
     else:
