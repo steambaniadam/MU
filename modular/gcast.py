@@ -58,6 +58,9 @@ async def _(c: nlx, m):
                 else:
                     await c.send_message(chat, send)
                 done += 1
+                await msg.edit(
+                    cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                )
                 await asyncio.sleep(0.3)
             except (
                 SlowmodeWait,
@@ -67,6 +70,9 @@ async def _(c: nlx, m):
                 continue
             except Exception:
                 failed += 1
+                await msg.edit(
+                    cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                )
                 await asyncio.sleep(0.3)
             except FloodWait as e:
                 await asyncio.sleep(e.value)
@@ -76,9 +82,15 @@ async def _(c: nlx, m):
                     else:
                         await c.send_message(chat, send)
                     done += 1
+                    await msg.edit(
+                        cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                    )
                     await asyncio.sleep(0.3)
                 except Exception:
                     failed += 1
+                    await msg.edit(
+                        cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                    )
                     await asyncio.sleep(0.3)
 
     return await msg.edit(
