@@ -59,7 +59,9 @@ async def _(c: nlx, m):
                 else:
                     await c.send_message(chat, send)
                 done += 1
-                updated_content = cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                updated_content = cgr("gcs_2").format(
+                    em.alive, em.sukses, done, em.gagal, failed
+                )
                 if updated_content != original_content:
                     await msg.edit(updated_content)
                 await asyncio.sleep(0.3)
@@ -71,7 +73,9 @@ async def _(c: nlx, m):
                 continue
             except Exception:
                 failed += 1
-                updated_content = cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                updated_content = cgr("gcs_2").format(
+                    em.alive, em.sukses, done, em.gagal, failed
+                )
                 if updated_content != original_content:
                     await msg.edit(updated_content)
                 await asyncio.sleep(0.3)
@@ -83,13 +87,17 @@ async def _(c: nlx, m):
                     else:
                         await c.send_message(chat, send)
                     done += 1
-                    updated_content = cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                    updated_content = cgr("gcs_2").format(
+                        em.alive, em.sukses, done, em.gagal, failed
+                    )
                     if updated_content != original_content:
                         await msg.edit(updated_content)
                     await asyncio.sleep(0.3)
                 except Exception:
                     failed += 1
-                    updated_content = cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                    updated_content = cgr("gcs_2").format(
+                        em.alive, em.sukses, done, em.gagal, failed
+                    )
                     if updated_content != original_content:
                         await msg.edit(updated_content)
                     await asyncio.sleep(0.3)
