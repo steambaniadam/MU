@@ -115,14 +115,15 @@ async def _(c: nlx, m):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    msg = await m.reply(cgr("proses").format(em.proses))
     send = c.get_m(m)
     if not send:
-        return await msg.edit(cgr("gcs_1").format(em.gagal))
+        msg = await m.reply(cgr("gcs_1").format(em.gagal))
+        return
     chats = await digikes_("gucast")
     blacklist = udB.get_chat(c.me.id)
     done = 0
     failed = 0
+    msg = None
     for chat in chats:
         if chat not in blacklist and chat not in DEVS:
             try:
@@ -131,11 +132,25 @@ async def _(c: nlx, m):
                 else:
                     await c.send_message(chat, send)
                 done += 1
+                updated_content = cgr("gcs_3").format(
+                    em.alive, em.sukses, done, em.gagal, failed
+                )
+                if msg is None:
+                    msg = await m.reply(updated_content)
+                else:
+                    await msg.edit(updated_content)
                 await asyncio.sleep(0.3)
             except PeerIdInvalid:
                 continue
             except Exception:
                 failed += 1
+                updated_content = cgr("gcs_3").format(
+                    em.alive, em.sukses, done, em.gagal, failed
+                )
+                if msg is None:
+                    msg = await m.reply(updated_content)
+                else:
+                    await msg.edit(updated_content)
                 await asyncio.sleep(0.3)
             except FloodWait as e:
                 await asyncio.sleep(e.value)
@@ -145,14 +160,24 @@ async def _(c: nlx, m):
                     else:
                         await c.send_message(chat, send)
                     done += 1
+                    updated_content = cgr("gcs_3").format(
+                        em.alive, em.sukses, done, em.gagal, failed
+                    )
+                    if msg is None:
+                        msg = await m.reply(updated_content)
+                    else:
+                        await msg.edit(updated_content)
                     await asyncio.sleep(0.3)
                 except Exception:
                     failed += 1
+                    updated_content = cgr("gcs_3").format(
+                        em.alive, em.sukses, done, em.gagal, failed
+                    )
+                    if msg is None:
+                        msg = await m.reply(updated_content)
+                    else:
+                        await msg.edit(updated_content)
                     await asyncio.sleep(0.3)
-
-    return await msg.edit(
-        cgr("gcs_3").format(em.alive, em.sukses, done, em.gagal, failed)
-    )
 
 
 @ky.ubot("addbl", sudo=True)
