@@ -32,7 +32,6 @@ __help__ = get_cgr("help_download")
 
 CHROMEDRIVER_PATH = "/usr/local/bin/chromedriver"
 
-
 async def download_tiktok_video(c, chat_id, tiktok_link):
     try:
         options = webdriver.ChromeOptions()
@@ -63,13 +62,11 @@ async def download_tiktok_video(c, chat_id, tiktok_link):
             chat_id=chat_id, text="Tautan rusak atau video gagal diunggah."
         )
 
-
 def clear_directory(directory):
     for file_name in os.listdir(directory):
         file_path = os.path.join(directory, file_name)
         if os.path.isfile(file_path):
             os.remove(file_path)
-
 
 @ky.ubot("dtik", sudo=False)
 async def download_tiktok_command(c: nlx, m: Message):
