@@ -1,7 +1,8 @@
 import urllib.parse
+
 import requests
-from pyrogram import Client
 from pyrogram.types import Message
+
 from Mix import *
 
 __module__ = "Google"
@@ -14,13 +15,13 @@ def google_search(query, limit=3):
     response = requests.get(url)
     if response.status_code == 200:
         html_content = response.text
-        soup = BeautifulSoup(html_content, 'html.parser')
-        search_results = soup.find_all('div', class_='tF2Cxc')
+        soup = BeautifulSoup(html_content, "html.parser")
+        search_results = soup.find_all("div", class_="tF2Cxc")
         results = []
         for result in search_results[:limit]:
-            title = result.find('h3', class_='LC20lb DKV0Md').text
-            link = result.find('a')['href']
-            results.append({'title': title, 'link': link})
+            title = result.find("h3", class_="LC20lb DKV0Md").text
+            link = result.find("a")["href"]
+            results.append({"title": title, "link": link})
         return results
     else:
         print("Failed to perform Google search")
@@ -41,5 +42,7 @@ async def google_command(c: nlx, m: Message):
         await m.reply(response, disable_web_page_preview=True)
         await pros.delete()
     else:
-        await m.reply(f"{em.gagal} Maaf, tidak dapat menemukan hasil untuk pencarian ini.")
+        await m.reply(
+            f"{em.gagal} Maaf, tidak dapat menemukan hasil untuk pencarian ini."
+        )
         await pros.delete()
