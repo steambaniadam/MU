@@ -50,6 +50,7 @@ async def _(c: nlx, m):
     chats = await digikes_("gikes")
     done = 0
     failed = 0
+    original_content = msg.text
     for chat in chats:
         if chat not in blacklist and chat not in NO_GCAST:
             try:
@@ -58,21 +59,21 @@ async def _(c: nlx, m):
                 else:
                     await c.send_message(chat, send)
                 done += 1
-                await msg.edit(
-                    cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
-                )
+                updated_content = cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                if updated_content != original_content:
+                    await msg.edit(updated_content)
                 await asyncio.sleep(0.3)
             except (
                 SlowmodeWait,
                 ChatWriteForbidden,
-                MessageNotModified,
+                pyrogram.errors.exceptions.bad_request_400.MessageNotModified,
             ):
                 continue
             except Exception:
                 failed += 1
-                await msg.edit(
-                    cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
-                )
+                updated_content = cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                if updated_content != original_content:
+                    await msg.edit(updated_content)
                 await asyncio.sleep(0.3)
             except FloodWait as e:
                 await asyncio.sleep(e.value)
@@ -82,15 +83,15 @@ async def _(c: nlx, m):
                     else:
                         await c.send_message(chat, send)
                     done += 1
-                    await msg.edit(
-                        cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
-                    )
+                    updated_content = cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                    if updated_content != original_content:
+                        await msg.edit(updated_content)
                     await asyncio.sleep(0.3)
                 except Exception:
                     failed += 1
-                    await msg.edit(
-                        cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
-                    )
+                    updated_content = cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+                    if updated_content != original_content:
+                        await msg.edit(updated_content)
                     await asyncio.sleep(0.3)
 
     return await msg.edit(
