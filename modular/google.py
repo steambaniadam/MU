@@ -13,23 +13,25 @@ __help__ = "Google"
 def google_search(query, limit=3):
     encoded_query = urllib.parse.quote_plus(query)
     url = f"https://www.google.com/search?q={encoded_query}"
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+    }
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        search_results = soup.find_all('div', class_='tF2Cxc')
+        soup = BeautifulSoup(response.text, "html.parser")
+        search_results = soup.find_all("div", class_="tF2Cxc")
         results = []
         for result in search_results[:limit]:
-            h3_elements = result.find_all('h3')
+            h3_elements = result.find_all("h3")
             for h3 in h3_elements:
                 if h3.text.strip():
                     title = h3.text
-                    link_elem = h3.find_previous('a')
+                    link_elem = h3.find_previous("a")
                     if link_elem:
-                        link = link_elem['href']
+                        link = link_elem["href"]
                     else:
                         link = "Link tidak ditemukan"
-                    results.append({'title': title, 'link': link})
+                    results.append({"title": title, "link": link})
                     break
         return results
     else:
