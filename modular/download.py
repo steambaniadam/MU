@@ -54,7 +54,7 @@ def clear_directory(directory):
     subprocess.run(command)
 
 
-async def download_tiktok_video(context: Client, chat_id: int, tiktok_link: str):
+async def download_tiktok_video(c, chat_id, tiktok_link):
     try:
         output_filename = "media/downloaded_video.%(ext)s"
 
@@ -64,7 +64,7 @@ async def download_tiktok_video(context: Client, chat_id: int, tiktok_link: str)
         width, height = get_video_dimensions("media/downloaded_video.mp4")
 
         with open("media/downloaded_video.mp4", "rb") as video_file:
-            await context.send_video(
+            await c.send_video(
                 chat_id=chat_id,
                 video=video_file,
                 width=width,
@@ -75,19 +75,19 @@ async def download_tiktok_video(context: Client, chat_id: int, tiktok_link: str)
         clear_directory("media")
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
-        await context.send_message(chat_id=chat_id, text="Tautan rusak.")
+        await c.send_message(chat_id=chat_id, text="Tautan rusak.")
 
 
-@ky.ubot("dtik", sudo=True)
-async def download_tiktok_command(context: Client, message: Message):
+@ky.ubot("dtik", sudo=False)
+async def download_tiktok_command(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
-    tiktok_link = message.command[1] if len(message.command) > 1 else None
-    if tiktok_link:
-        pros = await message.reply(cgr("proses").format(em.proses))
-        await asyncio.sleep(2)
-        await download_tiktok_video(context, message.chat.id, tiktok_link)
-        await pros.delete()
+    tiktok_link = m.text.split(maxsplit=1)[1]
+    pros = await m.reply(cgr("proses").format(em.proses))
+    
+    await download_tiktok_video(c, m.chat.id, tiktok_link)
+    
+    await pros.delete()
 
 
 @ky.ubot("vtube", sudo=True)
