@@ -44,13 +44,13 @@ async def _(c: nlx, m):
     em.initialize()
     done = 0
     failed = 0
-    msg = await cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
+    msg = cgr("gcs_2").format(em.alive, em.sukses, done, em.gagal, failed)
     send = c.get_m(m)
     if not send:
         return await msg.edit(cgr("gcs_1").format(em.gagal))
     blacklist = udB.get_chat(c.me.id)
     chats = await digikes_("gikes")
-    original_content = msg.text
+    original_content = msg
     for chat in chats:
         if chat not in blacklist and chat not in NO_GCAST:
             try:
