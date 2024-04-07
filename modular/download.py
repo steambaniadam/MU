@@ -68,13 +68,12 @@ async def download_tiktok_video(c, chat_id, tiktok_link):
                 video=video_file,
                 width=width,
                 height=height,
-                timeout=120,
             )
 
         clear_directory("media")
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
-        await c.send_message(chat_id=chat_id, text="Tautan rusak.")
+        await c.send_message(chat_id=chat_id, text="Tautan rusak atau video gagal diunggah.")
 
 
 @ky.ubot("dtik", sudo=False)
