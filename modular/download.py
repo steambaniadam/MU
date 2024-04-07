@@ -7,8 +7,8 @@
 ################################################################
 
 import asyncio
-import subprocess
 import os
+import subprocess
 import time
 from datetime import timedelta
 from time import time
@@ -21,7 +21,7 @@ from pyrogram.raw.functions.messages import *
 from pyrogram.types import *
 from youtubesearchpython import VideosSearch
 
-from Mix import Emojik, YoutubeDownload, cgr, get_cgr, ky, nlx, progress
+from Mix import Emojik, YoutubeDownload, cgr, get_cgr, ky, progress
 
 __modles__ = "Download"
 __help__ = get_cgr("help_download")
@@ -29,10 +29,21 @@ __help__ = get_cgr("help_download")
 
 def get_video_dimensions(file_path):
     width, height = 0, 0
-    command = ["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width,height", "-of", "csv=p=0:s=x", file_path]
+    command = [
+        "ffprobe",
+        "-v",
+        "error",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=width,height",
+        "-of",
+        "csv=p=0:s=x",
+        file_path,
+    ]
     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if result.returncode == 0:
-        dimensions = result.stdout.decode().split('x')
+        dimensions = result.stdout.decode().split("x")
         if len(dimensions) == 2:
             width, height = map(int, dimensions)
     return width, height
@@ -46,19 +57,21 @@ def clear_directory(directory):
 async def download_tiktok_video(context: Client, chat_id: int, tiktok_link: str):
     try:
         output_filename = "media/downloaded_video.%(ext)s"
-        
-        command = [
-            "yt-dlp",
-            "-o", output_filename,
-            tiktok_link
-        ]
+
+        command = ["yt-dlp", "-o", output_filename, tiktok_link]
         subprocess.check_call(command)
-        
+
         width, height = get_video_dimensions("media/downloaded_video.mp4")
-    
+
         with open("media/downloaded_video.mp4", "rb") as video_file:
-            await context.send_video(chat_id=chat_id, video=video_file, width=width, height=height, timeout=120)
-        
+            await context.send_video(
+                chat_id=chat_id,
+                video=video_file,
+                width=width,
+                height=height,
+                timeout=120,
+            )
+
         clear_directory("media")
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
