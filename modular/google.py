@@ -1,58 +1,45 @@
 import urllib.parse
-
 import requests
-from pyrogram import *
-
+from pyrogram import Client
+from pyrogram.types import Message
 from Mix import *
 
-__modles__ = "Google"
+__module__ = "Google"
 __help__ = "Google"
 
 
-async def google_search(query, limit=3):
+def google_search(query, limit=3):
     encoded_query = urllib.parse.quote_plus(query)
-    url = f"https://api.safone.dev/google?query={encoded_query}&limit=3"
+    url = f"https://www.google.com/search?q={encoded_query}"
     response = requests.get(url)
-    data = response.json()
-    if "results" in data:
-        results = data["results"]
+    if response.status_code == 200:
+        html_content = response.text
+        soup = BeautifulSoup(html_content, 'html.parser')
+        search_results = soup.find_all('div', class_='tF2Cxc')
+        results = []
+        for result in search_results[:limit]:
+            title = result.find('h3', class_='LC20lb DKV0Md').text
+            link = result.find('a')['href']
+            results.append({'title': title, 'link': link})
+        return results
     else:
-        return {"limit": 0, "results": []}
-
-    return {
-        "limit": limit,
-        "results": [
-            {
-                "description": result["description"],
-                "link": result["link"],
-                "title": result["title"],
-            }
-            for result in results[:limit]
-        ],
-    }
+        print("Failed to perform Google search")
+        return []
 
 
 @ky.ubot("google", sudo=True)
-async def google_command(c: nlx, m):
+async def google_command(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
     query = m.text.split(maxsplit=1)[1]
-    encoded_query = urllib.parse.quote_plus(query)
-    url = f"https://api.safone.dev/llama?query={encoded_query}"
-    response = requests.get(url)
-    data = response.json()
-
-    if "answer" in data:
-        results = data["answer"]
-        await c.send_message(
-            chat_id=m.chat.id,
-            text=f"{em.sukses} **Pertanyaan :** `{query}`\n\n{em.profil} **Hasil :** `{results}`",
-        )
+    results = google_search(query)
+    if results:
+        response = f"{em.sukses} **Pertanyaan :** `{query}`\n\n"
+        for i, result in enumerate(results, start=1):
+            response += f"{i}. [{result['title']}]({result['link']})\n\n"
+        await m.reply(response, disable_web_page_preview=True)
         await pros.delete()
     else:
-        await c.send_message(
-            chat_id=m.chat.id,
-            text=f"{em.gagal} Maaf, tidak dapat menemukan hasil untuk pencarian ini.",
-        )
+        await m.reply(f"{em.gagal} Maaf, tidak dapat menemukan hasil untuk pencarian ini.")
         await pros.delete()
