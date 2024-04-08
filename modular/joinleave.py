@@ -127,17 +127,23 @@ async def _(c: nlx, m):
                         ):
                             luci += 1
                             await c.leave_chat(chat)
-                            await xenn.edit_text(cgr("join_6").format(em.sukses, luci, em.gagal, nan))
+                            await xenn.edit_text(
+                                cgr("join_6").format(em.sukses, luci, em.gagal, nan)
+                            )
                     except FloodWait as e:
                         await asyncio.sleep(e)
                     except MessageNotModified:
                         pass
                     except Exception:
                         nan += 1
-                        await xenn.edit_text(cgr("join_6").format(em.sukses, luci, em.gagal, nan))
+                        await xenn.edit_text(
+                            cgr("join_6").format(em.sukses, luci, em.gagal, nan)
+                        )
             except Exception:
                 nan += 1
-                await xenn.edit_text(cgr("join_6").format(em.sukses, luci, em.gagal, nan))
+                await xenn.edit_text(
+                    cgr("join_6").format(em.sukses, luci, em.gagal, nan)
+                )
     except Exception as e:
         print(f"An error occurred while fetching dialogs: {e}")
 
@@ -166,7 +172,9 @@ async def _(c, m):
                     ):
                         nan += 1
                         await c.leave_chat(chat)
-                        await xenn.edit_text(cgr("join_5").format(em.sukses, nan, em.gagal, luci))
+                        await xenn.edit_text(
+                            cgr("join_5").format(em.sukses, nan, em.gagal, luci)
+                        )
                 except FloodWait as e:
                     await asyncio.sleep(e)
                 except MessageNotModified:
