@@ -124,7 +124,9 @@ async def _(c, m):
                     ):
                         nan += 1
                         await c.leave_chat(chat)
-                except BaseException:
+                except FloodWait as e:
+                    await asyncio.sleep(e)
+                except Exception as ex:
                     luci += 1
     except Exception as e:
         print(f"An error occurred while fetching dialogs: {e}")
@@ -155,6 +157,8 @@ async def _(c: nlx, m):
                         ):
                             luci += 1
                             await c.leave_chat(chat)
+                    except FloodWait as e:
+                        await asyncio.sleep(e)
                     except Exception:
                         nan += 1
             except Exception:
