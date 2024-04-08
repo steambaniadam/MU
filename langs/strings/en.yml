@@ -459,7 +459,7 @@ webs_2: "{} **Failed to fetch image!**"
 # profile
 prof_1: "{} **Please reply to the user's message or provide the username.**"
 prof_2: "{} **Successfully unblocked {}!**"
-prof_3: "{} {} **Successfully blocked {}!**"
+prof_3: "{} **Successfully blocked {}!**"
 prof_4: "{} Successfully changed the name to `{}`."
 prof_5: "{} Successfully changed the first name to `{}` and the last name to `{}`."
 prof_6: "{} Successfully changed the bio to: `{}`."
