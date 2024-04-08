@@ -47,7 +47,7 @@ Gunakan bot ini dengan risiko Anda sendiri, dan gunakan userbot ini dengan bijak
 
  • `pip3 install -r req*`
 
- • `cp sample.env .env`
+ • `cp .env.sample .env`
 
  • `nano .env`
  
@@ -73,7 +73,7 @@ Gunakan bot ini dengan risiko Anda sendiri, dan gunakan userbot ini dengan bijak
 
  • `cd Mix-Userbot`
 
- • `cp sample.env .env`
+ • `cp .env.sample .env`
 
  • `nano .env`
  
