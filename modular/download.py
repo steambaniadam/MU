@@ -318,3 +318,25 @@ async def twit(c: nlx, m):
         await pros.edit(
             f"{em.gagal} <b>Gagal mendapatkan informasi media dari Twitter.</b>"
         )
+
+
+@ky.ubot("insta", sudo=True)
+async def insta_handler(c: nlx, m):
+    try:
+        url = m.command[1]
+        querystring = {"url": url}
+        headers = {
+            "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+            "X-RapidAPI-Host": "instagram-post-reels-stories-downloader.p.rapidapi.com"
+        }
+        response = requests.get("https://instagram-post-reels-stories-downloader.p.rapidapi.com/instagram/", headers=headers, params=querystring)
+        data = response.json()
+        if data["status"]:
+            result = data["result"][0]
+            media_url = result["url"]
+            thumb_url = result["thumb"]
+            await m.reply_video(video=media_url, thumb=thumb_url)
+        else:
+            await m.reply_text("Gagal mengunduh media dari tautan yang diberikan.")
+    except IndexError:
+        await m.reply_text("Format perintah salah. Gunakan perintah /insta [tautan_instagram].")
