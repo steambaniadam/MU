@@ -217,8 +217,10 @@ def get_media(tweet_url):
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
         data = response.json()
-        media_url_https = data.get("media_url_https")
-        return media_url_https
+        if data.get("media_url_https"):
+            return data["media_url_https"]
+        else:
+            return None
     else:
         return None
 
@@ -228,7 +230,7 @@ async def twit_dl(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
     tweet_url = m.text.split(maxsplit=1)[1]
-    c.me.mention
+    mention = c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
     media_url = get_media(tweet_url)
     if media_url:
@@ -238,7 +240,7 @@ async def twit_dl(c: nlx, m: Message):
             content = media_response.content
             file_extension = media_url.split(".")[-1].lower()
             file_name = f"media_{m.chat.id}.{file_extension}"
-            captions = f"{em.sukses} Successfully Downloaded by : {c.me.mention}"
+            captions = f"{em.sukses} Successfully Downloaded by: {mention}"
             with open(file_name, "wb") as f:
                 f.write(content)
             if file_extension == "jpg":
@@ -251,6 +253,6 @@ async def twit_dl(c: nlx, m: Message):
         except Exception as e:
             await m.reply(f"Error: {e}")
     else:
-        await m.reply("Gagal mendapatkan URL media.")
+        await m.reply("Failed to get media URL.")
 
     await pros.delete()
