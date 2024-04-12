@@ -206,6 +206,9 @@ async def _(c, m):
             os.remove(files)
 
 
+import requests
+import os
+
 def download_media(tweet_url, save_path):
     url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
 
@@ -216,8 +219,9 @@ def download_media(tweet_url, save_path):
         "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
     }
 
-    response = requests.post(url, json=payload, headers=headers)
-    if response.status_code == 200:
+    try:
+        response = requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
         data = response.json()
         media = data.get("tweet", {}).get("media", {})
         if media and "all" in media and media["all"]:
@@ -225,15 +229,17 @@ def download_media(tweet_url, save_path):
             media_type = media.get("type")
             if media_url:
                 media_response = requests.get(media_url)
-                if media_response.status_code == 200:
-                    content = media_response.content
-                    if media_type == "photo":
-                        save_path += ".jpg"
-                    elif media_type == "video":
-                        save_path += ".mp4"
-                    with open(save_path, "wb") as f:
-                        f.write(content)
-                    return save_path
+                media_response.raise_for_status()
+                content = media_response.content
+                if media_type == "photo":
+                    save_path += ".jpg"
+                elif media_type == "video":
+                    save_path += ".mp4"
+                with open(save_path, "wb") as f:
+                    f.write(content)
+                return save_path
+    except Exception as e:
+        print("Error downloading media:", e)
     return None
 
 
