@@ -206,6 +206,94 @@ async def _(c, m):
 
 
 import os
+import requests
+
+
+async def extract_url_and_media_info(json_data):
+    try:
+        url = json_data['tweetResult']['result']['legacy']['entities']['media'][0]['expanded_url']
+        tweet_url = "https://twitter-x-media-download.p.rapidapi.com/media"
+        payload = {"url": url}
+        headers = {
+            "content-type": "application/json",
+            "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+            "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
+        }
+        response = requests.post(tweet_url, json=payload, headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            tweet_result = data.get("tweetResult")
+            if tweet_result:
+                result = tweet_result.get("result")
+                if result:
+                    media_info = result.get("extended_entities", {}).get("media")
+                    if media_info:
+                        for media in media_info:
+                            media_type = media.get("type")
+                            if media_type == "photo":
+                                media_url = media.get("media_url_https")
+                                content_type = "photo"
+                                break
+                            elif media_type == "video":
+                                variants = media.get("video_info", {}).get("variants", [])
+                                for variant in variants:
+                                    if variant.get("content_type") == "video/mp4":
+                                        media_url = variant.get("url")
+                                        content_type = "video"
+                                        break
+                                else:
+                                    media_url = None
+                                    content_type = None
+                                break
+                        else:
+                            media_url = None
+                            content_type = None
+                    else:
+                        media_url = None
+                        content_type = None
+                else:
+                    media_url = None
+                    content_type = None
+            else:
+                media_url = None
+                content_type = None
+            return url, content_type, media_url
+        else:
+            return None, None, None
+    except (KeyError, IndexError):
+        return None, None, None
+
+
+async def download_and_send_file(message, url):
+    response = requests.get(url)
+    if response.status_code == 200:
+        file_name = url.split('/')[-1]
+        with open(file_name, 'wb') as f:
+            f.write(response.content)
+        await message.reply_document(document=file_name, caption="File yang diunduh dari URL.")
+        os.remove(file_name)
+    else:
+        await message.reply_text("Gagal mengunduh file.")
+
+
+@ky.ubot("twit", sudo=True)
+async def twit_dl(c: nlx, m):
+    tweet_url = m.text.split(maxsplit=1)[1]
+    tweet_json = get_tweet_json(tweet_url)
+    url, content_type, media_url = await extract_url_and_media_info(tweet_json)
+    if media_url:
+        try:
+            file_extension = media_url.split(".")[-1].lower()
+            file_name = f"media_{m.chat.id}.{file_extension}"
+            await download_and_send_file(m, media_url)
+        except Exception as e:
+            await m.reply(f"Error: {e}")
+    else:
+        await m.reply("Failed to get media URL.")
+
+
+"""
+import os
 
 import requests
 
@@ -299,3 +387,4 @@ async def twit_dl(c: nlx, m: Message):
         await m.reply("Failed to get media URL.")
 
     await pros.delete()
+"""
