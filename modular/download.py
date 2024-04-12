@@ -226,21 +226,24 @@ async def get_media(tweet_url):
                 media_info = (
                     data.get("tweetResult", {})
                     .get("result", {})
-                    .get("entities", {})
+                    .get("extended_entities", {})
                     .get("media", [{}])[0]
+                    .get("video_info", {})
+                    .get("variants", [{}])[0]
                 )
-                media_url_https = media_info.get("url")
-                content_type = media_info.get("type")
+                content_type = media_info.get("content_type")
+                media_url = media_info.get("url")
                 print("Content Type:", content_type)
-                print("Media URL:", media_url_https)
-                return content_type, media_url_https
+                print("Media URL:", media_url)
+                return content_type, media_url
             else:
                 return None, None
 
 
-async def download_file(media_url_https, file_name):
+
+async def download_file(media_url, file_name):
     async with aiohttp.ClientSession() as session:
-        async with session.get(media_url_https) as response:
+        async with session.get(media_url) as response:
             if response.status == 200:
                 with open(file_name, "wb") as f:
                     while True:
@@ -259,12 +262,12 @@ async def twit_dl(c: nlx, m: Message):
     tweet_url = m.text.split(maxsplit=1)[1]
     mention = c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
-    content_type, media_url_https = await get_media(tweet_url)
-    if media_url_https:
+    content_type, media_url = await get_media(tweet_url)
+    if media_url:
         try:
-            file_extension = media_url_https.split(".")[-1].lower()
+            file_extension = media_url.split(".")[-1].lower()
             file_name = f"media_{m.chat.id}.{file_extension}"
-            await download_file(media_url_https, file_name)
+            await download_file(media_url, file_name)
             captions = f"{em.sukses} Successfully Downloaded by: {mention}"
             if content_type == "photo":
                 await c.send_photo(m.chat.id, photo=file_name, caption=captions)
