@@ -206,9 +206,7 @@ async def _(c, m):
 
 
 import os
-
-import aiohttp
-
+import requests
 
 async def get_media(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media"
@@ -218,44 +216,45 @@ async def get_media(tweet_url):
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
         "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
     }
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, json=payload, headers=headers) as response:
-            if response.status == 200:
-                data = await response.json()
-                print(data)
-                media_info = (
-                    data.get("tweetResult", {})
-                    .get("result", {})
-                    .get("extended_entities", {})
-                    .get("media", [{}])[0]
-                    .get("video_info", {})
-                    .get("variants", [{}])
-                )
-                # Pilih variant dengan content type video/mp4
-                for variant in media_info:
-                    if variant.get("content_type") == "video/mp4":
-                        media_url = variant.get("url")
-                        break
-                else:
-                    media_url = None
-                print("Media URL:", media_url)
-                return media_url
+    response = requests.post(url, json=payload, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        print(data)
+        media_info = (
+            data.get("tweetResult", {})
+            .get("result", {})
+            .get("extended_entities", {})
+            .get("media", [{}])[0]
+        )
+        media_type = media_info.get("type")
+        if media_type == "photo":
+            media_url = media_info.get("media_url_https")
+            content_type = "photo"
+        elif media_type == "video":
+            variants = media_info.get("video_info", {}).get("variants", [])
+            for variant in variants:
+                if variant.get("content_type") == "video/mp4":
+                    media_url = variant.get("url")
+                    break
             else:
-                return None
+                media_url = None
+            content_type = "video"
+        else:
+            media_url = None
+            content_type = None
+        print("Media URL:", media_url)
+        return content_type, media_url
+    else:
+        return None, None
 
 
 async def download_file(media_url, file_name):
-    async with aiohttp.ClientSession() as session:
-        async with session.get(media_url) as response:
-            if response.status == 200:
-                with open(file_name, "wb") as f:
-                    while True:
-                        chunk = await response.content.read(1024)
-                        if not chunk:
-                            break
-                        f.write(chunk)
-            else:
-                raise Exception(f"Failed to download media: {response.status}")
+    response = requests.get(media_url)
+    if response.status_code == 200:
+        with open(file_name, "wb") as f:
+            f.write(response.content)
+    else:
+        raise Exception(f"Failed to download media: {response.status_code}")
 
 
 @ky.ubot("twit", sudo=True)
