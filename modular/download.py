@@ -277,24 +277,13 @@ async def twit(c: nlx, m):
     media_info = download_media_from_twitter(tweet_url)
 
     if media_info:
-        media_data = (
-            media_info.get("result", {})
-            .get("core", {})
-            .get("entities", {})
-            .get("media", [])
-        )
+        media_data = media_info.get("result", {}).get("core", {}).get("entities", {}).get("media", [])
         if media_data:
             for media in media_data:
-                media_url = (
-                    media.get("media_url_https")
-                    if media.get("type") == "photo"
-                    else media.get("url")
-                )
+                media_url = media.get("media_url_https") if media.get("type") == "photo" else media.get("url")
                 media_type = media.get("type")
                 if media_url:
-                    print(
-                        f"Informasi media berhasil diperoleh: {media_type}, {media_url}"
-                    )
+                    print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
                     if media_type == "photo":
                         await c.send_photo(chat_id=m.chat.id, photo=media_url)
                     elif media_type == "video":
@@ -302,17 +291,16 @@ async def twit(c: nlx, m):
                         if video_info:
                             variants = video_info.get("variants", [])
                             for variant in variants:
-                                if (
-                                    variant.get("content_type")
-                                    == "application/x-mpegURL"
-                                ):
+                                if variant.get("content_type") == "application/x-mpegURL":
                                     video_url = variant.get("url")
-                                    await c.send_video(
-                                        chat_id=m.chat.id, video=video_url
-                                    )
+                                    await c.send_video(chat_id=m.chat.id, video=video_url)
                                     break
+                            else:
+                                print("Tidak dapat menemukan URL video dalam variant.")
+                                await m.reply("Tidak dapat menemukan URL video dalam variant.")
                         else:
                             print("Informasi video tidak ditemukan.")
+                            await m.reply("Informasi video tidak ditemukan.")
                 else:
                     print("Gagal mendapatkan URL media dari tautan Twitter.")
                     await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
