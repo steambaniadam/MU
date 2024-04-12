@@ -220,19 +220,19 @@ async def get_media_url(tweet_url):
         async with session.post(url, json=payload) as response:
             if response.status == 200:
                 data = await response.json()
-                media_type = data["tweet"]["media"]["type"]
-                if media_type == "video":
-                    video_url = data["tweet"]["media"]["all"][0]["url"]
-                    return video_url
-                elif media_type == "photo":
-                    photo_url = data["tweet"]["media"]["all"][0]["url"]
-                    return photo_url
-                else:
-                    return None
+                media = data.get("tweet", {}).get("media", {})
+                if media:
+                    if "type" in media and media["type"] == "video":
+                        video_url = media["all"][0]["url"]
+                        return video_url
+                    elif "type" in media and media["type"] == "photo":
+                        photo_url = media["all"][0]["url"]
+                        return photo_url
+                return None
             else:
                 return None
 
-
+                
 @ky.ubot("twit", sudo=False)
 async def twit_dl(c: nlx, m: Message):
     em = Emojik()
