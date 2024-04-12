@@ -11,7 +11,9 @@ import subprocess
 import time
 from datetime import timedelta
 from time import time
+from urllib.parse import urlparse
 
+import requests
 import wget
 from pyrogram.enums import *
 from pyrogram.errors import *
@@ -206,12 +208,6 @@ async def _(c, m):
             os.remove(files)
 
 
-import os
-from urllib.parse import urlparse
-
-import requests
-
-
 def is_valid_twitter_url(url):
     parsed_url = urlparse(url)
     return parsed_url.netloc.endswith("x.com") and "/status/" in parsed_url.path
@@ -230,16 +226,11 @@ def download_media_from_twitter(tweet_url):
 
     if response.status_code == 200:
         data = response.json()
-        print(f"Data Json {data}")
         if "tweetResult" in data:
             return data["tweetResult"]
         else:
-            print("Data tweetResult tidak ditemukan dalam respons JSON.")
             return None
     else:
-        print(
-            f"Gagal mengunduh media dari Twitter. Kode status: {response.status_code}"
-        )
         return None
 
 
@@ -248,7 +239,6 @@ async def download_and_send_file(nlx, chat_id, url, content_type):
         response = requests.get(url)
         response.raise_for_status()
         if response.status_code == 200:
-            print("Berhasil mengunduh file.")
             file_name = f"downloaded_{content_type}.{url.split('.')[-1]}"
             with open(file_name, "wb") as f:
                 f.write(response.content)
@@ -258,22 +248,22 @@ async def download_and_send_file(nlx, chat_id, url, content_type):
                 await nlx.reply_video(chat_id, file_name)
             os.remove(file_name)
     except Exception as e:
-        print(f"Terjadi kesalahan: {e}")
         await nlx.reply("Terjadi kesalahan saat mengunduh atau mengirim file.")
 
 
 @ky.ubot("twit", sudo=True)
 async def twit(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    pros = await m.edit(cgr("proses").format(em.proses))
     if len(m.command) < 2:
-        await m.reply("Silakan berikan tautan Twitter.")
+        await pros.edit(f"{em.gagal} <b>Silakan berikan tautan Twitter.</b>")
         return
 
     tweet_url = m.command[1]
     if not is_valid_twitter_url(tweet_url):
-        await m.reply("Tautan yang diberikan bukan tautan Twitter yang valid.")
+        await pros.edit(f"{em.gagal} <b>Tautan yang diberikan bukan tautan Twitter yang valid.</b>")
         return
-
-    print("Mendapatkan informasi media dari Twitter...")
     media_info = download_media_from_twitter(tweet_url)
 
     if media_info:
@@ -293,8 +283,9 @@ async def twit(c: nlx, m):
                 .get("media_url_https")
             )
             if media_url:
-                print(f"Informasi media berhasil diperoleh: photo, {media_url}")
-                await c.send_photo(chat_id=m.chat.id, photo=media_url)
+                caption = f"{em.sukses} <b>Successfully Download Photo by : {c.me.mention}"
+                await c.send_photo(chat_id=m.chat.id, photo=media_url, caption=caption)
+                await pros.delete()
         elif media_type == "video":
             video_info = (
                 media_info.get("result", {})
@@ -311,130 +302,11 @@ async def twit(c: nlx, m):
                     if "video/mp4" in content_type:
                         video_url = variant.get("url", "")
                         break
-                    # elif "application/x-mpegURL" in content_type:
-                    #     video_url = variant.get("url", "")
-                    #     break
-
                 if video_url:
-                    print(f"Informasi media berhasil diperoleh: video, {video_url}")
-                    await c.send_video(chat_id=m.chat.id, video=video_url)
-
-                    # Jika video tidak dalam format mp4, konversi ke mp4 terlebih dahulu
-                    # if not video_url.endswith(".mp4"):
-                    #     mp4_video_path = convert_to_mp4(video_url)
-                    #     if mp4_video_path:
-                    #         await c.send_video(chat_id=m.chat.id, video=mp4_video_path)
-                    #         # Hapus video mp4 setelah dikirim
-                    #         os.remove(mp4_video_path)
-                    #     else:
-                    #         print("Gagal mengonversi video ke format mp4.")
-                    #         await m.reply("Gagal mengonversi video ke format mp4.")
-                    # else:
-
+                    caption = f"{em.sukses} <b>Successfully Download Video by : {c.me.mention}"
+                    await c.send_video(chat_id=m.chat.id, video=video_url, caption=caption)
+                    await pros.delete()      
             else:
-                print("Gagal mendapatkan URL video dari tautan Twitter.")
-                await m.reply("Gagal mendapatkan URL video dari tautan Twitter.")
+                await pros.edit(f"{em.gagal} <b>Gagal mendapatkan URL video dari tautan Twitter.</b>")
     else:
-        print("Gagal mendapatkan informasi media dari Twitter.")
-        await m.reply("Gagal mendapatkan informasi media dari Twitter.")
-
-
-"""
-import os
-from urllib.parse import urlparse
-
-import requests
-
-
-def is_valid_twitter_url(url):
-    parsed_url = urlparse(url)
-    return parsed_url.netloc.endswith("x.com") and "/status/" in parsed_url.path
-
-
-def download_media_from_twitter(tweet_url):
-    endpoint = "https://twitter-x-media-download.p.rapidapi.com/media"
-    payload = {"url": tweet_url, "proxy": ""}
-    headers = {
-        "content-type": "application/json",
-        "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
-    }
-
-    response = requests.post(endpoint, json=payload, headers=headers)
-
-    if response.status_code == 200:
-        data = response.json()
-        print(data)
-        if "tweetResult" in data:
-            return data["tweetResult"]
-        else:
-            print("Data tweetResult tidak ditemukan dalam respons JSON.")
-            return None
-    else:
-        print(
-            f"Gagal mengunduh media dari Twitter. Kode status: {response.status_code}"
-        )
-        return None
-
-
-async def download_and_send_file(nlx, chat_id, url, content_type):
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        if response.status_code == 200:
-            print("Berhasil mengunduh file.")
-            file_name = f"downloaded_{content_type}.{url.split('.')[-1]}"
-            with open(file_name, "wb") as f:
-                f.write(response.content)
-            if content_type == "photo":
-                await nlx.reply_photo(chat_id, file_name)
-            elif content_type == "video":
-                await nlx.reply_video(chat_id, file_name)
-            os.remove(file_name)
-    except Exception as e:
-        print(f"Terjadi kesalahan: {e}")
-        await nlx.reply("Terjadi kesalahan saat mengunduh atau mengirim file.")
-
-
-@ky.ubot("twit", sudo=True)
-async def twit(c: nlx, m):
-    if len(m.command) < 2:
-        await m.reply("Silakan berikan tautan Twitter.")
-        return
-
-    tweet_url = m.command[1]
-    if not is_valid_twitter_url(tweet_url):
-        await m.reply("Tautan yang diberikan bukan tautan Twitter yang valid.")
-        return
-
-    print("Mendapatkan informasi media dari Twitter...")
-    media_info = download_media_from_twitter(tweet_url)
-
-    if media_info:
-        media_url = (
-            media_info.get("result", {})
-            .get("legacy", {})
-            .get("entities", {})
-            .get("media", [{}])[0]
-            .get("media_url_https")
-        )
-        media_type = (
-            media_info.get("result", {})
-            .get("legacy", {})
-            .get("entities", {})
-            .get("media", [{}])[0]
-            .get("type")
-        )
-        if media_url:
-            print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
-            if media_type == "photo":
-                await c.send_photo(chat_id=m.chat.id, photo=media_url)
-            elif media_type == "video":
-                await c.send_video(chat_id=m.chat.id, video=media_url)
-        else:
-            print("Gagal mendapatkan URL media dari tautan Twitter.")
-            await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
-    else:
-        print("Gagal mendapatkan informasi media dari Twitter.")
-        await m.reply("Gagal mendapatkan informasi media dari Twitter.")
-"""
+        await pros.edit(f"{em.gagal} <b>Gagal mendapatkan informasi media dari Twitter.</b>")
