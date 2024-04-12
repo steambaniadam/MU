@@ -10,7 +10,8 @@ import os
 import time
 from datetime import timedelta
 from time import time
-
+import requests
+import subprocess
 import wget
 from pyrogram.enums import *
 from pyrogram.errors import *
@@ -261,18 +262,19 @@ async def extract_url_and_media_info(url):
         return None, None
 
 
-async def download_and_send_file(message, url):
-    response = requests.get(url)
-    if response.status_code == 200:
+async def download_and_send_file(message, url, content_type):
+    try:
         file_name = url.split("/")[-1]
-        with open(file_name, "wb") as f:
-            f.write(response.content)
-        await message.reply_document(
-            document=file_name, caption="File yang diunduh dari URL."
-        )
+        subprocess.run(["wget", url, "-O", file_name])
+        if content_type == "photo":
+            await message.reply_photo(photo=file_name, caption="File yang diunduh dari URL.")
+        elif content_type == "video":
+            await message.reply_video(video=file_name, caption="File yang diunduh dari URL.")
+        else:
+            await message.reply_document(document=file_name, caption="File yang diunduh dari URL.")
         os.remove(file_name)
-    else:
-        await message.reply_text("Gagal mengunduh file.")
+    except Exception as e:
+        await message.reply_text(f"Gagal mengunduh atau mengirim file: {e}")
 
 
 @ky.ubot("twit", sudo=True)
