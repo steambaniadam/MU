@@ -335,17 +335,12 @@ async def twit(c: nlx, m):
                 elif media_type == "video":
                     video_info = media.get("video_info", {})
                     if video_info:
-                        variants = video_info.get("variants", [])
+                        variants = media_info.get("result", {}).get("extended_entities", {}).get("media", [])[0].get("video_info", {}).get("variants", [])
                         video_url = None
-                        max_bitrate = 0
                         for variant in variants:
-                            if variant.get(
-                                "content_type"
-                            ) == "video/mp4" and variant.get("url"):
-                                bitrate = variant.get("bitrate", 0)
-                                if bitrate > max_bitrate:
-                                    max_bitrate = bitrate
-                                    video_url = variant.get("url")
+                            if variant.get("content_type") == "application/x-mpegURL":
+                                video_url = variant.get("url")
+                                break
                         if video_url:
                             print(
                                 f"Informasi media berhasil diperoleh: {media_type}, {video_url}"
