@@ -228,6 +228,7 @@ async def download_media_from_twitter(message: Message, url: str):
             ) as response:
                 if response.status == 200:
                     data = await response.json()
+                    print(data)
                     tweet_result = data.get("tweetResult")
                     if tweet_result:
                         result = tweet_result.get("result")
@@ -240,6 +241,7 @@ async def download_media_from_twitter(message: Message, url: str):
                                     media_type = media.get("type")
                                     if media_type == "photo":
                                         media_url = media.get("media_url_https")
+                                        print(media_url)
                                         await download_and_send_file(
                                             message, media_url, "photo"
                                         )
@@ -253,6 +255,7 @@ async def download_media_from_twitter(message: Message, url: str):
                                                 == "video/mp4"
                                             ):
                                                 media_url = variant.get("url")
+                                                print(media_url)
                                                 await download_and_send_file(
                                                     message, media_url, "video"
                                                 )
@@ -316,7 +319,7 @@ async def twit_dl(c: nlx, m: Message):
 
     c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
-    content_type, media_url = await extract_url_and_media_info(url)
+    content_type, media_url = await download_media_from_twitter(url)
 
     if media_url:
         await download_and_send_file(m, media_url, content_type)
