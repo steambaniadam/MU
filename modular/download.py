@@ -207,11 +207,9 @@ async def _(c, m):
 
 
 import os
-
 import aiohttp
 
-
-def get_media(tweet_url):
+async def get_media(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media"
     payload = {"url": tweet_url}
     headers = {
@@ -219,21 +217,22 @@ def get_media(tweet_url):
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
         "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
     }
-    response = requests.post(url, json=payload, headers=headers)
-    if response.status_code == 200:
-        data = response.json()
-        media_url_https = (
-            data.get("tweetResult", {})
-            .get("result", {})
-            .get("core", {})
-            .get("legacy", {})
-            .get("entities", {})
-            .get("media", [{}])[0]
-            .get("media_url_https")
-        )
-        return media_url_https
-    else:
-        return None
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, json=payload, headers=headers) as response:
+            if response.status == 200:
+                data = await response.json()
+                media_url_https = (
+                    data.get("tweetResult", {})
+                    .get("result", {})
+                    .get("core", {})
+                    .get("legacy", {})
+                    .get("entities", {})
+                    .get("media", [{}])[0]
+                    .get("media_url_https")
+                )
+                return media_url_https
+            else:
+                return None
 
 
 async def download_file(media_url, file_name):
@@ -257,7 +256,7 @@ async def twit_dl(c: nlx, m: Message):
     tweet_url = m.text.split(maxsplit=1)[1]
     mention = c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
-    media_url = get_media(tweet_url)
+    media_url = await get_media(tweet_url)
     if media_url:
         try:
             file_extension = media_url.split(".")[-1].lower()
