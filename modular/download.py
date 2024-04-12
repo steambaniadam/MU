@@ -286,7 +286,7 @@ async def twit(c: nlx, m):
             )
             if media_url:
                 caption = (
-                    f"{em.sukses} <b>Successfully Download Photo by : {c.me.mention}"
+                    f"{em.sukses} <b>Successfully Download Photo by : {c.me.mention}</b>"
                 )
                 await c.send_photo(chat_id=m.chat.id, photo=media_url, caption=caption)
                 await pros.delete()
@@ -307,7 +307,7 @@ async def twit(c: nlx, m):
                         video_url = variant.get("url", "")
                         break
                 if video_url:
-                    caption = f"{em.sukses} <b>Successfully Download Video by : {c.me.mention}"
+                    caption = f"{em.sukses} <b>Successfully Download Video by : {c.me.mention}</b>"
                     await c.send_video(
                         chat_id=m.chat.id, video=video_url, caption=caption
                     )
