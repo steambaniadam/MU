@@ -219,6 +219,7 @@ async def extract_url_and_media_info(url):
         response = requests.post(tweet_url, json=payload, headers=headers)
         if response.status_code == 200:
             data = response.json()
+            print(data)
             tweet_result = data.get("tweetResult")
             if tweet_result:
                 result = tweet_result.get("result")
