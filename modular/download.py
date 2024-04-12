@@ -206,8 +206,10 @@ async def _(c, m):
             os.remove(files)
 
 
-import requests
 import os
+
+import requests
+
 
 @ky.ubot("twit", sudo=True)
 async def twit(c: nlx, m):
