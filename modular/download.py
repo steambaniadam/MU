@@ -208,9 +208,9 @@ async def _(c, m):
 
 import mimetypes
 import os
+import subprocess
 from urllib.parse import urlparse
 
-import subprocess
 import requests
 
 
@@ -266,9 +266,16 @@ async def download_and_send_file(nlx, chat_id, url, content_type):
             if content_type == "photo":
                 await nlx.reply_photo(chat_id, file_name)
             elif content_type == "video/mp4":
-                if file_extension == '.m3u8':
-                    mp4_file_name = file_name[:-5] + '.mp4'
-                    convert_command = ['ffmpeg', '-i', file_name, '-c', 'copy', mp4_file_name]
+                if file_extension == ".m3u8":
+                    mp4_file_name = file_name[:-5] + ".mp4"
+                    convert_command = [
+                        "ffmpeg",
+                        "-i",
+                        file_name,
+                        "-c",
+                        "copy",
+                        mp4_file_name,
+                    ]
                     subprocess.run(convert_command, check=True)
                     file_name = mp4_file_name
 
