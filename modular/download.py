@@ -218,12 +218,15 @@ async def twit(c: nlx, m):
         return
 
     tweet_url = m.command[1]
+    print("Mendapatkan informasi media dari Twitter...")
     media_info = download_media_from_twitter(tweet_url)
 
     if media_info:
         media_url, media_type = media_info
+        print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
         await download_and_send_file(m.chat.id, media_url, media_type)
     else:
+        print("Gagal mendapatkan URL media dari tautan Twitter.")
         await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
 
 
@@ -241,6 +244,7 @@ def download_media_from_twitter(tweet_url):
     response = requests.post(url, json=payload, headers=headers)
 
     if response.status_code == 200:
+        print("Permintaan berhasil. Mendapatkan data JSON...")
         data = response.json()
         tweet_result = data.get("tweetResult")
         if tweet_result:
@@ -248,19 +252,25 @@ def download_media_from_twitter(tweet_url):
             if result:
                 media_info = result.get("extended_entities", {}).get("media")
                 if media_info:
+                    media_urls = []
                     for media in media_info:
                         media_type = media.get("type")
                         if media_type in ("photo", "video"):
                             media_url = media.get(
                                 "media_url_https" if media_type == "photo" else "url"
                             )
-                            return media_url, media_type
+                            media_urls.append(media_url)
+                            print(f"Media URL: {media_url}")
+                    return media_urls
+    else:
+        print(f"Permintaan gagal. Kode status: {response.status_code}")
     return None
 
 
 async def download_and_send_file(chat_id, url, content_type):
     response = requests.get(url)
     if response.status_code == 200:
+        print("Berhasil mengunduh file.")
         file_name = f"downloaded_{content_type}.{url.split('.')[-1]}"
         with open(file_name, "wb") as f:
             f.write(response.content)
@@ -270,4 +280,5 @@ async def download_and_send_file(chat_id, url, content_type):
             await m.send_video(chat_id, file_name)
         os.remove(file_name)
     else:
+        print(f"Gagal mengunduh file. Kode status: {response.status_code}")
         await m.send_message(chat_id, "Gagal mengunduh file.")
