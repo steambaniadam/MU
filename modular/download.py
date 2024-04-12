@@ -249,7 +249,10 @@ async def twit_dl(c: nlx, m: Message):
             with open(file_name, "wb") as f:
                 f.write(content)
             caption = f"{em.sukses} Success downloaded by: {mention}"
-            await c.send_media(m.chat.id, file_name, caption=caption)
+            if file_name.endswith(".jpg"):
+                await c.send_photo(m.chat.id, photo=file_name, caption=caption)
+            elif file_name.endswith(".mp4"):
+                await c.send_video(m.chat.id, video=file_name, caption=caption)
             os.remove(file_name)
         except Exception as e:
             await m.reply(f"Error: {e}")
@@ -257,3 +260,4 @@ async def twit_dl(c: nlx, m: Message):
         await m.reply("Gagal mendapatkan URL media.")
 
     await pros.delete()
+    
