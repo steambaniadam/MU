@@ -222,25 +222,38 @@ async def get_media(tweet_url):
     if response.status_code == 200:
         data = response.json()
         print(data)
-        media_info = (
-            data.get("tweetResult", {})
-            .get("result", {})
-            .get("extended_entities", {})
-            .get("media", [{}])[0]
-        )
-        media_type = media_info.get("type")
-        if media_type == "photo":
-            media_url = media_info.get("media_url_https")
-            content_type = "photo"
-        elif media_type == "video":
-            variants = media_info.get("video_info", {}).get("variants", [])
-            for variant in variants:
-                if variant.get("content_type") == "video/mp4":
-                    media_url = variant.get("url")
-                    break
+        tweet_result = data.get("tweetResult")
+        if tweet_result:
+            result = tweet_result.get("result")
+            if result:
+                media_info = result.get("extended_entities", {}).get("media")
+                if media_info:
+                    for media in media_info:
+                        media_type = media.get("type")
+                        if media_type == "photo":
+                            media_url = media.get("media_url_https")
+                            content_type = "photo"
+                            break
+                        elif media_type == "video":
+                            variants = media.get("video_info", {}).get("variants", [])
+                            for variant in variants:
+                                if variant.get("content_type") == "video/mp4":
+                                    media_url = variant.get("url")
+                                    content_type = "video"
+                                    break
+                            else:
+                                media_url = None
+                                content_type = None
+                            break
+                    else:
+                        media_url = None
+                        content_type = None
+                else:
+                    media_url = None
+                    content_type = None
             else:
                 media_url = None
-            content_type = "video"
+                content_type = None
         else:
             media_url = None
             content_type = None
