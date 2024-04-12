@@ -243,20 +243,42 @@ def download_media_from_twitter(tweet_url):
         return None
 
 
+import os
+import mimetypes
+
 async def download_and_send_file(nlx, chat_id, url, content_type):
     try:
         response = requests.get(url)
         response.raise_for_status()
+        
         if response.status_code == 200:
             print("Berhasil mengunduh file.")
-            file_name = f"downloaded_{content_type}.{url.split('.')[-1]}"
+            content = response.content
+            file_extension = mimetypes.guess_extension(response.headers['content-type'])
+            
+            if not file_extension:
+                raise ValueError("Tidak dapat menentukan ekstensi file.")
+            
+            file_name = f"downloaded_{content_type}{file_extension}"
+            
             with open(file_name, "wb") as f:
-                f.write(response.content)
+                f.write(content)
+            
             if content_type == "photo":
                 await nlx.reply_photo(chat_id, file_name)
             elif content_type == "video":
                 await nlx.reply_video(chat_id, file_name)
+            
             os.remove(file_name)
+    except requests.exceptions.HTTPError as e:
+        print(f"HTTP Error: {e}")
+        await nlx.reply("Terjadi kesalahan HTTP saat mengunduh file.")
+    except requests.exceptions.RequestException as e:
+        print(f"Request Exception: {e}")
+        await nlx.reply("Terjadi kesalahan saat mengunduh file.")
+    except ValueError as e:
+        print(f"Value Error: {e}")
+        await nlx.reply("Tidak dapat menentukan ekstensi file yang diunduh.")
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
         await nlx.reply("Terjadi kesalahan saat mengunduh atau mengirim file.")
@@ -295,21 +317,21 @@ async def twit(c: nlx, m):
                     video_info = media.get("video_info", {})
                     if video_info:
                         variants = video_info.get("variants", [])
-                        if variants:
-                            best_variant = max(
-                                variants, key=lambda v: v.get("bitrate", 0)
-                            )
-                            video_url = best_variant.get("url")
+                        for variant in variants:
                             if (
-                                video_url
-                                and best_variant.get("content_type") == "video/mp4"
+                                variant.get("content_type") == "video/mp4"
+                                and variant.get("url")
                             ):
+                                video_url = variant.get("url")
                                 print(
                                     f"Informasi media berhasil diperoleh: {media_type}, {video_url}"
                                 )
                                 await download_and_send_file(
                                     c, m.chat.id, video_url, media_type
                                 )
+                                break
+                        else:
+                            print("Informasi video tidak ditemukan.")
                     else:
                         print("Informasi video tidak ditemukan.")
                 else:
