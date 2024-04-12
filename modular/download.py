@@ -205,15 +205,13 @@ async def _(c, m):
             os.remove(files)
 
 
-import os
-
-import requests
-
-
-async def extract_url_and_media_info(url, json_data):
+async def extract_url_and_media_info(url):
     try:
         tweet_url = "https://twitter-x-media-download.p.rapidapi.com/media"
-        payload = {"url": url, "proxy": ""}
+        payload = {
+            "url": url,
+            "proxy": ""
+        }
         headers = {
             "content-type": "application/json",
             "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
@@ -259,11 +257,11 @@ async def extract_url_and_media_info(url, json_data):
             else:
                 media_url = None
                 content_type = None
-            return url, content_type, media_url
+            return content_type, media_url
         else:
-            return None, None, None
+            return None, None
     except (KeyError, IndexError):
-        return None, None, None
+        return None, None
 
 
 async def download_and_send_file(message, url):
@@ -281,19 +279,19 @@ async def download_and_send_file(message, url):
 
 
 @ky.ubot("twit", sudo=True)
-async def twit_dl(c: nlx, m):
-    tweet_url = m.text.split(maxsplit=1)[1]
-    tweet_json = get_tweet_json(tweet_url)
-    url, content_type, media_url = await extract_url_and_media_info(tweet_json)
-    if media_url:
-        try:
-            file_extension = media_url.split(".")[-1].lower()
-            f"media_{m.chat.id}.{file_extension}"
-            await download_and_send_file(m, media_url)
-        except Exception as e:
-            await m.reply(f"Error: {e}")
-    else:
-        await m.reply("Failed to get media URL.")
+async def twit_dl(c, m):
+    if m.command and m.command[0].lower() == "twit":
+        tweet_url = m.text.split(maxsplit=1)[1]
+        content_type, media_url = await extract_url_and_media_info(tweet_url)
+        if media_url:
+            try:
+                file_extension = media_url.split(".")[-1].lower()
+                file_name = f"media.{file_extension}"
+                await download_and_send_file(m, media_url)
+            except Exception as e:
+                await m.reply(f"Error: {e}")
+        else:
+            await m.reply("Failed to get media URL.")
 
 
 """
