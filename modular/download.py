@@ -311,9 +311,9 @@ async def twit(c: nlx, m):
                     if "video/mp4" in content_type:
                         video_url = variant.get("url", "")
                         break
-                    elif "application/x-mpegURL" in content_type:
-                        video_url = variant.get("url", "")
-                        break
+                    # elif "application/x-mpegURL" in content_type:
+                    #     video_url = variant.get("url", "")
+                    #     break
 
                 if video_url:
                     print(f"Informasi media berhasil diperoleh: video, {video_url}")
