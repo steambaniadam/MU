@@ -242,7 +242,7 @@ def download_media_from_twitter(tweet_url):
         return None
 
 
-async def download_and_send_file(m, chat_id, url, content_type):
+async def download_and_send_file(nlx, chat_id, url, content_type):
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -252,13 +252,13 @@ async def download_and_send_file(m, chat_id, url, content_type):
             with open(file_name, "wb") as f:
                 f.write(response.content)
             if content_type == "photo":
-                await m.send_photo(chat_id, file_name)
+                await nlx.reply_photo(chat_id, file_name)
             elif content_type == "video":
-                await m.send_video(chat_id, file_name)
+                await nlx.reply_video(chat_id, file_name)
             os.remove(file_name)
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
-        await m.reply("Terjadi kesalahan saat mengunduh atau mengirim file.")
+        await nlx.reply("Terjadi kesalahan saat mengunduh atau mengirim file.")
 
 
 @ky.ubot("twit", sudo=True)
@@ -292,7 +292,10 @@ async def twit(c: nlx, m):
         )
         if media_url:
             print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
-            await download_and_send_file(m, m.chat.id, media_url, media_type)
+            if media_type == "photo":
+                await c.send_photo(chat_id=m.chat.id, photo=media_url)
+            elif media_type == "video":
+                await c.send_video(chat_id=m.chat.id, video=media_url)
         else:
             print("Gagal mendapatkan URL media dari tautan Twitter.")
             await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
