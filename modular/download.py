@@ -233,15 +233,31 @@ def download_media_from_twitter(tweet_url):
         data = response.json()
         print(data)
         if "tweetResult" in data:
-            return data["tweetResult"]
+            tweet_result = data["tweetResult"]
+            media_data = tweet_result.get("result", {}).get("core", {}).get("entities", {}).get("media", [])
+            if media_data:
+                for media in media_data:
+                    media_type = media.get("type")
+                    if media_type == "video":
+                        video_info = media.get("video_info", {})
+                        if video_info:
+                            variants = video_info.get("variants", [])
+                            video_urls = []
+                            for variant in variants:
+                                if variant.get("content_type") == "video/mp4" and variant.get("url"):
+                                    video_urls.append(variant.get("url"))
+                            return video_urls
+                        else:
+                            print("Informasi video tidak ditemukan.")
+            else:
+                print("Data media tidak ditemukan dalam respons.")
         else:
             print("Data tweetResult tidak ditemukan dalam respons JSON.")
-            return None
     else:
         print(
             f"Gagal mengunduh media dari Twitter. Kode status: {response.status_code}"
         )
-        return None
+    return None
 
 
 async def download_and_send_file(nlx, chat_id, url, content_type):
