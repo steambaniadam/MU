@@ -322,6 +322,9 @@ async def twit(c: nlx, m):
 
 @ky.ubot("insta", sudo=True)
 async def insta_handler(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    pros = await m.edit(cgr("proses").format(em.proses))
     try:
         url = m.command[1]
         querystring = {"url": url}
@@ -339,10 +342,10 @@ async def insta_handler(c: nlx, m):
             result = data["result"][0]
             media_url = result["url"]
             thumb_url = result["thumb"]
-            await m.reply_video(video=media_url, thumb=thumb_url)
+            await c.send_video(m.chat.id, video=media_url, thumb=thumb_url)
         else:
-            await m.reply_text("Gagal mengunduh media dari tautan yang diberikan.")
+            await pros.edit(f"{em.gagal} <b>Gagal mengunduh media dari tautan yang diberikan.</b>")
     except IndexError:
-        await m.reply_text(
-            "Format perintah salah. Gunakan perintah /insta [tautan_instagram]."
+        await pros.edit(
+            f"{em.gagal} <b>Format perintah salah.\nGunakan perintah `{m.text} [tautan_instagram]`</b>."
         )
