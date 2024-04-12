@@ -319,7 +319,7 @@ async def twit_dl(c: nlx, m: Message):
 
     c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
-    content_type, media_url = await download_media_from_twitter(url)
+    content_type, media_url = await download_media_from_twitter(m, url)
 
     if media_url:
         await download_and_send_file(m, media_url, content_type)
