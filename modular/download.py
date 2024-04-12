@@ -11,8 +11,6 @@ import time
 from datetime import timedelta
 from time import time
 
-import aiofiles
-import aiohttp
 import wget
 from pyrogram.enums import *
 from pyrogram.errors import *
