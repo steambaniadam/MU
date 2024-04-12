@@ -10,6 +10,9 @@ import os
 import time
 from datetime import timedelta
 from time import time
+import aiohttp
+import asyncio
+
 
 import wget
 from pyrogram.enums import *
@@ -203,3 +206,38 @@ async def _(c, m):
     for files in (thumbnail, file_name):
         if files and os.path.exists(files):
             os.remove(files)
+
+
+async def get_video_url(tweet_url):
+    url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
+
+    payload = { "url": tweet_url }
+    headers = {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "4a2cae52e9mshd8c855f97d1132bp1aad0ajsn3ae8a6aa9c5a",
+        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com"
+    }
+
+    async with aiohttp.ClientSession(headers=headers) as session:
+        async with session.post(url, json=payload) as response:
+            if response.status == 200:
+                data = await response.json()
+                video_url = data['tweet']['media']['all'][0]['url']
+                return video_url
+            else:
+                return None
+
+
+@ky.ubot("twit", sudo=False)
+async def twit_dl(c: nlx, m: Message):
+    em = Emojik()
+    em.initialize()
+    tweet_url = m.text.split(maxsplit=1)[1]
+    pros = await m.edit(cgr("proses").format(em.proses))
+    video_url = await get_video_url(tweet_url)
+    if video_url:
+        await m.reply(video_url)
+    else:
+        await m.reply("Gagal mendapatkan URL video.")
+
+    await pros.delete()
