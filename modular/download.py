@@ -335,7 +335,13 @@ async def twit(c: nlx, m):
                 elif media_type == "video":
                     video_info = media.get("video_info", {})
                     if video_info:
-                        variants = media_info.get("result", {}).get("extended_entities", {}).get("media", [])[0].get("video_info", {}).get("variants", [])
+                        variants = (
+                            media_info.get("result", {})
+                            .get("extended_entities", {})
+                            .get("media", [])[0]
+                            .get("video_info", {})
+                            .get("variants", [])
+                        )
                         video_url = None
                         for variant in variants:
                             if variant.get("content_type") == "application/x-mpegURL":
