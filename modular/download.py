@@ -285,19 +285,36 @@ async def download_and_send_file(message, url, content_type):
 
 
 @ky.ubot("twit", sudo=True)
-async def twit_dl(c, m):
-    if m.command and m.command[0].lower() == "twit":
+async def twit_dl(c: nlx, m: Message):
+    em = Emojik()
+    em.initialize()
+    try:
         tweet_url = m.text.split(maxsplit=1)[1]
-        content_type, media_url = await extract_url_and_media_info(tweet_url)
-        if media_url:
-            try:
-                file_extension = media_url.split(".")[-1].lower()
-                f"media.{file_extension}"
-                await download_and_send_file(m, media_url)
-            except Exception as e:
-                await m.reply(f"Error: {e}")
-        else:
-            await m.reply("Failed to get media URL.")
+    except IndexError:
+        await m.reply("Silakan berikan URL Twitter.")
+        return
+    
+    mention = c.me.mention
+    pros = await m.edit(cgr("proses").format(em.proses))
+    content_type, media_url = await get_media(tweet_url)
+    
+    if media_url:
+        try:
+            file_name = media_url.split("/")[-1]
+            subprocess.run(["wget", media_url, "-O", file_name])
+            captions = f"{em.sukses} Successfully Downloaded by: {mention}"
+            if content_type == "photo":
+                await c.send_photo(m.chat.id, photo=file_name, caption=captions)
+            elif content_type == "video":
+                await c.send_video(m.chat.id, video=file_name, caption=captions)
+            elif content_type == "raw":
+                await c.send_document(m.chat.id, document=file_name, caption=captions)
+            os.remove(file_name)
+        except Exception as e:
+            await m.reply(f"Error: {e}")
+    else:
+        await m.reply("Failed to get media URL.")
+    await pros.delete()
 
 
 """
