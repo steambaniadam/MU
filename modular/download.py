@@ -207,13 +207,15 @@ async def _(c, m):
 
 
 import os
+
 import requests
+
 
 def get_media(tweet_url):
     url = "https://twitter-downloader-download-twitter-videos-gifs-and-images.p.rapidapi.com/status"
     headers = {
         "X-RapidAPI-Key": "4a2cae52e9mshd8c855f97d1132bp1aad0ajsn3ae8a6aa9c5a",
-        "X-RapidAPI-Host": "twitter-downloader-download-twitter-videos-gifs-and-images.p.rapidapi.com"
+        "X-RapidAPI-Host": "twitter-downloader-download-twitter-videos-gifs-and-images.p.rapidapi.com",
     }
     params = {"url": tweet_url}
 
