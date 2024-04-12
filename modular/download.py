@@ -207,7 +207,7 @@ async def _(c, m):
 
 
 import requests
-
+import os
 
 @ky.ubot("twit", sudo=True)
 async def twit(c: nlx, m):
@@ -263,9 +263,9 @@ async def download_and_send_file(chat_id, url, content_type):
         with open(file_name, "wb") as f:
             f.write(response.content)
         if content_type == "photo":
-            await nlx.send_photo(chat_id, file_name)
+            await m.send_photo(chat_id, file_name)
         elif content_type == "video":
-            await nlx.send_video(chat_id, file_name)
+            await m.send_video(chat_id, file_name)
         os.remove(file_name)
     else:
-        await nlx.send_message(chat_id, "Gagal mengunduh file.")
+        await m.send_message(chat_id, "Gagal mengunduh file.")
