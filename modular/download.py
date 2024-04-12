@@ -330,7 +330,7 @@ async def twit(c: nlx, m):
                     #         print("Gagal mengonversi video ke format mp4.")
                     #         await m.reply("Gagal mengonversi video ke format mp4.")
                     # else:
-                        
+
             else:
                 print("Gagal mendapatkan URL video dari tautan Twitter.")
                 await m.reply("Gagal mendapatkan URL video dari tautan Twitter.")
