@@ -214,7 +214,7 @@ import requests
 
 def is_valid_twitter_url(url):
     parsed_url = urlparse(url)
-    return parsed_url.netloc.endswith("x.com") and "/status/" in parsed_url.path
+    return parsed_url.netloc.endswith("twitter.com") and "/status/" in parsed_url.path
 
 
 def download_media_from_twitter(tweet_url):
@@ -229,7 +229,12 @@ def download_media_from_twitter(tweet_url):
     response = requests.post(endpoint, json=payload, headers=headers)
 
     if response.status_code == 200:
-        return response.json()
+        data = response.json()
+        if "tweetResult" in data:
+            return data["tweetResult"]
+        else:
+            print("Data tweetResult tidak ditemukan dalam respons JSON.")
+            return None
     else:
         print(
             f"Gagal mengunduh media dari Twitter. Kode status: {response.status_code}"
@@ -253,9 +258,7 @@ async def download_and_send_file(m, chat_id, url, content_type):
             os.remove(file_name)
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
-        await m.send_message(
-            chat_id, "Terjadi kesalahan saat mengunduh atau mengirim file."
-        )
+        await m.reply("Terjadi kesalahan saat mengunduh atau mengirim file.")
 
 
 @ky.ubot("twit", sudo=True)
@@ -273,9 +276,14 @@ async def twit(c: nlx, m):
     media_info = download_media_from_twitter(tweet_url)
 
     if media_info:
-        media_url, media_type = media_info
-        print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
-        await download_and_send_file(m, m.chat.id, media_url, media_type)
+        media_url = media_info.get("result", {}).get("legacy", {}).get("entities", {}).get("media", [{}])[0].get("media_url_https")
+        media_type = media_info.get("result", {}).get("legacy", {}).get("entities", {}).get("media", [{}])[0].get("type")
+        if media_url:
+            print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
+            await download_and_send_file(m, m.chat.id, media_url, media_type)
+        else:
+            print("Gagal mendapatkan URL media dari tautan Twitter.")
+            await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
     else:
-        print("Gagal mendapatkan URL media dari tautan Twitter.")
-        await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
+        print("Gagal mendapatkan informasi media dari Twitter.")
+        await m.reply("Gagal mendapatkan informasi media dari Twitter.")
