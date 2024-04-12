@@ -217,11 +217,16 @@ def get_media(tweet_url):
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
         data = response.json()
-        print(data)
-        if data.get("media_url_https"):
-            return data["media_url_https"]
-        else:
-            return None
+        media_url_https = (
+            data.get("tweetResult", {})
+            .get("result", {})
+            .get("core", {})
+            .get("legacy", {})
+            .get("entities", {})
+            .get("media", [{}])[0]
+            .get("media_url_https")
+        )
+        return media_url_https
     else:
         return None
 
