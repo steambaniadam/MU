@@ -206,9 +206,7 @@ async def _(c, m):
             os.remove(files)
 
 
-import mimetypes
 import os
-import subprocess
 from urllib.parse import urlparse
 
 import requests
@@ -232,7 +230,6 @@ def download_media_from_twitter(tweet_url):
 
     if response.status_code == 200:
         data = response.json()
-        print(f"Data Json : {data}")
         if "tweetResult" in data:
             return data["tweetResult"]
         else:
@@ -249,55 +246,16 @@ async def download_and_send_file(nlx, chat_id, url, content_type):
     try:
         response = requests.get(url)
         response.raise_for_status()
-
         if response.status_code == 200:
             print("Berhasil mengunduh file.")
-            content = response.content
-            file_extension = mimetypes.guess_extension(response.headers["content-type"])
-
-            if not file_extension:
-                raise ValueError("Tidak dapat menentukan ekstensi file.")
-
-            file_name = f"downloaded_{content_type}{file_extension}"
-
+            file_name = f"downloaded_{content_type}.{url.split('.')[-1]}"
             with open(file_name, "wb") as f:
-                f.write(content)
-
+                f.write(response.content)
             if content_type == "photo":
                 await nlx.reply_photo(chat_id, file_name)
             elif content_type == "video":
-                if file_extension == ".m3u8":
-                    mp4_file_name = file_name[:-5] + ".mp4"
-                    convert_command = [
-                        "ffmpeg",
-                        "-i",
-                        file_name,
-                        "-c",
-                        "copy",
-                        mp4_file_name,
-                    ]
-                    subprocess.run(convert_command, check=True)
-                    file_name = mp4_file_name
-
                 await nlx.reply_video(chat_id, file_name)
-            else:
-                print("Tipe media tidak didukung:", content_type)
-                await nlx.reply(f"Tipe media tidak didukung: {content_type}")
-
-            # Hapus file setelah dikirim
             os.remove(file_name)
-        else:
-            print(f"Gagal mengunduh file. Kode status: {response.status_code}")
-            await nlx.reply("Gagal mengunduh file.")
-    except requests.exceptions.HTTPError as e:
-        print(f"HTTP Error: {e}")
-        await nlx.reply("Terjadi kesalahan HTTP saat mengunduh file.")
-    except requests.exceptions.RequestException as e:
-        print(f"Request Exception: {e}")
-        await nlx.reply("Terjadi kesalahan saat mengunduh file.")
-    except ValueError as e:
-        print(f"Value Error: {e}")
-        await nlx.reply("Tidak dapat menentukan ekstensi file yang diunduh.")
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
         await nlx.reply("Terjadi kesalahan saat mengunduh atau mengirim file.")
@@ -316,66 +274,31 @@ async def twit(c: nlx, m):
 
     print("Mendapatkan informasi media dari Twitter...")
     media_info = download_media_from_twitter(tweet_url)
-    print("Media info:", media_info)
 
     if media_info:
-        media_data = media_info.get("result", {}).get("entities", {}).get("media", [])
-        if media_data:
-            for media in media_data:
-                media_type = media.get("type")
-                if media_type == "photo":
-                    media_url = media.get("media_url_https")
-                    if media_url:
-                        print(
-                            f"Informasi media berhasil diperoleh: {media_type}, {media_url}"
-                        )
-                        await download_and_send_file(
-                            c, m.chat.id, media_url, media_type
-                        )
-                elif media_type == "video":
-                    video_info = media.get("video_info", {})
-                    if video_info:
-                        variants = (
-                            media_info.get("result", {})
-                            .get("extended_entities", {})
-                            .get("media", [])[0]
-                            .get("video_info", {})
-                            .get("variants", [])
-                        )
-                        video_url = None
-                        for variant in variants:
-                            if variant.get("content_type") == "application/x-mpegURL":
-                                video_url = variant.get("url")
-                                break
-                        if video_url:
-                            print(
-                                f"Informasi media berhasil diperoleh: {media_type}, {video_url}"
-                            )
-                            # Cek apakah URL mengandung ekstensi .m3u8
-                            if video_url.endswith(".m3u8"):
-                                mp4_file_name = f"downloaded_video.mp4"
-                                convert_command = [
-                                    "ffmpeg",
-                                    "-i",
-                                    video_url,
-                                    "-c",
-                                    "copy",
-                                    mp4_file_name,
-                                ]
-                                subprocess.run(convert_command, check=True)
-                                await download_and_send_file(
-                                    c, m.chat.id, mp4_file_name, media_type
-                                )
-                            else:
-                                await download_and_send_file(
-                                    c, m.chat.id, video_url, media_type
-                                )
-                    else:
-                        print("Informasi video tidak ditemukan.")
-                else:
-                    print(f"Tipe media tidak didukung: {media_type}")
+        media_url = (
+            media_info.get("result", {})
+            .get("legacy", {})
+            .get("entities", {})
+            .get("media", [{}])[0]
+            .get("media_url_https")
+        )
+        media_type = (
+            media_info.get("result", {})
+            .get("legacy", {})
+            .get("entities", {})
+            .get("media", [{}])[0]
+            .get("type")
+        )
+        if media_url:
+            print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
+            if media_type == "photo":
+                await c.send_photo(chat_id=m.chat.id, photo=media_url)
+            elif media_type == "video":
+                await c.send_video(chat_id=m.chat.id, video=media_url)
         else:
-            print("Data media tidak ditemukan dalam respons.")
+            print("Gagal mendapatkan URL media dari tautan Twitter.")
+            await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
     else:
         print("Gagal mendapatkan informasi media dari Twitter.")
         await m.reply("Gagal mendapatkan informasi media dari Twitter.")
