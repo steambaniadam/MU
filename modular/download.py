@@ -260,4 +260,3 @@ async def twit_dl(c: nlx, m: Message):
         await m.reply("Gagal mendapatkan URL media.")
 
     await pros.delete()
-    
