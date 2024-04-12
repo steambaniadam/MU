@@ -222,20 +222,20 @@ async def download_media(tweet_url, save_path):
             if response.status == 200:
                 data = await response.json()
                 media = data.get("tweet", {}).get("media", {})
-                if media:
-                    if "all" in media and media["all"]:
-                        media_url = media["all"][0].get("url")
-                        if media_url:
-                            async with session.get(media_url) as media_response:
-                                if media_response.status == 200:
-                                    content = await media_response.read()
-                                    if media["type"] == "photo":
-                                        save_path += ".jpg"
-                                    elif media["type"] == "video":
-                                        save_path += ".mp4"
-                                    async with aiofiles.open(save_path, "wb") as f:
-                                        await f.write(content)
-                                    return save_path
+                if media and "all" in media and media["all"]:
+                    media_url = media["all"][0].get("url")
+                    media_type = media.get("type")
+                    if media_url:
+                        async with session.get(media_url) as media_response:
+                            if media_response.status == 200:
+                                content = await media_response.read()
+                                if media_type == "photo":
+                                    save_path += ".jpg"
+                                elif media_type == "video":
+                                    save_path += ".mp4"
+                                async with aiofiles.open(save_path, "wb") as f:
+                                    await f.write(content)
+                                return save_path
             return None
 
 
