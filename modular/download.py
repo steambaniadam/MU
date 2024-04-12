@@ -289,14 +289,14 @@ async def twit_dl(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
     try:
-        tweet_url = m.text.split(maxsplit=1)[1]
+        url = m.text.split(maxsplit=1)[1]
     except IndexError:
         await m.reply("Silakan berikan URL Twitter.")
         return
 
     mention = c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
-    content_type, media_url = await get_media(tweet_url)
+    content_type, media_url = await extract_url_and_media_info(url)
 
     if media_url:
         try:
