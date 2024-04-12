@@ -283,18 +283,31 @@ async def twit(c: nlx, m):
                 if media_type == "photo":
                     media_url = media.get("media_url_https")
                     if media_url:
-                        print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
-                        await download_and_send_file(c, m.chat.id, media_url, media_type)
+                        print(
+                            f"Informasi media berhasil diperoleh: {media_type}, {media_url}"
+                        )
+                        await download_and_send_file(
+                            c, m.chat.id, media_url, media_type
+                        )
                 elif media_type == "video":
                     video_info = media.get("video_info", {})
                     if video_info:
                         variants = video_info.get("variants", [])
                         if variants:
-                            best_variant = max(variants, key=lambda v: v.get("bitrate", 0))
+                            best_variant = max(
+                                variants, key=lambda v: v.get("bitrate", 0)
+                            )
                             video_url = best_variant.get("url")
-                            if video_url and best_variant.get("content_type") == "video/mp4":
-                                print(f"Informasi media berhasil diperoleh: {media_type}, {video_url}")
-                                await download_and_send_file(c, m.chat.id, video_url, media_type)
+                            if (
+                                video_url
+                                and best_variant.get("content_type") == "video/mp4"
+                            ):
+                                print(
+                                    f"Informasi media berhasil diperoleh: {media_type}, {video_url}"
+                                )
+                                await download_and_send_file(
+                                    c, m.chat.id, video_url, media_type
+                                )
                     else:
                         print("Informasi video tidak ditemukan.")
                 else:
