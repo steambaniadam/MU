@@ -216,7 +216,15 @@ def get_media(tweet_url):
     response = requests.get(url, headers=headers, params=params)
     if response.status_code == 200:
         data = response.json()
-        media_url_https = data.get("tweetResult", {}).get("result", {}).get("core", {}).get("legacy", {}).get("entities", {}).get("media", [{}])[0].get("media_url_https")
+        media_url_https = (
+            data.get("tweetResult", {})
+            .get("result", {})
+            .get("core", {})
+            .get("legacy", {})
+            .get("entities", {})
+            .get("media", [{}])[0]
+            .get("media_url_https")
+        )
         return media_url_https
     else:
         return None
@@ -227,7 +235,7 @@ async def twit_dl(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
     tweet_url = m.text.split(maxsplit=1)[1]
-    mention = c.me.mention
+    c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
     media_url = get_media(tweet_url)
     if media_url:
