@@ -207,6 +207,13 @@ async def _(c, m):
             os.remove(files)
 
 
+import os
+
+import asyncio
+
+import aiohttp
+
+
 async def extract_url_and_media_info(url):
     try:
         tweet_url = "https://twitter-x-media-download.p.rapidapi.com/media"
@@ -216,51 +223,41 @@ async def extract_url_and_media_info(url):
             "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
             "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
         }
-        response = requests.post(tweet_url, json=payload, headers=headers)
-        if response.status_code == 200:
-            data = response.json()
-            tweet_result = data.get("tweetResult")
-            if tweet_result:
-                result = tweet_result.get("result")
-                if result:
-                    media_info = result.get("extended_entities", {}).get("media")
-                    if media_info:
-                        for media in media_info:
-                            media_type = media.get("type")
-                            if media_type == "photo":
-                                media_url = media.get("media_url_https")
-                                print(media_url)
-                                content_type = "photo"
-                                break
-                            elif media_type == "video":
-                                variants = media.get("video_info", {}).get(
-                                    "variants", []
-                                )
-                                for variant in variants:
-                                    if variant.get("content_type") == "video/mp4":
-                                        media_url = variant.get("url")
-                                        print(media_url)
-                                        content_type = "video"
-                                        break
+        async with aiohttp.ClientSession() as session:
+            async with session.post(tweet_url, json=payload, headers=headers) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    tweet_result = data.get("tweetResult")
+                    if tweet_result:
+                        result = tweet_result.get("result")
+                        if result:
+                            media_info = result.get("extended_entities", {}).get("media")
+                            if media_info:
+                                for media in media_info:
+                                    media_type = media.get("type")
+                                    if media_type == "photo":
+                                        media_url = media.get("media_url_https")
+                                        return "photo", media_url
+                                    elif media_type == "video":
+                                        variants = media.get("video_info", {}).get(
+                                            "variants", []
+                                        )
+                                        for variant in variants:
+                                            if variant.get("content_type") == "video/mp4":
+                                                media_url = variant.get("url")
+                                                return "video", media_url
+                                        else:
+                                            return None, None
                                 else:
-                                    media_url = None
-                                    content_type = None
-                                break
+                                    return None, None
+                            else:
+                                return None, None
                         else:
-                            media_url = None
-                            content_type = None
+                            return None, None
                     else:
-                        media_url = None
-                        content_type = None
+                        return None, None
                 else:
-                    media_url = None
-                    content_type = None
-            else:
-                media_url = None
-                content_type = None
-            return content_type, media_url
-        else:
-            return None, None
+                    return None, None
     except (KeyError, IndexError):
         return None, None
 
@@ -268,20 +265,26 @@ async def extract_url_and_media_info(url):
 async def download_and_send_file(message, url, content_type):
     try:
         file_name = url.split("/")[-1]
-        subprocess.run(["wget", url, "-O", file_name])
-        if content_type == "photo":
-            await message.reply_photo(
-                photo=file_name, caption="File yang diunduh dari URL."
-            )
-        elif content_type == "video":
-            await message.reply_video(
-                video=file_name, caption="File yang diunduh dari URL."
-            )
-        else:
-            await message.reply_document(
-                document=file_name, caption="File yang diunduh dari URL."
-            )
-        os.remove(file_name)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as resp:
+                if resp.status == 200:
+                    with open(file_name, 'wb') as f:
+                        f.write(await resp.read())
+                    if content_type == "photo":
+                        await message.reply_photo(
+                            photo=file_name, caption="File yang diunduh dari URL."
+                        )
+                    elif content_type == "video":
+                        await message.reply_video(
+                            video=file_name, caption="File yang diunduh dari URL."
+                        )
+                    else:
+                        await message.reply_document(
+                            document=file_name, caption="File yang diunduh dari URL."
+                        )
+                    os.remove(file_name)
+                else:
+                    await message.reply_text("Gagal mengunduh file.")
     except Exception as e:
         await message.reply_text(f"Gagal mengunduh atau mengirim file: {e}")
 
@@ -301,21 +304,9 @@ async def twit_dl(c: nlx, m: Message):
     content_type, media_url = await extract_url_and_media_info(url)
 
     if media_url:
-        try:
-            file_name = media_url.split("/")[-1]
-            subprocess.run(["wget", media_url, "-O", file_name])
-            captions = f"{em.sukses} Successfully Downloaded by: {mention}"
-            if content_type == "photo":
-                await c.send_photo(m.chat.id, photo=file_name, caption=captions)
-            elif content_type == "video":
-                await c.send_video(m.chat.id, video=file_name, caption=captions)
-            elif content_type == "raw":
-                await c.send_document(m.chat.id, document=file_name, caption=captions)
-            os.remove(file_name)
-        except Exception as e:
-            await m.reply(f"Error: {e}")
+        await download_and_send_file(m, media_url, content_type)
     else:
-        await m.reply("Failed to get media URL.")
+        await m.reply("Gagal mendapatkan URL media.")
     await pros.delete()
 
 
