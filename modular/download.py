@@ -210,13 +210,13 @@ import os
 import requests
 
 
-async def extract_url_and_media_info(json_data):
+async def extract_url_and_media_info(url, json_data):
     try:
-        url = json_data["tweetResult"]["result"]["legacy"]["entities"]["media"][0][
-            "expanded_url"
-        ]
         tweet_url = "https://twitter-x-media-download.p.rapidapi.com/media"
-        payload = {"url": url}
+        payload = {
+	"url": url,
+	"proxy": ""
+}
         headers = {
             "content-type": "application/json",
             "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
