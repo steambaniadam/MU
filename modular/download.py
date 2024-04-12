@@ -233,6 +233,7 @@ def get_video_url(tweet_url):
         return None
 
 
+@ky.ubot("twit", sudo=True)
 async def twit_dl(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
