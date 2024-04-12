@@ -351,7 +351,7 @@ async def twit(c: nlx, m):
                                 f"Informasi media berhasil diperoleh: {media_type}, {video_url}"
                             )
                             # Cek apakah URL mengandung ekstensi .m3u8
-                            if video_url.endswith('.m3u8'):
+                            if video_url.endswith(".m3u8"):
                                 mp4_file_name = f"downloaded_video.mp4"
                                 convert_command = [
                                     "ffmpeg",
