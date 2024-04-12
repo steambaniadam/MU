@@ -276,8 +276,20 @@ async def twit(c: nlx, m):
     media_info = download_media_from_twitter(tweet_url)
 
     if media_info:
-        media_url = media_info.get("result", {}).get("legacy", {}).get("entities", {}).get("media", [{}])[0].get("media_url_https")
-        media_type = media_info.get("result", {}).get("legacy", {}).get("entities", {}).get("media", [{}])[0].get("type")
+        media_url = (
+            media_info.get("result", {})
+            .get("legacy", {})
+            .get("entities", {})
+            .get("media", [{}])[0]
+            .get("media_url_https")
+        )
+        media_type = (
+            media_info.get("result", {})
+            .get("legacy", {})
+            .get("entities", {})
+            .get("media", [{}])[0]
+            .get("type")
+        )
         if media_url:
             print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
             await download_and_send_file(m, m.chat.id, media_url, media_type)
