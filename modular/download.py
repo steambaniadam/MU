@@ -285,9 +285,7 @@ async def twit(c: nlx, m):
                 .get("media_url_https")
             )
             if media_url:
-                caption = (
-                    f"{em.sukses} <b>Successfully Download Photo by : {c.me.mention}</b>"
-                )
+                caption = f"{em.sukses} <b>Successfully Download Photo by : {c.me.mention}</b>"
                 await c.send_photo(chat_id=m.chat.id, photo=media_url, caption=caption)
                 await pros.delete()
         elif media_type == "video":
