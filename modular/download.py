@@ -224,17 +224,32 @@ async def twit(c: nlx, m):
     if media_info:
         media_url, media_type = media_info
         print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
-        await download_and_send_file(m.chat.id, media_url, media_type)
+        await download_and_send_file(m, m.chat.id, media_url, media_type)
     else:
         print("Gagal mendapatkan URL media dari tautan Twitter.")
         await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
 
 
+def extract_media_urls(tweet_result):
+    media_urls = []
+    result = tweet_result.get("result")
+    if result:
+        extended_entities = result.get("extended_entities", {})
+        media_info = extended_entities.get("media", [])
+        for media in media_info:
+            media_type = media.get("type")
+            if media_type in ("photo", "video"):
+                media_url = media.get(
+                    "media_url_https" if media_type == "photo" else "url"
+                )
+                media_urls.append(media_url)
+                print(f"Media URL: {media_url}")
+    return media_urls
+
+
 def download_media_from_twitter(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media"
-
     payload = {"url": tweet_url, "proxy": ""}
-
     headers = {
         "content-type": "application/json",
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
@@ -249,26 +264,15 @@ def download_media_from_twitter(tweet_url):
         print(f"Json : {data}")
         tweet_result = data.get("tweetResult")
         if tweet_result:
-            result = tweet_result.get("result")
-            if result:
-                media_info = result.get("extended_entities", {}).get("media")
-                if media_info:
-                    media_urls = []
-                    for media in media_info:
-                        media_type = media.get("type")
-                        if media_type in ("photo", "video"):
-                            media_url = media.get(
-                                "media_url_https" if media_type == "photo" else "url"
-                            )
-                            media_urls.append(media_url)
-                            print(f"Media URL: {media_url}")
-                    return media_urls
+            return extract_media_urls(tweet_result)
+        else:
+            print("Data tweetResult tidak ditemukan dalam respons JSON.")
     else:
         print(f"Permintaan gagal. Kode status: {response.status_code}")
     return None
 
 
-async def download_and_send_file(chat_id, url, content_type):
+async def download_and_send_file(m, chat_id, url, content_type):
     response = requests.get(url)
     if response.status_code == 200:
         print("Berhasil mengunduh file.")
