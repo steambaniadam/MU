@@ -243,32 +243,33 @@ def download_media_from_twitter(tweet_url):
         return None
 
 
-import os
 import mimetypes
+import os
+
 
 async def download_and_send_file(nlx, chat_id, url, content_type):
     try:
         response = requests.get(url)
         response.raise_for_status()
-        
+
         if response.status_code == 200:
             print("Berhasil mengunduh file.")
             content = response.content
-            file_extension = mimetypes.guess_extension(response.headers['content-type'])
-            
+            file_extension = mimetypes.guess_extension(response.headers["content-type"])
+
             if not file_extension:
                 raise ValueError("Tidak dapat menentukan ekstensi file.")
-            
+
             file_name = f"downloaded_{content_type}{file_extension}"
-            
+
             with open(file_name, "wb") as f:
                 f.write(content)
-            
+
             if content_type == "photo":
                 await nlx.reply_photo(chat_id, file_name)
             elif content_type == "video":
                 await nlx.reply_video(chat_id, file_name)
-            
+
             os.remove(file_name)
     except requests.exceptions.HTTPError as e:
         print(f"HTTP Error: {e}")
@@ -318,10 +319,9 @@ async def twit(c: nlx, m):
                     if video_info:
                         variants = video_info.get("variants", [])
                         for variant in variants:
-                            if (
-                                variant.get("content_type") == "video/mp4"
-                                and variant.get("url")
-                            ):
+                            if variant.get(
+                                "content_type"
+                            ) == "video/mp4" and variant.get("url"):
                                 video_url = variant.get("url")
                                 print(
                                     f"Informasi media berhasil diperoleh: {media_type}, {video_url}"
