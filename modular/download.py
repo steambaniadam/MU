@@ -206,61 +206,40 @@ async def _(c, m):
             os.remove(files)
 
 
+import requests
 import os
 
-import requests
-
-
-def download_media(tweet_url, save_path):
+def get_video_url(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
 
     payload = {"url": tweet_url}
     headers = {
         "content-type": "application/json",
         "X-RapidAPI-Key": "4a2cae52e9mshd8c855f97d1132bp1aad0ajsn3ae8a6aa9c5a",
-        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
+        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com"
     }
 
-    try:
-        response = requests.post(url, json=payload, headers=headers)
-        response.raise_for_status()
+    response = requests.post(url, json=payload, headers=headers)
+    # Check if request was successful
+    if response.status_code == 200:
+        # Parse JSON response
         data = response.json()
-        media = data.get("tweet", {}).get("media", {})
-        if media and "all" in media and media["all"]:
-            media_url = media["all"][0].get("url")
-            media_type = media.get("type")
-            if media_url:
-                media_response = requests.get(media_url)
-                media_response.raise_for_status()
-                content = media_response.content
-                if media_type == "photo":
-                    save_path += ".jpg"
-                elif media_type == "video":
-                    save_path += ".mp4"
-                with open(save_path, "wb") as f:
-                    f.write(content)
-                return save_path
-    except Exception as e:
-        print("Error downloading media:", e)
-    return None
+        # Extract video URL
+        video_url = data.get('tweet', {}).get('media', {}).get('all', [])[0].get('url')
+        return video_url
+    else:
+        return None
 
-
-@ky.ubot("twit", sudo=True)
 async def twit_dl(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
     tweet_url = m.text.split(maxsplit=1)[1]
     pros = await m.edit(cgr("proses").format(em.proses))
 
-    save_path = f"media_{m.chat.id}"
-    downloaded_path = download_media(tweet_url, save_path)
-    if downloaded_path:
-        if downloaded_path.endswith(".jpg"):
-            await m.reply_photo(downloaded_path)
-        elif downloaded_path.endswith(".mp4"):
-            await m.reply_video(downloaded_path)
-        os.remove(downloaded_path)
+    video_url = get_video_url(tweet_url)
+    if video_url:
+        await m.reply(video_url)
     else:
-        await m.reply("Gagal mengunduh media.")
+        await m.reply("Gagal mendapatkan URL video.")
 
     await pros.delete()
