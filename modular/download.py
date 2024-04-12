@@ -236,9 +236,9 @@ async def get_media(tweet_url):
                 return None
 
 
-async def download_file(media_url, file_name):
+async def download_file(media_url_https, file_name):
     async with aiohttp.ClientSession() as session:
-        async with session.get(media_url) as response:
+        async with session.get(media_url_https) as response:
             if response.status == 200:
                 with open(file_name, "wb") as f:
                     while True:
@@ -257,12 +257,12 @@ async def twit_dl(c: nlx, m: Message):
     tweet_url = m.text.split(maxsplit=1)[1]
     mention = c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
-    media_url = await get_media(tweet_url)
-    if media_url:
+    media_url_https = await get_media(tweet_url)
+    if media_url_https:
         try:
-            file_extension = media_url.split(".")[-1].lower()
+            file_extension = media_url_https.split(".")[-1].lower()
             file_name = f"media_{m.chat.id}.{file_extension}"
-            await download_file(media_url, file_name)
+            await download_file(media_url_https, file_name)
             captions = f"{em.sukses} Successfully Downloaded by: {mention}"
             if file_extension == "jpg":
                 await c.send_photo(m.chat.id, photo=file_name, caption=captions)
