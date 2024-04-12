@@ -342,7 +342,14 @@ async def insta_handler(c: nlx, m):
             result = data["result"][0]
             media_url = result["url"]
             thumb_url = result["thumb"]
-            await c.send_video(m.chat.id, video=media_url, thumb=thumb_url)
+            if result["type"] == "image/jpeg":
+                await c.send_photo(photo=media_url, caption=f"{em.sukses} <b>Successfully Download Photo by : {c.me.menton}</b>")
+                await pros.delete()
+            elif result["type"] == "video/mp4":
+                await c.send_video(video=media_url, thumb=thumb_url, caption=f"{em.sukses} <b>Successfully Download Video by : {c.me.menton}</b>")
+                await pros.delete()
+            else:
+                await pros.edit(f"{em.gagal} <b>Tipe media tidak didukung.</b>")
         else:
             await pros.edit(
                 f"{em.gagal} <b>Gagal mengunduh media dari tautan yang diberikan.</b>"
