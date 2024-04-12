@@ -206,8 +206,10 @@ async def _(c, m):
             os.remove(files)
 
 
-import requests
 import os
+
+import requests
+
 
 def download_media(tweet_url, save_path):
     url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
