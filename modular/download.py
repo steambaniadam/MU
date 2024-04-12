@@ -237,7 +237,7 @@ async def twit_dl(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
     tweet_url = m.text.split(maxsplit=1)[1]
-    mention = c.mention
+    mention = c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
 
     media_url, media_type = get_media(tweet_url)
