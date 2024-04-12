@@ -213,7 +213,7 @@ from urllib.parse import urlparse
 
 def is_valid_twitter_url(url):
     parsed_url = urlparse(url)
-    return parsed_url.netloc.endswith("twitter.com") and "/status/" in parsed_url.path
+    return parsed_url.netloc.endswith("x.com") and "/status/" in parsed_url.path
 
 
 def download_media_from_twitter(tweet_url):
