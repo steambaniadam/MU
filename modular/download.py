@@ -264,6 +264,8 @@ async def download_and_send_file(nlx, chat_id, url, content_type):
 
             if content_type == "photo":
                 await nlx.reply_photo(chat_id, file_name)
+            elif content_type == "video/mp4":
+                await nlx.reply_video(chat_id, file_name)
             elif content_type == "video":
                 await nlx.reply_video(chat_id, file_name)
 
@@ -315,28 +317,30 @@ async def twit(c: nlx, m):
                     video_info = media.get("video_info", {})
                     if video_info:
                         variants = video_info.get("variants", [])
-                        max_bitrate_variant = max(
-                            (
-                                variant
-                                for variant in variants
-                                if variant.get("content_type") == "video/mp4"
-                            ),
-                            key=lambda x: x.get("bitrate"),
-                        )
-                        if max_bitrate_variant:
-                            video_url = max_bitrate_variant.get("url")
+                        video_url = None
+                        max_bitrate = 0
+                        for variant in variants:
+                            if (
+                                variant.get("content_type") == "video/mp4"
+                                and variant.get("url")
+                            ):
+                                bitrate = variant.get("bitrate", 0)
+                                if bitrate > max_bitrate:
+                                    max_bitrate = bitrate
+                                    video_url = variant.get("url")
+                        if video_url:
                             print(
                                 f"Informasi media berhasil diperoleh: {media_type}, {video_url}"
                             )
                             await download_and_send_file(
                                 c, m.chat.id, video_url, media_type
                             )
-                        else:
-                            print("Informasi video tidak ditemukan.")
                     else:
                         print("Informasi video tidak ditemukan.")
                 else:
                     print(f"Tipe media tidak didukung: {media_type}")
+        else:
+            print("Data media tidak ditemukan dalam respons.")
     else:
         print("Gagal mendapatkan informasi media dari Twitter.")
         await m.reply("Gagal mendapatkan informasi media dari Twitter.")
