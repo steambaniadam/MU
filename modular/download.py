@@ -228,15 +228,12 @@ async def twit(c: nlx, m):
 def download_media_from_twitter(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media"
 
-    payload = {
-        "url": tweet_url,
-        "proxy": ""
-    }
+    payload = {"url": tweet_url, "proxy": ""}
 
     headers = {
         "content-type": "application/json",
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com"
+        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
     }
 
     response = requests.post(url, json=payload, headers=headers)
@@ -252,7 +249,9 @@ def download_media_from_twitter(tweet_url):
                     for media in media_info:
                         media_type = media.get("type")
                         if media_type in ("photo", "video"):
-                            media_url = media.get("media_url_https" if media_type == "photo" else "url")
+                            media_url = media.get(
+                                "media_url_https" if media_type == "photo" else "url"
+                            )
                             return media_url, media_type
     return None
 
