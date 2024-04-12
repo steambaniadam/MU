@@ -277,63 +277,29 @@ async def twit(c: nlx, m):
     media_info = download_media_from_twitter(tweet_url)
 
     if media_info:
-        tweet_result = media_info.get("tweetResult", {})
-        if tweet_result:
-            core_result = tweet_result.get("result", {}).get("core", {})
-            if core_result:
-                media_data = core_result.get("entities", {}).get("media", [])
-                if media_data:
-                    for media in media_data:
-                        media_url = (
-                            media.get("media_url_https")
-                            if media.get("type") == "photo"
-                            else media.get("url")
-                        )
-                        media_type = media.get("type")
-                        if media_url:
-                            print(
-                                f"Informasi media berhasil diperoleh: {media_type}, {media_url}"
-                            )
-                            if media_type == "photo":
-                                await c.send_photo(chat_id=m.chat.id, photo=media_url)
-                            elif media_type == "video":
-                                video_info = media.get("video_info", {})
-                                if video_info:
-                                    variants = video_info.get("variants", [])
-                                    for variant in variants:
-                                        if (
-                                            variant.get("content_type")
-                                            == "application/x-mpegURL"
-                                        ):
-                                            video_url = variant.get("url")
-                                            await c.send_video(
-                                                chat_id=m.chat.id, video=video_url
-                                            )
-                                            break
-                                    else:
-                                        print(
-                                            "Tidak dapat menemukan URL video dalam variant."
-                                        )
-                                        await m.reply(
-                                            "Tidak dapat menemukan URL video dalam variant."
-                                        )
-                                else:
-                                    print("Informasi video tidak ditemukan.")
-                                    await m.reply("Informasi video tidak ditemukan.")
-                        else:
-                            print("Gagal mendapatkan URL media dari tautan Twitter.")
-                            await m.reply(
-                                "Gagal mendapatkan URL media dari tautan Twitter."
-                            )
-                else:
-                    print("Data media tidak ditemukan dalam respons.")
-                    await m.reply("Data media tidak ditemukan dalam respons.")
-            else:
-                print("Data inti tidak ditemukan dalam respons.")
-                await m.reply("Data inti tidak ditemukan dalam respons.")
+        media_url = (
+            media_info.get("result", {})
+            .get("legacy", {})
+            .get("entities", {})
+            .get("media", [{}])[0]
+            .get("media_url_https")
+        )
+        media_type = (
+            media_info.get("result", {})
+            .get("legacy", {})
+            .get("entities", {})
+            .get("media", [{}])[0]
+            .get("type")
+        )
+        if media_url:
+            print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
+            if media_type == "photo":
+                await c.send_photo(chat_id=m.chat.id, photo=media_url)
+            elif media_type == "video":
+                await c.send_video(chat_id=m.chat.id, video=media_url)
         else:
-            print("Data tweetResult tidak ditemukan dalam respons.")
-            await m.reply("Data tweetResult tidak ditemukan dalam respons.")
+            print("Gagal mendapatkan URL media dari tautan Twitter.")
+            await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
     else:
         print("Gagal mendapatkan informasi media dari Twitter.")
         await m.reply("Gagal mendapatkan informasi media dari Twitter.")
