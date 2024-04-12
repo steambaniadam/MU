@@ -10,6 +10,8 @@ import os
 import time
 from datetime import timedelta
 from time import time
+import aiofiles
+import asyncio
 
 import aiohttp
 import wget
@@ -206,7 +208,7 @@ async def _(c, m):
             os.remove(files)
 
 
-async def get_media_url(tweet_url):
+async def download_media(tweet_url, save_path):
     url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
 
     payload = {"url": tweet_url}
@@ -222,27 +224,37 @@ async def get_media_url(tweet_url):
                 data = await response.json()
                 media = data.get("tweet", {}).get("media", {})
                 if media:
-                    if "type" in media and media["type"] == "video":
-                        video_url = media["all"][0]["url"]
-                        return video_url
-                    elif "type" in media and media["type"] == "photo":
-                        photo_url = media["all"][0]["url"]
-                        return photo_url
-                return None
-            else:
-                return None
+                    if "all" in media and media["all"]:
+                        media_url = media["all"][0].get("url")
+                        if media_url:
+                            async with session.get(media_url) as media_response:
+                                if media_response.status == 200:
+                                    content = await media_response.read()
+                                    if media["type"] == "photo":
+                                        save_path += ".jpg"
+                                    elif media["type"] == "video":
+                                        save_path += ".mp4"
+                                    async with aiofiles.open(save_path, 'wb') as f:
+                                        await f.write(content)
+                                    return save_path
+            return None
 
 
-@ky.ubot("twit", sudo=False)
 async def twit_dl(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
     tweet_url = m.text.split(maxsplit=1)[1]
     pros = await m.edit(cgr("proses").format(em.proses))
-    media_url = await get_media_url(tweet_url)
-    if media_url:
-        await m.reply(media_url)
+
+    save_path = f'media_{m.chat.id}'
+    downloaded_path = await download_media(tweet_url, save_path)
+    if downloaded_path:
+        if downloaded_path.endswith(".jpg"):
+            await m.reply_photo(downloaded_path)
+        elif downloaded_path.endswith(".mp4"):
+            await m.reply_video(downloaded_path)
+        os.remove(downloaded_path)
     else:
-        await m.reply("Gagal mendapatkan URL media.")
+        await m.reply("Gagal mengunduh media.")
 
     await pros.delete()
