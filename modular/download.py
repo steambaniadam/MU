@@ -249,7 +249,7 @@ async def twit_dl(c: nlx, m: Message):
             with open(file_name, "wb") as f:
                 f.write(content)
             caption = f"{em.sukses} Success downloaded by: {mention}"
-            await m.reply_media(file_name, caption=caption)
+            await c.send_message(m.chat.id, file_name, caption=caption)
             os.remove(file_name)
         except Exception as e:
             await m.reply(f"Error: {e}")
