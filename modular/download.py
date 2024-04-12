@@ -208,14 +208,12 @@ async def _(c, m):
 
 import os
 from urllib.parse import urlparse
-
 import requests
-
+import mimetypes
 
 def is_valid_twitter_url(url):
     parsed_url = urlparse(url)
     return parsed_url.netloc.endswith("x.com") and "/status/" in parsed_url.path
-
 
 def download_media_from_twitter(tweet_url):
     endpoint = "https://twitter-x-media-download.p.rapidapi.com/media"
@@ -241,11 +239,6 @@ def download_media_from_twitter(tweet_url):
             f"Gagal mengunduh media dari Twitter. Kode status: {response.status_code}"
         )
         return None
-
-
-import mimetypes
-import os
-
 
 async def download_and_send_file(nlx, chat_id, url, content_type):
     try:
@@ -318,18 +311,15 @@ async def twit(c: nlx, m):
                     video_info = media.get("video_info", {})
                     if video_info:
                         variants = video_info.get("variants", [])
-                        for variant in variants:
-                            if variant.get(
-                                "content_type"
-                            ) == "video/mp4" and variant.get("url"):
-                                video_url = variant.get("url")
-                                print(
-                                    f"Informasi media berhasil diperoleh: {media_type}, {video_url}"
-                                )
-                                await download_and_send_file(
-                                    c, m.chat.id, video_url, media_type
-                                )
-                                break
+                        max_bitrate_variant = max((variant for variant in variants if variant.get("content_type") == "video/mp4"), key=lambda x: x.get("bitrate"))
+                        if max_bitrate_variant:
+                            video_url = max_bitrate_variant.get("url")
+                            print(
+                                f"Informasi media berhasil diperoleh: {media_type}, {video_url}"
+                            )
+                            await download_and_send_file(
+                                c, m.chat.id, video_url, media_type
+                            )
                         else:
                             print("Informasi video tidak ditemukan.")
                     else:
