@@ -206,12 +206,15 @@ async def _(c, m):
 
 
 import os
+
 import requests
 
 
 async def extract_url_and_media_info(json_data):
     try:
-        url = json_data['tweetResult']['result']['legacy']['entities']['media'][0]['expanded_url']
+        url = json_data["tweetResult"]["result"]["legacy"]["entities"]["media"][0][
+            "expanded_url"
+        ]
         tweet_url = "https://twitter-x-media-download.p.rapidapi.com/media"
         payload = {"url": url}
         headers = {
@@ -235,7 +238,9 @@ async def extract_url_and_media_info(json_data):
                                 content_type = "photo"
                                 break
                             elif media_type == "video":
-                                variants = media.get("video_info", {}).get("variants", [])
+                                variants = media.get("video_info", {}).get(
+                                    "variants", []
+                                )
                                 for variant in variants:
                                     if variant.get("content_type") == "video/mp4":
                                         media_url = variant.get("url")
@@ -267,10 +272,12 @@ async def extract_url_and_media_info(json_data):
 async def download_and_send_file(message, url):
     response = requests.get(url)
     if response.status_code == 200:
-        file_name = url.split('/')[-1]
-        with open(file_name, 'wb') as f:
+        file_name = url.split("/")[-1]
+        with open(file_name, "wb") as f:
             f.write(response.content)
-        await message.reply_document(document=file_name, caption="File yang diunduh dari URL.")
+        await message.reply_document(
+            document=file_name, caption="File yang diunduh dari URL."
+        )
         os.remove(file_name)
     else:
         await message.reply_text("Gagal mengunduh file.")
@@ -284,7 +291,7 @@ async def twit_dl(c: nlx, m):
     if media_url:
         try:
             file_extension = media_url.split(".")[-1].lower()
-            file_name = f"media_{m.chat.id}.{file_extension}"
+            f"media_{m.chat.id}.{file_extension}"
             await download_and_send_file(m, media_url)
         except Exception as e:
             await m.reply(f"Error: {e}")
