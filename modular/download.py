@@ -350,9 +350,25 @@ async def twit(c: nlx, m):
                             print(
                                 f"Informasi media berhasil diperoleh: {media_type}, {video_url}"
                             )
-                            await download_and_send_file(
-                                c, m.chat.id, video_url, media_type
-                            )
+                            # Cek apakah URL mengandung ekstensi .m3u8
+                            if video_url.endswith('.m3u8'):
+                                mp4_file_name = f"downloaded_video.mp4"
+                                convert_command = [
+                                    "ffmpeg",
+                                    "-i",
+                                    video_url,
+                                    "-c",
+                                    "copy",
+                                    mp4_file_name,
+                                ]
+                                subprocess.run(convert_command, check=True)
+                                await download_and_send_file(
+                                    c, m.chat.id, mp4_file_name, media_type
+                                )
+                            else:
+                                await download_and_send_file(
+                                    c, m.chat.id, video_url, media_type
+                                )
                     else:
                         print("Informasi video tidak ditemukan.")
                 else:
