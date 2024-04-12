@@ -223,7 +223,6 @@ async def get_media(tweet_url):
             if response.status == 200:
                 data = await response.json()
                 print(data)
-                await nlx.send_message(f"`{data}`")
                 media_info = (
                     data.get("tweetResult", {})
                     .get("result", {})
