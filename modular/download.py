@@ -308,10 +308,10 @@ async def twit(c: nlx, m):
                 video_url = None
                 for variant in variants:
                     content_type = variant.get("content_type", "")
-                    if "application/x-mpegURL" in content_type:
+                    if "video/mp4" in content_type:
                         video_url = variant.get("url", "")
                         break
-                    elif "video/mp4" in content_type:
+                    elif "application/x-mpegURL" in content_type:
                         video_url = variant.get("url", "")
                         break
 
