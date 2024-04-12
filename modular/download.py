@@ -230,6 +230,7 @@ def download_media_from_twitter(tweet_url):
 
     if response.status_code == 200:
         data = response.json()
+        print(data)
         if "tweetResult" in data:
             return data["tweetResult"]
         else:
@@ -274,6 +275,7 @@ async def twit(c: nlx, m):
 
     print("Mendapatkan informasi media dari Twitter...")
     media_info = download_media_from_twitter(tweet_url)
+    print("Media info:", media_info)
 
     if media_info:
         media_data = media_info.get("result", {}).get("entities", {}).get("media", [])
