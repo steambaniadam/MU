@@ -240,7 +240,6 @@ async def get_media(tweet_url):
                 return None, None
 
 
-
 async def download_file(media_url, file_name):
     async with aiohttp.ClientSession() as session:
         async with session.get(media_url) as response:
