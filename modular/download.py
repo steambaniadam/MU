@@ -230,6 +230,7 @@ def download_media_from_twitter(tweet_url):
 
     if response.status_code == 200:
         data = response.json()
+        print(data)
         if "tweetResult" in data:
             return data["tweetResult"]
         else:
