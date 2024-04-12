@@ -320,10 +320,9 @@ async def twit(c: nlx, m):
                         video_url = None
                         max_bitrate = 0
                         for variant in variants:
-                            if (
-                                variant.get("content_type") == "video/mp4"
-                                and variant.get("url")
-                            ):
+                            if variant.get(
+                                "content_type"
+                            ) == "video/mp4" and variant.get("url"):
                                 bitrate = variant.get("bitrate", 0)
                                 if bitrate > max_bitrate:
                                     max_bitrate = bitrate
