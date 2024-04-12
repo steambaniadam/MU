@@ -344,7 +344,9 @@ async def insta_handler(c: nlx, m):
             thumb_url = result["thumb"]
             await c.send_video(m.chat.id, video=media_url, thumb=thumb_url)
         else:
-            await pros.edit(f"{em.gagal} <b>Gagal mengunduh media dari tautan yang diberikan.</b>")
+            await pros.edit(
+                f"{em.gagal} <b>Gagal mengunduh media dari tautan yang diberikan.</b>"
+            )
     except IndexError:
         await pros.edit(
             f"{em.gagal} <b>Format perintah salah.\nGunakan perintah `{m.text} [tautan_instagram]`</b>."
