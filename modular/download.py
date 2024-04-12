@@ -12,7 +12,6 @@ import time
 from datetime import timedelta
 from time import time
 
-import requests
 import wget
 from pyrogram.enums import *
 from pyrogram.errors import *
@@ -209,8 +208,6 @@ async def _(c, m):
 
 import os
 
-import asyncio
-
 import aiohttp
 
 
@@ -224,14 +221,18 @@ async def extract_url_and_media_info(url):
             "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
         }
         async with aiohttp.ClientSession() as session:
-            async with session.post(tweet_url, json=payload, headers=headers) as response:
+            async with session.post(
+                tweet_url, json=payload, headers=headers
+            ) as response:
                 if response.status == 200:
                     data = await response.json()
                     tweet_result = data.get("tweetResult")
                     if tweet_result:
                         result = tweet_result.get("result")
                         if result:
-                            media_info = result.get("extended_entities", {}).get("media")
+                            media_info = result.get("extended_entities", {}).get(
+                                "media"
+                            )
                             if media_info:
                                 for media in media_info:
                                     media_type = media.get("type")
@@ -243,7 +244,10 @@ async def extract_url_and_media_info(url):
                                             "variants", []
                                         )
                                         for variant in variants:
-                                            if variant.get("content_type") == "video/mp4":
+                                            if (
+                                                variant.get("content_type")
+                                                == "video/mp4"
+                                            ):
                                                 media_url = variant.get("url")
                                                 return "video", media_url
                                         else:
@@ -268,7 +272,7 @@ async def download_and_send_file(message, url, content_type):
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as resp:
                 if resp.status == 200:
-                    with open(file_name, 'wb') as f:
+                    with open(file_name, "wb") as f:
                         f.write(await resp.read())
                     if content_type == "photo":
                         await message.reply_photo(
@@ -299,7 +303,7 @@ async def twit_dl(c: nlx, m: Message):
         await m.reply("Silakan berikan URL Twitter.")
         return
 
-    mention = c.me.mention
+    c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
     content_type, media_url = await extract_url_and_media_info(url)
 
