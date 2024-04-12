@@ -207,11 +207,9 @@ async def _(c, m):
 
 
 import os
-
 import requests
 
-
-def get_video_url(tweet_url):
+def get_media(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
 
     payload = {"url": tweet_url}
@@ -222,15 +220,14 @@ def get_video_url(tweet_url):
     }
 
     response = requests.post(url, json=payload, headers=headers)
-    # Check if request was successful
     if response.status_code == 200:
-        # Parse JSON response
         data = response.json()
-        # Extract video URL
-        video_url = data.get("tweet", {}).get("media", {}).get("all", [])[0].get("url")
-        return video_url
-    else:
-        return None
+        media = data.get("tweet", {}).get("media", {})
+        if media and "all" in media and media["all"]:
+            media_url = media["all"][0].get("url")
+            media_type = media.get("type")
+            return media_url, media_type
+    return None, None
 
 
 @ky.ubot("twit", sudo=True)
@@ -238,12 +235,27 @@ async def twit_dl(c: nlx, m: Message):
     em = Emojik()
     em.initialize()
     tweet_url = m.text.split(maxsplit=1)[1]
+    mention = c.mention
     pros = await m.edit(cgr("proses").format(em.proses))
 
-    video_url = get_video_url(tweet_url)
-    if video_url:
-        await m.reply(video_url)
+    media_url, media_type = get_media(tweet_url)
+    if media_url:
+        media_response = requests.get(media_url)
+        if media_response.status_code == 200:
+            content = media_response.content
+            file_name = f"media_{m.chat.id}"
+            if media_type == "photo":
+                file_name += ".jpg"
+            elif media_type == "video":
+                file_name += ".mp4"
+            with open(file_name, "wb") as f:
+                f.write(content)
+            caption = f"{em.sukses} Success downloaded by : {mention}"
+            await m.reply_media(file_name, caption=caption)
+            os.remove(file_name)
+        else:
+            await m.reply("Gagal mengunduh media.")
     else:
-        await m.reply("Gagal mendapatkan URL video.")
+        await m.reply("Gagal mendapatkan URL media.")
 
     await pros.delete()
