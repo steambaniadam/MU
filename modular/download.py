@@ -206,33 +206,17 @@ async def _(c, m):
             os.remove(files)
 
 
-import os
-
-import requests
-
-
 def get_media(tweet_url):
     url = "https://twitter-downloader-download-twitter-videos-gifs-and-images.p.rapidapi.com/status"
-
-    querystring = {"url": tweet_url}
-
     headers = {
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
         "X-RapidAPI-Host": "twitter-downloader-download-twitter-videos-gifs-and-images.p.rapidapi.com",
     }
-
-    response = requests.get(url, headers=headers, params=querystring)
+    params = {"url": tweet_url}
+    response = requests.get(url, headers=headers, params=params)
     if response.status_code == 200:
         data = response.json()
-        media_url_https = (
-            data.get("tweetResult", {})
-            .get("result", {})
-            .get("core", {})
-            .get("legacy", {})
-            .get("entities", {})
-            .get("media", [{}])[0]
-            .get("media_url_https")
-        )
+        media_url_https = data.get("tweetResult", {}).get("result", {}).get("core", {}).get("legacy", {}).get("entities", {}).get("media", [{}])[0].get("media_url_https")
         return media_url_https
     else:
         return None
@@ -245,24 +229,22 @@ async def twit_dl(c: nlx, m: Message):
     tweet_url = m.text.split(maxsplit=1)[1]
     mention = c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
-
     media_url = get_media(tweet_url)
     if media_url:
         try:
             media_response = requests.get(media_url)
             media_response.raise_for_status()
             content = media_response.content
-            file_extension = media_url.split(".")[-1]
+            file_extension = media_url.split(".")[-1].lower()
             file_name = f"media_{m.chat.id}.{file_extension}"
             with open(file_name, "wb") as f:
                 f.write(content)
-            caption = f"{em.sukses} Success downloaded by: {mention}"
             if file_extension == "jpg":
-                await c.send_photo(m.chat.id, photo=file_name, caption=caption)
+                await c.send_photo(m.chat.id, photo=file_name)
             elif file_extension == "mp4":
-                await c.send_video(m.chat.id, video=file_name, caption=caption)
+                await c.send_video(m.chat.id, video=file_name)
             elif file_extension == "raw":
-                await c.send_document(m.chat.id, document=file_name, caption=caption)
+                await c.send_document(m.chat.id, document=file_name)
             os.remove(file_name)
         except Exception as e:
             await m.reply(f"Error: {e}")
