@@ -206,8 +206,8 @@ async def _(c, m):
 
 
 import os
+
 import aiohttp
-import json
 
 
 async def get_media(tweet_url):
@@ -222,7 +222,12 @@ async def get_media(tweet_url):
         async with session.post(url, json=payload, headers=headers) as response:
             if response.status == 200:
                 data = await response.json()
-                media_info = data.get("tweetResult", {}).get("result", {}).get("entities", {}).get("media", [{}])[0]
+                media_info = (
+                    data.get("tweetResult", {})
+                    .get("result", {})
+                    .get("entities", {})
+                    .get("media", [{}])[0]
+                )
                 media_url_https = media_info.get("media_url_https")
                 content_type = media_info.get("type")
                 print("Content Type:", content_type)
