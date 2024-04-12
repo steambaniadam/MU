@@ -206,7 +206,7 @@ async def _(c, m):
             os.remove(files)
 
 
-async def get_video_url(tweet_url):
+async def get_media_url(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
 
     payload = {"url": tweet_url}
@@ -220,11 +220,17 @@ async def get_video_url(tweet_url):
         async with session.post(url, json=payload) as response:
             if response.status == 200:
                 data = await response.json()
-                video_url = data["tweet"]["media"]["all"][0]["url"]
-                return video_url
+                media_type = data["tweet"]["media"]["type"]
+                if media_type == "video":
+                    video_url = data["tweet"]["media"]["all"][0]["url"]
+                    return video_url
+                elif media_type == "photo":
+                    photo_url = data["tweet"]["media"]["all"][0]["url"]
+                    return photo_url
+                else:
+                    return None
             else:
                 return None
-
 
 @ky.ubot("twit", sudo=False)
 async def twit_dl(c: nlx, m: Message):
@@ -232,10 +238,10 @@ async def twit_dl(c: nlx, m: Message):
     em.initialize()
     tweet_url = m.text.split(maxsplit=1)[1]
     pros = await m.edit(cgr("proses").format(em.proses))
-    video_url = await get_video_url(tweet_url)
-    if video_url:
-        await m.reply(video_url)
+    media_url = await get_media_url(tweet_url)
+    if media_url:
+        await m.reply(media_url)
     else:
-        await m.reply("Gagal mendapatkan URL video.")
+        await m.reply("Gagal mendapatkan URL media.")
 
     await pros.delete()
