@@ -207,24 +207,20 @@ async def _(c, m):
 
 
 import os
-
 import requests
 
-
 def get_media(tweet_url):
-    url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
-
-    payload = {"url": tweet_url}
+    url = "https://twitter-downloader-download-twitter-videos-gifs-and-images.p.rapidapi.com/status"
     headers = {
-        "content-type": "application/json",
         "X-RapidAPI-Key": "4a2cae52e9mshd8c855f97d1132bp1aad0ajsn3ae8a6aa9c5a",
-        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
+        "X-RapidAPI-Host": "twitter-downloader-download-twitter-videos-gifs-and-images.p.rapidapi.com"
     }
+    params = {"url": tweet_url}
 
-    response = requests.post(url, json=payload, headers=headers)
+    response = requests.get(url, headers=headers, params=params)
     if response.status_code == 200:
         data = response.json()
-        media = data.get("tweet", {}).get("media", {})
+        media = data.get("media", {})
         if media and "all" in media and media["all"]:
             media_url = media["all"][0].get("url")
             media_type = media.get("type")
