@@ -234,7 +234,12 @@ def download_media_from_twitter(tweet_url):
         print(data)
         if "tweetResult" in data:
             tweet_result = data["tweetResult"]
-            media_data = tweet_result.get("result", {}).get("core", {}).get("entities", {}).get("media", [])
+            media_data = (
+                tweet_result.get("result", {})
+                .get("core", {})
+                .get("entities", {})
+                .get("media", [])
+            )
             if media_data:
                 for media in media_data:
                     media_type = media.get("type")
@@ -244,7 +249,9 @@ def download_media_from_twitter(tweet_url):
                             variants = video_info.get("variants", [])
                             video_urls = []
                             for variant in variants:
-                                if variant.get("content_type") == "video/mp4" and variant.get("url"):
+                                if variant.get(
+                                    "content_type"
+                                ) == "video/mp4" and variant.get("url"):
                                     video_urls.append(variant.get("url"))
                             return video_urls
                         else:
