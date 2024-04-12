@@ -277,13 +277,6 @@ async def twit(c: nlx, m):
     media_info = download_media_from_twitter(tweet_url)
 
     if media_info:
-        media_url = (
-            media_info.get("result", {})
-            .get("legacy", {})
-            .get("entities", {})
-            .get("media", [{}])[0]
-            .get("media_url_https")
-        )
         media_type = (
             media_info.get("result", {})
             .get("legacy", {})
@@ -291,15 +284,42 @@ async def twit(c: nlx, m):
             .get("media", [{}])[0]
             .get("type")
         )
-        if media_url:
-            print(f"Informasi media berhasil diperoleh: {media_type}, {media_url}")
-            if media_type == "photo":
+        if media_type == "photo":
+            media_url = (
+                media_info.get("result", {})
+                .get("legacy", {})
+                .get("entities", {})
+                .get("media", [{}])[0]
+                .get("media_url_https")
+            )
+            if media_url:
+                print(f"Informasi media berhasil diperoleh: photo, {media_url}")
                 await c.send_photo(chat_id=m.chat.id, photo=media_url)
-            elif media_type == "video":
-                await c.send_video(chat_id=m.chat.id, video=media_url)
-        else:
-            print("Gagal mendapatkan URL media dari tautan Twitter.")
-            await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
+        elif media_type == "video":
+            video_info = (
+                media_info.get("result", {})
+                .get("legacy", {})
+                .get("entities", {})
+                .get("media", [{}])[0]
+                .get("video_info", {})
+            )
+            if video_info:
+                variants = video_info.get("variants", [])
+                video_url = None
+                for variant in variants:
+                    content_type = variant.get("content_type", "")
+                    if "application/x-mpegURL" in content_type:
+                        video_url = variant.get("url", "")
+                        break
+                    elif "video/mp4" in content_type:
+                        video_url = variant.get("url", "")
+                        break
+                if video_url:
+                    print(f"Informasi media berhasil diperoleh: video, {video_url}")
+                    await c.send_video(chat_id=m.chat.id, video=video_url)
+            else:
+                print("Gagal mendapatkan URL video dari tautan Twitter.")
+                await m.reply("Gagal mendapatkan URL video dari tautan Twitter.")
     else:
         print("Gagal mendapatkan informasi media dari Twitter.")
         await m.reply("Gagal mendapatkan informasi media dari Twitter.")
