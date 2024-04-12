@@ -314,10 +314,10 @@ async def twit(c: nlx, m):
                     elif "video/mp4" in content_type:
                         video_url = variant.get("url", "")
                         break
-                
+
                 if video_url:
                     print(f"Informasi media berhasil diperoleh: video, {video_url}")
-                    
+
                     # Jika video tidak dalam format mp4, konversi ke mp4 terlebih dahulu
                     if not video_url.endswith(".mp4"):
                         mp4_video_path = convert_to_mp4(video_url)
@@ -341,7 +341,9 @@ async def twit(c: nlx, m):
 def convert_to_mp4(video_url):
     try:
         mp4_video_path = video_url.replace(os.path.splitext(video_url)[-1], ".mp4")
-        subprocess.run(['ffmpeg', '-i', video_url, '-c:v', 'copy', '-c:a', 'copy', mp4_video_path])
+        subprocess.run(
+            ["ffmpeg", "-i", video_url, "-c:v", "copy", "-c:a", "copy", mp4_video_path]
+        )
         return mp4_video_path
     except Exception as e:
         print(f"Gagal mengonversi video ke format mp4: {e}")
