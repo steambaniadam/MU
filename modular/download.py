@@ -217,13 +217,10 @@ def get_media(tweet_url):
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
         data = response.json()
-        media_url_https = (
-            data.get("tweet", {}).get("media", {}).get("all", [{}])[0].get("url")
-        )
+        media_url_https = data.get("media_url_https")
         return media_url_https
     else:
         return None
-
 
 @ky.ubot("twit", sudo=True)
 async def twit_dl(c: nlx, m: Message):
