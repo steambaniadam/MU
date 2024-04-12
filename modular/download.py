@@ -206,9 +206,10 @@ async def _(c, m):
             os.remove(files)
 
 
-import aiohttp
-import asyncio
 import os
+
+import aiohttp
+
 
 def get_media(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media"
