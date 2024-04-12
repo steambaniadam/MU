@@ -317,46 +317,26 @@ async def twit(c: nlx, m):
 
                 if video_url:
                     print(f"Informasi media berhasil diperoleh: video, {video_url}")
+                    await c.send_video(chat_id=m.chat.id, video=video_url)
 
                     # Jika video tidak dalam format mp4, konversi ke mp4 terlebih dahulu
-                    if not video_url.endswith(".mp4"):
-                        mp4_video_path = convert_to_mp4(video_url)
-                        if mp4_video_path:
-                            await c.send_video(chat_id=m.chat.id, video=mp4_video_path)
-                            # Hapus video mp4 setelah dikirim
-                            os.remove(mp4_video_path)
-                        else:
-                            print("Gagal mengonversi video ke format mp4.")
-                            await m.reply("Gagal mengonversi video ke format mp4.")
-                    else:
-                        await c.send_video(chat_id=m.chat.id, video=video_url)
+                    # if not video_url.endswith(".mp4"):
+                    #     mp4_video_path = convert_to_mp4(video_url)
+                    #     if mp4_video_path:
+                    #         await c.send_video(chat_id=m.chat.id, video=mp4_video_path)
+                    #         # Hapus video mp4 setelah dikirim
+                    #         os.remove(mp4_video_path)
+                    #     else:
+                    #         print("Gagal mengonversi video ke format mp4.")
+                    #         await m.reply("Gagal mengonversi video ke format mp4.")
+                    # else:
+                        
             else:
                 print("Gagal mendapatkan URL video dari tautan Twitter.")
                 await m.reply("Gagal mendapatkan URL video dari tautan Twitter.")
     else:
         print("Gagal mendapatkan informasi media dari Twitter.")
         await m.reply("Gagal mendapatkan informasi media dari Twitter.")
-
-
-def convert_to_mp4(video_url):
-    try:
-        mp4_video_path = video_url.replace(os.path.splitext(video_url)[-1], ".mp4")
-        subprocess.run(
-            [
-                "ffmpeg",
-                "-i",
-                video_url,
-                "-bsf:a",
-                "aac_adtstoasc",
-                "-c",
-                "copy",
-                mp4_video_path,
-            ]
-        )
-        return mp4_video_path
-    except Exception as e:
-        print(f"Gagal mengonversi video ke format mp4: {e}")
-        return None
 
 
 """
