@@ -207,7 +207,7 @@ async def _(c, m):
             os.remove(files)
 
 
-async def download_media(tweet_url, save_path):
+def download_media(tweet_url, save_path):
     url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
 
     payload = {"url": tweet_url}
@@ -217,26 +217,25 @@ async def download_media(tweet_url, save_path):
         "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
     }
 
-    async with aiohttp.ClientSession(headers=headers) as session:
-        async with session.post(url, json=payload) as response:
-            if response.status == 200:
-                data = await response.json()
-                media = data.get("tweet", {}).get("media", {})
-                if media and "all" in media and media["all"]:
-                    media_url = media["all"][0].get("url")
-                    media_type = media.get("type")
-                    if media_url:
-                        async with session.get(media_url) as media_response:
-                            if media_response.status == 200:
-                                content = await media_response.read()
-                                if media_type == "photo":
-                                    save_path += ".jpg"
-                                elif media_type == "video":
-                                    save_path += ".mp4"
-                                async with aiofiles.open(save_path, "wb") as f:
-                                    await f.write(content)
-                                return save_path
-            return None
+    response = requests.post(url, json=payload, headers=headers)
+    if response.status_code == 200:
+        data = response.json()
+        media = data.get("tweet", {}).get("media", {})
+        if media and "all" in media and media["all"]:
+            media_url = media["all"][0].get("url")
+            media_type = media.get("type")
+            if media_url:
+                media_response = requests.get(media_url)
+                if media_response.status_code == 200:
+                    content = media_response.content
+                    if media_type == "photo":
+                        save_path += ".jpg"
+                    elif media_type == "video":
+                        save_path += ".mp4"
+                    with open(save_path, "wb") as f:
+                        f.write(content)
+                    return save_path
+    return None
 
 
 @ky.ubot("twit", sudo=True)
@@ -247,7 +246,7 @@ async def twit_dl(c: nlx, m: Message):
     pros = await m.edit(cgr("proses").format(em.proses))
 
     save_path = f"media_{m.chat.id}"
-    downloaded_path = await download_media(tweet_url, save_path)
+    downloaded_path = download_media(tweet_url, save_path)
     if downloaded_path:
         if downloaded_path.endswith(".jpg"):
             await m.reply_photo(downloaded_path)
