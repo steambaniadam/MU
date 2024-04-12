@@ -7,11 +7,12 @@
 ################################################################
 
 import os
+import subprocess
 import time
 from datetime import timedelta
 from time import time
+
 import requests
-import subprocess
 import wget
 from pyrogram.enums import *
 from pyrogram.errors import *
@@ -267,11 +268,17 @@ async def download_and_send_file(message, url, content_type):
         file_name = url.split("/")[-1]
         subprocess.run(["wget", url, "-O", file_name])
         if content_type == "photo":
-            await message.reply_photo(photo=file_name, caption="File yang diunduh dari URL.")
+            await message.reply_photo(
+                photo=file_name, caption="File yang diunduh dari URL."
+            )
         elif content_type == "video":
-            await message.reply_video(video=file_name, caption="File yang diunduh dari URL.")
+            await message.reply_video(
+                video=file_name, caption="File yang diunduh dari URL."
+            )
         else:
-            await message.reply_document(document=file_name, caption="File yang diunduh dari URL.")
+            await message.reply_document(
+                document=file_name, caption="File yang diunduh dari URL."
+            )
         os.remove(file_name)
     except Exception as e:
         await message.reply_text(f"Gagal mengunduh atau mengirim file: {e}")
