@@ -216,15 +216,7 @@ def get_media(tweet_url):
     response = requests.get(url, headers=headers, params=params)
     if response.status_code == 200:
         data = response.json()
-        media_url_https = (
-            data.get("tweetResult", {})
-            .get("result", {})
-            .get("core", {})
-            .get("legacy", {})
-            .get("entities", {})
-            .get("media", [{}])[0]
-            .get("media_url_https")
-        )
+        media_url_https = data["tweetResult"]["result"]["core"]["legacy"]["entities"]["media"][0].get("media_url_https")
         return media_url_https
     else:
         return None
@@ -245,14 +237,15 @@ async def twit_dl(c: nlx, m: Message):
             content = media_response.content
             file_extension = media_url.split(".")[-1].lower()
             file_name = f"media_{m.chat.id}.{file_extension}"
+            captions = f"{em.sukses} Successfully Downloaded by : {c.me.mention}"
             with open(file_name, "wb") as f:
                 f.write(content)
             if file_extension == "jpg":
-                await c.send_photo(m.chat.id, photo=file_name)
+                await c.send_photo(m.chat.id, photo=file_name, caption=captions)
             elif file_extension == "mp4":
-                await c.send_video(m.chat.id, video=file_name)
+                await c.send_video(m.chat.id, video=file_name, caption=captions)
             elif file_extension == "raw":
-                await c.send_document(m.chat.id, document=file_name)
+                await c.send_document(m.chat.id, document=file_name, caption=captions)
             os.remove(file_name)
         except Exception as e:
             await m.reply(f"Error: {e}")
