@@ -206,7 +206,9 @@ async def _(c, m):
 
 
 import os
+
 import requests
+
 
 async def get_media(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media"
