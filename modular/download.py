@@ -229,15 +229,19 @@ async def get_media(tweet_url):
                     .get("extended_entities", {})
                     .get("media", [{}])[0]
                     .get("video_info", {})
-                    .get("variants", [{}])[0]
+                    .get("variants", [{}])
                 )
-                content_type = media_info.get("content_type")
-                media_url = media_info.get("url")
-                print("Content Type:", content_type)
+                # Pilih variant dengan content type video/mp4
+                for variant in media_info:
+                    if variant.get("content_type") == "video/mp4":
+                        media_url = variant.get("url")
+                        break
+                else:
+                    media_url = None
                 print("Media URL:", media_url)
-                return content_type, media_url
+                return media_url
             else:
-                return None, None
+                return None
 
 
 async def download_file(media_url, file_name):
