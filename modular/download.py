@@ -212,12 +212,14 @@ def get_media(tweet_url):
     headers = {
         "content-type": "application/json",
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com"
+        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
     }
     response = requests.post(url, json=payload, headers=headers)
     if response.status_code == 200:
         data = response.json()
-        media_url_https = data.get("tweet", {}).get("media", {}).get("all", [{}])[0].get("url")
+        media_url_https = (
+            data.get("tweet", {}).get("media", {}).get("all", [{}])[0].get("url")
+        )
         return media_url_https
     else:
         return None
