@@ -10,9 +10,8 @@ import os
 import time
 from datetime import timedelta
 from time import time
-import aiofiles
-import asyncio
 
+import aiofiles
 import aiohttp
 import wget
 from pyrogram.enums import *
@@ -234,7 +233,7 @@ async def download_media(tweet_url, save_path):
                                         save_path += ".jpg"
                                     elif media["type"] == "video":
                                         save_path += ".mp4"
-                                    async with aiofiles.open(save_path, 'wb') as f:
+                                    async with aiofiles.open(save_path, "wb") as f:
                                         await f.write(content)
                                     return save_path
             return None
@@ -246,7 +245,7 @@ async def twit_dl(c: nlx, m: Message):
     tweet_url = m.text.split(maxsplit=1)[1]
     pros = await m.edit(cgr("proses").format(em.proses))
 
-    save_path = f'media_{m.chat.id}'
+    save_path = f"media_{m.chat.id}"
     downloaded_path = await download_media(tweet_url, save_path)
     if downloaded_path:
         if downloaded_path.endswith(".jpg"):
