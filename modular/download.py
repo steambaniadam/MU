@@ -231,6 +231,7 @@ async def get_media(tweet_url):
                     .get("media", [{}])[0]
                     .get("media_url_https")
                 )
+                print(media_url_https)
                 return media_url_https
             else:
                 return None
