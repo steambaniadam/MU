@@ -213,22 +213,21 @@ import requests
 
 def get_media(tweet_url):
     url = "https://twitter-downloader-download-twitter-videos-gifs-and-images.p.rapidapi.com/status"
-    headers = {
-        "X-RapidAPI-Key": "4a2cae52e9mshd8c855f97d1132bp1aad0ajsn3ae8a6aa9c5a",
-        "X-RapidAPI-Host": "twitter-downloader-download-twitter-videos-gifs-and-images.p.rapidapi.com",
-    }
-    params = {"url": tweet_url}
 
-    response = requests.get(url, headers=headers, params=params)
+    querystring = {"url": tweet_url}
+
+    headers = {
+	    "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+	    "X-RapidAPI-Host": "twitter-downloader-download-twitter-videos-gifs-and-images.p.rapidapi.com"
+    }
+
+    response = requests.get(url, headers=headers, params=querystring)
     if response.status_code == 200:
         data = response.json()
-        media = data.get("media", {})
-        if media and "all" in media and media["all"]:
-            media_url = media["all"][0].get("url")
-            media_type = media.get("type")
-            return media_url, media_type
-    return None, None
-
+        media_url_https = data.get("tweetResult", {}).get("result", {}).get("core", {}).get("legacy", {}).get("entities", {}).get("media", [{}])[0].get("media_url_https")
+        return media_url_https
+    else:
+        return None
 
 @ky.ubot("twit", sudo=True)
 async def twit_dl(c: nlx, m: Message):
@@ -238,27 +237,22 @@ async def twit_dl(c: nlx, m: Message):
     mention = c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
 
-    media_url, media_type = get_media(tweet_url)
+    media_url = get_media(tweet_url)
     if media_url:
         try:
             media_response = requests.get(media_url)
             media_response.raise_for_status()
             content = media_response.content
-            file_name = f"media_{m.chat.id}"
-            if media_type == "photo":
-                file_name += ".jpg"
-            elif media_type == "video":
-                file_name += ".mp4"
-            elif media_type == "raw":
-                file_name += ".raw"
+            file_extension = media_url.split(".")[-1]
+            file_name = f"media_{m.chat.id}.{file_extension}"
             with open(file_name, "wb") as f:
                 f.write(content)
             caption = f"{em.sukses} Success downloaded by: {mention}"
-            if file_name.endswith(".jpg"):
+            if file_extension == "jpg":
                 await c.send_photo(m.chat.id, photo=file_name, caption=caption)
-            elif file_name.endswith(".mp4"):
+            elif file_extension == "mp4":
                 await c.send_video(m.chat.id, video=file_name, caption=caption)
-            elif file_name.endswith(".raw"):
+            elif file_extension == "raw":
                 await c.send_document(m.chat.id, document=file_name, caption=caption)
             os.remove(file_name)
         except Exception as e:
