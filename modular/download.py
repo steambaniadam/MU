@@ -341,20 +341,7 @@ async def twit(c: nlx, m):
 def convert_to_mp4(video_url):
     try:
         mp4_video_path = video_url.replace(os.path.splitext(video_url)[-1], ".mp4")
-        subprocess.run(
-            [
-                "ffmpeg",
-                "-i",
-                video_url,
-                "-c:v",
-                "libx264",
-                "-c:a",
-                "copy",
-                "-movflags",
-                "+faststart",
-                mp4_video_path,
-            ]
-        )
+        subprocess.run(['ffmpeg', '-i', video_url, '-bsf:a', 'aac_adtstoasc', '-c', 'copy', mp4_video_path])
         return mp4_video_path
     except Exception as e:
         print(f"Gagal mengonversi video ke format mp4: {e}")
