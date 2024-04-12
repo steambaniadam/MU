@@ -246,6 +246,7 @@ def download_media_from_twitter(tweet_url):
     if response.status_code == 200:
         print("Permintaan berhasil. Mendapatkan data JSON...")
         data = response.json()
+        print(f"Json : {data}")
         tweet_result = data.get("tweetResult")
         if tweet_result:
             result = tweet_result.get("result")
