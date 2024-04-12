@@ -232,7 +232,7 @@ async def get_media_url(tweet_url):
             else:
                 return None
 
-                
+
 @ky.ubot("twit", sudo=False)
 async def twit_dl(c: nlx, m: Message):
     em = Emojik()
