@@ -77,7 +77,7 @@ async def convert_m3u8_to_mp4(m3u8_input_path, mp4_output_path):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    pros = await m.reply(cgr("proses").format(em.proses))
+    pros = await m.edit(cgr("proses").format(em.proses))
     gue = c.me.mention
     try:
         url = m.text.split(maxsplit=1)[1]
@@ -86,10 +86,10 @@ async def _(c: nlx, m):
         )
         await pros.delete()
     except IndexError:
-        await m.reply(
+        await pros.edit(
             f"{em.gagal} **Silahkan tambahkan link Pinterest\nContoh : `{m.text} https://id.pinterest.com/pin/293648838218730162/`**"
         )
         await pros.delete()
     except Exception as e:
-        await m.reply(cgr("err").format(em.gagal, str(e)))
+        await pros.edit(cgr("err").format(em.gagal, str(e)))
         await pros.delete()
