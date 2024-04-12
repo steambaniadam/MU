@@ -206,11 +206,6 @@ async def _(c, m):
             os.remove(files)
 
 
-import os
-
-import requests
-
-
 def get_media(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
 
@@ -242,8 +237,9 @@ async def twit_dl(c: nlx, m: Message):
 
     media_url, media_type = get_media(tweet_url)
     if media_url:
-        media_response = requests.get(media_url)
-        if media_response.status_code == 200:
+        try:
+            media_response = requests.get(media_url)
+            media_response.raise_for_status()
             content = media_response.content
             file_name = f"media_{m.chat.id}"
             if media_type == "photo":
@@ -252,11 +248,11 @@ async def twit_dl(c: nlx, m: Message):
                 file_name += ".mp4"
             with open(file_name, "wb") as f:
                 f.write(content)
-            caption = f"{em.sukses} Success downloaded by : {mention}"
+            caption = f"{em.sukses} Success downloaded by: {mention}"
             await m.reply_media(file_name, caption=caption)
             os.remove(file_name)
-        else:
-            await m.reply("Gagal mengunduh media.")
+        except Exception as e:
+            await m.reply(f"Error: {e}")
     else:
         await m.reply("Gagal mendapatkan URL media.")
 
