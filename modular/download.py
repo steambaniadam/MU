@@ -208,10 +208,7 @@ async def _(c, m):
 async def extract_url_and_media_info(url):
     try:
         tweet_url = "https://twitter-x-media-download.p.rapidapi.com/media"
-        payload = {
-            "url": url,
-            "proxy": ""
-        }
+        payload = {"url": url, "proxy": ""}
         headers = {
             "content-type": "application/json",
             "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
@@ -286,7 +283,7 @@ async def twit_dl(c, m):
         if media_url:
             try:
                 file_extension = media_url.split(".")[-1].lower()
-                file_name = f"media.{file_extension}"
+                f"media.{file_extension}"
                 await download_and_send_file(m, media_url)
             except Exception as e:
                 await m.reply(f"Error: {e}")
