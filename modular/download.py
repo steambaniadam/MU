@@ -207,8 +207,9 @@ async def _(c, m):
 
 
 import os
-import requests
 from urllib.parse import urlparse
+
+import requests
 
 
 def is_valid_twitter_url(url):
@@ -224,13 +225,15 @@ def download_media_from_twitter(tweet_url):
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
         "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
     }
-    
+
     response = requests.post(endpoint, json=payload, headers=headers)
-    
+
     if response.status_code == 200:
         return response.json()
     else:
-        print(f"Gagal mengunduh media dari Twitter. Kode status: {response.status_code}")
+        print(
+            f"Gagal mengunduh media dari Twitter. Kode status: {response.status_code}"
+        )
         return None
 
 
@@ -250,7 +253,9 @@ async def download_and_send_file(m, chat_id, url, content_type):
             os.remove(file_name)
     except Exception as e:
         print(f"Terjadi kesalahan: {e}")
-        await m.send_message(chat_id, "Terjadi kesalahan saat mengunduh atau mengirim file.")
+        await m.send_message(
+            chat_id, "Terjadi kesalahan saat mengunduh atau mengirim file."
+        )
 
 
 @ky.ubot("twit", sudo=True)
