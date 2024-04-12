@@ -345,14 +345,14 @@ async def insta_handler(c: nlx, m):
             if result["type"] == "image/jpeg":
                 await c.send_photo(
                     photo=media_url,
-                    caption=f"{em.sukses} <b>Successfully Download Photo by : {c.me.menton}</b>",
+                    caption=f"{em.sukses} <b>Successfully Download Photo by : {c.me.mention}</b>",
                 )
                 await pros.delete()
             elif result["type"] == "video/mp4":
                 await c.send_video(
                     video=media_url,
                     thumb=thumb_url,
-                    caption=f"{em.sukses} <b>Successfully Download Video by : {c.me.menton}</b>",
+                    caption=f"{em.sukses} <b>Successfully Download Video by : {c.me.mention}</b>",
                 )
                 await pros.delete()
             else:
