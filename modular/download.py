@@ -219,7 +219,6 @@ async def extract_url_and_media_info(url):
         response = requests.post(tweet_url, json=payload, headers=headers)
         if response.status_code == 200:
             data = response.json()
-            print(data)
             tweet_result = data.get("tweetResult")
             if tweet_result:
                 result = tweet_result.get("result")
@@ -230,6 +229,7 @@ async def extract_url_and_media_info(url):
                             media_type = media.get("type")
                             if media_type == "photo":
                                 media_url = media.get("media_url_https")
+                                print(media_url)
                                 content_type = "photo"
                                 break
                             elif media_type == "video":
@@ -239,6 +239,7 @@ async def extract_url_and_media_info(url):
                                 for variant in variants:
                                     if variant.get("content_type") == "video/mp4":
                                         media_url = variant.get("url")
+                                        print(media_url)
                                         content_type = "video"
                                         break
                                 else:
