@@ -206,6 +206,10 @@ async def _(c, m):
             os.remove(files)
 
 
+import aiohttp
+import asyncio
+import os
+
 def get_media(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media"
     payload = {"url": tweet_url}
@@ -231,6 +235,20 @@ def get_media(tweet_url):
         return None
 
 
+async def download_file(media_url, file_name):
+    async with aiohttp.ClientSession() as session:
+        async with session.get(media_url) as response:
+            if response.status == 200:
+                with open(file_name, "wb") as f:
+                    while True:
+                        chunk = await response.content.read(1024)
+                        if not chunk:
+                            break
+                        f.write(chunk)
+            else:
+                raise Exception(f"Failed to download media: {response.status}")
+
+
 @ky.ubot("twit", sudo=True)
 async def twit_dl(c: nlx, m: Message):
     em = Emojik()
@@ -241,14 +259,10 @@ async def twit_dl(c: nlx, m: Message):
     media_url = get_media(tweet_url)
     if media_url:
         try:
-            media_response = requests.get(media_url)
-            media_response.raise_for_status()
-            content = media_response.content
             file_extension = media_url.split(".")[-1].lower()
             file_name = f"media_{m.chat.id}.{file_extension}"
+            await download_file(media_url, file_name)
             captions = f"{em.sukses} Successfully Downloaded by: {mention}"
-            with open(file_name, "wb") as f:
-                f.write(content)
             if file_extension == "jpg":
                 await c.send_photo(m.chat.id, photo=file_name, caption=captions)
             elif file_extension == "mp4":
