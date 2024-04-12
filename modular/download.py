@@ -207,8 +207,50 @@ async def _(c, m):
 
 
 import os
-
 import requests
+from urllib.parse import urlparse
+
+
+def is_valid_twitter_url(url):
+    parsed_url = urlparse(url)
+    return parsed_url.netloc.endswith("twitter.com") and "/status/" in parsed_url.path
+
+
+def download_media_from_twitter(tweet_url):
+    endpoint = "https://twitter-x-media-download.p.rapidapi.com/media"
+    payload = {"url": tweet_url, "proxy": ""}
+    headers = {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
+    }
+    
+    response = requests.post(endpoint, json=payload, headers=headers)
+    
+    if response.status_code == 200:
+        return response.json()
+    else:
+        print(f"Gagal mengunduh media dari Twitter. Kode status: {response.status_code}")
+        return None
+
+
+async def download_and_send_file(m, chat_id, url, content_type):
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        if response.status_code == 200:
+            print("Berhasil mengunduh file.")
+            file_name = f"downloaded_{content_type}.{url.split('.')[-1]}"
+            with open(file_name, "wb") as f:
+                f.write(response.content)
+            if content_type == "photo":
+                await m.send_photo(chat_id, file_name)
+            elif content_type == "video":
+                await m.send_video(chat_id, file_name)
+            os.remove(file_name)
+    except Exception as e:
+        print(f"Terjadi kesalahan: {e}")
+        await m.send_message(chat_id, "Terjadi kesalahan saat mengunduh atau mengirim file.")
 
 
 @ky.ubot("twit", sudo=True)
@@ -218,6 +260,10 @@ async def twit(c: nlx, m):
         return
 
     tweet_url = m.command[1]
+    if not is_valid_twitter_url(tweet_url):
+        await m.reply("Tautan yang diberikan bukan tautan Twitter yang valid.")
+        return
+
     print("Mendapatkan informasi media dari Twitter...")
     media_info = download_media_from_twitter(tweet_url)
 
@@ -228,62 +274,3 @@ async def twit(c: nlx, m):
     else:
         print("Gagal mendapatkan URL media dari tautan Twitter.")
         await m.reply("Gagal mendapatkan URL media dari tautan Twitter.")
-
-
-def extract_media_urls(tweet_result):
-    media_urls = []
-    result = tweet_result.get("result")
-    if result:
-        extended_entities = result.get("extended_entities", {})
-        media_info = extended_entities.get("media", [])
-        for media in media_info:
-            media_type = media.get("type")
-            if media_type in ("photo", "video"):
-                media_url = media.get(
-                    "media_url_https" if media_type == "photo" else "url"
-                )
-                media_urls.append(media_url)
-                print(f"Media URL: {media_url}")
-    return media_urls
-
-
-def download_media_from_twitter(tweet_url):
-    url = "https://twitter-x-media-download.p.rapidapi.com/media"
-    payload = {"url": tweet_url, "proxy": ""}
-    headers = {
-        "content-type": "application/json",
-        "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
-    }
-
-    response = requests.post(url, json=payload, headers=headers)
-
-    if response.status_code == 200:
-        print("Permintaan berhasil. Mendapatkan data JSON...")
-        data = response.json()
-        print(f"Json : {data}")
-        tweet_result = data.get("tweetResult")
-        if tweet_result:
-            return extract_media_urls(tweet_result)
-        else:
-            print("Data tweetResult tidak ditemukan dalam respons JSON.")
-    else:
-        print(f"Permintaan gagal. Kode status: {response.status_code}")
-    return None
-
-
-async def download_and_send_file(m, chat_id, url, content_type):
-    response = requests.get(url)
-    if response.status_code == 200:
-        print("Berhasil mengunduh file.")
-        file_name = f"downloaded_{content_type}.{url.split('.')[-1]}"
-        with open(file_name, "wb") as f:
-            f.write(response.content)
-        if content_type == "photo":
-            await m.send_photo(chat_id, file_name)
-        elif content_type == "video":
-            await m.send_video(chat_id, file_name)
-        os.remove(file_name)
-    else:
-        print(f"Gagal mengunduh file. Kode status: {response.status_code}")
-        await m.send_message(chat_id, "Gagal mengunduh file.")
