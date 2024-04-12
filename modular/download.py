@@ -265,7 +265,7 @@ async def download_and_send_file(nlx, chat_id, url, content_type):
 
             if content_type == "photo":
                 await nlx.reply_photo(chat_id, file_name)
-            elif content_type == "video/mp4":
+            elif content_type == "video":
                 if file_extension == ".m3u8":
                     mp4_file_name = file_name[:-5] + ".mp4"
                     convert_command = [
@@ -280,8 +280,15 @@ async def download_and_send_file(nlx, chat_id, url, content_type):
                     file_name = mp4_file_name
 
                 await nlx.reply_video(chat_id, file_name)
-            os.remove(file_name)
+            else:
+                print("Tipe media tidak didukung:", content_type)
+                await nlx.reply(f"Tipe media tidak didukung: {content_type}")
 
+            # Hapus file setelah dikirim
+            os.remove(file_name)
+        else:
+            print(f"Gagal mengunduh file. Kode status: {response.status_code}")
+            await nlx.reply("Gagal mengunduh file.")
     except requests.exceptions.HTTPError as e:
         print(f"HTTP Error: {e}")
         await nlx.reply("Terjadi kesalahan HTTP saat mengunduh file.")
