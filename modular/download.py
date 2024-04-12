@@ -10,10 +10,8 @@ import os
 import time
 from datetime import timedelta
 from time import time
+
 import aiohttp
-import asyncio
-
-
 import wget
 from pyrogram.enums import *
 from pyrogram.errors import *
@@ -211,18 +209,18 @@ async def _(c, m):
 async def get_video_url(tweet_url):
     url = "https://twitter-x-media-download.p.rapidapi.com/media/privatefx"
 
-    payload = { "url": tweet_url }
+    payload = {"url": tweet_url}
     headers = {
         "content-type": "application/json",
         "X-RapidAPI-Key": "4a2cae52e9mshd8c855f97d1132bp1aad0ajsn3ae8a6aa9c5a",
-        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com"
+        "X-RapidAPI-Host": "twitter-x-media-download.p.rapidapi.com",
     }
 
     async with aiohttp.ClientSession(headers=headers) as session:
         async with session.post(url, json=payload) as response:
             if response.status == 200:
                 data = await response.json()
-                video_url = data['tweet']['media']['all'][0]['url']
+                video_url = data["tweet"]["media"]["all"][0]["url"]
                 return video_url
             else:
                 return None
