@@ -210,6 +210,7 @@ import mimetypes
 import os
 from urllib.parse import urlparse
 
+import subprocess
 import requests
 
 
@@ -265,9 +266,15 @@ async def download_and_send_file(nlx, chat_id, url, content_type):
             if content_type == "photo":
                 await nlx.reply_photo(chat_id, file_name)
             elif content_type == "video/mp4":
-                await nlx.reply_video(chat_id, file_name)
+                if file_extension == '.m3u8':
+                    mp4_file_name = file_name[:-5] + '.mp4'
+                    convert_command = ['ffmpeg', '-i', file_name, '-c', 'copy', mp4_file_name]
+                    subprocess.run(convert_command, check=True)
+                    file_name = mp4_file_name
 
+                await nlx.reply_video(chat_id, file_name)
             os.remove(file_name)
+
     except requests.exceptions.HTTPError as e:
         print(f"HTTP Error: {e}")
         await nlx.reply("Terjadi kesalahan HTTP saat mengunduh file.")
