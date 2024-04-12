@@ -293,11 +293,11 @@ async def twit_dl(c: nlx, m: Message):
     except IndexError:
         await m.reply("Silakan berikan URL Twitter.")
         return
-    
+
     mention = c.me.mention
     pros = await m.edit(cgr("proses").format(em.proses))
     content_type, media_url = await get_media(tweet_url)
-    
+
     if media_url:
         try:
             file_name = media_url.split("/")[-1]
