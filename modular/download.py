@@ -262,7 +262,9 @@ async def twit(c: nlx, m):
 
     tweet_url = m.command[1]
     if not is_valid_twitter_url(tweet_url):
-        await pros.edit(f"{em.gagal} <b>Tautan yang diberikan bukan tautan Twitter yang valid.</b>")
+        await pros.edit(
+            f"{em.gagal} <b>Tautan yang diberikan bukan tautan Twitter yang valid.</b>"
+        )
         return
     media_info = download_media_from_twitter(tweet_url)
 
@@ -283,7 +285,9 @@ async def twit(c: nlx, m):
                 .get("media_url_https")
             )
             if media_url:
-                caption = f"{em.sukses} <b>Successfully Download Photo by : {c.me.mention}"
+                caption = (
+                    f"{em.sukses} <b>Successfully Download Photo by : {c.me.mention}"
+                )
                 await c.send_photo(chat_id=m.chat.id, photo=media_url, caption=caption)
                 await pros.delete()
         elif media_type == "video":
@@ -304,9 +308,15 @@ async def twit(c: nlx, m):
                         break
                 if video_url:
                     caption = f"{em.sukses} <b>Successfully Download Video by : {c.me.mention}"
-                    await c.send_video(chat_id=m.chat.id, video=video_url, caption=caption)
-                    await pros.delete()      
+                    await c.send_video(
+                        chat_id=m.chat.id, video=video_url, caption=caption
+                    )
+                    await pros.delete()
             else:
-                await pros.edit(f"{em.gagal} <b>Gagal mendapatkan URL video dari tautan Twitter.</b>")
+                await pros.edit(
+                    f"{em.gagal} <b>Gagal mendapatkan URL video dari tautan Twitter.</b>"
+                )
     else:
-        await pros.edit(f"{em.gagal} <b>Gagal mendapatkan informasi media dari Twitter.</b>")
+        await pros.edit(
+            f"{em.gagal} <b>Gagal mendapatkan informasi media dari Twitter.</b>"
+        )
