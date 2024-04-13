@@ -7,7 +7,6 @@
 ################################################################
 
 import os
-import subprocess
 import time
 from datetime import timedelta
 from time import time
@@ -28,28 +27,32 @@ __modles__ = "Download"
 __help__ = get_cgr("help_download")
 
 
-
 async def download_tiktok_video(c, chat_id, tiktok_link, em):
     try:
         url = "https://tiktok-video-downloader-download-without-watermark.p.rapidapi.com/tiktok/v1/download-without-watermark"
         headers = {
             "content-type": "application/x-www-form-urlencoded",
             "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-            "X-RapidAPI-Host": "tiktok-video-downloader-download-without-watermark.p.rapidapi.com"
+            "X-RapidAPI-Host": "tiktok-video-downloader-download-without-watermark.p.rapidapi.com",
         }
         payload = {"url": tiktok_link}
         response = requests.post(url, data=payload, headers=headers)
         data = response.json()
-        
+
         if "success" in data and data["success"]:
             caption = f"{em.sukses} **Successfully Download Tiktok Content by: {c.me.mention}**"
             video_url = data["data"]["url"]
             await c.send_video(chat_id=chat_id, video=video_url, caption=caption)
         else:
-            await c.send_message(chat_id=chat_id, text=f"{em.gagal} **Failed to download TikTok video.**")
+            await c.send_message(
+                chat_id=chat_id, text=f"{em.gagal} **Failed to download TikTok video.**"
+            )
     except Exception as e:
         print(f"Error occurred: {e}")
-        await c.send_message(chat_id=chat_id, text=f"{em.gagal} **Failed to download TikTok video. Reason: {str(e)}**")
+        await c.send_message(
+            chat_id=chat_id,
+            text=f"{em.gagal} **Failed to download TikTok video. Reason: {str(e)}**",
+        )
 
 
 @ky.ubot("dtik", sudo=False)
@@ -299,7 +302,9 @@ async def insta_handler(c: nlx, m):
     pros = await m.edit(cgr("proses").format(em.proses))
     try:
         url = m.command[1]
-        if url.startswith("https://www.instagram.com/p/") or url.startswith("https://instagram.com/p/"):
+        if url.startswith("https://www.instagram.com/p/") or url.startswith(
+            "https://instagram.com/p/"
+        ):
             querystring = {"url": url}
             headers = {
                 "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
