@@ -330,10 +330,10 @@ async def insta_handler(c: nlx, m):
         querystring = {"url": url}
         headers = {
             "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-            "X-RapidAPI-Host": "instagram-post-reels-stories-downloader.p.rapidapi.com",
+            "X-RapidAPI-Host": "instagram-api-special.p.rapidapi.com",
         }
         response = requests.get(
-            "https://instagram-post-reels-stories-downloader.p.rapidapi.com/instagram/",
+            "https://instagram-api-special.p.rapidapi.com/instagram/",
             headers=headers,
             params=querystring,
         )
@@ -341,7 +341,7 @@ async def insta_handler(c: nlx, m):
         if data["status"]:
             result = data["result"][0]
             media_url = result["url"]
-            thumb_url = result["thumb"]
+            thumb_url = result.get("thumb", None)
             if result["type"] == "image/jpeg":
                 await c.send_photo(
                     m.chat.id,
