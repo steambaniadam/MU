@@ -226,7 +226,7 @@ async def download_and_send_file(nlx, chat_id, url, content_type):
         await nlx.reply("Terjadi kesalahan saat mengunduh atau mengirim file.")
 
 
-@ky.ubot("twit", sudo=True)
+@ky.ubot("twit|twitt", sudo=True)
 async def twit(c: nlx, m):
     em = Emojik()
     em.initialize()
