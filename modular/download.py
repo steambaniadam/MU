@@ -28,56 +28,28 @@ __modles__ = "Download"
 __help__ = get_cgr("help_download")
 
 
-def get_video_dimensions(file_path):
-    width, height = 0, 0
-    command = [
-        "ffprobe",
-        "-v",
-        "error",
-        "-select_streams",
-        "v:0",
-        "-show_entries",
-        "stream=width,height",
-        "-of",
-        "csv=p=0:s=x",
-        file_path,
-    ]
-    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    if result.returncode == 0:
-        dimensions = result.stdout.decode().split("x")
-        if len(dimensions) == 2:
-            width, height = map(int, dimensions)
-    return width, height
 
-
-def clear_directory(directory):
-    command = ["rm", "-rf", directory]
-    subprocess.run(command)
-
-
-async def download_tiktok_video(c, chat_id, tiktok_link):
+async def download_tiktok_video(c, chat_id, tiktok_link, em):
     try:
-        output_filename = "media/downloaded_video.%(ext)s"
-
-        command = ["yt-dlp", "-o", output_filename, tiktok_link]
-        subprocess.check_call(command)
-
-        width, height = get_video_dimensions("media/downloaded_video.mp4")
-
-        with open("media/downloaded_video.mp4", "rb") as video_file:
-            await c.send_video(
-                chat_id=chat_id,
-                video=video_file,
-                width=width,
-                height=height,
-            )
-
-        clear_directory("media")
+        url = "https://tiktok-video-downloader-download-without-watermark.p.rapidapi.com/tiktok/v1/download-without-watermark"
+        headers = {
+            "content-type": "application/x-www-form-urlencoded",
+            "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+            "X-RapidAPI-Host": "tiktok-video-downloader-download-without-watermark.p.rapidapi.com"
+        }
+        payload = {"url": tiktok_link}
+        response = requests.post(url, data=payload, headers=headers)
+        data = response.json()
+        
+        if "success" in data and data["success"]:
+            caption = f"{em.sukses} **Successfully Download Tiktok Content by: {c.me.mention}**"
+            video_url = data["data"]["url"]
+            await c.send_video(chat_id=chat_id, video=video_url, caption=caption)
+        else:
+            await c.send_message(chat_id=chat_id, text=f"{em.gagal} **Failed to download TikTok video.**")
     except Exception as e:
-        print(f"Terjadi kesalahan: {e}")
-        await c.send_message(
-            chat_id=chat_id, text="Tautan rusak atau video gagal diunggah."
-        )
+        print(f"Error occurred: {e}")
+        await c.send_message(chat_id=chat_id, text=f"{em.gagal} **Failed to download TikTok video. Reason: {str(e)}**")
 
 
 @ky.ubot("dtik", sudo=False)
@@ -87,7 +59,7 @@ async def download_tiktok_command(c: nlx, m: Message):
     tiktok_link = m.text.split(maxsplit=1)[1]
     pros = await m.edit(cgr("proses").format(em.proses))
 
-    await download_tiktok_video(c, m.chat.id, tiktok_link)
+    await download_tiktok_video(c, m.chat.id, tiktok_link, em)
 
     await pros.delete()
 
@@ -327,41 +299,46 @@ async def insta_handler(c: nlx, m):
     pros = await m.edit(cgr("proses").format(em.proses))
     try:
         url = m.command[1]
-        querystring = {"url": url}
-        headers = {
-            "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-            "X-RapidAPI-Host": "instagram-api-special.p.rapidapi.com",
-        }
-        response = requests.get(
-            "https://instagram-api-special.p.rapidapi.com/instagram/",
-            headers=headers,
-            params=querystring,
-        )
-        data = response.json()
-        if data["status"]:
-            result = data["result"][0]
-            media_url = result["url"]
-            thumb_url = result.get("thumb", None)
-            if result["type"] == "image/jpeg":
-                await c.send_photo(
-                    m.chat.id,
-                    photo=media_url,
-                    caption=f"{em.sukses} <b>Successfully Download Photo by : {c.me.mention}</b>",
-                )
-                await pros.delete()
-            elif result["type"] == "video/mp4":
-                await c.send_video(
-                    m.chat.id,
-                    video=media_url,
-                    thumb=thumb_url,
-                    caption=f"{em.sukses} <b>Successfully Download Video by : {c.me.mention}</b>",
-                )
-                await pros.delete()
+        if url.startswith("https://www.instagram.com/p/") or url.startswith("https://instagram.com/p/"):
+            querystring = {"url": url}
+            headers = {
+                "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+                "X-RapidAPI-Host": "instagram-api-special.p.rapidapi.com",
+            }
+            response = requests.get(
+                "https://instagram-api-special.p.rapidapi.com/instagram/",
+                headers=headers,
+                params=querystring,
+            )
+            data = response.json()
+            if data["status"]:
+                result = data["result"][0]
+                media_url = result["url"]
+                thumb_url = result.get("thumb", None)
+                if result["type"] == "image/jpeg":
+                    await c.send_photo(
+                        m.chat.id,
+                        photo=media_url,
+                        caption=f"{em.sukses} <b>Successfully Download Photo by : {c.me.mention}</b>",
+                    )
+                    await pros.delete()
+                elif result["type"] == "video/mp4":
+                    await c.send_video(
+                        m.chat.id,
+                        video=media_url,
+                        thumb=thumb_url,
+                        caption=f"{em.sukses} <b>Successfully Download Video by : {c.me.mention}</b>",
+                    )
+                    await pros.delete()
+                else:
+                    await pros.edit(f"{em.gagal} <b>Tipe media tidak didukung.</b>")
             else:
-                await pros.edit(f"{em.gagal} <b>Tipe media tidak didukung.</b>")
+                await pros.edit(
+                    f"{em.gagal} <b>Gagal mengunduh media dari tautan yang diberikan.</b>"
+                )
         else:
             await pros.edit(
-                f"{em.gagal} <b>Gagal mengunduh media dari tautan yang diberikan.</b>"
+                f"{em.gagal} <b>Tautan yang diberikan bukan tautan Instagram yang valid.</b>"
             )
     except IndexError:
         await pros.edit(

@@ -35,10 +35,10 @@ async def download_file_from_url(url, message, caption=None):
             else (".jpg" if ".jpg" in download_url else ".m3u8")
         )
         file_name = f"pinterest_content{file_extension}"
-        file_path = f"Pypin/{file_name}"
+        file_path = f"downloads/{file_name}"
 
-        if not os.path.exists("Pypin"):
-            os.makedirs("Pypin")
+        if not os.path.exists("downloads"):
+            os.makedirs("downloads")
 
         async with aiohttp.ClientSession() as session:
             async with session.get(download_url) as resp:
@@ -50,7 +50,7 @@ async def download_file_from_url(url, message, caption=None):
                         await message.reply_photo(file_path, caption=caption)
                     elif file_extension == ".mp4":
                         if file_extension == ".m3u8":
-                            mp4_path = f"Pypin/pinterest_content.mp4"
+                            mp4_path = f"downloads/pinterest_content.mp4"
                             await convert_m3u8_to_mp4(file_path, mp4_path)
                             await message.reply_video(mp4_path, caption=caption)
                             os.remove(mp4_path)
@@ -81,10 +81,16 @@ async def _(c: nlx, m):
     gue = c.me.mention
     try:
         url = m.text.split(maxsplit=1)[1]
-        await download_file_from_url(
-            url, m, caption=cgr("pint_2").format(em.sukses, gue)
-        )
-        await pros.delete()
+        if url.startswith("https://id.pinterest.com/pin/"):
+            await download_file_from_url(
+                url, m, caption=cgr("pint_2").format(em.sukses, gue)
+            )
+            await pros.delete()
+        else:
+            await pros.edit(
+                f"{em.gagal} **Silahkan tambahkan link Pinterest yang valid\nContoh : `{m.text} https://id.pinterest.com/pin/293648838218730162/`**"
+            )
+            await pros.delete()
     except IndexError:
         await pros.edit(
             f"{em.gagal} **Silahkan tambahkan link Pinterest\nContoh : `{m.text} https://id.pinterest.com/pin/293648838218730162/`**"
