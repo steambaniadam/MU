@@ -1,5 +1,5 @@
 thegokil==1.0.0.dev1
-maling==2.1.5
+maling==2.1.6
 aiofiles
 aiohttp
 beautifulsoup4
