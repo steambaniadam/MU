@@ -181,6 +181,7 @@ async def _(c: nlx, m):
 
 
 @ky.ubot("addbl", sudo=True)
+@ky.devs("Etbeel")
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
