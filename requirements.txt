@@ -43,7 +43,6 @@ pytgcalls==3.0.0.dev22
 pyrogram
 PySocks
 pexpect
-pyromod==1.5
 proxybroker
 pyquery
 aiogram
