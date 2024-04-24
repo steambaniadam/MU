@@ -253,8 +253,7 @@ async def _(c: nlx, message):
     em.initialize()
     await message.reply(
         f"""
-{em.sukses} Daftar Effect Suara:\n\n• {''
-• ''.join(list_efek)}"""
+{em.sukses} Daftar Effect Suara:\n\n• {' '.join(list_efek)}"""
     )
 
 
