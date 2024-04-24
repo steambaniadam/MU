@@ -9,7 +9,6 @@ from Mix.core import *
 from Mix.mix_client import *
 
 git()
-heroku()
 bot = Bot()
 nlx = Userbot()
 
