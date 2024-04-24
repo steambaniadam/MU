@@ -28,7 +28,7 @@ async def start_bot():
         await autobot()
     try:
         await bot.start()
-    except (AccessTokenExpired, SessionRevoked, AccessTokenInvalid):
+    except (SessionRevoked, AccessTokenInvalid):
         LOGGER.info("Token Expired.")
         ndB.del_key("BOT_TOKEN")
         sys.exit(1)
