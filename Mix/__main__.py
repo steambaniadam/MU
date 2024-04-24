@@ -28,8 +28,17 @@ async def start_bot():
         await autobot()
     try:
         await bot.start()
-    except (SessionRevoked, AccessTokenInvalid):
+    except SessionRevoked as e:
+        print(f"Error : {e}")
         LOGGER.info("Token Expired.")
+        ndB.del_key("BOT_TOKEN")
+        sys.exit(1)
+    except AccessTokenInvalid as e:
+        print(f"Error : {e}")
+        ndB.del_key("BOT_TOKEN")
+        sys.exit(1)
+    except AccessTokenExpired as e:
+        print("Error : {e}")
         ndB.del_key("BOT_TOKEN")
         sys.exit(1)
 
