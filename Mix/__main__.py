@@ -37,7 +37,7 @@ async def start_bot():
         print(f"Error : {e}")
         ndB.del_key("BOT_TOKEN")
         sys.exit(1)
-    except AccessTokenExpired as e:
+    except AccessTokenExpired:
         print("Error : {e}")
         ndB.del_key("BOT_TOKEN")
         sys.exit(1)
