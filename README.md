@@ -95,8 +95,7 @@ Gunakan bot ini dengan risiko Anda sendiri, dan gunakan userbot ini dengan bijak
 • Silakan isi vars yang diperlukan api_id, api_hash, session, heroku_api, heroku_app_name, mongo_uri, db_name, scheme, hostname, port, username dan password jika butuh.
 
 <h3 align="center">Click The Button</h3>
-<a align="center" href="https://dashboard.heroku.com/new?template=https://github.com/naya1503/Mix-Userbot/tree/proxy
-"><img src="https://www.herokucdn.com/deploy/button.svg"></a>
+<a align="center" href="https://dashboard.heroku.com/new?template=https://github.com/naya1503/Mix-Userbot"><img src="https://www.herokucdn.com/deploy/button.svg"></a>
 </div>
 
 </details>
