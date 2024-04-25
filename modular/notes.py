@@ -37,10 +37,10 @@ async def _(c: nlx, m):
         return await xx.edit(cgr("nts_1").format(em.gagal, m.command))
 
     if data_type == Types.TEXT:
-        #teks, _ = text_keyb(ikb, text)
+        # teks, _ = text_keyb(ikb, text)
         udB.save_note(c.me.id, note_name, text, data_type, content)
     elif data_type in [Types.PHOTO, Types.VIDEO]:
-        #teks, _ = text_keyb(ikb, text)
+        # teks, _ = text_keyb(ikb, text)
         file_type = "jpg" if data_type == Types.PHOTO else "mp4"
         xo = kontol_siapa(gua, file_type)
         mek = await c.download_media(cek, xo)
