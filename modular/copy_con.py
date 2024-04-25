@@ -160,7 +160,7 @@ async def _(c: nlx, m):
     inf = await m.reply(cgr("proses").format(em.proses))
     link = c.get_arg(m)
     if not link:
-        return await inf.edit(cgr("cpy_1").format(em.gagal, m.comand))
+        return await inf.edit(cgr("cpy_1").format(em.gagal, m.command))
 
     if link.startswith(("https", "t.me")):
         msg_id = int(link.split("/")[-1])
