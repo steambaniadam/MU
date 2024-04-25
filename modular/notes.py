@@ -35,7 +35,9 @@ async def _(c: nlx, m):
     xx = await m.reply(cgr("proses").format(em.proses))
     if not note_name:
         return await xx.edit(cgr("nts_1").format(em.gagal, m.command))
-
+    getnotes = udB.get_note(c.me.id, note_name)
+    if getnotes:
+        return await xx.edit("{} Notes already exist.".format(em.gagal))
     if data_type == Types.TEXT:
         # teks, _ = text_keyb(ikb, text)
         udB.save_note(c.me.id, note_name, text, data_type, content)
@@ -92,7 +94,7 @@ async def _(c: nlx, m):
             except Exception as e:
                 return await xx.edit(cgr("err").format(em.gagal, e))
         else:
-            await m.reply(teks)
+            await m.reply(getnotes["value"])
 
     elif getnotes["type"] == Types.PHOTO:
         teks, button = text_keyb(ikb, getnotes.get("value"))
@@ -186,7 +188,7 @@ async def _(c: nlx, m):
             await c.send_media_group(
                 m.chat.id,
                 getnotes["file"],
-                caption=teks,
+                caption=getnotes["value"],
                 reply_to_message_id=ReplyCheck(m),
             )
     await xx.delete()
