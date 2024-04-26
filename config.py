@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-api_id = int(getenv("api_id"))
+api_id = int(getenv("api_id", None))
 api_hash = getenv("api_hash", None)
 session = getenv("session", None)
 bot_token = getenv("bot_token", None)
