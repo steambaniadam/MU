@@ -6,18 +6,19 @@
 """
 ################################################################
 
-import re
 import asyncio
+import random
+import re
+from os import execvp
+from random import randint
+from sys import executable
+
+import wget
+from pyrogram.raw.functions.messages import DeleteHistory
 from team.nandev.class_log import LOGGER
 from team.nandev.database import ndB
+
 from Mix import nlx
-from random import randint
-from os import execvp
-from sys import executable
-import wget
-import random
-from pyrogram.errors import *
-from pyrogram.raw.functions.messages import DeleteHistory
 
 
 def extract_api_token(text):
