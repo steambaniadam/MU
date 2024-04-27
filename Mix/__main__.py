@@ -25,7 +25,7 @@ async def start_user():
 async def start_bot():
     LOGGER.info(f"Starting Telegram Bot Client...")
     if TOKEN_BOT is None:
-        await autobot()
+        await autopilot()
     try:
         await bot.start()
     except SessionRevoked as e:
