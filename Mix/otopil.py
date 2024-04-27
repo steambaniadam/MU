@@ -14,7 +14,6 @@ from random import randint
 from sys import executable
 
 import wget
-from pyrogram.errors import *
 from pyrogram.raw.functions.messages import DeleteHistory
 from team.nandev.class_log import LOGGER
 from team.nandev.database import ndB
