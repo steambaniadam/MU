@@ -79,29 +79,29 @@ async def ocobot():
     await nlx.send_message(bf, name)
     await asyncio.sleep(3)
     async for aa in nlx.search_messages(
-            bf, query="Use this token to access the HTTP API:", limit=1
-        ):
-            if aa.text:
-                donee = aa.text
-                token = extract_api_token(donee)
-                if token:
-                    ndB.set_key("BOT_TOKEN", token)
-                    LOGGER.info(
-                        f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
-                    )
-                    await enable_inline(username)
-                else:
-                    LOGGER.error("Token API tidak ditemukan.")
-                    import sys
-
-                    sys.exit(1)
-            else:
-                LOGGER.error(
-                    "Harap Hapus Beberapa bot Telegram Anda di @Botfather atau Setel Var BOT_TOKEN dengan token bot"
+        bf, query="Use this token to access the HTTP API:", limit=1
+    ):
+        if aa.text:
+            donee = aa.text
+            token = extract_api_token(donee)
+            if token:
+                ndB.set_key("BOT_TOKEN", token)
+                LOGGER.info(
+                    f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
                 )
+                await enable_inline(username)
+            else:
+                LOGGER.error("Token API tidak ditemukan.")
                 import sys
 
                 sys.exit(1)
+        else:
+            LOGGER.error(
+                "Harap Hapus Beberapa bot Telegram Anda di @Botfather atau Setel Var BOT_TOKEN dengan token bot"
+            )
+            import sys
+
+            sys.exit(1)
 
 
 async def enable_inline(username):
