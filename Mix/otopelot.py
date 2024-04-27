@@ -6,18 +6,18 @@
 """
 ################################################################
 
-import asyncio
-import random
 import re
-from os import execvp
-from sys import executable
-
-import wget
-from pyrogram.raw.functions.messages import DeleteHistory
+import asyncio
 from team.nandev.class_log import LOGGER
 from team.nandev.database import ndB
-
 from Mix import nlx
+from random import randint
+from os import execvp
+from sys import executable
+import wget
+import random
+from pyrogram.errors import *
+from pyrogram.raw.functions.messages import DeleteHistory
 
 
 def extract_api_token(text):
@@ -52,7 +52,7 @@ async def ocobot():
     await asyncio.sleep(1)
     await nlx.send_message(bf, "/newbot")
     await asyncio.sleep(1)
-    async for aa in nlx.search_messages(bf, "Alright, a new bot.", limit=1):
+    async for aa in nlx.search_messages(bf, query="Alright, a new bot.", limit=1):
         isdone = aa.text
         break
     else:
