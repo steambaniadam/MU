@@ -9,7 +9,6 @@ from Mix import *
 from Mix.core.gclog import check_logger, getFinish
 from Mix.core.waktu import auto_clean
 
-
 loop = asyncio.get_event_loop_policy()
 event_loop = loop.get_event_loop()
 
