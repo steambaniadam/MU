@@ -19,7 +19,7 @@ from pyrogram.raw.functions.messages import DeleteHistory
 from team.nandev.class_log import LOGGER
 from team.nandev.database import ndB
 
-from Mix import *
+from Mix import nlx
 
 
 def extract_api_token(text):
