@@ -39,7 +39,7 @@ def extract_api_token2(text):
 async def ocobot():
     LOGGER.info("MEMBUAT BOT TELEGRAM UNTUK ANDA DI @BotFather, Mohon Tunggu")
     gw = nlx.me
-    gw.first_name + " Asisstant"
+    name = gw.first_name + " Asisstant"
     if gw.username:
         username = gw.username + "_bot"
     else:
@@ -76,8 +76,9 @@ async def ocobot():
                         f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
                     )
                     await enable_inline(username)
-        await asyncio.sleep(3)
-        async for aa in nlx.search_messages(
+    await nlx.send_message(bf, name)
+    await asyncio.sleep(3)
+    async for aa in nlx.search_messages(
             bf, query="Use this token to access the HTTP API:", limit=1
         ):
             if aa.text:
