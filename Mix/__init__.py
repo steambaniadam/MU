@@ -7,6 +7,7 @@ asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 from config import *
 from Mix.core import *
 from Mix.mix_client import *
+from Mix.otopil import *
 
 git()
 heroku()
