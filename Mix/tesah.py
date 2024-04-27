@@ -79,8 +79,8 @@ async def autolahjing():
                 await enable_inline(username)
         else:
             LOGGER.info("Harap Hapus Beberapa bot Telegram Anda di @Botfather atau Setel Var BOT_TOKEN dengan token bot")
-                import sys
-                sys.exit(1)
+            import sys
+            sys.exit(1)
         
 async def enable_inline(username):
     pp = random.choice(["https://telegra.ph//file/19b336da463a05d7d8f8c.jpg", "https://telegra.ph//file/2eaf853d09c319465a8f4.jpg", "https://telegra.ph//file/7d2e8f0ae636e2f6dc381.jpg"])
