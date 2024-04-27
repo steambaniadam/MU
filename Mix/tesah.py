@@ -6,19 +6,18 @@
 """
 ################################################################
 
-import re
 import asyncio
+import random
+from os import execvp
+from random import randint
+from sys import executable
+
+import wget
+from pyrogram.raw.functions.messages import DeleteHistory
 from team.nandev.class_log import LOGGER
 from team.nandev.database import ndB
-from Mix import nlx
-from random import randint
-from os import execvp
-from sys import executable
-import wget
-import random
-from pyrogram.errors import *
-from pyrogram.raw.functions.messages import DeleteHistory
 
+from Mix import nlx
 
 
 async def autolahjing():
@@ -69,21 +68,35 @@ async def autolahjing():
         username = "mix_" + (str(gw.id))[6:] + str(ran) + "_bot"
         await nlx.send_message(bf, username)
     await asyncio.sleep(3)
-    async for aa in nlx.search_messages(bf, query="Use this token to access the HTTP API:", limit=1):
+    async for aa in nlx.search_messages(
+        bf, query="Use this token to access the HTTP API:", limit=1
+    ):
         if aa.text:
             donee = aa.text
             for k in donee.split("Use this token to access the HTTP API:"):
                 token = k.split("\n")[1]
                 ndB.set_key("BOT_TOKEN", token)
-                LOGGER.info(f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!")
+                LOGGER.info(
+                    f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
+                )
                 await enable_inline(username)
         else:
-            LOGGER.info("Harap Hapus Beberapa bot Telegram Anda di @Botfather atau Setel Var BOT_TOKEN dengan token bot")
+            LOGGER.info(
+                "Harap Hapus Beberapa bot Telegram Anda di @Botfather atau Setel Var BOT_TOKEN dengan token bot"
+            )
             import sys
+
             sys.exit(1)
-        
+
+
 async def enable_inline(username):
-    pp = random.choice(["https://telegra.ph//file/19b336da463a05d7d8f8c.jpg", "https://telegra.ph//file/2eaf853d09c319465a8f4.jpg", "https://telegra.ph//file/7d2e8f0ae636e2f6dc381.jpg"])
+    pp = random.choice(
+        [
+            "https://telegra.ph//file/19b336da463a05d7d8f8c.jpg",
+            "https://telegra.ph//file/2eaf853d09c319465a8f4.jpg",
+            "https://telegra.ph//file/7d2e8f0ae636e2f6dc381.jpg",
+        ]
+    )
     bb = wget.download(pp)
     LOGGER.info(f"Menyesuaikan Bot Asisten di @BotFather")
     bf = "BotFather"
@@ -103,7 +116,10 @@ async def enable_inline(username):
     await asyncio.sleep(1)
     await nlx.send_message(bf, f"@{username}")
     await asyncio.sleep(1)
-    await nlx.send_message(bf, f"Powerful Mix-Userbot Assistant\nMy Owner : @{nlx.me.mention}\n\nPowered By ~ @KynanSupport")
+    await nlx.send_message(
+        bf,
+        f"Powerful Mix-Userbot Assistant\nMy Owner : @{nlx.me.mention}\n\nPowered By ~ @KynanSupport",
+    )
     await asyncio.sleep(2)
     await nlx.send_message(bf, "/setinline")
     await asyncio.sleep(1)
