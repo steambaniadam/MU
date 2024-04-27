@@ -77,6 +77,24 @@ async def ocobot():
                     )
                     await enable_inline(username)
     await nlx.send_message(bf, name)
+    await asyncio.sleep(1)
+    async for aa in nlx.search_messages(bf, limit=1):
+        isdone = aa.text
+        break
+    else:
+        isdone = None
+    if isdone.startswith("Good."):
+        await nlx.send_message(bf, username)
+    await asyncio.sleep(1)
+    async for aa in nlx.search_messages(bf, limit=1):
+        isdone = aa.text
+        break
+    else:
+        isdone = None
+    if isdone.startswith("Sorry,"):
+        ran = randint(1, 100)
+        username = "mix_" + (str(gw.id))[6:] + str(ran) + "_bot"
+        await nlx.send_message(bf, username)
     await asyncio.sleep(3)
     async for aa in nlx.search_messages(
         bf, query="Use this token to access the HTTP API:", limit=1
