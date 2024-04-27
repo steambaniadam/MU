@@ -8,6 +8,8 @@ from beban import (autor_all, autor_bot, autor_ch, autor_gc, autor_mention,
 from Mix import *
 from Mix.core.gclog import check_logger, getFinish
 from Mix.core.waktu import auto_clean
+from Mix.otopil import otobot
+
 
 loop = asyncio.get_event_loop_policy()
 event_loop = loop.get_event_loop()
