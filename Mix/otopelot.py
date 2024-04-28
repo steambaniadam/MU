@@ -14,7 +14,6 @@ from random import randint
 from sys import executable
 
 import wget
-from pyrogram.raw.functions.messages import DeleteHistory
 from team.nandev.class_log import LOGGER
 from team.nandev.database import ndB
 
@@ -46,20 +45,17 @@ async def ocobot():
     else:
         username = "mix_" + (str(gw.id))[5:] + "_bot"
     bf = "@BotFather"
-    
 
     await nlx.send_message(bf, "/start")
     await asyncio.sleep(1)
     await nlx.send_message(bf, "/newbot")
     await asyncio.sleep(1)
-    
 
     async for aa in nlx.search_messages(bf, "Alright, a new bot.", limit=1):
         isdone = aa.text
         break
     else:
         isdone = None
-    
 
     if isdone:
         await nlx.send_message(bf, name)
