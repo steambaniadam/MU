@@ -413,7 +413,7 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     chat_title = m.chat.title
-    chat_id = m.chat.id    
+    m.chat.id
     owner = []
     co_founder = []
     admin = []
@@ -428,8 +428,7 @@ async def _(c: nlx, m):
             if org.custom_title:
                 co_founder.append(f"• {mention} - {org.custom_title}")
             else:
-                co_founder.append(f"• {mention}"
-                )
+                co_founder.append(f"• {mention}")
         elif org.status.value == "administrator":
             if org.custom_title:
                 admin.append(f"• {mention} - {org.custom_title}")
@@ -440,11 +439,11 @@ async def _(c: nlx, m):
                 owner.append(f"• {mention} - {org.custom_title}")
             else:
                 owner.append(f"• {mention}")
-    
+
     owner_list = "\n• ".join(owner)
     co_founder_list = "\n• ".join(co_founder)
     admin_list = "\n• ".join(admin)
-    
+
     response = f"Daftar Admin {chat_title}:\n\n"
     if owner:
         response += f"Owner :\n {owner_list}\n\n"
@@ -452,5 +451,5 @@ async def _(c: nlx, m):
         response += f"Co-Founder :\n {co_founder_list}\n\n"
     if admin:
         response += f"Admins :\n {admin_list}\n\n"
-    
+
     await pros.edit(response)
