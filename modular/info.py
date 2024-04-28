@@ -12,6 +12,7 @@ from datetime import datetime
 from traceback import format_exc
 
 from pyrogram.enums import *
+from pyrogram.types import *
 from pyrogram.errors import *
 from pyrogram.raw.functions.channels import GetFullChannel
 from pyrogram.raw.functions.users import GetFullUser
@@ -414,13 +415,14 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     chat_title = m.chat.title
-    m.chat.id
     owner = []
     co_founder = []
     admin = []
     pros = await m.reply(cgr("proses").format(em.proses))
     await sleep(2)
     async for org in m.chat.get_members():
+        if org.is_bot:
+            continue
         mention = f"<a href=tg://user?id={org.user.id}>{org.user.first_name} {org.user.last_name or ''}</a>"
         if (
             org.status.value == "administrator"
