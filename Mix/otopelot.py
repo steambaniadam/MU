@@ -78,8 +78,11 @@ async def ocobot():
                         )
                         return await enable_inline(username)
                 else:
-                    LOGGER.error(f"Silahkan buat bot di @BotFather, lalu tambahkan Variabel bot_token pada env, lalu mulai ulang.")
+                    LOGGER.error(
+                        f"Silahkan buat bot di @BotFather, lalu tambahkan Variabel bot_token pada env, lalu mulai ulang."
+                    )
                     import sys
+
                     sys.exit(1)
     else:
         await nlx.send_message(bf, name)
