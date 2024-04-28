@@ -59,8 +59,6 @@ async def ocobot():
 
     if isdone and isdone.startswith("Sorry,"):
         await nlx.send_message(bf, "/token")
-        await asyncio.sleep(2)
-        await nlx.send_message(bf, f"@{nlx.me.username}_bot")
         async for msg in nlx.search_messages(
             bf, query="You can use this token to access HTTP API:", limit=1
         ):
@@ -73,13 +71,12 @@ async def ocobot():
                         f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
                     )
                     await enable_inline(username)
-                    break
+                    return
                 else:
                     LOGGER.error("Token API tidak ditemukan.")
                     import sys
 
                     sys.exit(1)
-        return
 
     if isdone and isdone.startswith("Alright, a new bot."):
         await nlx.send_message(bf, name)
@@ -99,12 +96,13 @@ async def ocobot():
                         f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
                     )
                     await enable_inline(username)
-                    break
+                    return
                 else:
                     LOGGER.error("Token API tidak ditemukan.")
                     import sys
 
                     sys.exit(1)
+
     await asyncio.sleep(1)
     async for aa in nlx.search_messages(bf, limit=1):
         isdone = aa.text
