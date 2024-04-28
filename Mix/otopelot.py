@@ -29,6 +29,14 @@ def extract_api_token(text):
         return None
 
 
+def extract_api_token_2(text):
+    match = re.search(r"You can use this token to access HTTP API:\s*([\w:]+)", text)
+    if match:
+        return match.group(1)
+    else:
+        return None
+
+
 async def ocobot():
     LOGGER.info("MEMBUAT BOT TELEGRAM UNTUK ANDA DI @BotFather, Mohon Tunggu")
     gw = nlx.me
@@ -42,9 +50,9 @@ async def ocobot():
     await nlx.invoke(DeleteHistory(peer=info, max_id=0, revoke=False))
     await nlx.unblock_user(bf)
     await nlx.send_message(bf, "/start")
-    await asyncio.sleep(1)
+    await asyncio.sleep(2)
     await nlx.send_message(bf, "/newbot")
-    await asyncio.sleep(1)
+    await asyncio.sleep(2)
     async for aa in nlx.search_messages(bf, "Alright, a new bot.", limit=1):
         isdone = aa.text
         if isdone:
@@ -53,7 +61,7 @@ async def ocobot():
             isdone = None
             if isdone.startwith("Sorry,"):
                 await nlx.send_message(bf, "/token")
-                await asyncio.sleep(1.8)
+                await asyncio.sleep(2)
                 await nlx.send_message(bf, f"@{username}")
                 await asyncio.sleep(3)
                 async for aa in nlx.search_messages(
@@ -74,7 +82,7 @@ async def ocobot():
 
                             sys.exit(1)
     await nlx.send_message(bf, name)
-    await asyncio.sleep(1)
+    await asyncio.sleep(2)
     async for aa in nlx.search_messages(bf, limit=1):
         isdone = aa.text
         break
@@ -82,7 +90,7 @@ async def ocobot():
         isdone = None
     if isdone.startswith("Good."):
         await nlx.send_message(bf, username)
-    await asyncio.sleep(1)
+    await asyncio.sleep(2)
     async for aa in nlx.search_messages(bf, limit=1):
         isdone = aa.text
         break
@@ -136,30 +144,30 @@ async def enable_inline(username):
     LOGGER.info(f"Menyesuaikan Bot Asisten di @BotFather")
     bf = "BotFather"
     await nlx.send_message(bf, "/setuserpic")
-    await asyncio.sleep(1.8)
+    await asyncio.sleep(2)
     await nlx.send_message(bf, f"@{username}")
-    await asyncio.sleep(1.8)
+    await asyncio.sleep(2)
     await nlx.send_photo(bf, bb)
-    await asyncio.sleep(1.8)
+    await asyncio.sleep(2)
     await nlx.send_message(bf, "/setabouttext")
-    await asyncio.sleep(1.8)
+    await asyncio.sleep(2)
     await nlx.send_message(bf, f"@{username}")
-    await asyncio.sleep(1.8)
+    await asyncio.sleep(2)
     await nlx.send_message(bf, f"Mix-Userbot Asisten My Owner : @{user_name}")
     await asyncio.sleep(2)
     await nlx.send_message(bf, "/setdescription")
-    await asyncio.sleep(1.8)
+    await asyncio.sleep(2)
     await nlx.send_message(bf, f"@{username}")
-    await asyncio.sleep(1.8)
+    await asyncio.sleep(2)
     await nlx.send_message(
         bf,
         f"Powerful Mix-Userbot Assistant\nMy Owner : @{user_name}\n\nPowered By ~ @KynanSupport",
     )
     await asyncio.sleep(2)
     await nlx.send_message(bf, "/setinline")
-    await asyncio.sleep(1.8)
+    await asyncio.sleep(2)
     await nlx.send_message(bf, f"@{username}")
-    await asyncio.sleep(1.8)
+    await asyncio.sleep(2)
     await nlx.send_message(bf, "Search")
     LOGGER.info("Customisation Done")
     execvp(executable, [executable, "-m", "Mix"])
