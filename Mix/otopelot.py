@@ -37,7 +37,7 @@ def extract_api_token2(text):
         return None
 
 
-async def autobot():
+async def ocobot():
     LOGGER.info("MEMBUAT BOT TELEGRAM UNTUK ANDA DI @BotFather, Mohon Tunggu")
     gw = nlx.me
     name = gw.first_name + " Asisstant"
