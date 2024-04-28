@@ -79,6 +79,7 @@ async def ocobot():
                 else:
                     LOGGER.error("Token API tidak ditemukan.")
                     import sys
+
                     sys.exit(1)
     await asyncio.sleep(1)
     async for aa in nlx.search_messages(bf, limit=1):
