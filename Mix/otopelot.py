@@ -70,23 +70,22 @@ async def ocobot():
         ):
             if msg.text:
                 donee = msg.text
-                token_parts = donee.split("\n")
-                for part in token_parts:
-                    if "Use this token to access the HTTP API:" in part:
-                        token = part.split(":")[1].strip()
-                        ndB.set_key("BOT_TOKEN", token)
-                        LOGGER.info(
-                            f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
-                        )
-                        await enable_inline(username)
-                        return
+                token = await extract_api_token(donee)
+                if token:
+                    ndB.set_key("BOT_TOKEN", token)
+                    LOGGER.info(
+                        f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
+                    )
+                    await enable_inline(username)
+                    return
                 else:
                     LOGGER.error(
-                        f"Silahkan buat bot di @BotFather, lalu tambahkan Variabel bot_token pada env, lalu mulai ulang."
+                        f"Token API tidak ditemukan pada {username}. Silakan coba lagi."
                     )
-                    import sys
-
-                    sys.exit(1)
+                    return
+            else:
+                import sys
+                sys.exit(1)
     else:
         await nlx.send_message(bf, name)
         await asyncio.sleep(1.8)
@@ -122,16 +121,15 @@ async def ocobot():
                 await enable_inline(username)
                 return
             else:
-                LOGGER.error(f"Token API tidak ditemukan pada {username}.")
-                import sys
-
-                sys.exit(1)
+                LOGGER.error(
+                    f"Token API tidak ditemukan pada {username}. Silakan coba lagi."
+                )
+                return
         else:
             LOGGER.error(
-                "Harap Hapus Beberapa bot Telegram Anda di @Botfather atau Setel Var BOT_TOKEN dengan token bot"
+                "Harap Hapus Beberapa bot Telegram Anda di @Botfather atau Setel Var bot_token dengan token bot"
             )
             import sys
-
             sys.exit(1)
 
 
