@@ -29,7 +29,7 @@ def extract_api_token(text):
         return None
 
 
-async def autobot():
+async def ocobot():
     LOGGER.info("MEMBUAT BOT TELEGRAM UNTUK ANDA DI @BotFather, Mohon Tunggu")
     gw = nlx.me
     name = gw.first_name + " Asisstant"
@@ -47,16 +47,30 @@ async def autobot():
     await asyncio.sleep(1)
     async for aa in nlx.search_messages(bf, "Alright, a new bot.", limit=1):
         isdone = aa.text
-        break
-    else:
-        isdone = None
-    if isdone is None or "20 bots" in isdone:
-        LOGGER.error(
-            "Tolong buat Bot dari @BotFather dan tambahkan tokennya di bot_token, sebagai env var dan mulai ulang saya."
-        )
-        import sys
+        if isdone:
+            break
+        else:
+            isdone = None
+            if isdone.startwith("Sorry,"):
+                await nlx.send_message(bf, "/token")
+                await asyncio.sleep(1.8)
+                await nlx.send_message(bf, f"@{username}")
+                await asyncio.sleep(3)
+                async for aa in nlx.search_messages(bf, query="You can use this token to access HTTP API:", limit=1):
+                    if aa.text:
+                        donee = aa.text
+                        token = extract_api_token(donee)
+                        if token:
+                            ndB.set_key("BOT_TOKEN", token)
+                            LOGGER.info(
+                            f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
+                        )
+                            await enable_inline(username)
+                        else:
+                            LOGGER.error("Token API tidak ditemukan.")
+                            import sys
 
-        sys.exit(1)
+                            sys.exit(1)
     await nlx.send_message(bf, name)
     await asyncio.sleep(1)
     async for aa in nlx.search_messages(bf, limit=1):
