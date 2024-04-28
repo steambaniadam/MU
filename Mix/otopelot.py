@@ -53,7 +53,7 @@ async def ocobot():
     await asyncio.sleep(2)
     await nlx.send_message(bf, "/newbot")
     await asyncio.sleep(2)
-    
+
     async for aa in nlx.search_messages(bf, "Alright, a new bot.", limit=1):
         isdone = aa.text
         if isdone:
@@ -84,7 +84,7 @@ async def ocobot():
                             sys.exit(1)
     await nlx.send_message(bf, name)
     await asyncio.sleep(2)
-    
+
     async for aa in nlx.search_messages(bf, limit=1):
         isdone = aa.text
         break
@@ -93,7 +93,7 @@ async def ocobot():
     if isdone.startswith("Good."):
         await nlx.send_message(bf, username)
     await asyncio.sleep(2)
-    
+
     async for aa in nlx.search_messages(bf, limit=1):
         isdone = aa.text
         break
@@ -104,7 +104,7 @@ async def ocobot():
         username = "mix_" + (str(gw.id))[6:] + str(ran) + "_bot"
         await nlx.send_message(bf, username)
     await asyncio.sleep(3)
-    
+
     async for aa in nlx.search_messages(
         bf, query="Use this token to access the HTTP API:", limit=1
     ):
