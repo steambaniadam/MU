@@ -409,6 +409,7 @@ I've trouble with this chat :
     )
 
 
+@ky.ubot("staff", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
