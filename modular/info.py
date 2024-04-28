@@ -430,17 +430,17 @@ async def _(c: nlx, m):
             continue
         mention = f"<a href='tg://user?id={org.user.id}'>{org.user.first_name or ''} {org.user.last_name or ''}</a>"
         if (
-            status == ChatMemberStatus.ADMINISTRATOR and 
-            ijin.can_promote_members and
-            ijin.can_manage_chat and 
-            ijin.can_delete_messages and 
-            ijin.can_manage_video_chats and 
-            ijin.can_restrict_members and 
-            ijin.can_change_info and 
-            ijin.can_invite_users and 
-            ijin.can_post_messages and 
-            ijin.can_edit_messages and 
-            ijin.can_pin_messages
+            status == ChatMemberStatus.ADMINISTRATOR
+            and ijin.can_promote_members
+            and ijin.can_manage_chat
+            and ijin.can_delete_messages
+            and ijin.can_manage_video_chats
+            and ijin.can_restrict_members
+            and ijin.can_change_info
+            and ijin.can_invite_users
+            and ijin.can_post_messages
+            and ijin.can_edit_messages
+            and ijin.can_pin_messages
         ):
             if title:
                 co_founder.append(cgr("stap_5").format(mention, title))
