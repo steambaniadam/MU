@@ -51,13 +51,13 @@ async def ocobot():
     await nlx.send_message(bf, "/newbot")
     await asyncio.sleep(1)
 
-    async for aa in nlx.search_messages(bf, "Alright, a new bot.", limit=1):
+    async for aa in nlx.search_messages(bf, limit=1):
         isdone = aa.text
         break
     else:
         isdone = None
 
-    if isdone:
+    if isdone.startwith("Alright, a new bot."):
         await nlx.send_message(bf, name)
     else:
         if isdone and isdone.startswith("Sorry,"):
