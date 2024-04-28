@@ -85,6 +85,7 @@ async def ocobot():
                     return
             else:
                 import sys
+
                 sys.exit(1)
     else:
         await nlx.send_message(bf, name)
@@ -130,6 +131,7 @@ async def ocobot():
                 "Harap Hapus Beberapa bot Telegram Anda di @Botfather atau Setel Var bot_token dengan token bot"
             )
             import sys
+
             sys.exit(1)
 
 
