@@ -304,6 +304,9 @@ stap_1: "{} <b>Daftar Admin di {}:</b>\n\n"
 stap_2: "<b>♚ Yang Punya Hajat :</b>\n {}\n\n"
 stap_3: "<b>♛ Tangan Kanan :</b>\n {}\n\n"
 stap_4: "<b>✪ Babu :</b>\n {}\n\n"
+stap_5: "• {} jadi {}"
+stap_6: "• {} jadi {}"
+stap_7: "• {} jadi {}"
 
 # limit
 lmt_1: "{} **{}**\n\n ~ {} **{}**"

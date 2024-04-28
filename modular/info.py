@@ -415,28 +415,45 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     chat_title = m.chat.title
+    chat_id = m.chat.id
     owner = []
     co_founder = []
     admin = []
     pros = await m.reply(cgr("proses").format(em.proses))
     await sleep(1)
-    async for org in m.chat.get_members():
-        if org.user.is_bot:
+    async for org in c.get_chat_members(chat_id):
+        user = org.user
+        ijin = org.privileges
+        status = org.status
+        title = org.custom_title
+        if user.is_bot:
             continue
         mention = f"<a href='tg://user?id={org.user.id}'>{org.user.first_name or ''} {org.user.last_name or ''}</a>"
-        if org.status.value == "administrator" and org.can_promote_members:
-            if org.custom_title:
-                co_founder.append(f"• {mention} - {org.custom_title}")
+        if (
+            status == ChatMemberStatus.ADMINISTRATOR and 
+            ijin.can_promote_members and
+            ijin.can_manage_chat and 
+            ijin.can_delete_messages and 
+            ijin.can_manage_video_chats and 
+            ijin.can_restrict_members and 
+            ijin.can_change_info and 
+            ijin.can_invite_users and 
+            ijin.can_post_messages and 
+            ijin.can_edit_messages and 
+            ijin.can_pin_messages
+        ):
+            if title:
+                co_founder.append(cgr("stap_5").format(mention, title))
             else:
                 co_founder.append(f"• {mention}")
-        elif org.status.value == "administrator":
-            if org.custom_title:
-                admin.append(f"• {mention} - {org.custom_title}")
+        elif status == ChatMemberStatus.ADMINISTRATOR:
+            if title:
+                admin.append(cgr("stap_6").format(mention, title))
             else:
                 admin.append(f"• {mention}")
-        elif org.status.value == "creator":
-            if org.custom_title:
-                owner.append(f"• {mention} - {org.custom_title}")
+        elif status == ChatMemberStatus.OWNER:
+            if title:
+                owner.append(cgr("stap_7").format(mention, title))
             else:
                 owner.append(f"• {mention}")
 
