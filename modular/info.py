@@ -418,7 +418,7 @@ async def _(c: nlx, m):
     owner = []
     co_founder = []
     admin = []
-    pros = m.reply(f"{em.proses} Sedang proses pengambilan data admin ..")
+    pros = await m.reply(f"{em.proses} Sedang proses pengambilan data admin ..")
     async for org in m.chat.get_members():
         mention = f"<a href=tg://user?id={org.user.id}>{org.user.first_name} {org.user.last_name or ''}</a>"
         if (
