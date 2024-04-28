@@ -21,16 +21,16 @@ from team.nandev.database import ndB
 from Mix import nlx
 
 
-def extract_api_token(text):
-    match = re.search(r"Use this token to access the HTTP API:\s*([\w:]+)", text)
+def extract_api_token(donee):
+    match = re.search(r"Use this token to access the HTTP API:\s*([\w:]+)", donee)
     if match:
         return match.group(1)
     else:
         return None
 
 
-def extract_api_token2(text):
-    match = re.search(r"You can use this token to access HTTP API:\s*([\w:]+)", text)
+def extract_api_token2(bb):
+    match = re.search(r"You can use this token to access HTTP API:\s*([\w:]+)", bb)
     if match:
         return match.group(1)
     else:
