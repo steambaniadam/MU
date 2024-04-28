@@ -36,7 +36,6 @@ async def extract_api_token2(text):
     else:
         return None
 
-
 async def ocobot():
     LOGGER.info("MEMBUAT BOT TELEGRAM UNTUK ANDA DI @BotFather, Mohon Tunggu")
     gw = nlx.me
@@ -67,19 +66,19 @@ async def ocobot():
             bf, query="You can use this token to access HTTP API:", limit=1
         ):
             if msg.text:
-                bb = msg.text
-                token2 = await extract_api_token2(bb)
-                if token2:
-                    ndB.set_key("BOT_TOKEN", token2)
+                donee = msg.text
+                token = await extract_api_token2(donee)
+                if token:
+                    ndB.set_key("BOT_TOKEN", token)
                     LOGGER.info(
                         f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
                     )
                     return await enable_inline(username)
-            else:
-                LOGGER.error(f"Token API tidak ditemukan pada {username}.")
-                import sys
-
-                sys.exit(1)
+                    break
+                else:
+                    LOGGER.error(f"Token API tidak ditemukan pada {username}.")
+                    import sys
+                    sys.exit(1)
     await nlx.send_message(bf, name)
     await asyncio.sleep(1.8)
     async for aa in nlx.search_messages(bf, limit=1):
@@ -105,7 +104,7 @@ async def ocobot():
     ):
         if aa.text:
             donee = aa.text
-            token = extract_api_token(donee)
+            token = await extract_api_token(donee)
             if token:
                 ndB.set_key("BOT_TOKEN", token)
                 LOGGER.info(
