@@ -424,10 +424,7 @@ async def _(c: nlx, m):
         if org.user.is_bot:
             continue
         mention = f"<a href='tg://user?id={org.user.id}'>{org.user.first_name or ''} {org.user.last_name or ''}</a>"
-        if (
-            org.status.value == "administrator"
-            and org.can_promote_members
-        ):
+        if org.status.value == "administrator" and org.can_promote_members:
             if org.custom_title:
                 co_founder.append(f"• {mention} - {org.custom_title}")
             else:
@@ -446,7 +443,7 @@ async def _(c: nlx, m):
     owner_list = "\n ".join(owner)
     co_founder_list = "\n ".join(co_founder)
     admin_list = "\n ".join(admin)
-    
+
     try:
         response = cgr("stap_1").format(em.sukses, chat_title)
         if owner:
