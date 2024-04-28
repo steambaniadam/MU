@@ -68,18 +68,18 @@ async def ocobot():
         ):
             if msg.text:
                 donee = msg.text
-                token = await extract_api_token2(donee)
-                if token:
-                    ndB.set_key("BOT_TOKEN", token)
-                    LOGGER.info(
-                        f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
-                    )
-                    return await enable_inline(username)
-                    break
+                token_parts = donee.split("\n")
+                for part in token_parts:
+                    if "Use this token to access the HTTP API:" in part:
+                        token = part.split(":")[1].strip()
+                        ndB.set_key("BOT_TOKEN", token)
+                        LOGGER.info(
+                            f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
+                        )
+                        return await enable_inline(username)
                 else:
-                    LOGGER.error(f"Token API tidak ditemukan pada {username}.")
+                    LOGGER.error(f"Silahkan buat bot di @BotFather, lalu tambahkan Variabel bot_token pada env, lalu mulai ulang.")
                     import sys
-
                     sys.exit(1)
     else:
         await nlx.send_message(bf, name)
