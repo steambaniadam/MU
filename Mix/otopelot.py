@@ -81,8 +81,9 @@ async def ocobot():
                     import sys
 
                     sys.exit(1)
-    await nlx.send_message(bf, name)
-    await asyncio.sleep(1.8)
+    else:
+        await nlx.send_message(bf, name)
+        await asyncio.sleep(1.8)
     async for aa in nlx.search_messages(bf, limit=1):
         isdone = aa.text
         break
