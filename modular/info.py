@@ -421,7 +421,7 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     await sleep(2)
     async for org in m.chat.get_members():
-        if org.is_bot:
+        if org.user.is_bot:
             continue
         mention = f"<a href=tg://user?id={org.user.id}>{org.user.first_name} {org.user.last_name or ''}</a>"
         if (
