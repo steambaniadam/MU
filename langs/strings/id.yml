@@ -299,6 +299,12 @@ info_15: "**Chat Info\n\n🆔 ID: `{}`\n🚀 Chat Title: {}\n✨ Chat Type: {}\n
 info_16: "{} **Ini bukan pengguna, tetapi Grup! Silahkan gunakan `cinfo`.**"
 info_17: "{} **Gunakan format '{}` @username/id grup.**"
 
+# staff
+stap_1: "{} <b>Daftar Admin {}:</b>\n\n"
+stap_2: "<b>♚ Owner :</b>\n {}\n\n"
+stap_3: "<b>♛ Co-Founder :</b>\n {}\n\n"
+stap_4: "<b>✪ Admins :</b>\n {}\n\n"
+
 # limit
 lmt_1: "{} **{}**\n\n ~ {} **{}**"
 
@@ -502,7 +508,7 @@ help_global: " Global\n\n• Perintah : `{0}gban` [user_id/username/bales pesan]
 help_graph: " Telegraph\n\n• Perintah: `{0}tg`\n• Penjelasan: Untuk mengunggah teks, video atau foto."
 help_gruplog: " GrupLog\n\n• Perintah: `{0}gruplog` [on/off]\n• Penjelasan: Aktifkan tag log dan pm log."
 help_heroku: " Heroku\n\n• Perintah : `{0}getlog`\n• Penjelasan : Melihat log heroku.\n\n• Perintah : `{0}getvar`\n• Penjelasan : Melihat variabel diheroku.\n\n• Perintah : `{0}delvar`\n• Penjelasan : Menghapus variabel diheroku .\n\n• Perintah : `{0}setvar`\n• Penjelasan : Mengatur variabel dan value diheroku."
-help_info: " Info \n\n• Perintah: `{0}info`\n• Penjelasan: Untuk melihat info pengguna.\n\n• Perintah: `{0}cinfo`\n• Penjelasan: Untuk melihat info grup."
+help_info: " Info \n\n• Perintah: `{0}`staff\n• Penjelasan: Untuk melihat daftar admin di dalam grup.\n\n• Perintah: `{0}info`\n• Penjelasan: Untuk melihat info pengguna.\n\n• Perintah: `{0}cinfo`\n• Penjelasan: Untuk melihat info grup."
 help_webss: " Webshot\n\n• Perintah : `{0}webss or ss`\n• Penjelasan : Untuk mengambil tangkapan layar link."
 help_vcs: " Voice Chat\n\n• Perintah: `{0}startvc`\n• Penjelasan: Untuk memulai voice chat grup.\n\n• Perintah: `{0}stopvc`\n• Penjelasan: Untuk mengakhiri voice chat grup.\n\n• Perintah: `{0}joinvc`\n• Penjelasan: Untuk bergabung voice chat grup.\n\n• Perintah: `{0}leavevc`\n• Penjelasan: Untuk meninggalkan voice chat grup.\n\n• Perintah: `{0}vctitle`\n• Penjelasan: Untuk mengubah voice chat grup."
 help_pref: " Prefixes\n\n• Perintah: `{0}setprefix` [trigger]\n• Penjelasan: Untuk mengatur handler userbot anda."

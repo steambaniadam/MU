@@ -278,6 +278,12 @@ info_15: "**Chat Info\n\n🆔 ID: `{}`\n🚀 Chat Title: {}\n✨ Chat Type: {}\n
 info_16: "{} This is not a user, but a group! Please use `cinfo`."
 info_17: "{} **Use format '{}` @username/group_id.**"
 
+# staff
+stap_1: "{} <b>List Administrator on {}:</b>\n\n"
+stap_2: "<b>♚ Owner :</b>\n {}\n\n"
+stap_3: "<b>♛ Co-Founder :</b>\n {}\n\n"
+stap_4: "<b>✪ Admins :</b>\n {}\n\n"
+
 # limit
 lmt_1: "{} **{}**\n\n ~ {} **{}**"
 
@@ -501,7 +507,7 @@ help_global: " Global\n\n• Command: `{0}gban` [user_id/username/reply to messa
 help_graph: " Telegraph\n\n• Command: `{0}tg`\n• Description: To upload text, video, or photo."
 help_gruplog: " GroupLog\n\n• Command: `{0}gruplog` [on/off]\n• Description: Activate tag log and pm log."
 help_heroku: " Heroku\n\n• Command: `{0}getlog`\n• Description: View Heroku logs.\n\n• Command: `{0}getvar`\n• Description: View variables on Heroku.\n\n• Command: `{0}delvar`\n• Description: Delete variables on Heroku.\n\n• Command: `{0}setvar`\n• Description: Set variables and values on Heroku."
-help_info: " Info\n\n• Command: `{0}info`\n• Description: To view user info.\n\n• Command: `{0}cinfo`\n• Description: To view group info."
+help_info: " Info\n\n• Command: `{0}`staff\n• Description: For getting List Admins on groups.\n\n• Command: `{0}info`\n• Description: To view user info.\n\n• Command: `{0}cinfo`\n• Description: To view group info."
 help_webss: " Webshot\n\n• Command: `{0}webss or ss`\n• Description: To take a screenshot of a link."
 help_vcs: " Voice Chat\n\n• Command: `{0}startvc`\n• Description: To start a group voice chat.\n\n• Command: `{0}stopvc`\n• Description: To end a group voice chat.\n\n• Command: `{0}joinvc`\n• Description: To join a group voice chat.\n\n• Command: `{0}leavevc`\n• Description: To leave a group voice chat.\n\n• Command: `{0}vctitle`\n• Description: To change group voice chat title."
 help_pref: " Prefixes\n\n• Command: `{0}setprefix` [trigger]\n• Description: To set your userbot handler."
