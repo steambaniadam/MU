@@ -419,15 +419,14 @@ async def _(c: nlx, m):
     co_founder = []
     admin = []
     pros = await m.reply(cgr("proses").format(em.proses))
-    await sleep(2)
+    await sleep(1)
     async for org in m.chat.get_members():
         if org.user.is_bot:
             continue
-        mention = f"<a href=tg://user?id={org.user.id}>{org.user.first_name} {org.user.last_name or ''}</a>"
+        mention = f"<a href='tg://user?id={org.user.id}'>{org.user.first_name or ''} {org.user.last_name or ''}</a>"
         if (
             org.status.value == "administrator"
-            and org.privileges
-            and org.privileges.can_promote_members
+            and org.can_promote_members
         ):
             if org.custom_title:
                 co_founder.append(f"• {mention} - {org.custom_title}")
@@ -438,7 +437,7 @@ async def _(c: nlx, m):
                 admin.append(f"• {mention} - {org.custom_title}")
             else:
                 admin.append(f"• {mention}")
-        elif org.status.value == "owner":
+        elif org.status.value == "creator":
             if org.custom_title:
                 owner.append(f"• {mention} - {org.custom_title}")
             else:
@@ -447,13 +446,15 @@ async def _(c: nlx, m):
     owner_list = "\n ".join(owner)
     co_founder_list = "\n ".join(co_founder)
     admin_list = "\n ".join(admin)
-
-    response = cgr("stap_1").format(em.sukses, chat_title)
-    if owner:
-        response += cgr("stap_2").format(owner_list)
-    if co_founder:
-        response += cgr("stap_3").format(co_founder_list)
-    if admin:
-        response += cgr("stap_4").format(admin_list)
-
-    await pros.edit(response)
+    
+    try:
+        response = cgr("stap_1").format(em.sukses, chat_title)
+        if owner:
+            response += cgr("stap_2").format(owner_list)
+        if co_founder:
+            response += cgr("stap_3").format(co_founder_list)
+        if admin:
+            response += cgr("stap_4").format(admin_list)
+        return await pros.edit(response)
+    except Exception as e:
+        return await pros.edit(cgr("err").format(em.gagal, e))

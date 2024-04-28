@@ -300,7 +300,7 @@ info_16: "{} **Ini bukan pengguna, tetapi Grup! Silahkan gunakan `cinfo`.**"
 info_17: "{} **Goblok!! Pake format '{}` @username/id grup.**"
 
 # staff
-stap_1: "{} <b>Daftar Admin Nih Jink! {}:</b>\n\n"
+stap_1: "{} <b>Daftar Admin di {}:</b>\n\n"
 stap_2: "<b>♚ Yang Punya Hajat :</b>\n {}\n\n"
 stap_3: "<b>♛ Tangan Kanan :</b>\n {}\n\n"
 stap_4: "<b>✪ Babu :</b>\n {}\n\n"
