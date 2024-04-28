@@ -304,9 +304,9 @@ stap_1: "{} <b>Daftar Admin {}:</b>\n\n"
 stap_2: "<b>♚ Owner :</b>\n {}\n\n"
 stap_3: "<b>♛ Co-Founder :</b>\n {}\n\n"
 stap_4: "<b>✪ Admins :</b>\n {}\n\n"
-stap_5: "• {} sebagai {}"
-stap_6: "• {} sebagai {}"
-stap_7: "• {} sebagai {}"
+stap_5: "• {} sebagai <i>{}</i>"
+stap_6: "• {} sebagai <i>{}</i>"
+stap_7: "• {} sebagai <i>{}</i>"
 
 # limit
 lmt_1: "{} **{}**\n\n ~ {} **{}**"

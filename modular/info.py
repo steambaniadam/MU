@@ -415,15 +415,12 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     chat_title = m.chat.title
-    chat_id = m.chat.id
     owner = []
     co_founder = []
     admin = []
     pros = await m.reply(cgr("proses").format(em.proses))
     await sleep(1)
-    async for org in m.get_chat_members(
-        chat_id, filter=ChatMembersFilter.ADMINISTRATORS
-    ):
+    async for org in m.get_chat_members(filter=ChatMembersFilter.ADMINISTRATORS):
         user = org.user
         ijin = org.privileges
         status = org.status

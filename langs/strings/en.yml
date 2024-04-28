@@ -283,9 +283,9 @@ stap_1: "{} <b>List Administrator on {}:</b>\n\n"
 stap_2: "<b>♚ Owner :</b>\n {}\n\n"
 stap_3: "<b>♛ Co-Founder :</b>\n {}\n\n"
 stap_4: "<b>✪ Admins :</b>\n {}\n\n"
-stap_5: "• {} as {}"
-stap_6: "• {} as {}"
-stap_7: "• {} as {}"
+stap_5: "• {} as <i>{}</i>"
+stap_6: "• {} as <i>{}</i>"
+stap_7: "• {} as <i>{}</i>"
 
 # limit
 lmt_1: "{} **{}**\n\n ~ {} **{}**"
