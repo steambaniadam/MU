@@ -36,6 +36,7 @@ async def extract_api_token2(text):
     else:
         return None
 
+
 async def ocobot():
     LOGGER.info("MEMBUAT BOT TELEGRAM UNTUK ANDA DI @BotFather, Mohon Tunggu")
     gw = nlx.me
@@ -78,6 +79,7 @@ async def ocobot():
                 else:
                     LOGGER.error(f"Token API tidak ditemukan pada {username}.")
                     import sys
+
                     sys.exit(1)
     await nlx.send_message(bf, name)
     await asyncio.sleep(1.8)
