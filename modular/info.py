@@ -446,12 +446,12 @@ async def _(c: nlx, m):
     co_founder_list = "\n ".join(co_founder)
     admin_list = "\n ".join(admin)
 
-    response = (cgr("stap_1").format(em.sukses, chat_title))
+    response = cgr("stap_1").format(em.sukses, chat_title)
     if owner:
-        response += (cgr("stap_2").format(owner_list))
+        response += cgr("stap_2").format(owner_list)
     if co_founder:
-        response += (cgr("stap_3").format(co_founder_list))
+        response += cgr("stap_3").format(co_founder_list)
     if admin:
-        response += (cgr("stap_4").format(admin_list))
+        response += cgr("stap_4").format(admin_list)
 
     await pros.edit(response)
