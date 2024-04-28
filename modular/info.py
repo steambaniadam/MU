@@ -421,14 +421,12 @@ async def _(c: nlx, m):
     admin = []
     pros = await m.reply(cgr("proses").format(em.proses))
     await sleep(1)
-    async for org in c.get_chat_members(chat_id):
+    async for org in m.get_chat_members(chat_id, filter=ChatMembersFilter.ADMINISTRATORS):
         user = org.user
         ijin = org.privileges
         status = org.status
         title = org.custom_title
-        if user.is_bot:
-            continue
-        mention = f"<a href='tg://user?id={org.user.id}'>{org.user.first_name or ''} {org.user.last_name or ''}</a>"
+        mention = f"<a href='tg://user?id={user.id}'>{user.first_name or ''} {user.last_name or ''}</a>"
         if (
             status == ChatMemberStatus.ADMINISTRATOR
             and ijin.can_promote_members
