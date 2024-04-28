@@ -56,15 +56,17 @@ async def ocobot():
                 await asyncio.sleep(1.8)
                 await nlx.send_message(bf, f"@{username}")
                 await asyncio.sleep(3)
-                async for aa in nlx.search_messages(bf, query="You can use this token to access HTTP API:", limit=1):
+                async for aa in nlx.search_messages(
+                    bf, query="You can use this token to access HTTP API:", limit=1
+                ):
                     if aa.text:
                         donee = aa.text
                         token = extract_api_token(donee)
                         if token:
                             ndB.set_key("BOT_TOKEN", token)
                             LOGGER.info(
-                            f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
-                        )
+                                f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
+                            )
                             await enable_inline(username)
                         else:
                             LOGGER.error("Token API tidak ditemukan.")
