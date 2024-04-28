@@ -60,6 +60,8 @@ async def ocobot():
         isdone = None
     if isdone is None or "Sorry, you can't add more than 20 bots." in isdone:
         LOGGER.error("Saya akan menggunakan bot yang tersedia pada @BotFather")
+        await nlx.send_message(bf, "/start")
+        await asyncio.sleep(1.8)
         await nlx.send_message(bf, "/token")
         await asyncio.sleep(1.8)
         await nlx.send_message(bf, f"@{username}")
@@ -76,7 +78,8 @@ async def ocobot():
                         LOGGER.info(
                             f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
                         )
-                        return await enable_inline(username)
+                        await enable_inline(username)
+                        return
                 else:
                     LOGGER.error(
                         f"Silahkan buat bot di @BotFather, lalu tambahkan Variabel bot_token pada env, lalu mulai ulang."
@@ -116,7 +119,8 @@ async def ocobot():
                 LOGGER.info(
                     f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
                 )
-                return await enable_inline(username)
+                await enable_inline(username)
+                return
             else:
                 LOGGER.error(f"Token API tidak ditemukan pada {username}.")
                 import sys
