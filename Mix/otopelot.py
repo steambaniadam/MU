@@ -21,23 +21,23 @@ from team.nandev.database import ndB
 from Mix import nlx
 
 
-def extract_api_token(donee):
-    match = re.search(r"Use this token to access the HTTP API:\s*([\w:]+)", donee)
+def extract_api_token(text):
+    match = re.search(r"Use this token to access the HTTP API:\s*([\w:]+)", text)
     if match:
         return match.group(1)
     else:
         return None
 
 
-def extract_api_token2(bb):
-    match = re.search(r"You can use this token to access HTTP API:\s*([\w:]+)", bb)
+def extract_api_token2(text):
+    match = re.search(r"Use this token to access the HTTP API:\s*([\w:]+)", text)
     if match:
         return match.group(1)
     else:
         return None
 
 
-async def ocobot():
+async def autobot():
     LOGGER.info("MEMBUAT BOT TELEGRAM UNTUK ANDA DI @BotFather, Mohon Tunggu")
     gw = nlx.me
     name = gw.first_name + " Asisstant"
@@ -53,14 +53,14 @@ async def ocobot():
     await asyncio.sleep(1)
     await nlx.send_message(bf, "/newbot")
     await asyncio.sleep(1)
-    async for aa in nlx.search_messages(bf, query="Alright, a new bot.", limit=1):
+    async for aa in nlx.search_messages(bf, "Alright, a new bot.", limit=1):
         isdone = aa.text
         break
     else:
         isdone = None
     if isdone is None or "Sorry, you can't add more than 20 bots." in isdone:
         LOGGER.error(
-            "Bot anda sudah lebih dari 20 bot, saya akan menggunakan bot lama anda."
+            "Tolong buat Bot dari @BotFather dan tambahkan tokennya di bot_token, sebagai env var dan mulai ulang saya."
         )
         await nlx.send_message(bf, "/token")
         await asyncio.sleep(1)
@@ -76,7 +76,9 @@ async def ocobot():
                     LOGGER.info(
                         f"Selesai. Berhasil membuat @{username} untuk digunakan sebagai bot asisten Anda!"
                     )
-                    await enable_inline(username)
+                    return await enable_inline(username)
+        # import sys
+        # sys.exit(1)
     await nlx.send_message(bf, name)
     await asyncio.sleep(1)
     async for aa in nlx.search_messages(bf, limit=1):
@@ -125,7 +127,10 @@ async def ocobot():
 
 async def enable_inline(username):
     gw = nlx.me
-    user_name = gw.username
+    if gw.username:
+        user_name = gw.username
+    else:
+        user_name = gw.mention
     pp = random.choice(
         [
             "https://telegra.ph//file/19b336da463a05d7d8f8c.jpg",
