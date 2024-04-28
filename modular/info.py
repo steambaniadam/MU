@@ -407,3 +407,50 @@ I've trouble with this chat :
             dimari,
         )
     )
+
+
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    chat_title = m.chat.title
+    chat_id = m.chat.id    
+    owner = []
+    co_founder = []
+    admin = []
+    pros = m.reply(f"{em.proses} Sedang proses pengambilan data admin ..")
+    async for org in m.chat.get_members():
+        mention = f"<a href=tg://user?id={org.user.id}>{org.user.first_name} {org.user.last_name or ''}</a>"
+        if (
+            org.status.value == "administrator"
+            and org.privileges
+            and org.privileges.can_promote_members
+        ):
+            if org.custom_title:
+                co_founder.append(f"• {mention} - {org.custom_title}")
+            else:
+                co_founder.append(f"• {mention}"
+                )
+        elif org.status.value == "administrator":
+            if org.custom_title:
+                admin.append(f"• {mention} - {org.custom_title}")
+            else:
+                admin.append(f"• {mention}")
+        elif org.status.value == "owner":
+            if org.custom_title:
+                owner.append(f"• {mention} - {org.custom_title}")
+            else:
+                owner.append(f"• {mention}")
+    
+    owner_list = "\n• ".join(owner)
+    co_founder_list = "\n• ".join(co_founder)
+    admin_list = "\n• ".join(admin)
+    
+    response = f"Daftar Admin {chat_title}:\n\n"
+    if owner:
+        response += f"Owner :\n {owner_list}\n\n"
+    if co_founder:
+        response += f"Co-Founder :\n {co_founder_list}\n\n"
+    if admin:
+        response += f"Admins :\n {admin_list}\n\n"
+    
+    await pros.edit(response)
