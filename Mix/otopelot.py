@@ -59,9 +59,7 @@ async def ocobot():
     else:
         isdone = None
     if isdone is None or "Sorry, you can't add more than 20 bots." in isdone:
-        LOGGER.error(
-            "Saya akan menggunakan bot yang tersedia pada @BotFather"
-        )
+        LOGGER.error("Saya akan menggunakan bot yang tersedia pada @BotFather")
         await nlx.send_message(bf, "/token")
         await asyncio.sleep(1.8)
         await nlx.send_message(bf, f"@{username}")
