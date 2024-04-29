@@ -101,9 +101,13 @@ async def _(c: nlx, m):
                     m_two = types.Message(
                         message_id=m.id,
                         chat=types.Chat(id=m.chat.id, type=m.chat.type),
-                        from_user=types.User(id=m.from_user.id, first_name=m.from_user.first_name, is_bot=m.from_user.is_bot),
+                        from_user=types.User(
+                            id=m.from_user.id,
+                            first_name=m.from_user.first_name,
+                            is_bot=m.from_user.is_bot,
+                        ),
                         date=m.date,
-                        text=quote_text
+                        text=quote_text,
                     )
                 messages = [m_two]
 
@@ -140,9 +144,13 @@ async def _(c: nlx, m):
                 m_two = types.Message(
                     message_id=m.id,
                     chat=types.Chat(id=m.chat.id, type=m.chat.type),
-                    from_user=types.User(id=m.from_user.id, first_name=m.from_user.first_name, is_bot=m.from_user.is_bot),
+                    from_user=types.User(
+                        id=m.from_user.id,
+                        first_name=m.from_user.first_name,
+                        is_bot=m.from_user.is_bot,
+                    ),
                     date=m.date,
-                    text=quote_text
+                    text=quote_text,
                 )
             messages = [m_two]
     try:
