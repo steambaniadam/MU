@@ -62,6 +62,7 @@ async def _(c: nlx, m):
     em.initialize()
     acak = None
     messages = None
+    rep = m.reply_to_message
     if len(m.command) < 2 and not rep:
         return await m.reply(f"{em.gagal} Silahkan ketik `{m}help quotly`")
     if len(m.command) > 1:
