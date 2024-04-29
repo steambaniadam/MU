@@ -214,45 +214,50 @@ async def _(c: nlx, m):
                 return
 
             for image_data in images:
-                try:
                     image_url = image_data["url"]
-                    if image_data["artist"]["name"]:
-                        name_anime = image_data["artist"]["name"]
-                    else:
+                    try:
+                        if image_data["artist"]["name"]:
+                            name_anime = image_data["artist"]["name"]
+                        else:
+                            name_anime = "Unknown"
+                    except TypeError:
                         name_anime = "Unknown"
-                    if image_data["tags"][0]["description"]:
-                        desc = image_data["tags"][0]["description"]
-                    else:
+                    try:
+                        if image_data["tags"][0]["description"]:
+                            desc = image_data["tags"][0]["description"]
+                        else:
+                            desc = "Unknown"
+                    except TypeError:
                         desc = "Unknown"
-                    if image_data["uploaded_at"]:
-                        aplod = image_data["uploaded_at"]
-                    else:
+                    try:
+                        if image_data["uploaded_at"]:
+                            aplod = image_data["uploaded_at"]
+                        else:
+                            aplod = "Unknown"
+                    except TypeError:
                         aplod = "Unknown"
-                except (KeyError, TypeError) as e:
-                    await pros.edit(f"{em.gagal} Error: {str(e)}")
-                    continue
 
-                image_response = requests.get(image_url)
-                if image_response.status_code == 200:
-                    image_content = image_response.content
-                    image_bytes = io.BytesIO(image_content)
-                    image_bytes.name = "image.jpg"
-                    caption = (
-                        f"{em.sukses} Successfully Downloaded:\n\n"
-                        f"Name = {name_anime}\n"
-                        f"Description = {desc}\n"
-                        f"Uploaded = {aplod}\n"
-                    )
-                    await c.send_photo(m.chat.id, photo=image_bytes, caption=caption)
-                    await pros.delete()
+                    image_response = requests.get(image_url)
+                    if image_response.status_code == 200:
+                        image_content = image_response.content
+                        image_bytes = io.BytesIO(image_content)
+                        image_bytes.name = "image.jpg"
+                        caption = (
+                            f"{em.sukses} Successfully Downloaded:\n\n"
+                            f"Name = {name_anime}\n"
+                            f"Description = {desc}\n"
+                            f"Uploaded = {aplod}\n"
+                        )
+                        await c.send_photo(m.chat.id, photo=image_bytes, caption=caption)
+                        await pros.delete()
 
-                    folder_path = "waifu_images"
-                    os.makedirs(folder_path, exist_ok=True)
-                    filename = image_url.split("/")[-1]
-                    filepath = os.path.join(folder_path, filename)
+                        folder_path = "waifu_images"
+                        os.makedirs(folder_path, exist_ok=True)
+                        filename = image_url.split("/")[-1]
+                        filepath = os.path.join(folder_path, filename)
 
-                    if os.path.exists(filepath):
-                        os.remove(filepath)
+                        if os.path.exists(filepath):
+                            os.remove(filepath)
         except IndexError as e:
             await pros.edit(f"{em.gagal} Error: {str(e)}")
     else:
