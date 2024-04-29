@@ -426,7 +426,7 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     await sleep(1)
 
-    async for org in c.get.chat_members(m.chat.id):
+    async for org in c.get_chat_members(m.chat.id):
         user = org.user
         ijin = org.privileges
         status = org.status
