@@ -1,6 +1,6 @@
 import io
 import os
-
+from asyncio import sleep
 import requests
 
 from Mix import *
@@ -57,11 +57,16 @@ kueri = [
 ]
 
 
-async def download_and_send_image(client, message, image_url, image_content):
+async def download_and_send_image(c: nlx, m, image_url, image_content):
+    em = Emojik()
+    em.initialize()
     image_bytes = io.BytesIO(image_content)
     image_bytes.name = "image.jpg"
 
-    await client.send_photo(message.chat.id, photo=image_bytes)
+    await c.send_photo(
+        m.chat.id,
+        photo=image_bytes,
+        caption=f"{em.sukses} Downloaded by : {c.me.mention}")
 
     folder_path = "waifu_images"
     os.makedirs(folder_path, exist_ok=True)
@@ -76,15 +81,15 @@ async def download_and_send_image(client, message, image_url, image_content):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    pros = await m.reply(cgr("proses").format(em.proses))
+    pros = await m.edit(cgr("proses").format(em.proses))
+    await sleep(2)
     if len(m.command) > 1:
         category = m.text.split(maxsplit=1)[1].lower()
     else:
         categories_text = "\n".join(
             [f"{i+0}) <code>{cat}</code>" for i, cat in enumerate(categories, start=1)]
         )
-        await m.reply(cgr("waif_1").format(em.gagal, categories_text))
-        await pros.delete()
+        await pros.edit(cgr("waif_1").format(em.gagal, categories_text))
         return
 
     api_url = f"https://api.waifu.pics/sfw/{category}"
@@ -98,26 +103,24 @@ async def _(c: nlx, m):
             await download_and_send_image(c, m, image_url, image_response.content)
             await pros.delete()
         else:
-            await m.reply(f"{em.gagal} **Gagal mengunduh gambar.**")
-            await pros.delete()
+            return await pros.edit(f"{em.gagal} **Gagal mengunduh gambar.**")
     else:
-        await m.reply(f"{em.gagal} **Gagal mengambil gambar.**")
-        await pros.delete()
+        return await pros.edit(f"{em.gagal} **Gagal mengambil gambar.**")
 
 
 @ky.ubot("neko", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    pros = await m.reply(cgr("proses").format(em.proses))
+    pros = await m.edit(cgr("proses").format(em.proses))
+    await sleep(2)
     if len(m.command) > 1:
         kuer = m.text.split(maxsplit=1)[1].lower()
     else:
         kategori = "\n".join(
             [f"{i+0}) <code>{cat}</code>" for i, cat in enumerate(kueri, start=1)]
         )
-        await m.reply(cgr("waif_1").format(em.gagal, kategori))
-        await pros.delete()
+        await pros.edit(cgr("waif_1").format(em.gagal, kategori))
         return
 
     api_url = f"https://nekos.pro/api/{kuer}"
@@ -129,10 +132,7 @@ async def _(c: nlx, m):
 
         if image_response.status_code == 200:
             await download_and_send_image(c, m, image_url, image_response.content)
-            await pros.delete()
         else:
-            await m.reply(f"{em.gagal} **Gagal mengunduh gambar.**")
-            await pros.delete()
+            return await pros.edit(f"{em.gagal} **Gagal mengunduh gambar.**")
     else:
-        await m.reply(f"{em.gagal} **Gagal mengambil gambar.**")
-        await pros.delete()
+        return await pros.edit(f"{em.gagal} **Gagal mengambil gambar.**")
