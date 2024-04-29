@@ -174,7 +174,7 @@ async def _(c: nlx, m):
                 acak = warna
             else:
                 acak = random.choice(loanjing)
-            text = m.text.split(None, 2)[2] if len(m.command) > 2 else None
+            m.text.split(None, 2)[2] if len(m.command) > 2 else None
             if rep:
                 m_one = await c.get_messages(
                     chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
