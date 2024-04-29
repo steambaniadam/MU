@@ -96,20 +96,14 @@ async def _(c: nlx, m):
                 )
                 messages = [m_one]
             else:
-                if len(m.command) > 1:
-                    quote_text = " ".join(m.command[1:])
-                    m_two = types.Message(
-                        message_id=m.id,
-                        chat=types.Chat(id=m.chat.id, type=m.chat.type),
-                        from_user=types.User(
-                            id=m.from_user.id,
-                            first_name=m.from_user.first_name,
-                            is_bot=m.from_user.is_bot,
-                        ),
-                        date=m.date,
-                        text=quote_text,
-                    )
-                messages = [m_two]
+                messages = [
+                    i
+                    for i in await c.get_messages(
+                        chat_id=m.chat.id,
+                        message_ids=m.id
+                        )
+                    if not i.empty and not i.media
+                ]
 
         elif int(tag):
             if int(tag) > 10:
@@ -139,20 +133,14 @@ async def _(c: nlx, m):
             )
             messages = [m_one]
         else:
-            if len(m.command) > 1:
-                quote_text = " ".join(m.command[1:])
-                m_two = types.Message(
-                    message_id=m.id,
-                    chat=types.Chat(id=m.chat.id, type=m.chat.type),
-                    from_user=types.User(
-                        id=m.from_user.id,
-                        first_name=m.from_user.first_name,
-                        is_bot=m.from_user.is_bot,
-                    ),
-                    date=m.date,
-                    text=quote_text,
-                )
-            messages = [m_two]
+            messages = [
+                i
+                for i in await c.get_messages(
+                    chat_id=m.chat.id,
+                    message_ids=m.id
+                    )
+                if not i.empty and not i.media
+            ]
     try:
         hasil = await quotly(messages, acak)
         with open("hasil.json", "w") as file:
