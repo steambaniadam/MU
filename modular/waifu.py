@@ -149,18 +149,10 @@ versatile = [
     "oppai",
     "selfies",
     "uniform",
-    "kamisato-ayaka"
+    "kamisato-ayaka",
 ]
 
-nsfw = [
-    "ass",
-    "hentai",
-    "milf",
-    "oral",
-    "paizuri",
-    "ecchi",
-    "ero"
-]
+nsfw = ["ass", "hentai", "milf", "oral", "paizuri", "ecchi", "ero"]
 
 
 @ky.ubot("waifu", sudo=True)
@@ -173,22 +165,43 @@ async def _(c: nlx, m):
         kuer = m.text.split(maxsplit=1)[1].lower()
     else:
         kategori = "\n".join(
-            [f"{i+0}) <code>{cat}</code>" for i, cat in enumerate(versatile or nsfw, start=1)]
+            [
+                f"{i+0}) <code>{cat}</code>"
+                for i, cat in enumerate(versatile or nsfw, start=1)
+            ]
         )
         await pros.edit(cgr("waif_1").format(em.gagal, kategori))
         return
 
     api_url = f"https://api.waifu.im/search"
     params = {
-        'included_tags': ['ass', 'hentai', 'milf', 'oral', 'paizuri', 'ecchi', 'ero', 'raiden-shogun', 'maid', 'waifu', 'marin-kitagawa', 'mori-calliope', 'raiden-shogun', 'oppai', 'selfies', 'uniform', 'kamisato-ayaka'],
-        'height': '>=2000',
-        'limit': '3'
+        "included_tags": [
+            "ass",
+            "hentai",
+            "milf",
+            "oral",
+            "paizuri",
+            "ecchi",
+            "ero",
+            "raiden-shogun",
+            "maid",
+            "waifu",
+            "marin-kitagawa",
+            "mori-calliope",
+            "raiden-shogun",
+            "oppai",
+            "selfies",
+            "uniform",
+            "kamisato-ayaka",
+        ],
+        "height": ">=2000",
+        "limit": "3",
     }
     response = requests.get(api_url, params=params)
     if response.status_code == 200:
         data = response.json()
-        image_data = data['images'][0]
-        image_url = image_data['url']
+        image_data = data["images"][0]
+        image_url = image_data["url"]
         image_response = requests.get(image_url)
         if image_response.status_code == 200:
             image_content = image_response.content
