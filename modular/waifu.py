@@ -161,8 +161,9 @@ async def _(c: nlx, m):
     em.initialize()
     pros = await m.edit(cgr("proses").format(em.proses))
     await sleep(2)
-    if len(m.command) > 1:
+    if len(m.command) > 2:
         kuer = m.text.split(maxsplit=1)[1].lower()
+        kuen = m.text.split(maxsplit=1)[2]
     else:
         kategori = "\n".join(
             [
@@ -170,32 +171,14 @@ async def _(c: nlx, m):
                 for i, cat in enumerate(versatile or nsfw, start=1)
             ]
         )
-        await pros.edit(cgr("waif_1").format(em.gagal, kategori))
+        await pros.edit(f"Gunakan Perintah : `{m.command}` [query] [quantity]\nContoh: `{m.command} oppai 3`")
         return
 
     api_url = f"https://api.waifu.im/search"
     params = {
-        "included_tags": [
-            "ass",
-            "hentai",
-            "milf",
-            "oral",
-            "paizuri",
-            "ecchi",
-            "ero",
-            "raiden-shogun",
-            "maid",
-            "waifu",
-            "marin-kitagawa",
-            "mori-calliope",
-            "raiden-shogun",
-            "oppai",
-            "selfies",
-            "uniform",
-            "kamisato-ayaka",
-        ],
+        "included_tags": [f"{kuer}"],
         "height": ">=2000",
-        "limit": "3",
+        "limit": f"{kuen}",
     }
     response = requests.get(api_url, params=params)
     if response.status_code == 200:
