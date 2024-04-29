@@ -182,8 +182,8 @@ async def _(c: nlx, m):
             else:
                 parts = m.text.split()
                 index_q = parts.index(f"{m.text} {warna}")
-                teks = " ".join(parts[index_q + 1 :])
-                m_one = await c.get_messages(chat_id=m.chat.id, text=teks)
+                teks = " ".join(parts[index_q + 2 :])
+                m_one = await c.send_message(chat_id=m.chat.id, text=teks)
                 messages = [m_one]
 
         elif int(tag):
