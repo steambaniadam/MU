@@ -424,7 +424,7 @@ async def _(c: nlx, m):
         chat_link = f"<a href='t.me/{uname}'>{chat.title}</a>"
     else:
         chat_link = f"<a href='{m.link}'>{chat.title}</a>"
-    async for dia in c.chat.get_members():
+    async for dia in c.get_chat_members(chat.id):
         user = dia.user
         ijin = dia.privileges
         status = dia.status
