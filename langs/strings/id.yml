@@ -479,6 +479,17 @@ prof_9: "{} **Foto Profil anda Berhasil Diubah.**"
 
 # waifu
 waif_1: "{} **Silakan pilih kategori dari daftar berikut:**\n\n{}"
+waif_2: "{} **Gagal mengunduh gambar.**"
+waif_3: "{} **Gagal mengambil gambar.**"
+waif_4: "{} **Berikan angka `1` - `30`**"
+waif_5: "Gunakan : `{}` [kueri] [jumlah]\nContoh: `{} oppai 3`\n\nTags yang tersedia:\n{}"
+waif_6: "{} Jumlah harus berupa angka dari `1` - `30`"
+waif_7: "{} Tidak berhasil mendapatkan gambar"
+waif_8: "{} Berhasil mengunduh:\n\n"
+waif_9: "Nama = {}\n"
+waif_10: "Deskripsi = {}\n"
+waif_11: "Unggah = {}\n"
+waif_12: "{} Gagal mendapatkan gambar."
 
 # qur'an
 qur_1: "{} Silahkan berikan nama surah."
@@ -566,7 +577,7 @@ help_auend: " **AutoEnd**\n\n• Perintah: `{0}`endchat [username/id pengguna/ba
 help_img: " **Image**\n\n• Perintah: `{0}`img [kata pencarian]\n• Penjelasan: Mencari image atau gambar.\n"
 help_tod: " **Truth Or Dare**\n\n• Perintah: `{0}truth`\n• Penjelasan: Untuk memberikan pertanyaan random yang harus dijawab jujur!\n\n• Perintah: `{0}dare`\n• Penjelasan: Untuk memberikan tantangan random yang harus dilakukan!\n"
 help_prox: " **Proxy**\n\n• Perintah: `{0}getproxy` [`http`|`socks4`|`socks5`]\n• Penjelasan: Untuk mengambil proxy acak dan terbaik.\n"
-help_waif: " **Waifu**\n\n• Perintah: `{0}waifu` [tags]\n• Penjelasan: Untuk mendapatkan gambar waifu/anime sesuai tags.\n\n• Perintah: `{0}loly` [kategori]\n• Penjelasan: Untuk mendapatkan gambar waifu/anime sesuai kategori.\n\n• Perintah: `{0}neko` [kueri]\n• Penjelasan: Untuk mendapatkan gambar anime dewasa sesuai kueri.\n"
+help_waif: " **Waifu**\n\n• Perintah: `{0}waifu` [tags] [jumlah (optional, default 3)]\n• Penjelasan: Untuk mendapatkan gambar waifu/anime sesuai tags.\n\n• Perintah: `{0}loly` [kategori]\n• Penjelasan: Untuk mendapatkan gambar waifu/anime sesuai kategori.\n\n• Perintah: `{0}neko` [kueri]\n• Penjelasan: Untuk mendapatkan gambar anime dewasa sesuai kueri.\n"
 help_qur: " **Qur'an**\n\n• Perintah: `{0}qs [nama surah]`\n• Penjelasan: Untuk mengambil info surah tersebut.\n\n• Perintah: `{0}list_surah`\n• Penjelasan: Untuk mengambil daftar surah.\n"
 help_animstream: " **Anime Streaming**\n\n• Perintah: `{0}streaming` [Judul Film]\n• Penjelasan: Untuk mengambil link streaming film anime\n\n• Perintah: `{0}list_anime`\n• Penjelasan: Untuk mengambil daftar film anime yang tersedia.\n"
 help_pint: " **Pinterest**\n\n• Perintah: `{0}pint` [link pinterest]\n• Penjelasan: Untuk mengunduh file yang terdapat pada link.\n"

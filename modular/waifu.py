@@ -54,7 +54,7 @@ kueri = [
     "random",
     "vtuber",
     "ecchi",
-    "ficking",
+    "fucking",
 ]
 
 
@@ -105,9 +105,9 @@ async def _(c: nlx, m):
             await download_and_send_image(c, m, image_url, image_response.content)
             await pros.delete()
         else:
-            return await pros.edit(f"{em.gagal} **Gagal mengunduh gambar.**")
+            return await pros.edit(cgr("waif_2").format(em.gagal))
     else:
-        return await pros.edit(f"{em.gagal} **Gagal mengambil gambar.**")
+        return await pros.edit(cgr("waif_3").format(em.gagal))
 
 
 @ky.ubot("neko", sudo=True)
@@ -135,9 +135,9 @@ async def _(c: nlx, m):
         if image_response.status_code == 200:
             await download_and_send_image(c, m, image_url, image_response.content)
         else:
-            return await pros.edit(f"{em.gagal} **Gagal mengunduh gambar.**")
+            return await pros.edit(cgr("waif_2").format(em.gagal))
     else:
-        return await pros.edit(f"{em.gagal} **Gagal mengambil gambar.**")
+        return await pros.edit(cgr("waif_3").format(em.gagal))
 
 
 TAGS = [
@@ -176,15 +176,13 @@ async def _(c: nlx, m):
             kuer = args[0].lower()
             kuen = args[1]
         else:
-            await pros.edit(f"{em.gagal} Invalid number of arguments.")
+            await pros.edit(cgr("waif4").format(em.gagal))
             return
     else:
         tag_list = "\n".join(
             [f"{i+1}) <code>{tag}</code>" for i, tag in enumerate(TAGS)]
         )
-        await pros.edit(
-            f"Usage: `{m.text}` [query] [quantity]\nExample: `{m.text} oppai 3`\nAvailable tags:\n{tag_list}"
-        )
+        await pros.edit(cgr("waif_5").format(m.text, m.text, tag_list))
         return
 
     try:
@@ -192,7 +190,7 @@ async def _(c: nlx, m):
         if kuen <= 0:
             raise ValueError
     except ValueError:
-        await pros.edit(f"{em.gagal} Quantity must be a positive integer.")
+        await pros.edit(cgr("waif_6").format(em.gagal))
         return
 
     api_url = "https://api.waifu.im/search"
@@ -210,7 +208,7 @@ async def _(c: nlx, m):
             data = response.json()
             images = data.get("images", [])
             if not images:
-                await pros.edit(f"{em.gagal} No images found for the specified query.")
+                await pros.edit(cgr("waifu_7").format(em.gagal))
                 return
 
             for image_data in images:
@@ -243,10 +241,10 @@ async def _(c: nlx, m):
                     image_bytes = io.BytesIO(image_content)
                     image_bytes.name = "image.jpg"
                     caption = (
-                        f"{em.sukses} Successfully Downloaded:\n\n"
-                        f"Name = {name_anime}\n"
-                        f"Description = {desc}\n"
-                        f"Uploaded = {aplod}\n"
+                        cgr("waif_8").format(em.sukses),
+                        cgr("waif_9").format(name_anime),
+                        cgr("waif_10").format(desc),
+                        cgr("wait_11").format(aplod),
                     )
                     await c.send_photo(m.chat.id, photo=image_bytes, caption=caption)
                     await pros.delete()
@@ -259,6 +257,6 @@ async def _(c: nlx, m):
                     if os.path.exists(filepath):
                         os.remove(filepath)
         except IndexError as e:
-            await pros.edit(f"{em.gagal} Error: {str(e)}")
+            await pros.edit(cgr("err").format(em.gagal, e))
     else:
-        await pros.edit(f"{em.gagal} Failed to fetch the image.")
+        await pros.edit(cgr("waif_12").format(em.gagal))

@@ -476,8 +476,19 @@ prof_7: "{} **You're not an admin in any group!**"
 prof_8: "{} **You're an admin in `{}` group(s) :**\n\n**{}**"
 prof_9: "{} **Your Profile Picture has been successfully changed.**"
 
-# waifu
-waif_1: "{} **please choose one:**\n\n{}"
+#waifu
+waif_1: "{} **Please select a category from the following list:**\n\n{}"
+waif_2: "{} **Failed to download image.**"
+waif_3: "{} **Failed to capture image.**"
+waif_4: "{} **Give numbers `1` - `30`**"
+waif_5: "Use : `{}` [query] [amount]\nExample: `{} oppai 3`\n\nAvailable tags:\n{}"
+waif_6: "{} Amount must be a number from `1` - `30`"
+waif_7: "{} Unable to get image"
+waif_8: "{} Successfully downloaded:\n\n"
+waif_9: "Name = {}\n"
+waif_10: "Description = {}\n"
+waif_11: "Upload = {}\n"
+waif_12: "{} Failed to get image."
 
 # qur'an
 qur_1: "{} Please give me name of surah."
@@ -565,7 +576,7 @@ help_auend: " **AutoEnd**\n\n• Command: `{0}`endchat [username/user ID/reply t
 help_img: " **Image**\n\n• Command: `{0}`img [query]\n• Description: Searching image.\n"
 help_tod: " **Truth Or Dare**\n\n• Command: `{0}truth`\n• Description: To provide random questions that must be answered truthfully!\n\n• Command: `{0}dare`\n• Description: To provide a random challenge that must be done!\n"
 help_prox: " **Proxy**\n\n• Command: `{0}getproxy` [`http`|`socks4`|`socks5`]\n• Description: For get Top 2 as random but best.\n"
-help_waif: "**Waifu**\n\n• Command: {0}waifu [tags]\n• Description: Fetches waifu/anime images based on specified tags.\n\n• Command: {0}loly [category]\n• Description: Retrieves waifu/anime images based on the specified category.\n\n• Command: {0}neko [query]\n• Description: Obtains adult anime images based on the provided query.\n"
+help_waif: "**Waifu**\n\n• Command: {0}waifu [tags] [quantity (Optional, Default = 3)]\n• Description: Fetches waifu/anime images based on specified tags.\n\n• Command: {0}loly [category]\n• Description: Retrieves waifu/anime images based on the specified category.\n\n• Command: {0}neko [query]\n• Description: Obtains adult anime images based on the provided query.\n"
 help_qur: " **Qur'an**\n\n• Command: `{0}qs [name of surah]`\n• Description: Fetching information of Surah.\n\n• Command: `{0}list_surah`\n• Description: Getting List of Surah Al-Quran.\n"
 help_animstream: " **Anime Streaming**\n\n• Command: `{0}streaming` [Anime Title Movie]\n• Description: For getting link for streaming anime.\n\n• Command: `{0}list_anime`\n• Description: For getting anime list movies\n"
 help_pint: " **Pinterest**\n\n• Command: `{0}pint` [link pinterest]\n• Description: For downloading file on pinterest use link.\n"
