@@ -97,11 +97,10 @@ async def _(c: nlx, m):
                 messages = [m_one]
             else:
                 if len(m.command) > 2:
-                    teg = ' '.join(m.command[2:])
+                    teg = " ".join(m.command[2:])
                     messages = [teg]
                 else:
                     messages = [m]
-                
 
         elif int(tag):
             if int(tag) > 10:
@@ -132,7 +131,7 @@ async def _(c: nlx, m):
             messages = [m_one]
         else:
             if len(m.command) > 2:
-                teg = ' '.join(m.command[2:])
+                teg = " ".join(m.command[2:])
                 messages = [teg]
             else:
                 messages = [m]
