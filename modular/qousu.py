@@ -55,7 +55,7 @@ async def _(c: nlx, m):
     else:
         await m.reply(jadi + iymek)
 
-
+"""
 @ky.ubot("q", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
@@ -97,6 +97,93 @@ async def _(c: nlx, m):
                 chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
             )
             messages = [m_one]
+
+        elif int(tag):
+            if int(tag) > 10:
+                return await pros.edit(cgr("qot_4").format(em.gagal))
+            warna = m.text.split(None, 2)[2] if len(m.command) > 2 else None
+            if warna:
+                acak = warna
+            else:
+                acak = random.choice(loanjing)
+            messages = [
+                i
+                for i in await c.get_messages(
+                    chat_id=m.chat.id,
+                    message_ids=range(
+                        m.reply_to_message.id,
+                        m.reply_to_message.id + int(tag),
+                    ),
+                    replies=0,
+                )
+                if not i.empty and not i.media
+            ]
+    else:
+        acak = random.choice(loanjing)
+        m_one = await c.get_messages(
+            chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
+        )
+        messages = [m_one]
+    try:
+        hasil = await quotly(messages, acak)
+        with open("hasil.json", "w") as file:
+            file.write(hasil.decode())
+        stik = await consu("hasil.json")
+        await m.reply_sticker(stik)
+        await pros.delete()
+    except Exception as e:
+        return await pros.edit(cgr("err").format(em.gagal, e))
+"""
+
+
+@ky.ubot("q", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    acak = None
+    messages = None
+    rep = m.reply_to_message
+    pros = await m.edit(cgr("proses").format(em.proses))
+    if len(m.command) < 2 and not rep:
+        return await pros.edit(
+            f"{em.gagal} Perintah salah!\n\nContoh : `{m.text} black` [teks/balas pesan]"
+        )
+    if len(m.command) > 1:
+        tag = m.command[1].strip()
+        if tag.startswith("@"):
+            user_id = tag[1:]
+            try:
+                org = await c.get_users(user_id)
+                if org.id in DEVS:
+                    await pros.edit(cgr("qot_3").format(em.gagal))
+                    return
+                rep = await c.get_messages(m.chat.id, m.reply_to_message.id, replies=0)
+                rep.from_user = org
+                messages = [rep]
+            except Exception as e:
+                return await pros.edit(cgr("err").format(em.gagal, e))
+            warna = m.text.split(None, 2)[2] if len(m.command) > 2 else None
+            if warna:
+                acak = warna
+            else:
+                acak = random.choice(loanjing)
+        elif not tag.startswith("@"):
+            warna = m.text.split(None, 1)[1] if len(m.command) > 1 else None
+            if warna:
+                acak = warna
+            else:
+                acak = random.choice(loanjing)
+            if rep:
+                m_one = await c.get_messages(
+                    chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
+                )
+                messages = [m_one]
+            else:
+                parts = m.text.split()
+                index_q = parts.index(f"/q {warna}")
+                teks = ' '.join(parts[index_q + 1:])
+                m_one = await c.get_messages(chat_id=m.chat.id, text=teks)
+                messages = [m_one]
 
         elif int(tag):
             if int(tag) > 10:
