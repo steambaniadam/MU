@@ -96,8 +96,12 @@ async def _(c: nlx, m):
                 )
                 messages = [m_one]
             else:
-                m_two = m.text.split(None, 2)[2] if len(m.command) > 1 else None
-                messages = [m_two.id]
+                if len(m.command) > 2:
+                    teg = ' '.join(m.command[2:])
+                    messages = [teg]
+                else:
+                    messages = [m]
+                
 
         elif int(tag):
             if int(tag) > 10:
@@ -127,8 +131,11 @@ async def _(c: nlx, m):
             )
             messages = [m_one]
         else:
-            m_two = m.text.split(None, 2)[2] if len(m.command) > 1 else None
-            messages = [m_two.id]
+            if len(m.command) > 2:
+                teg = ' '.join(m.command[2:])
+                messages = [teg]
+            else:
+                messages = [m]
     try:
         hasil = await quotly(messages, acak)
         with open("hasil.json", "w") as file:
