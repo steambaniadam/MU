@@ -458,7 +458,7 @@ async def _(c: nlx, m):
                 owner.append(cgr("stap_7").format(mention, title))
             else:
                 owner.append(f"{mention}")
-        elif status == ChatMemberFilter.BOTS and ChatMemberStatus.ADMINISTRATOR:
+        elif status == ChatMembersFilter.BOTS and ChatMemberStatus.ADMINISTRATOR:
             if title:
                 bots.append(cgr("stap_8").format(mention, title))
             else:
