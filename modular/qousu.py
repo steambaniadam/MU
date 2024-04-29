@@ -63,7 +63,7 @@ async def _(c: nlx, m):
     acak = None
     messages = None
     rep = m.reply_to_message
-    pros = m.edit(cgr("proses").format(em.proses))
+    pros = await m.edit(cgr("proses").format(em.proses))
     if len(m.command) < 2 and not rep:
         return await pros.edit(
             f"{em.gagal} Perintah salah!\n\nContoh : `{m.text} black` [teks/balas pesan]"
