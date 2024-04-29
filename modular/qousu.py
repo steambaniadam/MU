@@ -89,10 +89,13 @@ async def _(c: nlx, m):
                 acak = warna
             else:
                 acak = random.choice(loanjing)
-            m_one = await c.get_messages(
-                chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
-            )
-            messages = [m_one]
+            if rep:
+                m_one = await c.get_messages(
+                    chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
+                )
+                messages = [m_one]
+            else:
+                messages = [m]
 
         elif int(tag):
             if int(tag) > 10:
@@ -116,10 +119,13 @@ async def _(c: nlx, m):
             ]
     else:
         acak = random.choice(loanjing)
-        m_one = await c.get_messages(
-            chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
-        )
-        messages = [m_one]
+        if rep:
+            m_one = await c.get_messages(
+                chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
+            )
+            messages = [m_one]
+        else:
+            messages = [m]
     try:
         hasil = await quotly(messages, acak)
         with open("hasil.json", "w") as file:
