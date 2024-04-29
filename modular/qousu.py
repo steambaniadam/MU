@@ -65,7 +65,9 @@ async def _(c: nlx, m):
     rep = m.reply_to_messaage
     pros = m.edit(cgr("proses").format(em.proses))
     if len(m.command) < 1 and not rep:
-        return await m.reply(f"{em.gagal} Silahkan berikan teks atau balas pesan pengguna.")
+        return await m.reply(
+            f"{em.gagal} Silahkan berikan teks atau balas pesan pengguna."
+        )
     if len(m.command) > 1:
         tag = m.command[1].strip()
         if tag.startswith("@"):
