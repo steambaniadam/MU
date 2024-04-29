@@ -200,7 +200,7 @@ async def _(c: nlx, m):
         "included_tags": [kuer],
         "height": ">=2000",
         "limit": kuen,
-        "byte_size": "<=10485760",
+        "byte_size": "<=10485760"
     }
 
     response = requests.get(api_url, params=params)
