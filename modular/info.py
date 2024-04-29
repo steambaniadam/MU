@@ -464,36 +464,36 @@ async def _(c: nlx, m):
             else:
                 bot.append(f" ┣ {mention}")
     if not co_founder and not admin and not bot:
-        result = f"<b>{em.sukses} List Staff Group {chat_link}v"
+        result = f"<b>{em.sukses} List Staff Group {chat_link}</b>\n\n"
         if owner:
-            result += f"<b>👑 Owner: {creator[0]}</b>"
+            result += f"<b>👑 Owner:\n {owner[0]}</b>\n\n"
         elif not co_founder:
             adm = admin[-1].replace("┣", "┗")
             admin.pop(-1)
             admin.append(adm)
-        result = f"<b>{em.sukses} List Staff Group {chat_link}</b>"
+        result = f"<b>{em.sukses} List Staff Group {chat_link}</b>\n\n"
         if owner:
-            result += f"<b>👑 Owner:</b>\n {owner[0]}"
+            result += f"<b>👑 Owner:</b>\n {owner[0]}\n\n"
         if admin:
-            result += f"<b>🧑🏻‍💻 Admin:</b>" + "\n".join(admin)
+            result += f"<b>🧑🏻‍💻 Admin:</b>" + "\n ".join(admin)
     elif not admin and not bot:
         cof = co_founder[-1].replace(" ┣", " ┗")
         co_founder.pop(-1)
         co_founder.append(cof)
-        result = f"<b>{em.sukses} List Staff Group {chat_link}</b>"
+        result = f"<b>{em.sukses} List Staff Group {chat_link}</b>\n\n"
         if owner:
-            result += f"<b>👑 Owner:</b>\n {owner[0]}"
+            result += f"<b>👑 Owner:</b>\n {owner[0]}\n\n"
         if co_founder:
-            result += f"<b>👨🏻‍💻 Co-Founder:</b>" + "\n".join(co_founder)
+            result += f"<b>👨🏻‍💻 Co-Founder:</b>" + "\n ".join(co_founder)
     elif not co_founder and not admin:
         boot = bot[-1].replace(" ┣", " ┗")
         bot.pop(-1)
         bot.append(boot)
-        result = f"{em.sukses} <b>List Staff Group {chat_link}</b>"
+        result = f"{em.sukses} <b>List Staff Group {chat_link}</b>\n\n"
         if owner:
-            result += f"<b>👑 Owner:</b>\n{owner[0]}"
+            result += f"<b>👑 Owner:</b>\n {owner[0]}\n\n"
         if bots:
-            result += f"<b>🤖 Bots :</b>" + "\n".join(bot)
+            result += f"<b>🤖 Bots :</b>" + "\n ".join(bot)
     else:
         adm = admin[-1].replace(" ┣", " ┗")
         admin.pop(-1)
@@ -504,17 +504,17 @@ async def _(c: nlx, m):
         boot = bot[-1].replace(" ┣", " ┗")
         bot.pop(-1)
         bot.append(boot)
-        result = f"{em.sukses} <b>List Staff Group {chat_link}</b>"
+        result = f"{em.sukses} <b>List Staff Group {chat_link}</b>\n\n"
         if owner:
-            result += f"<b>👑 Owner: </b>\n{owner[0]}"
+            result += f"<b>👑 Owner: </b>\n {owner[0]}\n\n"
         if co_founder:
-            result += f"<b>👨🏻‍💻 Co-Founder:</b>\n" + "\n".join(co_founder)
+            result += f"\n\n<b>👨🏻‍💻 Co-Founder:</b>\n" + "\n ".join(co_founder)
         if admin:
-            result += f"<b>🧑🏻‍💻 Admin:</b>\n" + "\n".join(admin)
+            result += f"\n\n<b>🧑🏻‍💻 Admin:</b>\n" + "\n ".join(admin)
         if bot:
-            result += f"<b>🤖 Bot:</b>\n" + "\n".join(admin)
+            result += f"\n\n<b>🤖 Bot:</b>\n" + "\n ".join(admin)
 
-    await m.reply(result)
+    await m.reply(result, disable_web_page_preview=True)
 
 
 """
