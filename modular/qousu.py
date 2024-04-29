@@ -94,7 +94,7 @@ async def _(c: nlx, m):
                 m_one = await c.get_messages(
                     chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
                 )
-                messages = [m_one]
+                messages = m_one
             else:
                 anu = [
                     i
