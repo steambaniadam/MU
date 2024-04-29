@@ -183,7 +183,7 @@ async def _(c: nlx, m):
             [f"{i+1}) <code>{tag}</code>" for i, tag in enumerate(TAGS)]
         )
         await pros.edit(
-            f"Usage: `{m.command}` [query] [quantity]\nExample: `{m.command} oppai 3`\nAvailable tags:\n{tag_list}"
+            f"Usage: `{m.text}` [query] [quantity]\nExample: `{m.text} oppai 3`\nAvailable tags:\n{tag_list}"
         )
         return
 
@@ -207,34 +207,31 @@ async def _(c: nlx, m):
             if not images:
                 raise IndexError("No images found in the response.")
 
-            image_data = images[0]
-            image_url = image_data["url"]
-            name_anime = image_data["artist"]["name"]
-            desc = image_data["tags"][0]["description"]
-            aplod = image_data["uploaded_at"]
+            for image_data in images:
+                image_url = image_data["url"]
+                name_anime = image_data["artist"]["name"]
+                desc = image_data["tags"][0]["description"]
+                aplod = image_data["uploaded_at"]
+                image_response = requests.get(image_url)
+                if image_response.status_code == 200:
+                    image_content = image_response.content
+                    image_bytes = io.BytesIO(image_content)
+                    image_bytes.name = "image.jpg"
+                    caption = (
+                        f"{em.sukses} Successfully Downloaded:\n\n"
+                        f"Name = {name_anime}\n"
+                        f"Description = {desc}\n"
+                        f"Uploaded = {aplod}\n"
+                    )
+                    await c.send_photo(m.chat.id, photo=image_bytes, caption=caption)
 
-            image_response = requests.get(image_url)
-            if image_response.status_code == 200:
-                image_content = image_response.content
-                image_bytes = io.BytesIO(image_content)
-                image_bytes.name = "image.jpg"
+                    folder_path = "waifu_images"
+                    os.makedirs(folder_path, exist_ok=True)
+                    filename = image_url.split("/")[-1]
+                    filepath = os.path.join(folder_path, filename)
 
-                caption = (
-                    f"{em.sukses} Successfully Downloaded:\n\n"
-                    f"Name = {name_anime}\n"
-                    f"Description = {desc}\n"
-                    f"Uploaded = {aplod}\n"
-                )
-
-                await c.send_photo(m.chat.id, photo=image_bytes, caption=caption)
-
-                folder_path = "waifu_images"
-                os.makedirs(folder_path, exist_ok=True)
-                filename = image_url.split("/")[-1]
-                filepath = os.path.join(folder_path, filename)
-
-                if os.path.exists(filepath):
-                    os.remove(filepath)
+                    if os.path.exists(filepath):
+                        os.remove(filepath)
         except (KeyError, IndexError) as e:
             await pros.edit(f"{em.gagal} Error: {str(e)}")
     else:
