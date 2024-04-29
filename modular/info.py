@@ -467,7 +467,7 @@ async def _(c: nlx, m):
     owner_list = "\n ".join(owner)
     co_founder_list = "\n ".join(co_founder)
     admin_list = "\n ".join(admin)
-    bots_list ="\n ".join(bots)
+    bots_list = "\n ".join(bots)
 
     try:
         response = cgr("stap_1").format(em.sukses, chat_title)
