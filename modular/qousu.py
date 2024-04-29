@@ -98,10 +98,7 @@ async def _(c: nlx, m):
             else:
                 messages = [
                     i
-                    for i in await c.get_messages(
-                        chat_id=m.chat.id,
-                        message_ids=m.id
-                        )
+                    for i in await c.get_messages(chat_id=m.chat.id, message_ids=m.id)
                     if not i.empty and not i.media
                 ]
 
@@ -135,10 +132,7 @@ async def _(c: nlx, m):
         else:
             messages = [
                 i
-                for i in await c.get_messages(
-                    chat_id=m.chat.id,
-                    message_ids=m.id
-                    )
+                for i in await c.get_messages(chat_id=m.chat.id, message_ids=m.id)
                 if not i.empty and not i.media
             ]
     try:
