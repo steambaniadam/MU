@@ -1,6 +1,7 @@
 import io
 import os
 from asyncio import sleep
+
 import requests
 
 from Mix import *
@@ -66,7 +67,8 @@ async def download_and_send_image(c: nlx, m, image_url, image_content):
     await c.send_photo(
         m.chat.id,
         photo=image_bytes,
-        caption=f"{em.sukses} Downloaded by : {c.me.mention}")
+        caption=f"{em.sukses} Downloaded by : {c.me.mention}",
+    )
 
     folder_path = "waifu_images"
     os.makedirs(folder_path, exist_ok=True)
