@@ -174,7 +174,7 @@ async def _(c: nlx, m):
                 acak = warna
             else:
                 acak = random.choice(loanjing)
-            
+
             text = m.text.split(None, 2)[2] if len(m.command) > 2 else None
             if rep:
                 m_one = await c.get_messages(
