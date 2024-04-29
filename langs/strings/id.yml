@@ -300,13 +300,15 @@ info_16: "{} **Ini bukan pengguna, tetapi Grup! Silahkan gunakan `cinfo`.**"
 info_17: "{} **Gunakan format '{}` @username/id grup.**"
 
 # staff
-stap_1: "{} <b>Daftar Admin {}:</b>\n\n"
-stap_2: "<b>♚ Owner :</b>\n {}\n\n"
-stap_3: "<b>♛ Co-Founder :</b>\n {}\n\n"
-stap_4: "<b>✪ Admins :</b>\n {}\n\n"
-stap_5: "• {} sebagai <i>{}</i>"
-stap_6: "• {} sebagai <i>{}</i>"
-stap_7: "• {} sebagai <i>{}</i>"
+stap_1: "{} <b>Struktur Administrator di {}:</b>\n\n"
+stap_2: "<b>👑 Pendiri :</b>\n\n"
+stap_3: "<b>👨🏻‍💻 Wakil Pendiri :</b>\n\n"
+stap_4: "<b>🧑🏻‍💻 Admin :</b>\n\n"
+stap_8: "<b>🤖 Bot :</b>\n\n"
+stap_5: "┣ {} <u>sebagai</u> <i>{}</i>"
+stap_6: "┣ {} <u>sebagai</u> <i>{}</i>"
+stap_7: "┣ {} <u>sebagai</u> <i>{}</i>"
+stap_9: "┗ {} <u>sebagai</u> <i>{}</i>"
 
 # limit
 lmt_1: "{} **{}**\n\n ~ {} **{}**"

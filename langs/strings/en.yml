@@ -279,13 +279,15 @@ info_16: "{} This is not a user, but a group! Please use `cinfo`."
 info_17: "{} **Use format '{}` @username/group_id.**"
 
 # staff
-stap_1: "{} <b>List Administrator on {}:</b>\n\n"
-stap_2: "<b>♚ Owner :</b>\n {}\n\n"
-stap_3: "<b>♛ Co-Founder :</b>\n {}\n\n"
-stap_4: "<b>✪ Admins :</b>\n {}\n\n"
-stap_5: "• {} as <i>{}</i>"
-stap_6: "• {} as <i>{}</i>"
-stap_7: "• {} as <i>{}</i>"
+stap_1: "{} <b>List of Administrators in {}:</b>\n\n"
+stap_2: "<b>👑 Founder :</b>\n\n"
+stap_3: "<b>👨🏻‍💻 Co-Founder :</b>\n\n"
+stap_4: "<b>🧑🏻‍💻 Adminis :</b>\n\n"
+stap_8: "<b>🤖 Bot :</b>\n\n"
+stap_5: "┣ {} <u>sebagai</u> <i>{}</i>"
+stap_6: "┣ {} <u>sebagai</u> <i>{}</i>"
+stap_7: "┣ {} <u>sebagai</u> <i>{}</i>"
+stap_9: "┗ {} <u>sebagai</u> <i>{}</i>"
 
 # limit
 lmt_1: "{} **{}**\n\n ~ {} **{}**"

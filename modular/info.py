@@ -414,20 +414,29 @@ I've trouble with this chat :
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    chat_title = m.chat.title
+    link = m.chat.username
+    if m.chat.username:
+        chat_title = f"<a href='t.me/{link}'>{m.chat.title}</a>"
+    else:
+        chat_title = f"<a href='{m.link}'>{m.chat.title}</a>"
     owner = []
     co_founder = []
     admin = []
+    bots = []
     pros = await m.reply(cgr("proses").format(em.proses))
     await sleep(1)
-    async for org in c.get_chat_members(
-        m.chat.id, filter=ChatMembersFilter.ADMINISTRATORS
-    ):
+    async for org in c.get_chat_members(m.chat.id):
         user = org.user
         ijin = org.privileges
         status = org.status
         title = org.custom_title
         mention = f"<a href='tg://user?id={user.id}'>{user.first_name or ''} {user.last_name or ''}</a>"
+        botol = user.is_bot
+        if status == ChatMemberStatus.ADMINISTRATOR and botol:
+            if title:
+                bots.append(cgr("stap_9").format(mention, title))
+            else:
+                bots.append(f"┣ {mention}")
         if (
             status == ChatMemberStatus.ADMINISTRATOR
             and ijin.can_promote_members
@@ -437,28 +446,28 @@ async def _(c: nlx, m):
             and ijin.can_restrict_members
             and ijin.can_change_info
             and ijin.can_invite_users
-            and ijin.can_post_messages
-            and ijin.can_edit_messages
             and ijin.can_pin_messages
+            and not botol
         ):
             if title:
                 co_founder.append(cgr("stap_5").format(mention, title))
             else:
-                co_founder.append(f"• {mention}")
-        elif status == ChatMemberStatus.ADMINISTRATOR:
+                co_founder.append(f"┣ {mention}")
+        elif status == ChatMemberStatus.ADMINISTRATOR and not botol:
             if title:
                 admin.append(cgr("stap_6").format(mention, title))
             else:
-                admin.append(f"• {mention}")
-        elif status == ChatMemberStatus.OWNER:
+                admin.append(f"┣ {mention}")
+        elif status == ChatMemberStatus.OWNER and not botol:
             if title:
                 owner.append(cgr("stap_7").format(mention, title))
             else:
-                owner.append(f"• {mention}")
+                owner.append(f"┗ {mention}")
 
     owner_list = "\n ".join(owner)
     co_founder_list = "\n ".join(co_founder)
     admin_list = "\n ".join(admin)
+    bots_list ="\n ".join(bots)
 
     try:
         response = cgr("stap_1").format(em.sukses, chat_title)
@@ -468,6 +477,8 @@ async def _(c: nlx, m):
             response += cgr("stap_3").format(co_founder_list)
         if admin:
             response += cgr("stap_4").format(admin_list)
+        if bots:
+            response += cgr("stap_8").format(bots_list)
         return await pros.edit(response)
     except Exception as e:
         return await pros.edit(cgr("err").format(em.gagal, e))
