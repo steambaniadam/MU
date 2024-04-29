@@ -174,6 +174,7 @@ async def _(c: nlx, m):
                 acak = warna
             else:
                 acak = random.choice(loanjing)
+            text = m.text.split(None, 2)[2] if len(m.command) > 2 else None
             if rep:
                 m_one = await c.get_messages(
                     chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
@@ -185,7 +186,6 @@ async def _(c: nlx, m):
                 teks = " ".join(parts[index_q + 2 :])
                 m_one = await c.send_message(chat_id=m.chat.id, text=teks)
                 messages = [m_one]
-
         elif int(tag):
             if int(tag) > 10:
                 return await pros.edit(cgr("qot_4").format(em.gagal))
