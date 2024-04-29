@@ -140,20 +140,10 @@ async def _(c: nlx, m):
         return await pros.edit(f"{em.gagal} **Gagal mengambil gambar.**")
 
 
-versatile = [
-    "maid",
-    "waifu",
-    "marin-kitagawa",
-    "mori-calliope",
-    "raiden-shogun",
-    "oppai",
-    "selfies",
-    "uniform",
-    "kamisato-ayaka",
+TAGS = [
+    "maid", "waifu", "marin-kitagawa", "mori-calliope", "raiden-shogun", "oppai",
+    "selfies", "uniform", "kamisato-ayaka", "ass", "hentai", "milf", "oral", "paizuri", "ecchi", "ero"
 ]
-
-nsfw = ["ass", "hentai", "milf", "oral", "paizuri", "ecchi", "ero"]
-
 
 @ky.ubot("waifu", sudo=True)
 async def _(c: nlx, m):
@@ -161,61 +151,78 @@ async def _(c: nlx, m):
     em.initialize()
     pros = await m.edit(cgr("proses").format(em.proses))
     await sleep(2)
-    if len(m.command) > 2:
-        kuer = m.text.split(maxsplit=1)[1].lower()
-        kuen = m.text.split(maxsplit=1)[2]
+
+    if len(m.command) > 1:
+        args = m.command[1:]
+        if len(args) == 1:
+            kuer = args[0].lower()
+            kuen = 3
+        elif len(args) == 2:
+            kuer = args[0].lower()
+            kuen = args[1]
+        else:
+            await pros.edit(f"{em.gagal} Invalid number of arguments.")
+            return
     else:
-        kategori = "\n".join(
-            [
-                f"{i+0}) <code>{cat}</code>"
-                for i, cat in enumerate(versatile or nsfw, start=1)
-            ]
-        )
+        tag_list = "\n".join([f"{i+1}) <code>{tag}</code>" for i, tag in enumerate(TAGS)])
         await pros.edit(
-            f"Gunakan Perintah : `{m.command}` [query] [quantity]\nContoh: `{m.command} oppai 3`"
+            f"Usage: `{m.command}` [query] [quantity]\nExample: `{m.command} oppai 3`\nAvailable tags:\n{tag_list}"
         )
         return
 
-    api_url = f"https://api.waifu.im/search"
+    try:
+        kuen = int(kuen)
+        if kuen <= 0:
+            raise ValueError
+    except ValueError:
+        await pros.edit(f"{em.gagal} Quantity must be a positive integer.")
+        return
+
+    api_url = "https://api.waifu.im/search"
     params = {
-        "included_tags": [f"{kuer}"],
+        "included_tags": [kuer],
         "height": ">=2000",
-        "limit": f"{kuen}",
+        "limit": kuen
     }
+
     response = requests.get(api_url, params=params)
+
     if response.status_code == 200:
-        data = response.json()
-        image_data = data["images"][0]
-        image_url = image_data["url"]
-        name_anime = image_data["artist"]["name"]
-        desc = image_data["tags"][0]["description"]
-        aplod = image_data["uploaded_at"]
-        image_response = requests.get(image_url)
-        if image_response.status_code == 200:
-            image_content = image_response.content
-            image_bytes = io.BytesIO(image_content)
-            image_bytes.name = "image.jpg"
-            caption = f"{em.sukses} Successfully Downloaded:\n\n"
-            caption += f"Name = {name_anime}\n"
-            caption += f"Description = {desc}\n"
-            caption += f"Uploaded = {aplod}\n"
+        try:
+            data = response.json()
+            images = data.get("images", [])
+            if not images:
+                raise IndexError("No images found in the response.")
 
-            await c.send_photo(
-                m.chat.id,
-                photo=image_bytes,
-                caption=caption,
-            )
+            image_data = images[0]
+            image_url = image_data["url"]
+            name_anime = image_data["artist"]["name"]
+            desc = image_data["tags"][0]["description"]
+            aplod = image_data["uploaded_at"]
 
-            folder_path = "waifu_images"
-            os.makedirs(folder_path, exist_ok=True)
-            filename = image_url.split("/")[-1]
-            filepath = os.path.join(folder_path, filename)
+            image_response = requests.get(image_url)
+            if image_response.status_code == 200:
+                image_content = image_response.content
+                image_bytes = io.BytesIO(image_content)
+                image_bytes.name = "image.jpg"
 
-            if os.path.exists(filepath):
-                os.remove(filepath)
-            else:
-                return await pros.edit(f"{em.gagal} **Failed to download the image.**")
-        else:
-            return await pros.edit(f"{em.gagal} **Failed to fetch the image.**")
+                caption = (
+                    f"{em.sukses} Successfully Downloaded:\n\n"
+                    f"Name = {name_anime}\n"
+                    f"Description = {desc}\n"
+                    f"Uploaded = {aplod}\n"
+                )
+
+                await c.send_photo(m.chat.id, photo=image_bytes, caption=caption)
+
+                folder_path = "waifu_images"
+                os.makedirs(folder_path, exist_ok=True)
+                filename = image_url.split("/")[-1]
+                filepath = os.path.join(folder_path, filename)
+
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+        except (KeyError, IndexError) as e:
+            await pros.edit(f"{em.gagal} Error: {str(e)}")
     else:
-        return await pros.edit(f"{em.gagal} **Failed to fetch the image.**")
+        await pros.edit(f"{em.gagal} Failed to fetch the image.")
