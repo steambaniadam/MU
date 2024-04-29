@@ -213,9 +213,7 @@ async def _(c: nlx, m):
             )
             messages = [m_one]
         else:
-            m_one = await c.get_messages(
-                chat_id=m.chat.id, message_ids=text
-            )
+            m_one = await c.get_messages(chat_id=m.chat.id, message_ids=text)
             messages = [m_one]
     try:
         hasil = await quotly(messages, acak)
