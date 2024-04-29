@@ -410,7 +410,6 @@ I've trouble with this chat :
     )
 
 
-"""
 @ky.ubot("staff", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
@@ -446,150 +445,45 @@ async def _(c: nlx, m):
             and not botol
         ):
             if title:
-                co_founder.append(f" ┣ {mention} <u>as</u> <i>{title}</i>")
+                co_founder.append(cgr("stap_1").format(mention, title))
             else:
-                co_founder.append(f" ┣ {mention}")
+                co_founder.append(cgr("stap_0").format(mention))
         elif status == ChatMemberStatus.ADMINISTRATOR and not botol:
             if title:
-                admin.append(f" ┣ {mention} <u>as</u> <i>{title}</i>")
+                admin.append(cgr("stap_1").format(mention, title))
             else:
-                admin.append(f" ┣ {mention}")
+                admin.append(cgr("stap_0").format(mention))
         elif status == ChatMemberStatus.OWNER and not botol:
             if title:
-                owner.append(f" ┗ {mention} <u>as</u> <i>{title}</i>")
+                owner.append(cgr("stap_1").format(mention, title))
             else:
-                owner.append(f" ┗ {mention}")
+                owner.append(cgr("stap_0").format(mention))
         elif botol:
             if title:
-                bot.append(f" ┣ {mention} <u>as</u> <i>{title}</i>")
+                bot.append(cgr("stap_1").format(mention, title))
             else:
-                bot.append(f" ┣ {mention}")
-    if not co_founder and not admin and not bot:
-        result = f"<b>{em.sukses} List Staff Group {chat_link}</b>\n\n"
-        if owner:
-            result += f"<b>👑 Owner:\n {owner[0]}</b>\n\n"
-    elif not co_founder and not bot:
-        adm = admin[-1].replace(" ┣", " ┗")
-        admin.pop(-1)
-        admin.append(adm)
-        result = f"<b>{em.sukses} List Staff Group {chat_link}</b>\n\n"
-        if owner:
-            result += f"<b>👑 Owner:</b>\n {owner[0]}\n\n"
-        if admin:
-            result += f"<b>🧑🏻‍💻 Admin:</b>\n" + "\n".join(admin)
-    elif not admin and not bot:
-        cof = co_founder[-1].replace(" ┣", " ┗")
-        co_founder.pop(-1)
-        co_founder.append(cof)
-        result = f"<b>{em.sukses} List Staff Group {chat_link}</b>\n\n"
-        if owner:
-            result += f"<b>👑 Owner:</b>\n {owner[0]}\n\n"
-        if co_founder:
-            result += f"<b>👨🏻‍💻 Co-Founder:</b>\n" + "\n".join(co_founder)
-    elif not co_founder and not admin:
-        botak = bot[-1].replace(" ┣", " ┗")
-        bot.pop(-1)
-        bot.append(botak)
-        result = f"{em.sukses} <b>List Staff Group {chat_link}</b>\n\n"
-        if owner:
-            result += f"<b>👑 Owner:</b>\n {owner[0]}\n\n"
-        if bot:
-            result += f"<b>🤖 Bots :</b>\n" + "\n".join(bot)
-    else:
-        adm = admin[-1].replace(" ┣", " ┗")
-        admin.pop(-1)
-        admin.append(adm)
-        cof = co_founder[-1].replace(" ┣", " ┗")
-        co_founder.pop(-1)
-        co_founder.append(cof)
-        botak = bot[-1].replace(" ┣", " ┗")
-        bot.pop(-1)
-        bot.append(botak)
-        result = f"{em.sukses} <b>List Staff Group {chat_link}</b>\n\n"
-        if owner:
-            result += f"<b>👑 Owner: </b>\n {owner[0]}\n"
-        if co_founder:
-            result += f"<b>👨🏻‍💻 Co-Founder:</b>\n" + "\n".join(co_founder)
-        if admin:
-            result += f"<b>🧑🏻‍💻 Admin:</b>\n" + "\n".join(admin)
-        if bot:
-            result += f"<b>🤖 Bot:</b>\n" + "\n".join(bot)
+                bot.append(cgr("stap_0").format(mention))
 
-    await pros.edit(result, disable_web_page_preview=True)
-"""
-
-
-@ky.ubot("staff", sudo=True)
-async def _(c: nlx, m):
-    em = Emojik()
-    em.initialize()
-    chat = m.chat
-    uname = chat.username
-    owner = []
-    co_founder = []
-    admin = []
-    bot = []
-    pros = await m.edit(cgr("proses").format(em.proses))
-    if uname:
-        chat_link = f"<a href='t.me/{uname}'>{chat.title}</a>"
-    else:
-        chat_link = f"<a href='{m.link}'>{chat.title}</a>"
-    async for dia in c.get_chat_members(chat.id):
-        user = dia.user
-        ijin = dia.privileges
-        status = dia.status
-        title = dia.custom_title
-        botol = user.is_bot
-        mention = f"<a href=tg://user?id={user.id}>{user.first_name or ''} {user.last_name or ''}</a>"
-        if (
-            status == ChatMemberStatus.ADMINISTRATOR
-            and ijin.can_promote_members
-            and ijin.can_manage_chat
-            and ijin.can_delete_messages
-            and ijin.can_manage_video_chats
-            and ijin.can_restrict_members
-            and ijin.can_change_info
-            and ijin.can_invite_users
-            and ijin.can_pin_messages
-            and not botol
-        ):
-            if title:
-                co_founder.append(f" ┣ {mention} <u>as</u> <i>{title}</i>")
-            else:
-                co_founder.append(f" ┣ {mention}")
-        elif status == ChatMemberStatus.ADMINISTRATOR and not botol:
-            if title:
-                admin.append(f" ┣ {mention} <u>as</u> <i>{title}</i>")
-            else:
-                admin.append(f" ┣ {mention}")
-        elif status == ChatMemberStatus.OWNER and not botol:
-            if title:
-                owner.append(f" ┗ {mention} <u>as</u> <i>{title}</i>")
-            else:
-                owner.append(f" ┗ {mention}")
-        elif botol:
-            if title:
-                bot.append(f" ┣ {mention} <u>as</u> <i>{title}</i>")
-            else:
-                bot.append(f" ┣ {mention}")
-
-    result = f"{em.sukses} <b>List Staff Group {chat_link}</b>\n\n"
+    result = cgr("stap_6").format(em.sukses, chat_link)
     if owner:
-        result += f"<b>👑 Owner: </b>\n {owner[0]}\n"
+        on = owner[-1].replace(" ┣", " ┗")
+        owner.pop(-1)
+        owner.append(on)
+        result += cgr("stap_2").format(owner[0])
     if co_founder:
         cof = co_founder[-1].replace(" ┣", " ┗")
         co_founder.pop(-1)
         co_founder.append(cof)
-        result += f"<b>👨🏻‍💻 Co-Founder:</b>\n" + "\n".join(co_founder) + "\n"
+        result += cgr("stap_3")  + "\n".join(co_founder) + "\n\n"
     if admin:
         adm = admin[-1].replace(" ┣", " ┗")
         admin.pop(-1)
         admin.append(adm)
-        result += f"<b>🧑🏻‍💻 Admin:</b>\n" + "\n".join(admin) + "\n"
+        result += cgr("stap_+4") + "\n".join(admin) + "\n\n"
     if bot:
         botak = bot[-1].replace(" ┣", " ┗")
         bot.pop(-1)
         bot.append(botak)
-        result += f"<b>🤖 Bots :</b>\n" + "\n".join(bot) + "\n"
+        result += cgr("stap_5") + "\n".join(bot) + "\n"
 
     await pros.edit(result, disable_web_page_preview=True)
