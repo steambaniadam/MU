@@ -196,7 +196,10 @@ async def _(c: nlx, m):
         return
 
     api_url = "https://api.waifu.im/search"
-    params = {"included_tags": [kuer], "height": ">=2000", "limit": kuen}
+    params = {"included_tags": [kuer],
+    "height": ">=2000",
+    "limit": kuen,
+    "byte_size": "<=10485760"}
 
     response = requests.get(api_url, params=params)
 
