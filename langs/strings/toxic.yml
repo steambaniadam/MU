@@ -566,7 +566,7 @@ help_auend: " **AutoEnd**\n\n• Perintah: `{0}endchat` [username/id pengguna/ba
 help_img: " **Image**\n\n• Perintah: `{0}`img [kata kunci]\n• Penjelasan: Nyari gambar.\n"
 help_tod: " **Truth Or Dare**\n\n• Perintah: `{0}truth`\n• Penjelasan: Untuk memberikan pertanyaan random yang harus dijawab jujur!\n\n• Perintah: `{0}dare`\n• Penjelasan: Untuk memberikan tantangan random yang harus dilakukan!\n"
 help_prox: " **Proxy**\n\n• Perintah: `{0}getproxy` [`http`|`socks4`|`socks5`]\n• Penjelasan: Buat ngambil proxy ngacak terbaik.\n"
-help_waif: " **Waifu**\n\n• Perintah: `{0}waifu` [kategori]\n• Penjelasan: Untuk mendapatkan gambar waifu/anime sesuai kategori.\n"
+help_waif: " **Waifu**\n\n• Perintah: `{0}waifu` [tags]\n• Penjelasan: Untuk mendapatkan gambar waifu/anime sesuai tags.\n\n• Perintah: `{0}loly` [kategori]\n• Penjelasan: Untuk mendapatkan gambar waifu/anime sesuai kategori.\n\n• Perintah: `{0}neko` [kueri]\n• Penjelasan: Untuk mendapatkan gambar anime dewasa sesuai kueri.\n"
 help_qur: " **Qur'an**\n\n• Perintah: `{0}qs [nama surah]`\n• Penjelasan: Untuk mengambil info surah tersebut.\n\n• Perintah: `{0}list-surah`\n• Penjelasan: Untuk mengambil daftar surah.\n"
 help_animstream: " **Anime Streaming**\n\n• Perintah: `{0}streaming` [Judul Film]\n• Penjelasan: Untuk mengambil link streaming film anime\n\n• Perintah: `{0}list_anime`\n• Penjelasan: Untuk mengambil daftar film anime yang tersedia.\n"
 help_pint: " **Pinterest**\n\n• Perintah: `{0}pint` [link pinterest]\n• Penjelasan: Untuk mengunduh file yang terdapat pada link.\n"

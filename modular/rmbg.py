@@ -29,7 +29,7 @@ async def rem_bg(image_data):
     return "rmbg.png"
 
 
-@ky.ubot("rmbg", sudo=True)
+@ky.ubot("rmbg|rbg", sudo=True)
 async def _(c, m):
     em = Emojik()
     em.initialize()
