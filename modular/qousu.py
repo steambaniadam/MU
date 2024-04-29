@@ -62,6 +62,10 @@ async def _(c: nlx, m):
     em.initialize()
     acak = None
     messages = None
+    rep = m.reply_to_messaage
+    pros = m.edit(cgr("proses").format(em.proses))
+    if len(m.command) < 1 and not rep:
+        return await m.reply(f"{em.gagal} Silahkan berikan teks atau balas pesan pengguna.")
     if len(m.command) > 1:
         tag = m.command[1].strip()
         if tag.startswith("@"):
@@ -69,13 +73,13 @@ async def _(c: nlx, m):
             try:
                 org = await c.get_users(user_id)
                 if org.id in DEVS:
-                    await m.reply(cgr("qot_3").format(em.gagal))
+                    await pros.edit(cgr("qot_3").format(em.gagal))
                     return
                 rep = await c.get_messages(m.chat.id, m.reply_to_message.id, replies=0)
                 rep.from_user = org
                 messages = [rep]
             except Exception as e:
-                return await m.reply(cgr("err").format(em.gagal, e))
+                return await pros.edit(cgr("err").format(em.gagal, e))
             warna = m.text.split(None, 2)[2] if len(m.command) > 2 else None
             if warna:
                 acak = warna
@@ -94,7 +98,7 @@ async def _(c: nlx, m):
 
         elif int(tag):
             if int(tag) > 10:
-                return await m.reply(cgr("qot_4").format(em.gagal))
+                return await pros.edit(cgr("qot_4").format(em.gagal))
             warna = m.text.split(None, 2)[2] if len(m.command) > 2 else None
             if warna:
                 acak = warna
@@ -124,5 +128,6 @@ async def _(c: nlx, m):
             file.write(hasil.decode())
         stik = await consu("hasil.json")
         await m.reply_sticker(stik)
+        await pros.delete()
     except Exception as e:
-        return await m.reply(cgr("err").format(em.gagal, e))
+        return await pros.edit(cgr("err").format(em.gagal, e))
