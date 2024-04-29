@@ -414,6 +414,113 @@ I've trouble with this chat :
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
+    chat = m.chat
+    uname = chat.username
+    owner = []
+    co_founder = []
+    admin = []
+    bot = []
+    if uname:
+        chat_link = f"<a href='t.me/{uname}'>{chat.title}</a>"
+    else:
+        chat_link = f"<a href='{m.link}'>{chat.title}</a>"
+    async for dia in c.chat.get_members():
+        user = dia.user
+        ijin = dia.privileges
+        status = dia.status
+        title = dia.custom_title
+        dia_bot = user.is_bot
+        mention = f"<a href=tg://user?id={user.id}>{user.first_name or ''} {user.last_name or ''}</a>"
+        if (
+            status == ChatMemberStatus.ADMINISTRATOR
+            and ijin
+            and ijin.can_promote_members
+            and ijin.can_manage_chat
+            and ijin.can_delete_messages
+            and ijin.can_manage_video_chats
+            and ijin.can_restrict_members
+            and ijin.can_change_info
+            and ijin.can_invite_users
+            and ijin.can_pin_messages
+            and not dia_bot
+        ):
+            if title:
+                co_founder.append(f" ┣ {mention} - {title}")
+            else:
+                co_founder.append(f" ┣ {mention}")
+        elif status == ChatMemberStatus.ADMINISTRATOR and not dia_bot:
+            if title:
+                admin.append(f" ┣ {mention} - {title}")
+            else:
+                admin.append(f" ┣ {mention}")
+        elif status == ChatMemberStatus.OWNER:
+            if title:
+                owner.append(f" ┗ {mention} - {title}")
+            else:
+                owner.append(f" ┗ {mention}")
+        elif dia_bot:
+            if title:
+                bot.append(f" ┣ {mention} - {title}")
+            else:
+                bot.append(f" ┣ {mention}")
+    if not co_founder and not admin and not bot:
+        result = f"<b>{em.sukses} List Staff Group {chat_link}v"
+        if owner:
+                result += f"<b>👑 Owner: {creator[0]}</b>"
+        elif not co_founder:
+            adm = admin[-1].replace("┣", "┗")
+            admin.pop(-1)
+            admin.append(adm)
+        result = f"<b>{em.sukses} List Staff Group {chat_link}</b>"
+        if owner:
+            result += f"<b>👑 Owner:</b>\n {owner[0]}"
+        if admin:
+            result += f"<b>🧑🏻‍💻 Admin:</b>" + "\n".join(admin)
+    elif not admin and not bot:
+        cof = co_founder[-1].replace(" ┣", " ┗")
+        co_founder.pop(-1)
+        co_founder.append(cof)
+        result = f"<b>{em.sukses} List Staff Group {chat_link}</b>"
+        if owner:
+            result += f"<b>👑 Owner:</b>\n {owner[0]}"
+        if co_founder:
+            result += f"<b>👨🏻‍💻 Co-Founder:</b>" + "\n".join(co_founder)
+    elif not co_founder and not admin:
+        boot = bot[-1].replace(" ┣", " ┗")
+        bot.pop(-1)
+        bot.append(boot)
+        result = f"{em.sukses} <b>List Staff Group {chat_link}</b>"
+        if owner:
+            result += f"<b>👑 Owner:</b>\n{owner[0]}"
+        if bots:
+            result += f"<b>🤖 Bots :</b>" + "\n".join(bot)
+    else:
+        adm = admin[-1].replace(" ┣", " ┗")
+        admin.pop(-1)
+        admin.append(adm)
+        cof = co_founder[-1].replace(" ┣", " ┗")
+        co_founder.pop(-1)
+        co_founder.append(cof)
+        boot = bot[-1].replace(" ┣", " ┗")
+        bot.pop(-1)
+        bot.append(boot)
+        result = f"{em.sukses} <b>List Staff Group {chat_link}</b>"
+        if owner:
+            result += f"<b>👑 Owner: </b>\n{owner[0]}"
+        if co_founder:
+            result += f"<b>👨🏻‍💻 Co-Founder:</b>\n" + "\n".join(co_founder)
+        if admin:
+            result += f"<b>🧑🏻‍💻 Admin:</b>\n" + "\n".join(admin)
+        if bot:
+            result += f"<b>🤖 Bot:</b>\n" + "\n".join(admin)
+
+    await m.reply(result)
+
+
+"""
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
     link = m.chat.username
     owner = []
     co_founder = []
@@ -484,3 +591,4 @@ async def _(c: nlx, m):
         return await pros.edit(response)
     except Exception as e:
         return await pros.edit(cgr("err").format(em.gagal, e))
+"""
