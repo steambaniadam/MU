@@ -415,23 +415,25 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     link = m.chat.username
-    if m.chat.username:
-        chat_title = f"<a href='t.me/{link}'>{m.chat.title}</a>"
-    else:
-        chat_title = f"<a href='{m.link}'>{m.chat.title}</a>"
     owner = []
     co_founder = []
     admin = []
     bots = []
+    if m.chat.username:
+        chat_title = f"<a href='t.me/{link}'>{m.chat.title}</a>"
+    else:
+        chat_title = f"<a href='{m.link}'>{m.chat.title}</a>"
     pros = await m.reply(cgr("proses").format(em.proses))
     await sleep(1)
-    async for org in c.get_chat_members(m.chat.id):
+
+    async for org in c.iter_chat_members(m.chat.id):
         user = org.user
         ijin = org.privileges
         status = org.status
         title = org.custom_title
         mention = f"<a href='tg://user?id={user.id}'>{user.first_name or ''} {user.last_name or ''}</a>"
         botol = user.is_bot
+
         if (
             status == ChatMemberStatus.ADMINISTRATOR
             and ijin.can_promote_members
@@ -453,12 +455,12 @@ async def _(c: nlx, m):
                 admin.append(cgr("stap_6").format(mention, title))
             else:
                 admin.append(f"{mention}")
-        elif status == ChatMemberStatus.OWNER and not botol:
+        elif status == ChatMemberStatus.CREATOR and not botol:
             if title:
                 owner.append(cgr("stap_7").format(mention, title))
             else:
                 owner.append(f"{mention}")
-        elif status == ChatMembersFilter.BOTS and ChatMemberStatus.ADMINISTRATOR:
+        elif botol:
             if title:
                 bots.append(cgr("stap_8").format(mention, title))
             else:
@@ -471,13 +473,13 @@ async def _(c: nlx, m):
 
     try:
         response = cgr("stap_1").format(em.sukses, chat_title)
-        if owner:
+        if owner_list:
             response += cgr("stap_2").format(owner_list)
-        if co_founder:
+        if co_founder_list:
             response += cgr("stap_3").format(co_founder_list)
-        if admin:
+        if admin_list:
             response += cgr("stap_4").format(admin_list)
-        if bots:
+        if bots_list:
             response += cgr("stap_9").format(bots_list)
         return await pros.edit(response)
     except Exception as e:
