@@ -174,17 +174,15 @@ async def _(c: nlx, m):
                 acak = warna
             else:
                 acak = random.choice(loanjing)
-            m.text.split(None, 2)[2] if len(m.command) > 2 else None
+
             if rep:
                 m_one = await c.get_messages(
                     chat_id=m.chat.id, message_ids=m.reply_to_message.id, replies=0
                 )
                 messages = [m_one]
             else:
-                parts = m.text.split()
-                index_q = parts.index(f"{m.text} {warna}")
-                teks = " ".join(parts[index_q + 2 :])
-                m_one = await c.send_message(chat_id=m.chat.id, text=teks)
+                text = m.text.split(None, 3)[3] if len(m.command) > 2 else None
+                m_one = await c.send_message(chat_id=m.chat.id, text=text)
                 messages = [m_one]
         elif int(tag):
             if int(tag) > 10:
