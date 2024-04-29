@@ -474,7 +474,7 @@ async def _(c: nlx, m):
         cof = co_founder[-1].replace(" ┣", " ┗")
         co_founder.pop(-1)
         co_founder.append(cof)
-        result += cgr("stap_3")  + "\n".join(co_founder) + "\n\n"
+        result += cgr("stap_3") + "\n".join(co_founder) + "\n\n"
     if admin:
         adm = admin[-1].replace(" ┣", " ┗")
         admin.pop(-1)
