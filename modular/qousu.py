@@ -96,6 +96,9 @@ async def _(c: nlx, m):
                 )
                 messages = [m_one]
             else:
+                m = await c.get_messages(
+                    chat_id=m.chat.id, message_ids=m.command[3].strip()
+                )
                 messages = [m]
 
         elif int(tag):
@@ -126,6 +129,9 @@ async def _(c: nlx, m):
             )
             messages = [m_one]
         else:
+            m = await c.get_messages(
+                chat_id=m.chat.id, message_ids=m.command[3].strip()
+            )
             messages = [m]
     try:
         hasil = await quotly(messages, acak)
