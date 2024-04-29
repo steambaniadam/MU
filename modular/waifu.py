@@ -240,12 +240,7 @@ async def _(c: nlx, m):
                     image_content = image_response.content
                     image_bytes = io.BytesIO(image_content)
                     image_bytes.name = "image.jpg"
-                    caption = (
-                        cgr("waif_8").format(em.sukses),
-                        cgr("waif_9").format(name_anime),
-                        cgr("waif_10").format(desc),
-                        cgr("wait_11").format(aplod),
-                    )
+                    caption = cgr("waif_8").format(em.sukses, name_anime, desc, aplod)
                     await c.send_photo(m.chat.id, photo=image_bytes, caption=caption)
                     await pros.delete()
 

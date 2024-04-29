@@ -485,10 +485,7 @@ waif_4: "{} **kasih angka yang bener lah `1` - `30`**"
 waif_5: "Pake : `{}` [kueri] [jumlah]\nContoh: `{} oppai 3`\n\nNih ada beberapa Tag, pake bae:\n{}"
 waif_6: "{} Yah goblok, angka dari `1` sampe `30`"
 waif_7: "{} Gagak dapetin gambar jink!"
-waif_8: "{} Sukses Donlot:\n\n"
-waif_9: "Namanya = {}\n"
-waif_10: "Deskripsinya = {}\n"
-waif_11: "Aplotnya = {}\n"
+waif_8: "{} Sukses Donlot:\n\nNamanya = {}\nDeskripsinya = {}\nAplotnya = {}\n"
 waif_12: "{} Gagal dapetin gambar jink!"
 
 # qur'an

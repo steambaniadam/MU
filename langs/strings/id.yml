@@ -485,10 +485,7 @@ waif_4: "{} **Berikan angka `1` - `30`**"
 waif_5: "Gunakan : `{}` [kueri] [jumlah]\nContoh: `{} oppai 3`\n\nTags yang tersedia:\n{}"
 waif_6: "{} Jumlah harus berupa angka dari `1` - `30`"
 waif_7: "{} Tidak berhasil mendapatkan gambar"
-waif_8: "{} Berhasil mengunduh:\n\n"
-waif_9: "Nama = {}\n"
-waif_10: "Deskripsi = {}\n"
-waif_11: "Unggah = {}\n"
+waif_8: "{} Berhasil mengunduh:\n\nNama = {}\nDeskripsi = {}\nUnggah = {}\n"
 waif_12: "{} Gagal mendapatkan gambar."
 
 # qur'an
