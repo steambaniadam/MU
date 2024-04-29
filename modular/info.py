@@ -432,11 +432,6 @@ async def _(c: nlx, m):
         title = org.custom_title
         mention = f"<a href='tg://user?id={user.id}'>{user.first_name or ''} {user.last_name or ''}</a>"
         botol = user.is_bot
-        if status == ChatMemberStatus.ADMINISTRATOR and botol:
-            if title:
-                bots.append(cgr("stap_9").format(mention, title))
-            else:
-                bots.append(f"┣ {mention}")
         if (
             status == ChatMemberStatus.ADMINISTRATOR
             and ijin.can_promote_members
@@ -452,17 +447,22 @@ async def _(c: nlx, m):
             if title:
                 co_founder.append(cgr("stap_5").format(mention, title))
             else:
-                co_founder.append(f"┣ {mention}")
+                co_founder.append(f"{mention}")
         elif status == ChatMemberStatus.ADMINISTRATOR and not botol:
             if title:
                 admin.append(cgr("stap_6").format(mention, title))
             else:
-                admin.append(f"┣ {mention}")
+                admin.append(f"{mention}")
         elif status == ChatMemberStatus.OWNER and not botol:
             if title:
                 owner.append(cgr("stap_7").format(mention, title))
             else:
-                owner.append(f"┗ {mention}")
+                owner.append(f"{mention}")
+        elif status == ChatMemberFilter.BOTS and ChatMemberStatus.ADMINISTRATOR:
+            if title:
+                bots.append(cgr("stap_8").format(mention, title))
+            else:
+                bots.append(f"{mention}")
 
     owner_list = "\n ".join(owner)
     co_founder_list = "\n ".join(co_founder)
@@ -478,7 +478,7 @@ async def _(c: nlx, m):
         if admin:
             response += cgr("stap_4").format(admin_list)
         if bots:
-            response += cgr("stap_8").format(bots_list)
+            response += cgr("stap_9").format(bots_list)
         return await pros.edit(response)
     except Exception as e:
         return await pros.edit(cgr("err").format(em.gagal, e))
