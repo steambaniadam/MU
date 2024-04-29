@@ -455,7 +455,7 @@ async def _(c: nlx, m):
                 admin.append(cgr("stap_6").format(mention, title))
             else:
                 admin.append(f"{mention}")
-        elif status == ChatMemberStatus.CREATOR and not botol:
+        elif status == ChatMemberStatus.OWNER and not botol:
             if title:
                 owner.append(cgr("stap_7").format(mention, title))
             else:
