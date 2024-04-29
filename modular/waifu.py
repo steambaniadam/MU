@@ -141,9 +141,24 @@ async def _(c: nlx, m):
 
 
 TAGS = [
-    "maid", "waifu", "marin-kitagawa", "mori-calliope", "raiden-shogun", "oppai",
-    "selfies", "uniform", "kamisato-ayaka", "ass", "hentai", "milf", "oral", "paizuri", "ecchi", "ero"
+    "maid",
+    "waifu",
+    "marin-kitagawa",
+    "mori-calliope",
+    "raiden-shogun",
+    "oppai",
+    "selfies",
+    "uniform",
+    "kamisato-ayaka",
+    "ass",
+    "hentai",
+    "milf",
+    "oral",
+    "paizuri",
+    "ecchi",
+    "ero",
 ]
+
 
 @ky.ubot("waifu", sudo=True)
 async def _(c: nlx, m):
@@ -164,7 +179,9 @@ async def _(c: nlx, m):
             await pros.edit(f"{em.gagal} Invalid number of arguments.")
             return
     else:
-        tag_list = "\n".join([f"{i+1}) <code>{tag}</code>" for i, tag in enumerate(TAGS)])
+        tag_list = "\n".join(
+            [f"{i+1}) <code>{tag}</code>" for i, tag in enumerate(TAGS)]
+        )
         await pros.edit(
             f"Usage: `{m.command}` [query] [quantity]\nExample: `{m.command} oppai 3`\nAvailable tags:\n{tag_list}"
         )
@@ -179,11 +196,7 @@ async def _(c: nlx, m):
         return
 
     api_url = "https://api.waifu.im/search"
-    params = {
-        "included_tags": [kuer],
-        "height": ">=2000",
-        "limit": kuen
-    }
+    params = {"included_tags": [kuer], "height": ">=2000", "limit": kuen}
 
     response = requests.get(api_url, params=params)
 
