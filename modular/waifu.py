@@ -43,6 +43,34 @@ categories = [
     "cringe",
 ]
 
+kueri = [
+    "ai",
+    "ass",
+    "boobs",
+    "creampie",
+    "paizuri",
+    "pussy",
+    "random",
+    "vtuber",
+    "ecchi",
+    "ficking",
+]
+
+
+async def download_and_send_image(client, message, image_url, image_content):
+    image_bytes = io.BytesIO(image_content)
+    image_bytes.name = "image.jpg"
+
+    await client.send_photo(message.chat.id, photo=image_bytes)
+
+    folder_path = "waifu_images"
+    os.makedirs(folder_path, exist_ok=True)
+    filename = image_url.split("/")[-1]
+    filepath = os.path.join(folder_path, filename)
+
+    if os.path.exists(filepath):
+        os.remove(filepath)
+
 
 @ky.ubot("waifu", sudo=True)
 async def _(c: nlx, m):
@@ -77,16 +105,34 @@ async def _(c: nlx, m):
         await pros.delete()
 
 
-async def download_and_send_image(client, message, image_url, image_content):
-    image_bytes = io.BytesIO(image_content)
-    image_bytes.name = "image.jpg"
+@ky.ubot("neko", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    pros = await m.reply(cgr("proses").format(em.proses))
+    if len(m.command) > 1:
+        kuer = m.text.split(maxsplit=1)[1].lower()
+    else:
+        kategori = "\n".join(
+            [f"{i+0}) <code>{cat}</code>" for i, cat in enumerate(kueri, start=1)]
+        )
+        await m.reply(cgr("waif_1").format(em.gagal, kategori))
+        await pros.delete()
+        return
 
-    await client.send_photo(message.chat.id, photo=image_bytes)
+    api_url = f"https://nekos.pro/api/{kuer}"
+    response = requests.get(api_url)
 
-    folder_path = "waifu_images"
-    os.makedirs(folder_path, exist_ok=True)
-    filename = image_url.split("/")[-1]
-    filepath = os.path.join(folder_path, filename)
+    if response.ok:
+        image_url = response.json()["url"]
+        image_response = requests.get(image_url)
 
-    if os.path.exists(filepath):
-        os.remove(filepath)
+        if image_response.status_code == 200:
+            await download_and_send_image(c, m, image_url, image_response.content)
+            await pros.delete()
+        else:
+            await m.reply(f"{em.gagal} **Gagal mengunduh gambar.**")
+            await pros.delete()
+    else:
+        await m.reply(f"{em.gagal} **Gagal mengambil gambar.**")
+        await pros.delete()
