@@ -225,6 +225,7 @@ async def _(c: nlx, m):
                         f"Uploaded = {aplod}\n"
                     )
                     await c.send_photo(m.chat.id, photo=image_bytes, caption=caption)
+                    await pros.delete()
 
                     folder_path = "waifu_images"
                     os.makedirs(folder_path, exist_ok=True)
