@@ -65,7 +65,7 @@ async def _(c: nlx, m):
     rep = m.reply_to_message
     pros = m.edit(cgr("proses").format(em.proses))
     if len(m.command) < 1 and not rep:
-        return await pros.reply(
+        return await pros.edit(
             f"{em.gagal} Perintah salah!\n\nContoh : `{m.text} black` [teks/balas pesan]"
         )
     if len(m.command) > 1:
