@@ -97,7 +97,7 @@ async def _(c: nlx, m):
                 messages = [m_one]
             else:
                 m = await c.get_messages(
-                    chat_id=m.chat.id, message_ids=m.command[3].strip()
+                    chat_id=m.chat.id, message_ids=m.command[2].strip()
                 )
                 messages = [m]
 
@@ -130,7 +130,7 @@ async def _(c: nlx, m):
             messages = [m_one]
         else:
             m = await c.get_messages(
-                chat_id=m.chat.id, message_ids=m.command[3].strip()
+                chat_id=m.chat.id, message_ids=m.command[2].strip()
             )
             messages = [m]
     try:
