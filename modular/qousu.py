@@ -101,7 +101,7 @@ async def _(c: nlx, m):
                     for i in await c.get_messages(chat_id=m.chat.id, message_ids=m.id)
                     if not i.empty and not i.media
                 ]
-                messages = [anu]
+                messages = anu
 
         elif int(tag):
             if int(tag) > 10:
@@ -136,7 +136,7 @@ async def _(c: nlx, m):
                 for i in await c.get_messages(chat_id=m.chat.id, message_ids=m.id)
                 if not i.empty and not i.media
             ]
-            messages = [anu]
+            messages = anu
     try:
         hasil = await quotly(messages, acak)
         with open("hasil.json", "w") as file:
