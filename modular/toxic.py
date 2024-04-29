@@ -196,15 +196,15 @@ async def _(c: nlx, m):
     )
 
 
-@ky.ubot("q", sudo=True)
-async def _(c: nlx, m):
-    if m.reply_to_message and m.reply_to_message.from_user.id in DEVS:
-        await m.reply("**AKUN LO MO ILANG BANGSAT??**")
-        return
-    await m.reply(
-        "**QONTOL QONTOL, MUKA DEKIL, ITEM, BURIK, BOPAK, RAMBUT LU KEK JEMBUT GA BERATURAN MASIH PEDE LO IDUP?**",
-        reply_to_message_id=ReplyCheck(m),
-    )
+# @ky.ubot("q", sudo=True)
+# async def _(c: nlx, m):
+#     if m.reply_to_message and m.reply_to_message.from_user.id in DEVS:
+#         await m.reply("**AKUN LO MO ILANG BANGSAT??**")
+#         return
+#     await m.reply(
+#         "**QONTOL QONTOL, MUKA DEKIL, ITEM, BURIK, BOPAK, RAMBUT LU KEK JEMBUT GA BERATURAN MASIH PEDE LO IDUP?**",
+#         reply_to_message_id=ReplyCheck(m),
+#     )
 
 
 @ky.ubot("r", sudo=True)
