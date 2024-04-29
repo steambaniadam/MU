@@ -171,7 +171,9 @@ async def _(c: nlx, m):
                 for i, cat in enumerate(versatile or nsfw, start=1)
             ]
         )
-        await pros.edit(f"Gunakan Perintah : `{m.command}` [query] [quantity]\nContoh: `{m.command} oppai 3`")
+        await pros.edit(
+            f"Gunakan Perintah : `{m.command}` [query] [quantity]\nContoh: `{m.command} oppai 3`"
+        )
         return
 
     api_url = f"https://api.waifu.im/search"
