@@ -466,7 +466,7 @@ async def _(c: nlx, m):
     if not co_founder and not admin and not bot:
         result = f"<b>{em.sukses} List Staff Group {chat_link}v"
         if owner:
-                result += f"<b>👑 Owner: {creator[0]}</b>"
+            result += f"<b>👑 Owner: {creator[0]}</b>"
         elif not co_founder:
             adm = admin[-1].replace("┣", "┗")
             admin.pop(-1)
