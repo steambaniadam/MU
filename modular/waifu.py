@@ -216,9 +216,18 @@ async def _(c: nlx, m):
             for image_data in images:
                 try:
                     image_url = image_data["url"]
-                    name_anime = image_data["artist"]["name"]
-                    desc = image_data["tags"][0]["description"]
-                    aplod = image_data["uploaded_at"]
+                    if image_data["artist"]["name"]:
+                        name_anime = image_data["artist"]["name"]
+                    else:
+                        name_anime = "Unknown"
+                    if image_data["tags"][0]["description"]:
+                        desc = image_data["tags"][0]["description"]
+                    else:
+                        desc = "Unknown"
+                    if image_data["uploaded_at"]:
+                        aplod = image_data["uploaded_at"]
+                    else:
+                        aplod = "Unknown"
                 except (KeyError, TypeError) as e:
                     await pros.edit(f"{em.gagal} Error: {str(e)}")
                     continue
