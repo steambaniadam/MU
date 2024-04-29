@@ -96,8 +96,16 @@ async def _(c: nlx, m):
                 )
                 messages = [m_one]
             else:
-                teg = " ".join(m.command[2:])
-                messages = [m] if teg == "" else [teg]
+                if len(m.command) > 1:
+                    quote_text = " ".join(m.command[1:])
+                    m_two = types.Message(
+                        message_id=m.id,
+                        chat=types.Chat(id=m.chat.id, type=m.chat.type),
+                        from_user=types.User(id=m.from_user.id, first_name=m.from_user.first_name, is_bot=m.from_user.is_bot),
+                        date=m.date,
+                        text=quote_text
+                    )
+                messages = [m_two]
 
         elif int(tag):
             if int(tag) > 10:
@@ -127,8 +135,16 @@ async def _(c: nlx, m):
             )
             messages = [m_one]
         else:
-            teg = " ".join(m.command[2:])
-            messages = [m] if teg == "" else [teg]
+            if len(m.command) > 1:
+                quote_text = " ".join(m.command[1:])
+                m_two = types.Message(
+                    message_id=m.id,
+                    chat=types.Chat(id=m.chat.id, type=m.chat.type),
+                    from_user=types.User(id=m.from_user.id, first_name=m.from_user.first_name, is_bot=m.from_user.is_bot),
+                    date=m.date,
+                    text=quote_text
+                )
+            messages = [m_two]
     try:
         hasil = await quotly(messages, acak)
         with open("hasil.json", "w") as file:
