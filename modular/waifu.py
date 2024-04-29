@@ -205,7 +205,8 @@ async def _(c: nlx, m):
             data = response.json()
             images = data.get("images", [])
             if not images:
-                raise IndexError("No images found in the response.")
+                await pros.edit(f"{em.gagal} No images found for the specified query.")
+                return
 
             for image_data in images:
                 image_url = image_data["url"]
