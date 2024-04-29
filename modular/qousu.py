@@ -55,6 +55,7 @@ async def _(c: nlx, m):
     else:
         await m.reply(jadi + iymek)
 
+
 """
 @ky.ubot("q", sudo=True)
 async def _(c: nlx, m):
@@ -181,7 +182,7 @@ async def _(c: nlx, m):
             else:
                 parts = m.text.split()
                 index_q = parts.index(f"/q {warna}")
-                teks = ' '.join(parts[index_q + 1:])
+                teks = " ".join(parts[index_q + 1 :])
                 m_one = await c.get_messages(chat_id=m.chat.id, text=teks)
                 messages = [m_one]
 
