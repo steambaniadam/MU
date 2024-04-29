@@ -410,6 +410,7 @@ I've trouble with this chat :
     )
 
 
+"""
 @ky.ubot("staff", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
@@ -475,7 +476,7 @@ async def _(c: nlx, m):
         if owner:
             result += f"<b>👑 Owner:</b>\n {owner[0]}\n\n"
         if admin:
-            result += f"<b>🧑🏻‍💻 Admin:</b>" + "\n ".join(admin)
+            result += f"<b>🧑🏻‍💻 Admin:</b>\n" + "\n".join(admin)
     elif not admin and not bot:
         cof = co_founder[-1].replace(" ┣", " ┗")
         co_founder.pop(-1)
@@ -484,7 +485,7 @@ async def _(c: nlx, m):
         if owner:
             result += f"<b>👑 Owner:</b>\n {owner[0]}\n\n"
         if co_founder:
-            result += f"<b>👨🏻‍💻 Co-Founder:</b>" + "\n ".join(co_founder)
+            result += f"<b>👨🏻‍💻 Co-Founder:</b>\n" + "\n".join(co_founder)
     elif not co_founder and not admin:
         botak = bot[-1].replace(" ┣", " ┗")
         bot.pop(-1)
@@ -493,7 +494,7 @@ async def _(c: nlx, m):
         if owner:
             result += f"<b>👑 Owner:</b>\n {owner[0]}\n\n"
         if bot:
-            result += f"<b>🤖 Bots :</b>" + "\n ".join(bot)
+            result += f"<b>🤖 Bots :</b>\n" + "\n".join(bot)
     else:
         adm = admin[-1].replace(" ┣", " ┗")
         admin.pop(-1)
@@ -508,39 +509,38 @@ async def _(c: nlx, m):
         if owner:
             result += f"<b>👑 Owner: </b>\n {owner[0]}\n"
         if co_founder:
-            result += f"\n<b>👨🏻‍💻 Co-Founder:</b>\n" + "\n ".join(co_founder)
+            result += f"<b>👨🏻‍💻 Co-Founder:</b>\n" + "\n".join(co_founder)
         if admin:
-            result += f"\n<b>🧑🏻‍💻 Admin:</b>\n" + "\n ".join(admin)
+            result += f"<b>🧑🏻‍💻 Admin:</b>\n" + "\n".join(admin)
         if bot:
-            result += f"\n<b>🤖 Bot:</b>\n" + "\n ".join(bot)
+            result += f"<b>🤖 Bot:</b>\n" + "\n".join(bot)
 
     await pros.edit(result, disable_web_page_preview=True)
-
-
 """
+
+
+@ky.ubot("staff", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    link = m.chat.username
+    chat = m.chat
+    uname = chat.username
     owner = []
     co_founder = []
     admin = []
-    bots = []
-    if m.chat.username:
-        chat_title = f"<a href='t.me/{link}'>{m.chat.title}</a>"
+    bot = []
+    pros = await m.edit(cgr("proses").format(em.proses))
+    if uname:
+        chat_link = f"<a href='t.me/{uname}'>{chat.title}</a>"
     else:
-        chat_title = f"<a href='{m.link}'>{m.chat.title}</a>"
-    pros = await m.reply(cgr("proses").format(em.proses))
-    await sleep(1)
-
-    async for org in c.get_chat_members(m.chat.id):
-        user = org.user
-        ijin = org.privileges
-        status = org.status
-        title = org.custom_title
-        mention = f"<a href='tg://user?id={user.id}'>{user.first_name or ''} {user.last_name or ''}</a>"
+        chat_link = f"<a href='{m.link}'>{chat.title}</a>"
+    async for dia in c.get_chat_members(chat.id):
+        user = dia.user
+        ijin = dia.privileges
+        status = dia.status
+        title = dia.custom_title
         botol = user.is_bot
-
+        mention = f"<a href=tg://user?id={user.id}>{user.first_name or ''} {user.last_name or ''}</a>"
         if (
             status == ChatMemberStatus.ADMINISTRATOR
             and ijin.can_promote_members
@@ -554,41 +554,40 @@ async def _(c: nlx, m):
             and not botol
         ):
             if title:
-                co_founder.append(cgr("stap_5").format(mention, title))
+                co_founder.append(f" ┣ {mention} <u>as</u> <i>{title}</i>")
             else:
-                co_founder.append(f"{mention}")
+                co_founder.append(f" ┣ {mention}")
         elif status == ChatMemberStatus.ADMINISTRATOR and not botol:
             if title:
-                admin.append(cgr("stap_6").format(mention, title))
+                admin.append(f" ┣ {mention} <u>as</u> <i>{title}</i>")
             else:
-                admin.append(f"{mention}")
+                admin.append(f" ┣ {mention}")
         elif status == ChatMemberStatus.OWNER and not botol:
             if title:
-                owner.append(cgr("stap_7").format(mention, title))
+                owner.append(f" ┗ {mention} <u>as</u> <i>{title}</i>")
             else:
-                owner.append(f"{mention}")
+                owner.append(f" ┗ {mention}")
         elif botol:
             if title:
-                bots.append(cgr("stap_8").format(mention, title))
+                bot.append(f" ┣ {mention} <u>as</u> <i>{title}</i>")
             else:
-                bots.append(f"{mention}")
-
-    owner_list = "\n ".join(owner)
-    co_founder_list = "\n ".join(co_founder)
-    admin_list = "\n ".join(admin)
-    bots_list = "\n ".join(bots)
-
-    try:
-        response = cgr("stap_1").format(em.sukses, chat_title)
-        if owner_list:
-            response += cgr("stap_2").format(owner_list)
-        if co_founder_list:
-            response += cgr("stap_3").format(co_founder_list)
-        if admin_list:
-            response += cgr("stap_4").format(admin_list)
-        if bots_list:
-            response += cgr("stap_9").format(bots_list)
-        return await pros.edit(response)
-    except Exception as e:
-        return await pros.edit(cgr("err").format(em.gagal, e))
-"""
+                bot.append(f" ┣ {mention}")
+    adm = admin[-1].replace(" ┣", " ┗")
+    admin.pop(-1)
+    admin.append(adm)
+    cof = co_founder[-1].replace(" ┣", " ┗")
+    co_founder.pop(-1)
+    co_founder.append(cof)
+    botak = bot[-1].replace(" ┣", " ┗")
+    bot.pop(-1)
+    bot.append(botak)
+    result = f"{em.sukses} <b>List Staff Group {chat_link}</b>\n\n"
+    if owner:
+        result += f"<b>👑 Owner: </b>\n {owner[0]}\n"
+    elif co_founder:
+        result += f"<b>👨🏻‍💻 Co-Founder:</b>\n" + "\n".join(co_founder)
+    elif admin:
+        result += f"<b>🧑🏻‍💻 Admin:</b>\n" + "\n".join(admin)
+    elif bot:
+        result += f"<b>🤖 Bot:</b>\n" + "\n".join(bot)
+    await pros.edit(result, disable_web_page_preview=True)
