@@ -214,10 +214,15 @@ async def _(c: nlx, m):
                 return
 
             for image_data in images:
-                image_url = image_data["url"]
-                name_anime = image_data["artist"]["name"]
-                desc = image_data["tags"][0]["description"]
-                aplod = image_data["uploaded_at"]
+                try:
+                    image_url = image_data["url"]
+                    name_anime = image_data["artist"]["name"]
+                    desc = image_data["tags"][0]["description"]
+                    aplod = image_data["uploaded_at"]
+                except (KeyError, TypeError) as e:
+                    await pros.edit(f"{em.gagal} Error: {str(e)}")
+                    continue
+
                 image_response = requests.get(image_url)
                 if image_response.status_code == 200:
                     image_content = image_response.content
@@ -239,7 +244,7 @@ async def _(c: nlx, m):
 
                     if os.path.exists(filepath):
                         os.remove(filepath)
-        except (KeyError, IndexError) as e:
+        except IndexError as e:
             await pros.edit(f"{em.gagal} Error: {str(e)}")
     else:
         await pros.edit(f"{em.gagal} Failed to fetch the image.")
