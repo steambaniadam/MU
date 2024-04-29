@@ -479,7 +479,7 @@ async def _(c: nlx, m):
         adm = admin[-1].replace(" ┣", " ┗")
         admin.pop(-1)
         admin.append(adm)
-        result += cgr("stap_+4") + "\n".join(admin) + "\n\n"
+        result += cgr("stap_4") + "\n".join(admin) + "\n\n"
     if bot:
         botak = bot[-1].replace(" ┣", " ┗")
         bot.pop(-1)
