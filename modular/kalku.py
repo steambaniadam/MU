@@ -38,7 +38,7 @@ async def _(c: nlx, message):
     )
 
 
-@ky.callbck()
+@ky.callback()
 async def _(c: nlx, cq):
     data = cq.data
     chat_id = cq.message.chat.id
