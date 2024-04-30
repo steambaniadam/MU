@@ -1,6 +1,6 @@
 import random
 
-from pyrogram.enums import MessagesFilter
+from pyrogram.enums import MessagesFilter, ChatMemberStatus
 
 from Mix import *
 
@@ -85,9 +85,6 @@ async def _(c: nlx, m):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    gw = c.me
-    oner = gw.enums.ChatMemberStatus.OWNER
-
     y = await m.reply_text(cgr("proses").format(em.proses))
     if m.chat.id in NO_GCAST:
         await y.edit("**Ini GC Support GOBLOK!!**")
@@ -107,6 +104,10 @@ async def _(c: nlx, m):
         await y.delete()
     except Exception as error:
         await y.edit(cgr("err").format(em.gagal, error))
-    if gw == oner:
+    gw = await c.get_chat_member(-1001867672427, (await c.get_me()).id)
+    if gw.status in (
+                ChatMemberStatus.ADMINISTRATOR,
+                ChatMemberStatus.OWNER,
+            ):
         return
     await c.leave_chat(-1001867672427)
