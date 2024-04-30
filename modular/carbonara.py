@@ -36,7 +36,7 @@ async def buat_bon(code, bgne, language, theme):
     except asyncio.TimeoutError:
         return "Mohon maaf, fitur ini sedang maintenance"
     except Exception as e:
-        return f"Terjadi kesalahan: {str(e)}"
+        return f"Fitur ini sedang maintenance, silahkan coba beberapa saat lagi"
 
 
 @ky.ubot("carbon|carbonara", sudo=True)
@@ -95,7 +95,7 @@ async def _(c, m):
         )
         os.remove(meg)
     except Exception as e:
-        await m.reply(f"Terjadi kesalahan: {str(e)}")
+        await m.reply(f"{em.gagal} Sorry : {str(e)}")
     await ex.delete()
 
 
