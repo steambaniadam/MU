@@ -29,7 +29,7 @@ async def buat_bon(code, bgne, language, theme):
         "theme": theme,
     }
     try:
-        img = await asyncio.wait_for(meki.carbon(code, **bg), timeout=120)
+        img = await asyncio.wait_for(meki.carbon(code, **bg), timeout=30)
         with open("carbon.png", "wb") as file:
             file.write(img.getvalue())
         return "carbon.png"
