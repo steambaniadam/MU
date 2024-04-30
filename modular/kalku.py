@@ -52,9 +52,7 @@ async def button_click(c: nlx, callback_query):
                 chat_id=chat_id, message_id=message_id, text=f"{expression} = {result}"
             )
         elif data == "C":
-            await c.edit_message_text(
-                chat_id=chat_id, message_id=message_id, text=""
-            )
+            await c.edit_message_text(chat_id=chat_id, message_id=message_id, text="")
         else:
             await c.edit_message_text(
                 chat_id=chat_id,
