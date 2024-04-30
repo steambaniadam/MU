@@ -52,6 +52,7 @@ async def _(c, m):
         if len(m.command) == 1 and text:
             acak = random.choice(loanjing)
             tem = random.choice(loanjing)
+            lague = "python"
         elif len(m.command) == 2:
             warna = m.text.split(None, 1)[1] if len(m.command) > 1 else None
             if warna:
