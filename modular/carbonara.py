@@ -8,9 +8,9 @@
 
 import os
 import random
+
 import requests
 
-from urllib.parse import quote
 from Mix import *
 from Mix.core.tools_quote import *
 
@@ -19,14 +19,10 @@ __help__ = get_cgr("help_carbon")
 
 CARBON_API_URL = "https://carbon.now.sh/api/cook"
 
+
 async def buat_bon(code, bgne, language, theme):
     try:
-        params = {
-            "code": code,
-            "bg": bgne,
-            "t": theme,
-            "l": language
-        }
+        params = {"code": code, "bg": bgne, "t": theme, "l": language}
         response = requests.get(CARBON_API_URL, params=params)
         if response.status_code == 200:
             with open("carbon.png", "wb") as file:
