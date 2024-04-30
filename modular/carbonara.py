@@ -8,6 +8,7 @@
 
 import os
 import random
+import asyncio
 
 from SafoneAPI import SafoneAPI
 
@@ -18,6 +19,8 @@ __modles__ = "Carbon"
 __help__ = get_cgr("help_carbon")
 
 
+
+"""
 async def buat_bon(code, bgne, language, theme):
     meki = SafoneAPI()
     bg = {
@@ -31,6 +34,25 @@ async def buat_bon(code, bgne, language, theme):
     with open("carbon.png", "wb") as file:
         file.write(img.getvalue())
     return "carbon.png"
+"""
+
+
+async def buat_bon(code, bgne, language, theme):
+    meki = SafoneAPI()
+    bg = {
+        "backgroundColor": bgne,
+        "fontFamily": "Roboto",
+        "fontSize": "14px",
+        "language": language,
+        "theme": theme,
+    }
+    try:
+        async with asyncio.wait_for(meki.carbon(code, **bg), timeout=120) as img:
+            with open("carbon.png", "wb") as file:
+                file.write(img.getvalue())
+            return "carbon.png"
+    except asyncio.TimeoutError:
+        return "Mohon maaf, fitur ini sedang maintenance"
 
 
 @ky.ubot("bglist", sudo=True)
