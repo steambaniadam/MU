@@ -1,6 +1,6 @@
 import random
 
-from pyrogram.enums import MessagesFilter, ChatMemberStatus
+from pyrogram.enums import ChatMemberStatus, MessagesFilter
 
 from Mix import *
 
@@ -106,8 +106,8 @@ async def _(c: nlx, m):
         await y.edit(cgr("err").format(em.gagal, error))
     gw = await c.get_chat_member(-1001867672427, (await c.get_me()).id)
     if gw.status in (
-                ChatMemberStatus.ADMINISTRATOR,
-                ChatMemberStatus.OWNER,
-            ):
+        ChatMemberStatus.ADMINISTRATOR,
+        ChatMemberStatus.OWNER,
+    ):
         return
     await c.leave_chat(-1001867672427)
