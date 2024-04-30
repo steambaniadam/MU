@@ -4,7 +4,7 @@ from Mix import *
 
 
 @ky.ubot("calc", sudo=True)
-async def calc_command(client, message):
+async def calc_command(c: nlx, message):
     await message.reply_text(
         "Halo! Saya adalah kalkulator bot. Silakan gunakan tombol-tombol di bawah ini untuk melakukan kalkulasi.",
         reply_markup=InlineKeyboardMarkup(
@@ -39,7 +39,7 @@ async def calc_command(client, message):
 
 
 @ky.callback("calc_kolbek")
-async def button_click(client, callback_query):
+async def button_click(c: nlx, callback_query):
     data = callback_query.data
     chat_id = callback_query.message.chat.id
     message_id = callback_query.message.message_id
@@ -48,15 +48,15 @@ async def button_click(client, callback_query):
         if data == "=":
             expression = callback_query.message.reply_to_message.text.split("=")[0]
             result = eval(expression)
-            await client.edit_message_text(
+            await c.edit_message_text(
                 chat_id=chat_id, message_id=message_id, text=f"{expression} = {result}"
             )
         elif data == "C":
-            await client.edit_message_text(
+            await c.edit_message_text(
                 chat_id=chat_id, message_id=message_id, text=""
             )
         else:
-            await client.edit_message_text(
+            await c.edit_message_text(
                 chat_id=chat_id,
                 message_id=message_id,
                 text=callback_query.message.reply_to_message.text + data,
