@@ -9,6 +9,7 @@
 import asyncio
 import os
 import random
+from urllib.parse import quote
 
 from SafoneAPI import SafoneAPI
 
@@ -20,21 +21,15 @@ __help__ = get_cgr("help_carbon")
 
 
 async def buat_bon(code, bgne, language, theme):
-    meki = SafoneAPI()
-    bg = {
-        "backgroundColor": bgne,
-        "fontFamily": "Roboto",
-        "fontSize": "14px",
-        "language": language,
-        "theme": theme,
-    }
     try:
-        img = await asyncio.wait_for(meki.carbon(code, **bg), timeout=30)
-        with open("carbon.png", "wb") as file:
-            file.write(img.getvalue())
-        return "carbon.png"
-    except asyncio.TimeoutError:
-        return "Mohon maaf, fitur ini sedang maintenance"
+        url = f"https://carbon.now.sh/?code={quote(code)}&bg={quote(bgne)}&t={quote(theme)}&l={quote(language)}"
+        response = requests.get(url)
+        if response.status_code == 200:
+            with open("carbon.png", "wb") as file:
+                file.write(response.content)
+            return "carbon.png"
+        else:
+            return "Mohon maaf, fitur ini sedang maintenance"
     except Exception as e:
         return f"Fitur ini sedang maintenance, silahkan coba beberapa saat lagi"
 
@@ -77,7 +72,7 @@ async def _(c, m):
                 acak = warna
             else:
                 acak = random.choice(loanjing)
-            tema = m.text.split(None, 2)[2] if len(m.command) > 2 else None
+            tema = m.text.split(None, 3)[2] if len(m.command) > 2 else None
             if tema:
                 tem = tema
             else:
