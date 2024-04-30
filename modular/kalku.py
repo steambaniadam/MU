@@ -3,7 +3,7 @@ from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from Mix import *
 
 
-@ky.ubot(["calc", "kalkulator"], sudo=True)
+@ky.ubot("calc", sudo=True)
 async def _(c: nlx, message):
     await message.reply_text(
         " ",
