@@ -46,12 +46,14 @@ async def buat_bon(code, bgne, language, theme):
         "theme": theme,
     }
     try:
-        async with asyncio.wait_for(meki.carbon(code, **bg), timeout=120) as img:
-            with open("carbon.png", "wb") as file:
-                file.write(img.getvalue())
-            return "carbon.png"
+        img = await asyncio.wait_for(meki.carbon(code, **bg), timeout=120)
+        with open("carbon.png", "wb") as file:
+            file.write(img.getvalue())
+        return "carbon.png"
     except asyncio.TimeoutError:
         return "Mohon maaf, fitur ini sedang maintenance"
+    except Exception as e:
+        return f"Terjadi kesalahan: {str(e)}"
 
 
 @ky.ubot("bglist", sudo=True)
