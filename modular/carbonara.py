@@ -8,21 +8,19 @@
 
 import os
 import random
+
 from carbonnow import Carbon
+
 from Mix import *
 from Mix.core.tools_quote import *
 
 __modles__ = "Carbon"
 __help__ = get_cgr("help_carbon")
 
+
 async def buat_bon(code, bgne, language, theme):
     try:
-        carbon = Carbon(
-            code=code,
-            background=bgne,
-            language=language,
-            theme=theme
-        )
+        carbon = Carbon(code=code, background=bgne, language=language, theme=theme)
         carbon_image_path = await carbon.save("carbon_image")
         return carbon_image_path
     except Exception as e:
