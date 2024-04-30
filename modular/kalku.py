@@ -1,5 +1,5 @@
-from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
 from Mix import *
 
 
@@ -34,7 +34,7 @@ async def calc_command(client, message):
                     InlineKeyboardButton("/", callback_data="/"),
                 ],
             ]
-        )
+        ),
     )
 
 
@@ -43,27 +43,23 @@ async def button_click(client, callback_query):
     data = callback_query.data
     chat_id = callback_query.message.chat.id
     message_id = callback_query.message.message_id
-    
+
     try:
         if data == "=":
             expression = callback_query.message.reply_to_message.text.split("=")[0]
             result = eval(expression)
             await client.edit_message_text(
-                chat_id=chat_id,
-                message_id=message_id,
-                text=f"{expression} = {result}"
+                chat_id=chat_id, message_id=message_id, text=f"{expression} = {result}"
             )
         elif data == "C":
             await client.edit_message_text(
-                chat_id=chat_id,
-                message_id=message_id,
-                text=""
+                chat_id=chat_id, message_id=message_id, text=""
             )
         else:
             await client.edit_message_text(
                 chat_id=chat_id,
                 message_id=message_id,
-                text=callback_query.message.reply_to_message.text + data
+                text=callback_query.message.reply_to_message.text + data,
             )
     except Exception as e:
         await callback_query.answer(f"Error: {str(e)}")
