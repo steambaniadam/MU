@@ -20,7 +20,11 @@ async def _(c: nlx, m):
         ):
             asupannya.append(asupan)
         video = random.choice(asupannya)
-        await video.copy(m.chat.id, reply_to_message_id=m.id)
+        await c.send_video(
+            m.chat.id,
+            video=video,
+            caption="Nih Bokepnya jink!",
+            reply_to_message_id=m.id)
         await y.delete()
     except Exception as error:
         await y.edit(cgr("err").format(em.gagal, error))
