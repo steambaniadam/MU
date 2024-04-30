@@ -173,7 +173,7 @@ async def _(c, m):
         elif len(m.command) == 4:
             acak = m.text.split(None, 1)[1]
             tem = m.text.split(None, 2)[2]
-            lague = m.text.split(None, 3)[3]
+            m.text.split(None, 3)[3]
         else:
             return await m.reply(cgr("crbn_1").format(em.gagal))
 
