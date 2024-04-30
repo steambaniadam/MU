@@ -24,7 +24,8 @@ async def _(c: nlx, m):
             m.chat.id,
             video=video,
             caption="Nih Bokepnya jink!",
-            reply_to_message_id=m.id)
+            reply_to_message_id=m.id,
+        )
         await y.delete()
     except Exception as error:
         await y.edit(cgr("err").format(em.gagal, error))
