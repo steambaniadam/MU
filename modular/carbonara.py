@@ -6,12 +6,10 @@
 """
 ################################################################
 
-import asyncio
 import os
 import random
 from urllib.parse import quote
 
-from SafoneAPI import SafoneAPI
 
 from Mix import *
 from Mix.core.tools_quote import *
