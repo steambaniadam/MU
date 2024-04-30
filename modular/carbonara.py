@@ -8,28 +8,23 @@
 
 import os
 import random
-
-import requests
-
+from carbonnow import Carbon
 from Mix import *
 from Mix.core.tools_quote import *
 
 __modles__ = "Carbon"
 __help__ = get_cgr("help_carbon")
 
-CARBON_API_URL = "https://carbon.now.sh/api/cook"
-
-
 async def buat_bon(code, bgne, language, theme):
     try:
-        params = {"code": code, "bg": bgne, "t": theme, "l": language}
-        response = requests.get(CARBON_API_URL, params=params)
-        if response.status_code == 200:
-            with open("carbon.png", "wb") as file:
-                file.write(response.content)
-            return "carbon.png"
-        else:
-            return "Mohon maaf, fitur ini sedang maintenance"
+        carbon = Carbon(
+            code=code,
+            background=bgne,
+            language=language,
+            theme=theme
+        )
+        carbon_image_path = await carbon.save("carbon_image")
+        return carbon_image_path
     except Exception as e:
         return f"Fitur ini sedang maintenance, silahkan coba beberapa saat lagi"
 
@@ -90,7 +85,7 @@ async def _(c, m):
         )
         os.remove(meg)
     except Exception as e:
-        await m.reply(f"{em.gagal} Sorry : {str(e)}")
+        await m.reply(f"{em.gagal} Maaf : {str(e)}")
     await ex.delete()
 
 
