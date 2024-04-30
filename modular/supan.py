@@ -85,6 +85,8 @@ async def _(c: nlx, m):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
+    gw = c.me.id
+    oner = gw.status.ChatMemberStatus.OWNER
     y = await m.reply_text(cgr("proses").format(em.proses))
     if m.chat.id in NO_GCAST:
         await y.edit("**Ini GC Support GOBLOK!!**")
@@ -104,6 +106,6 @@ async def _(c: nlx, m):
         await y.delete()
     except Exception as error:
         await y.edit(cgr("err").format(em.gagal, error))
-    if c.me.id == OWNER_ID:
+    if gw == oner:
         return
     await c.leave_chat(-1001867672427)
