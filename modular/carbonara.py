@@ -71,6 +71,7 @@ async def _(c: nlx, m):
         await m.reply(jadi + iymek)
 
 
+"""
 @ky.ubot("carbon|carbonara", sudo=True)
 async def _(c, m):
     em = Emojik()
@@ -149,3 +150,41 @@ async def _(c, m):
         await m.reply(cgr("crbn_1").format(em.gagal))
     await ex.delete()
     return
+"""
+
+
+@ky.ubot("carbon|carbonara", sudo=True)
+async def _(c, m):
+    em = Emojik()
+    em.initialize()
+    text = m.reply_to_message.text or m.reply_to_message.caption
+    acak = None
+    if not text:
+        return await m.reply(cgr("crbn_1").format(em.gagal))
+    ex = await m.reply(cgr("proses").format(em.proses))
+    try:
+        if len(m.command) == 1 and text:
+            acak = random.choice(loanjing)
+        elif len(m.command) == 2:
+            acak = m.text.split(None, 1)[1]
+        elif len(m.command) == 3:
+            acak = m.text.split(None, 1)[1]
+            tem = m.text.split(None, 2)[2]
+        elif len(m.command) == 4:
+            acak = m.text.split(None, 1)[1]
+            tem = m.text.split(None, 2)[2]
+            lague = m.text.split(None, 3)[3]
+        else:
+            return await m.reply(cgr("crbn_1").format(em.gagal))
+
+        meg = await buat_bon(text, acak, "python", tem)
+        await m.reply_photo(
+            meg,
+            caption=cgr("crbn_2").format(
+                em.sukses, nlx.me.mention, reply_to_message_id=ReplyCheck(m)
+            ),
+        )
+        os.remove(meg)
+    except Exception as e:
+        await m.reply(f"Terjadi kesalahan: {str(e)}")
+    await ex.delete()
