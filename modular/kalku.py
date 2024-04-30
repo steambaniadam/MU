@@ -6,7 +6,7 @@ from Mix import *
 @ky.ubot("calc", sudo=True)
 async def _(c: nlx, message):
     await message.reply_text(
-        " ",
+        "Halo! Saya adalah kalkulator bot. Silakan gunakan tombol-tombol di bawah ini untuk melakukan kalkulasi.",
         reply_markup=InlineKeyboardMarkup(
             [
                 [
