@@ -445,24 +445,24 @@ async def _(c: nlx, m):
             and not botol
         ):
             if title:
-                co_founder.append(cgr("stap_1").format(mention, title))
+                co_founder.append(f" ┣ {mention} <u>sebagai</u> <i>{title}</i>")
             else:
-                co_founder.append(cgr("stap_0").format(mention))
+                co_founder.append(f" ┣ {mention}")
         elif status == ChatMemberStatus.ADMINISTRATOR and not botol:
             if title:
-                admin.append(cgr("stap_1").format(mention, title))
+                admin.append(f" ┣ {mention} <u>sebagai</u> <i>{title}</i>")
             else:
-                admin.append(cgr("stap_0").format(mention))
-        elif status == ChatMemberStatus.OWNER and not botol:
+                admin.append(f" ┣ {mention}")
+        elif status == ChatMemberStatus.OWNER:
             if title:
-                owner.append(cgr("stap_1").format(mention, title))
+                owner.append(f" ┣ {mention} <u>sebagai</u> <i>{title}</i>")
             else:
-                owner.append(cgr("stap_0").format(mention))
+                owner.append(f" ┣ {mention}")
         elif botol:
             if title:
-                bot.append(cgr("stap_1").format(mention, title))
+                bot.append(f" ┣ {mention} <u>sebagai</u> <i>{title}</i>")
             else:
-                bot.append(cgr("stap_0").format(mention))
+                bot.append(f" ┣ {mention}")
 
     result = cgr("stap_6").format(em.sukses, chat_link)
     if owner:
