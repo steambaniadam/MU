@@ -42,21 +42,22 @@ async def _(c: nlx, m):
     em.initialize()
     chat_id = m.chat.id
     pros = await m.reply(cgr("proses").format(em.proses))
+    
     if m.reply_to_message:
         if len(m.command) > 2:
             style = m.command[1]
             if m.reply_to_message.photo:
-                file_id = m.reply_to_message.photo.file_id
-                file_info = c.get_file(file_id)
-                file_path = file_info.file_path
+                async for file_info in c.get_file(m.reply_to_message.photo.file_id):
+                    file_path = file_info.file_path
+                    break
             else:
                 return await pros.edit(cgr("konpert_1").format(em.gagal))
         elif len(m.command) == 1:
             style = random.choice(["webtoon", "paprika", "face2paint"])
             if m.reply_to_message.photo:
-                file_id = m.reply_to_message.photo.file_id
-                file_info = c.get_file(file_id)
-                file_path = file_info.file_path
+                async for file_info in c.get_file(m.reply_to_message.photo.file_id):
+                    file_path = file_info.file_path
+                    break
             else:
                 return await pros.edit(cgr("konpert_1").format(em.gagal))
         else:
