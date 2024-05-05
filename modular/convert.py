@@ -4,7 +4,7 @@ import hashlib
 import json
 import os
 from io import BytesIO
-
+from datetime import datetime, timedelta
 import aiohttp
 import requests
 from PIL import Image
@@ -15,86 +15,108 @@ __modles__ = "Convert"
 __help__ = get_cgr("help_konpert")
 
 
-class AnimeMaker:
-    def __init__(self, source):
-        self._source = source
-        self._filename = source.split("/")[-1].split(".")[0]
-        self._file_extension = source.split("/")[-1].split(".")[-1]
+def get_ai_image(base64_image_string):
+    headers = {
+        "Connection": "keep-alive",
+        "phone_gid": "2862114434",
+        "Accept": "application/json, text/plain, */*",
+        "User-Agent": "Mozilla/5.0 (Linux; Android 7.1.2; SM-G955N Build/NRD90M.G955NKSU1AQDC; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/92.0.4515.131 Mobile Safari/537.36 com.meitu.myxj/11270(android7.1.2)/lang:ru/isDeviceSupport64Bit:false MTWebView/4.8.5",
+        "Content-Type": "application/json;charset=UTF-8",
+        "Origin": "https://titan-h5.meitu.com",
+        "X-Requested-With": "com.meitu.meiyancamera",
+        "Sec-Fetch-Site": "same-site",
+        "Sec-Fetch-Mode": "cors",
+        "Sec-Fetch-Dest": "empty",
+        "Referer": "https://titan-h5.meitu.com/",
+        "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
+    }
 
-    def build_header(self, signature):
-        headers = {
-            "Host": "ai.tu.qq.com",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
-            "Content-Type": "application/json",
-            "Accept": "application/json, text/plain, */*",
-            "x-sign-value": signature,
-            "x-sign-version": "v1",
-            "Origin": "https://h5.tu.qq.com",
-        }
-        return headers
+    params = {
+        "api_key": "237d6363213c4751ba1775aba648517d",
+        "api_secret": "b7b1c5865a83461ea5865da3ecc7c03d",
+    }
 
-    def crop_horizontal(self, img):
-        crop = img.crop((22, 547, 776, 1039))
-        crop.save(f"{self._filename}_anime.{self._file_extension}")
+    json_data = {
+        "parameter": {
+            "rsp_media_type": "url",
+            "strength": 0.45,
+            "guidance_scale": 7.5,
+            "prng_seed": "-1",
+            "num_inference_steps": "50",
+            "extra_prompt": "",
+            "extra_negative_prompt": "",
+            "random_generation": "False",
+            "type": "1",
+            "type_generation": "True",
+            "sensitive_words": "white_kimono",
+        },
+        "extra": {},
+        "media_info_list": [
+            {
+                "media_data": base64_image_string,
+                "media_profiles": {
+                    "media_data_type": "jpg",
+                },
+            },
+        ],
+    }
 
-    def crop_vertical(self, img):
-        crop = img.crop((511, 25, 978, 727))
-        crop.save(f"{self._filename}_anime.{self._file_extension}")
+    response = requests.post(
+        "https://openapi.mtlab.meitu.com/v1/stable_diffusion_anime",
+        params=params,
+        headers=headers,
+        json=json_data,
+    )
+    return json.loads(response.content)
 
-    async def get_anime_image(self):
-        print("Create anime...")
-        with open(self._source, "rb") as f:
-            image_data = f.read()
-        b64 = base64.b64encode(image_data).decode("utf-8")
-        post_data = {
-            "busiId": "different_dimension_me_img_entry",
-            "images": [b64],
-            "extra": '{"face_rects":[],"version":2,"language":"en","platform":"web","data_report":{"parent_trace_id":"e249ff20-6a1e-16cb-0750-c7fa37407d10","root_channel":"","level":0}}',
-        }
-        signature = hashlib.md5(
-            f"https://h5.tu.qq.com{json.dumps(post_data)}HQ31X02e".encode()
-        ).hexdigest()
-        headers = self.build_header(signature)
-        response = await self.send_request(
-            "https://ai.tu.qq.com/overseas/trpc.shadow_cv.ai_processor_cgi.AIProcessorCgi/Process",
-            json=post_data,
-            headers=headers,
-        )
-        if response is not None:
-            res_json = response.json()
-            if "extra" in res_json:
-                resimg = json.loads(res_json["extra"])["img_urls"][0]
-                return resimg
-            else:
-                print("Error: 'extra' key not found in response JSON")
-        else:
-            print("Error: Failed to get anime image.")
-        return None
 
-    async def create_anime(self):
-        resimg = await self.get_anime_image()
-        if resimg is not None:
-            img_data = requests.get(resimg).content
-            img = Image.open(BytesIO(img_data))
-            width, height = img.size
-            if width == 1000 and height == 930:
-                print("Complete...")
-                self.crop_vertical(img)
-            else:
-                print("Complete...")
-                self.crop_horizontal(img)
-        else:
-            print("Error: Failed to get anime image.")
-
-    async def send_request(self, url, json=None, headers=None):
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.post(url, json=json, headers=headers) as response:
-                    response.raise_for_status()
-                    return await response.read()
-        except aiohttp.ClientError as e:
-            print(f"Error sending request: {e}")
-            return None
+async def send_message_media_types(
+        bot: Bot,
+        content_type: str,
+        chat_id, text: str,
+        file_id: str = None,
+        button_text: str = None,
+        button_url: str = None
+):
+    if button_text and button_url:
+        keyboard = types.InlineKeyboardMarkup()
+        keyboard.add(types.InlineKeyboardButton(text=button_text, url=button_url))
+    else:
+        keyboard = types.ReplyKeyboardRemove()
+    try:
+        if content_type == "text":
+            await bot.send_message(
+                chat_id,
+                text=text,
+                parse_mode="HTML",
+                reply_markup=keyboard
+            )
+        elif content_type == "photo":
+            await bot.send_photo(
+                chat_id,
+                photo=file_id,
+                caption=text,
+                parse_mode="HTML",
+                reply_markup=keyboard
+            )
+        elif content_type == "video":
+            await bot.send_video(
+                chat_id,
+                video=file_id,
+                caption=text,
+                parse_mode="HTML",
+                reply_markup=keyboard
+            )
+        elif content_type == "animation":
+            await bot.send_animation(
+                chat_id,
+                animation=file_id,
+                caption=text,
+                parse_mode="HTML",
+                reply_markup=keyboard
+            )
+    except Exception as e:
+        print(f"Error : {e}")
 
 
 @ky.ubot("toanime", sudo=True)
@@ -103,47 +125,36 @@ async def _(c: nlx, message):
     em.initialize()
     rep = message.reply_to_message
     pros = await message.reply(cgr("proses").format(em.proses))
-
-    if rep:
-        if len(message.command) < 2:
-            if rep.photo:
-                get_photo = await c.download_media(
-                    rep.photo,
-                    file_name=f"{message.id}.anime.jpg",
+    fileID = rep.photo[-1].file_id
+    file = await c.get_file(fileID)
+    r = requests.get(
+        "https://api.telegram.org/file/bot" + "6810163267:AAGQZnaPP2N2RxMHeETwVVAkcNKz9t6KXOI" + "/" + file.file_path,
+        timeout=None,
+        stream=True,
+    )
+    base64_image_string = base64.b64encode(r.content).decode("utf-8")
+    me = await c.get_me()
+    tag = me.username
+    try:
+        ai_image = get_ai_image(base64_image_string)["media_info_list"][0]["media_data"]
+        await c.send_photo(message.chat.id, ai_image, caption=f"@{tag}")
+        send_date = datetime.now() + timedelta(seconds=10)
+        while datetime.now() <= send_date:
+            await asyncio.sleep(1)
+            if datetime.now() >= send_date:
+                await send_message_media_types(
+                    bot=c,
+                    content_type=content_type,
+                    chat_id=message.chat.id,
+                    text=text,
+                    file_id=file_id,
+                    button_text=button_text,
+                    button_url=button_url
                 )
-            elif rep.sticker:
-                get_photo = await c.dln(rep.sticker.thumnail.file_id)
-            elif rep.animation:
-                get_photo = await c.dln(rep.animation.file_id)
-            else:
-                return await pros.edit(cgr("konpert_1").format(em.gagal))
-        else:
-            if message.command[1] in ["foto", "profil", "photo"]:
-                chat = rep.from_user or rep.sender_chat
-                get = await c.get_chat(chat.id)
-                photo = get.big_file_id
-                get_photo = await c.dln(photo)
-    else:
-        if len(message.command) < 2:
-            return await pros.edit(cgr("konpert_1").format(em.gagal))
-        else:
-            try:
-                get = await c.get_chat(message.command[1])
-                photo = get.photo.big_file_id
-                get_photo = await c.dln(photo)
-            except Exception as error:
-                return await pros.edit(cgr("err").format(em.gagal, error))
-
-    if get_photo is not None:
-        anim = AnimeMaker(get_photo)
-        await anim.create_anime()
-        await c.send_photo(
-            message.chat.id,
-            f"{anim._filename}_to_anime.{anim._file_extension}",
-        )
-        await pros.delete()
-    else:
-        await pros.edit(cgr("err").format(em.gagal, "Failed to get photo."))
+                break
+    except Exception as e:
+        print(f"Error: {e}")
+        await c.send_message(message.chat.id, f"Error : {e}")
 
 
 """
