@@ -410,31 +410,37 @@ async def _(c: nlx, message):
         await pros.edit(cgr("err").format(em.gagal, e))
 
 
-async def stt_cmd(c, m, audio_file, pros):
+async def stt_cmd(c, m, upload_url, pros):
     em = Emojik()
     em.initialize()
-    config = aai.TranscriptionConfig(
-        speech_model=aai.SpeechModel.nano,
-        language_detection=True,
-        disfluencies=True,
-        filter_profanity=True,
-    )
-    transcriber = aai.Transcriber(config=config)
-    try:
-        transcript = transcriber.transcribe(audio_file)
-        if transcript.text:
-            await pros.edit(
-                cgr("konpert_21").format(em.sukses, c.me.mention, transcript.text)
-            )
-            os.remove(audio_file)
-            return
+    base_url = "https://api.assemblyai.com/v2"
+    headers = {"authorization": "e28239cb6ecc4d0090f36711b11e247a"}
+    with open(upload_url, "rb") as f:
+        response = requests.post(base_url + "/upload", headers=headers, data=f)
+        upload_url = response.json()["upload_url"]
+    data = {"audio_url": upload_url}
+    url = base_url + "/transcript"
+    response = requests.post(url, json=data, headers=headers)
+    transcript_id = response.json()["id"]
+    polling_endpoint = f"https://api.assemblyai.com/v2/transcript/{transcript_id}"
+    while True:
+        transcription_result = requests.get(polling_endpoint, headers=headers).json()
+        status = transcription_result["status"]
+
+        if status == "completed":
+            text = transcription_result["text"]
+            await pros.edit(f"{em.sukses} Sukses Convert Audio To :\n\n`{text}`")
+            os.remove(upload_url)
+            break
+
+        elif status == "error":
+            error_msg = transcription_result["error"]
+            await pros.edit(f"{em.gagal} Gagal melakukan transkripsi: {error_msg}")
+            os.remove(upload_url)
+            break
+
         else:
-            await pros.edit(cgr("konpert_22").format(em.gagal))
-            os.remove(audio_file)
-            return
-    except aai.exceptions.RequestError as e:
-        await pros.edit(cgr("error").format(em.gagal, e))
-        os.remove(audio_file)
+            await asyncio.sleep(3)
 
 
 @ky.ubot("stt", sudo=True)
@@ -443,14 +449,16 @@ async def transcribe_audio(c: nlx, m):
     em.initialize()
     rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
+    
     if rep:
         if rep.audio:
-            audio_file = await c.download_media(rep.audio.file_id, file_name="stt.mp3")
-            return await stt_cmd(c, m, audio_file, pros)
+            upload_url = await c.download_media(rep.audio.file_id, file_name="stt.mp3")
         elif rep.voice:
-            audio_file = await c.download_media(rep.voice.file_id, file_name="stt.ogg")
-            return await stt_cmd(c, m, audio_file, pros)
+            upload_url = await c.download_media(rep.voice.file_id, file_name="stt.ogg")
         else:
-            return await pros.edit(cgr("konpert_23").format(em.gagal))
+            await pros.edit(f"{em.gagal} Silakan balas dengan pesan suara atau audio.")
+            return
+        
+        await stt_cmd(c, m, upload_url, pros)
     else:
-        return await pros.edit(cgr("konpert_24").format(em.gagal))
+        await pros.edit(f"{em.gagal} Mohon balas pesan dengan audio untuk mentranskripsinya.")
