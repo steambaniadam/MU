@@ -12,151 +12,44 @@ __modles__ = "Convert"
 __help__ = get_cgr("help_konpert")
 
 
-def get_ai_image(base64_image_string):
-    headers = {
-        "Connection": "keep-alive",
-        "phone_gid": "2862114434",
-        "Accept": "application/json, text/plain, */*",
-        "User-Agent": "Mozilla/5.0 (Linux; Android 7.1.2; SM-G955N Build/NRD90M.G955NKSU1AQDC; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/92.0.4515.131 Mobile Safari/537.36 com.meitu.myxj/11270(android7.1.2)/lang:ru/isDeviceSupport64Bit:false MTWebView/4.8.5",
-        "Content-Type": "application/json;charset=UTF-8",
-        "Origin": "https://titan-h5.meitu.com",
-        "X-Requested-With": "com.meitu.meiyancamera",
-        "Sec-Fetch-Site": "same-site",
-        "Sec-Fetch-Mode": "cors",
-        "Sec-Fetch-Dest": "empty",
-        "Referer": "https://titan-h5.meitu.com/",
-        "Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7",
-    }
-
-    params = {
-        "api_key": "237d6363213c4751ba1775aba648517d",
-        "api_secret": "b7b1c5865a83461ea5865da3ecc7c03d",
-    }
-
-    json_data = {
-        "parameter": {
-            "rsp_media_type": "url",
-            "strength": 0.45,
-            "guidance_scale": 7.5,
-            "prng_seed": "-1",
-            "num_inference_steps": "50",
-            "extra_prompt": "",
-            "extra_negative_prompt": "",
-            "random_generation": "False",
-            "type": "1",
-            "type_generation": "True",
-            "sensitive_words": "white_kimono",
-        },
-        "extra": {},
-        "media_info_list": [
-            {
-                "media_data": base64_image_string,
-                "media_profiles": {
-                    "media_data_type": "jpg",
-                },
-            },
-        ],
-    }
-
-    response = requests.post(
-        "https://openapi.mtlab.meitu.com/v1/stable_diffusion_anime",
-        params=params,
-        headers=headers,
-        json=json_data,
-    )
-    print(response.json())
-    return json.loads(response.content)
-
-
-async def send_message_media_types(
-    bot: nlx,
-    content_type: str,
-    chat_id,
-    text: str,
-    file_id: str = None,
-    button_text: str = None,
-    button_url: str = None,
-):
-    if button_text and button_url:
-        keyboard = types.InlineKeyboardMarkup()
-        keyboard.add(types.InlineKeyboardButton(text=button_text, url=button_url))
+async def process_toanime_command(m, args):
+    rep = m.reply_to_message
+    if len(args) == 2 and rep and rep.photo:
+        type_arg = args[0]
+        image = rep.photo[-1].file_id
+    elif len(args) == 1 and rep and rep.photo:
+        type_arg = args[0]
+        image = rep.photo[-1].file_id
+    elif len(args) == 3:
+        type_arg = args[0]
+        url = args[2]
+        image = {"image": open(requests.get(url, stream=True).raw, "rb")}
+    elif len(args) == 2:
+        type_arg = args[0]
+        url = args[1]
+        image = {"image": open(requests.get(url, stream=True).raw, "rb")}
     else:
-        keyboard = types.ReplyKeyboardRemove()
-    try:
-        if content_type == "text":
-            await bot.send_message(
-                chat_id, text=text, parse_mode="HTML", reply_markup=keyboard
-            )
-        elif content_type == "photo":
-            await bot.send_photo(
-                chat_id,
-                photo=file_id,
-                caption=text,
-                parse_mode="HTML",
-                reply_markup=keyboard,
-            )
-        elif content_type == "video":
-            await bot.send_video(
-                chat_id,
-                video=file_id,
-                caption=text,
-                parse_mode="HTML",
-                reply_markup=keyboard,
-            )
-        elif content_type == "animation":
-            await bot.send_animation(
-                chat_id,
-                animation=file_id,
-                caption=text,
-                parse_mode="HTML",
-                reply_markup=keyboard,
-            )
-    except Exception as e:
-        print(f"Error : {e}")
+        await m.reply("Format perintah salah.")
+        return
+    payload = {
+        "url": image,
+        "style": type_arg
+    }
+    headers = {
+        "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+        "X-RapidAPI-Host": "phototoanime1.p.rapidapi.com"
+    }
+    response = requests.post("https://phototoanime1.p.rapidapi.com/photo-to-anime", data=payload, headers=headers)
+    if response.status_code == 200:
+        await m.reply_photo(response.json()["body"]["imageUrl"])
+    else:
+        await m.reply("Terjadi kesalahan saat mengonversi gambar menjadi anime.")
 
 
 @ky.ubot("toanime", sudo=True)
-async def _(c: nlx, message):
-    em = Emojik()
-    em.initialize()
-    rep = message.reply_to_message
-    pros = await message.reply(cgr("proses").format(em.proses))
-
-    file_id = None
-    if rep and rep.photo:
-        file_id = rep.photo.file_id
-    else:
-        await pros.edit("Error: No photo found in the replied message.")
-        return
-
-    c.get_file(file_id)
-    file_name = f"anime.jpg"
-    file_path = f"downloads/{file_name}"
-    r = requests.get(
-        "https://api.telegram.org/file/bot" + ndB.get("BOT_TOKEN") + "/" + file_path,
-        timeout=None,
-        stream=True,
-    )
-    base64_image_string = base64.b64encode(r.content).decode("utf-8")
-
-    try:
-        ai_image = get_ai_image(base64_image_string)["media_info_list"][0]["media_data"]
-        await c.send_photo(message.chat.id, ai_image)
-        send_date = datetime.now() + timedelta(seconds=10)
-        while datetime.now() <= send_date:
-            await asyncio.sleep(1)
-        await send_message_media_types(
-            bot=c,
-            content_type=content_type,
-            chat_id=message.chat.id,
-            text=text,
-            file_id=file_id,
-            button_text=button_text,
-            button_url=button_url,
-        )
-    except Exception as e:
-        print(f"Error: {e}")
-        await pros.edit(f"Error: {e}")
+async def _(c: nlx, m):
+    args = m.text.split()[1:]
+    await process_toanime_command(m, args)
 
 
 """
