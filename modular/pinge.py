@@ -11,7 +11,6 @@ from time import time
 from pyrogram.raw.functions import Ping
 
 from Mix import *
-from Mix.core.klasbaru import Emonyet
 from Mix.core.waktu import get_time, start_time
 
 __modles__ = "Ping"
@@ -21,7 +20,7 @@ __help__ = get_cgr("help_ping")
 @ky.ubot("ping", sudo=True)
 @ky.devs("mping")
 async def _(c: nlx, m):
-    em = Emonyet()
+    em = Emojik()
     em.initialize()
     start = datetime.now()
     await c.invoke(Ping(ping_id=0))
