@@ -2,6 +2,7 @@ import asyncio
 import os
 import random
 import shutil
+
 import requests
 
 from Mix import *
@@ -64,14 +65,18 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     if rep:
         if len(m.command) == 0 and rep.photo:
-            tipe = random.choice(['face2paint', 'paprika', 'webtoon'])
-            image = await c.download_media(rep.photo.file_id, file_name=f"{c.me.id}.jpg")
+            random.choice(["face2paint", "paprika", "webtoon"])
+            image = await c.download_media(
+                rep.photo.file_id, file_name=f"{c.me.id}.jpg"
+            )
         elif len(m.command) == 1 and rep.photo:
-            tipe = m.command[0]
-            image = await c.download_media(rep.photo.file_id, file_name=f"{c.me.id}.jpg")
+            m.command[0]
+            image = await c.download_media(
+                rep.photo.file_id, file_name=f"{c.me.id}.jpg"
+            )
     elif not rep:
         if len(m.command) == 1:
-            tipe = random.choice(['face2paint', 'paprika', 'webtoon'])
+            random.choice(["face2paint", "paprika", "webtoon"])
             url = m.command[0]
             response = requests.get(url, stream=True)
             if response.status_code == 200:
@@ -81,7 +86,7 @@ async def _(c: nlx, m):
                 image = {"image": open("temp_image.jpg", "rb")}
                 os.remove("temp_image.jpg")
         elif len(m.command) == 2:
-            tipe = m.command[0]
+            m.command[0]
             url = m.command[1]
             response = requests.get(url, stream=True)
             if response.status_code == 200:
