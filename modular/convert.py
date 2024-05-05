@@ -315,6 +315,35 @@ async def _(c: nlx, message):
     reply = message.reply_to_message
     prefix = await c.get_prefix(c.me.id)
     pros = await message.reply(cgr("konpert_11").format(em.proses, args))
+    if reply and args in get_efek:
+        indir = await c.download_media(reply, file_name=f"{c.me.id}.mp3")
+        ses = await asyncio.create_subprocess_shell(
+            f"ffmpeg -i '{indir}' {get_efek[args]} audio.mp3"
+        )
+        await ses.communicate()
+        await message.reply_voice(
+            open("audio.mp3", "rb"),
+            caption=cgr("konpert_12").format(em.sukses, args),
+        )
+        for files in ("audio.mp3", indir):
+            if files and os.path.exists(files):
+                os.remove(files)
+        await pros.delete()
+    else:
+        await pros.edit(
+            cgr("konpert_13").format(em.gagal, next((p) for p in prefix))
+        )
+
+
+"""
+@ky.ubot("efek|effect|voifek", sudo=True)
+async def _(c: nlx, message):
+    em = Emojik()
+    em.initialize()
+    args = c.get_arg(message)
+    reply = message.reply_to_message
+    prefix = await c.get_prefix(c.me.id)
+    pros = await message.reply(cgr("konpert_11").format(em.proses, args))
     if reply and list_efek:
         if args in list_efek:
             indir = await c.download_media(reply, file_name=f"{c.me.id}.mp3")
@@ -324,8 +353,7 @@ async def _(c: nlx, message):
             await ses.communicate()
             await message.reply_voice(
                 open("audio.mp3", "rb"),
-                caption=cgr("konpert_12".format(em.sukses, args)),
-            )
+                caption=cgr("konpert_12").format(em.sukses, args)),
             for files in ("audio.mp3", indir):
                 if files and os.path.exists(files):
                     os.remove(files)
@@ -336,3 +364,4 @@ async def _(c: nlx, message):
             )
     else:
         await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
+"""
