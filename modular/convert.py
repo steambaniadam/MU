@@ -64,20 +64,20 @@ async def _(c: nlx, m):
     rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
     if rep:
-        if len(m.command) == 0 and rep.photo:
+        if len(m.command) == 1 and rep.photo:
             tipe = random.choice(["face2paint", "paprika", "webtoon"])
             image = await c.download_media(
                 rep.photo.file_id, file_name=f"{c.me.id}.jpg"
             )
-        elif len(m.command) == 1 and rep.photo:
-            tipe = m.command[0]
+        elif len(m.command) == 2 and rep.photo:
+            tipe = m.command[1]
             image = await c.download_media(
                 rep.photo.file_id, file_name=f"{c.me.id}.jpg"
             )
     elif not rep:
-        if len(m.command) == 1:
+        if len(m.command) == 2:
             tipe = random.choice(["face2paint", "paprika", "webtoon"])
-            url = m.command[0]
+            url = m.command[1]
             response = requests.get(url, stream=True)
             if response.status_code == 200:
                 with open("temp_image.jpg", "wb") as f:
@@ -85,9 +85,9 @@ async def _(c: nlx, m):
                     shutil.copyfileobj(response.raw, f)
                 image = {"image": open("temp_image.jpg", "rb")}
                 os.remove("temp_image.jpg")
-        elif len(m.command) == 2:
-            tipe = m.command[0]
-            url = m.command[1]
+        elif len(m.command) == 3:
+            tipe = m.command[1]
+            url = m.command[2]
             response = requests.get(url, stream=True)
             if response.status_code == 200:
                 with open("temp_image.jpg", "wb") as f:
