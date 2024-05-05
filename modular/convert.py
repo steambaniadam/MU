@@ -28,12 +28,15 @@ async def to_anime(c, chat_id, file_path, style, em):
                 image_url,
                 caption=f"{em.sukses} Berhasil di konversi ke anime oleh : {c.me.mention}",
             )
-            await pros.delete()
         else:
             error_message = response_json.get("error", "Unknown error")
-            await pros.edit(cgr("err").format(em.gagal, error_message))
+            await c.send_message(
+                chat_id,
+                cgr("err").format(em.gagal, error_message))
     except Exception as error:
-        await pros.edit(cgr("err").format(em.gagal, error))
+        await c.send_message(
+            chat_id,
+            cgr("err").format(em.gagal, error))
 
 
 @ky.ubot("toanime", sudo=True)
@@ -44,7 +47,7 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
 
     if m.reply_to_message:
-        if len(m.command) > 2:
+        if len(m.command) > 1:
             style = m.command[1]
             if m.reply_to_message.photo:
                 file_info = await c.get_file(m.reply_to_message.photo.file_id)
@@ -72,6 +75,7 @@ async def _(c: nlx, m):
 
     await pros.edit(cgr("konpert_2").format(em.proses))
     await to_anime(c, chat_id, file_path, style, em)
+    await pros.delete()
 
 
 """
