@@ -384,7 +384,9 @@ async def _(c: nlx, message):
                     pass
 
         else:
-            await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
+            await pros.edit(
+                cgr("konpert_13").format(em.gagal, next((p) for p in prefix))
+            )
 
     except asyncio.TimeoutError:
         for files in (converted_file, indir):
