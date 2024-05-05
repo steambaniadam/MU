@@ -413,11 +413,9 @@ async def _(c: nlx, message):
 async def stt_cmd(c, m, audio_file, pros):
     em = Emojik()
     em.initialize()
-    bhs = c._translate[c.me.id]["negara"]
     config = aai.TranscriptionConfig(
         speech_model=aai.SpeechModel.nano,
         language_detection=True,
-        language_code=bhs,
         disfluencies=True,
         filter_profanity=True,
     )
