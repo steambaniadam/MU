@@ -1,8 +1,11 @@
-import asyncio
-import os
-import random
-
 import requests
+import json
+import base64
+import hashlib
+from PIL import Image
+from io import BytesIO
+from pyrogram import Client, filters
+from pyrogram.types import Message
 
 from Mix import *
 
@@ -10,68 +13,70 @@ __modles__ = "Convert"
 __help__ = get_cgr("help_konpert")
 
 
-async def to_anime(c, chat_id, file_path, style, em):
-    try:
-        url = "https://phototoanime1.p.rapidapi.com/photo-to-anime"
-        files = {"image": open(file_path, "rb")}
-        payload = {"url": file_path, "style": style}
+class AnimeMaker:
+    def __init__(self, source):
+        self._source = source
+        self._filename = source.split('/')[-1].split('.')[0]
+        self._file_extension = source.split('/')[-1].split('.')[-1]
+
+    def build_header(self, signature):
         headers = {
-            "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-            "X-RapidAPI-Host": "phototoanime1.p.rapidapi.com",
+            'Host': 'ai.tu.qq.com',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+            'Content-Type': 'application/json',
+            'Accept': 'application/json, text/plain, */*',
+            'x-sign-value': signature,
+            'x-sign-version': 'v1',
+            'Origin': 'https://h5.tu.qq.com'
         }
-        response = requests.post(url, data=payload, files=files, headers=headers)
-        response_json = response.json()
-        if response.status_code == 200:
-            image_url = response_json["body"]["imageUrl"]
-            await c.send_photo(
-                chat_id,
-                image_url,
-                caption=f"{em.sukses} Berhasil di konversi ke anime oleh : {c.me.mention}",
-            )
+        return headers
+
+    def crop_horizontal(self, img):
+        crop = img.crop((22, 547, 776, 1039))
+        crop.save(f"{self._filename}_anime.{self._file_extension}")
+
+    def crop_vertical(self, img):
+        crop = img.crop((511, 25, 978, 727))
+        crop.save(f"{self._filename}_anime.{self._file_extension}")
+
+    def get_anime_image(self):
+        print("Create anime...")
+        with open(self._source, 'rb') as f:
+            image_data = f.read()
+        b64 = base64.b64encode(image_data).decode('utf-8')
+        post_data = {
+            "busiId": "different_dimension_me_img_entry",
+            "images": [b64],
+            "extra": "{\"face_rects\":[],\"version\":2,\"language\":\"en\",\"platform\":\"web\",\"data_report\":{\"parent_trace_id\":\"e249ff20-6a1e-16cb-0750-c7fa37407d10\",\"root_channel\":\"\",\"level\":0}}"
+        }
+        signature = hashlib.md5(f"https://h5.tu.qq.com{json.dumps(post_data)}HQ31X02e".encode()).hexdigest()
+        headers = self.build_header(signature)
+        response = requests.post('https://ai.tu.qq.com/overseas/trpc.shadow_cv.ai_processor_cgi.AIProcessorCgi/Process', json=post_data, headers=headers)
+        res_json = response.json()
+        resimg = json.loads(res_json['extra'])['img_urls'][0]
+        return resimg
+
+    def create_anime(self):
+        resimg = self.get_anime_image()
+        img_data = requests.get(resimg).content
+        img = Image.open(BytesIO(img_data))
+        width, height = img.size
+        if width == 1000 and height == 930:
+            print("Complete...")
+            self.crop_vertical(img)
         else:
-            error_message = response_json.get("error", "Unknown error")
-            await c.send_message(chat_id, cgr("err").format(em.gagal, error_message))
-    except Exception as error:
-        await c.send_message(chat_id, cgr("err").format(em.gagal, error))
+            print("Complete...")
+            self.crop_horizontal(img)
 
 
 @ky.ubot("toanime", sudo=True)
-async def _(c: nlx, m):
-    em = Emojik()
-    em.initialize()
-    chat_id = m.chat.id
-    pros = await m.reply(cgr("proses").format(em.proses))
-
-    if m.reply_to_message:
-        if len(m.command) > 1:
-            style = m.command[1]
-            if m.reply_to_message.photo:
-                file_info = c.get_file(m.reply_to_message.photo.file_id)
-                file_path = file_info.file_path
-            else:
-                return await pros.edit(cgr("konpert_1").format(em.gagal))
-        elif len(m.command) == 1:
-            style = random.choice(["webtoon", "paprika", "face2paint"])
-            if m.reply_to_message.photo:
-                file_info = c.get_file(m.reply_to_message.photo.file_id)
-                file_path = file_info.file_path
-            else:
-                return await pros.edit(cgr("konpert_1").format(em.gagal))
-        else:
-            return await pros.edit(cgr("konpert_1").format(em.gagal))
-    else:
-        if len(m.command) == 3:
-            file_path = m.command[1]
-            style = m.command[2]
-        elif len(m.command) == 2:
-            style = random.choice(["webtoon", "paprika", "face2paint"])
-            file_path = m.command[1]
-        else:
-            return await pros.edit(cgr("konpert_1").format(em.gagal))
-
-    await pros.edit(cgr("konpert_2").format(em.proses))
-    await to_anime(c, chat_id, file_path, style, em)
-    await pros.delete()
+async def toanime(c: nlx, m):
+    reply_message = m.reply_to_message
+    file_id = reply_message.photo.file_id
+    file_path = await m.download(file_id)
+    anime_maker = AnimeMaker(file_path)
+    anime_maker.create_anime()
+    await c.send_photo(m.chat.id, f"{anime_maker._filename}_anime.{anime_maker._file_extension}")
 
 
 """
