@@ -11,6 +11,7 @@ from time import time
 from pyrogram.raw.functions import Ping
 
 from Mix import *
+from Mix.core.klasbabru import Emojik, initialize
 from Mix.core.waktu import get_time, start_time
 
 __modles__ = "Ping"
