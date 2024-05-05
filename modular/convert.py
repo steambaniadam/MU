@@ -425,14 +425,7 @@ async def stt_script(audio_url):
             "auto_highlights": True,
             "boost_param": "high",
             "content_safety": True,
-            "custom_spelling": [
-            {
-                "from": [
-                "dicarlo"
-                ],
-                "to": "Decarlo"
-            }
-            ],
+            "custom_spelling": [{"from": ["dicarlo"], "to": "Decarlo"}],
             "custom_topics": True,
             "disfluencies": False,
             "dual_channel": True,
@@ -446,10 +439,7 @@ async def stt_script(audio_url):
             "redact_pii": True,
             "redact_pii_audio": True,
             "redact_pii_audio_quality": "mp3",
-            "redact_pii_policies": [
-            "us_social_security_number",
-            "credit_card_number"
-            ],
+            "redact_pii_policies": ["us_social_security_number", "credit_card_number"],
             "redact_pii_sub": "hash",
             "sentiment_analysis": True,
             "speaker_labels": True,
@@ -458,26 +448,23 @@ async def stt_script(audio_url):
             "summarization": True,
             "summary_model": "informative",
             "summary_type": "bullets",
-            "topics": [
-            "topics"
-            ],
+            "topics": ["topics"],
             "webhook_auth_header_name": "webhook-secret",
             "webhook_auth_header_value": "webhook-secret-value",
             "webhook_url": "https://your-webhook-url/path",
-            "word_boost": [
-                "aws",
-                "azure",
-                "google cloud"
-                ]
-            },
-            )
+            "word_boost": ["aws", "azure", "google cloud"],
+        },
+    )
     data = response.json()
     print(data)
 
     if "id" in data:
         transcript_id = data["id"]
         transcript_url = f"https://api.assemblyai.com/v2/transcript/{transcript_id}"
-        transcript_response = requests.get(transcript_url, headers={"Authorization": "e28239cb6ecc4d0090f36711b11e247a"})
+        transcript_response = requests.get(
+            transcript_url,
+            headers={"Authorization": "e28239cb6ecc4d0090f36711b11e247a"},
+        )
         transcript_data = transcript_response.json()
         transcript_text = transcript_data.get("text", "")
         print(transcript_text)
