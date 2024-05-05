@@ -60,6 +60,7 @@ class AnimeMaker:
             json=post_data,
             headers=headers,
         )
+        print("Response JSON:", response.json())
         res_json = response.json()
         if "extra" in res_json:
             resimg = json.loads(res_json["extra"])["img_urls"][0]
