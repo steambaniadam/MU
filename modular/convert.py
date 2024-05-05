@@ -68,8 +68,8 @@ class AnimeMaker:
             print("Error: 'extra' key not found in response JSON")
             return None
 
-    def create_anime(self):
-        resimg = self.get_anime_image()
+    async def create_anime(self):
+        resimg = await self.get_anime_image()
         if resimg is not None:
             img_data = requests.get(resimg).content
             img = Image.open(BytesIO(img_data))
