@@ -90,14 +90,13 @@ async def _(c: nlx, message):
     em.initialize()
     rep = message.reply_to_message
     pros = await message.reply(cgr("proses").format(em.proses))
-    anim = AnimeMaker(None)
 
     if rep:
         if len(message.command) < 2:
             if rep.photo:
                 get_photo = await c.download_media(
                     rep.photo,
-                    file_name=f"{anim._filename}.anime.{anim._file_extension}",
+                    file_name=f"{message.id}.anime.jpg",
                 )
             elif rep.sticker:
                 get_photo = await c.dln(rep.sticker.thumnail.file_id)
@@ -109,7 +108,7 @@ async def _(c: nlx, message):
             if message.command[1] in ["foto", "profil", "photo"]:
                 chat = rep.from_user or rep.sender_chat
                 get = await c.get_chat(chat.id)
-                photo = get.photo.big_file_id
+                photo = get.big_file_id
                 get_photo = await c.dln(photo)
     else:
         if len(message.command) < 2:
@@ -121,13 +120,17 @@ async def _(c: nlx, message):
                 get_photo = await c.dln(photo)
             except Exception as error:
                 return await pros.edit(cgr("err").format(em.gagal, error))
-    anim = AnimeMaker(get_photo)
-    await anim.create_anime()
-    await c.send_photo(
-        message.chat.id,
-        f"{anim._filename}_to_anime.{anim._file_extension}",
-    )
-    await pros.delete()
+
+    if get_photo is not None:
+        anim = AnimeMaker(get_photo)
+        await anim.create_anime()
+        await c.send_photo(
+            message.chat.id,
+            f"{anim._filename}_to_anime.{anim._file_extension}",
+        )
+        await pros.delete()
+    else:
+        await pros.edit(cgr("err").format(em.gagal, "Failed to get photo."))
 
 
 """
