@@ -32,6 +32,8 @@ class Emonyet:
             "emo_block": "🚫",
         }
 
+        self.emojis = emojis_default if not self.uprem else emojis
+
         for key, default_emoji in emojis.items():
             emoji_var = udB.get_var(nlx.me.id, key)
             setattr(
@@ -45,67 +47,74 @@ class Emonyet:
             )
 
     @property
-    def ping(self, emojis):
+    def ping(self):
         if self.uprem == True:
-            emoji_value = emojis.get("emo_ping", "")
+            emoji_value = self.emojis.get("emo_ping", "")
             return f"<emoji id={emoji_value}>🏓</emoji>"
         elif self.uprem == False:
             return f"{self.emo_ping}"
 
     @property
-    def pong(self, emojis):
+    def pong(self):
         if self.uprem == True:
-            emojis.get("emo_pong", "")
-            return f"<emoji id={self.emo_pong}>🥵</emoji>"
+            emoji_value = self.emojis.get("emo_pong", "")
+            return f"<emoji id={a}>🥵</emoji>"
         elif self.uprem == False:
             return f"{self.emo_pong}"
 
     @property
     def proses(self):
         if self.uprem == True:
-            return f"<emoji id={self.emo_proses}>🔄</emoji>"
+            emoji_value = self.emojis.get("emo_proses", "")
+            return f"<emoji id={emoji_value}>🔄</emoji>"
         elif self.uprem == False:
             return f"{self.emo_proses}"
 
     @property
     def sukses(self):
         if self.uprem == True:
-            return f"<emoji id={self.emo_sukses}>✅</emoji>"
+            emoji_value = self.emojis.get("emo_sukses", "")
+            return f"<emoji id={emoji_value}>✅</emoji>"
         elif self.uprem == False:
             return f"{self.emo_sukses}"
 
     @property
     def gagal(self):
         if self.uprem == True:
-            return f"<emoji id={self.emo_gagal}>❌</emoji>"
+            emoji_value = self.emojis.get("emo_gagal", "")
+            return f"<emoji id={emoji_value}>❌</emoji>"
         elif self.uprem == False:
             return f"{self.emo_gagal}"
 
     @property
     def profil(self):
         if self.uprem == True:
-            return f"<emoji id={self.emo_profil}>👤</emoji>"
+            emoji_value = self.emojis.get("emo_profil", "")
+            return f"<emoji id={emoji_value}>👤</emoji>"
         elif self.uprem == False:
             return f"{self.emo_profil}"
 
     @property
     def alive(self):
         if self.uprem == True:
-            return f"<emoji id={self.emo_alive}>⭐</emoji>"
+            emoji_value = self.emojis.get("emo_alive", "")
+            return f"<emoji id={emoji_value}>⭐</emoji>"
         elif self.uprem == False:
             return f"{self.emo_alive}"
 
     @property
     def warn(self):
         if self.uprem == True:
-            return f"<emoji id={self.emo_warn}>❗️</emoji>"
+            emoji_value = self.emojis.get("emo_warn", "")
+            return f"<emoji id={emoji_value}>❗️</emoji>"
         elif self.uprem == False:
             return f"{self.emo_warn}"
 
     @property
     def block(self):
         if self.uprem == True:
-            return f"<emoji id={self.emo_block}>🚫</emoji>"
+            emoji_value = self.emojis.get("emo_block", "")
+            return f"<emoji id={emoji_value}>🚫</emoji>"
         elif self.uprem == False:
             return f"{self.emo_block}"
 
