@@ -4,7 +4,7 @@ import hashlib
 import json
 import os
 from io import BytesIO
-
+import aiohttp
 import requests
 from PIL import Image
 
@@ -87,10 +87,11 @@ class AnimeMaker:
 
     async def send_request(self, url, json=None, headers=None):
         try:
-            response = await requests.post(url, json=json, headers=headers)
-            response.raise_for_status()
-            return response
-        except requests.exceptions.RequestException as e:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(url, json=json, headers=headers) as response:
+                    response.raise_for_status()
+                    return await response.read()
+        except aiohttp.ClientError as e:
             print(f"Error sending request: {e}")
             return None
 
