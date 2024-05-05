@@ -64,11 +64,12 @@ def get_ai_image(base64_image_string):
         headers=headers,
         json=json_data,
     )
+    print(response.json())
     return json.loads(response.content)
 
 
 async def send_message_media_types(
-    bot: Bot,
+    bot: nlx,
     content_type: str,
     chat_id,
     text: str,
