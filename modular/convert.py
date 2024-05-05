@@ -360,10 +360,11 @@ async def _(c: nlx, message):
             converted_file = "converted_audio.mp3"
             if os.path.exists(converted_file):
                 os.replace(converted_file, converted_file)
-
-            indir = await c.download_media(reply, file_name=indir)
+            indir = f"audio_{message.chat.id}.mp3"
             if os.path.exists(indir):
                 os.replace(indir, indir)
+
+            indir = await c.download_media(reply, file_name=indir)
             download_task = asyncio.create_task(
                 asyncio.create_subprocess_shell(
                     f"ffmpeg -i '{indir}' {get_efek[args]} {converted_file}"
