@@ -434,13 +434,22 @@ async def stt_cmd(c, m, audio_file, pros):
 async def transcribe_audio(c: nlx, m):
     em = Emojik()
     em.initialize()
+    rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
-    if m.reply_to_message.audio:
-        audio_file = await c.download_media(
-            m.reply_to_message.audio.file_id, file_name="stt.mp3"
+    if rep:
+        if rep.audio:
+            audio_file = await c.download_media(
+                rep.audio.file_id, file_name="stt.mp3"
         )
-        await stt_cmd(c, m, audio_file, pros)
+            await stt_cmd(c, m, audio_file, pros)
+        elif rep.voice:
+            audio_file = await c.download_media(
+                rep.voice.file_id, file_name="stt.mp3"
+            )
+            await stt_cmd(c, m, audio_file, pros)
+        else:
+            return await pros.edit(f"Silahkan balas pesan audio.")
     else:
-        await pros.edit(
+        return await pros.edit(
             f"{em.gagal} Mohon balas pesan dengan audio untuk mentranskripsinya."
         )
