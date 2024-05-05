@@ -1,11 +1,10 @@
-import requests
-import json
 import base64
 import hashlib
-from PIL import Image
+import json
 from io import BytesIO
-from pyrogram import Client, filters
-from pyrogram.types import Message
+
+import requests
+from PIL import Image
 
 from Mix import *
 
@@ -16,18 +15,18 @@ __help__ = get_cgr("help_konpert")
 class AnimeMaker:
     def __init__(self, source):
         self._source = source
-        self._filename = source.split('/')[-1].split('.')[0]
-        self._file_extension = source.split('/')[-1].split('.')[-1]
+        self._filename = source.split("/")[-1].split(".")[0]
+        self._file_extension = source.split("/")[-1].split(".")[-1]
 
     def build_header(self, signature):
         headers = {
-            'Host': 'ai.tu.qq.com',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
-            'Content-Type': 'application/json',
-            'Accept': 'application/json, text/plain, */*',
-            'x-sign-value': signature,
-            'x-sign-version': 'v1',
-            'Origin': 'https://h5.tu.qq.com'
+            "Host": "ai.tu.qq.com",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+            "Content-Type": "application/json",
+            "Accept": "application/json, text/plain, */*",
+            "x-sign-value": signature,
+            "x-sign-version": "v1",
+            "Origin": "https://h5.tu.qq.com",
         }
         return headers
 
@@ -41,19 +40,25 @@ class AnimeMaker:
 
     def get_anime_image(self):
         print("Create anime...")
-        with open(self._source, 'rb') as f:
+        with open(self._source, "rb") as f:
             image_data = f.read()
-        b64 = base64.b64encode(image_data).decode('utf-8')
+        b64 = base64.b64encode(image_data).decode("utf-8")
         post_data = {
             "busiId": "different_dimension_me_img_entry",
             "images": [b64],
-            "extra": "{\"face_rects\":[],\"version\":2,\"language\":\"en\",\"platform\":\"web\",\"data_report\":{\"parent_trace_id\":\"e249ff20-6a1e-16cb-0750-c7fa37407d10\",\"root_channel\":\"\",\"level\":0}}"
+            "extra": '{"face_rects":[],"version":2,"language":"en","platform":"web","data_report":{"parent_trace_id":"e249ff20-6a1e-16cb-0750-c7fa37407d10","root_channel":"","level":0}}',
         }
-        signature = hashlib.md5(f"https://h5.tu.qq.com{json.dumps(post_data)}HQ31X02e".encode()).hexdigest()
+        signature = hashlib.md5(
+            f"https://h5.tu.qq.com{json.dumps(post_data)}HQ31X02e".encode()
+        ).hexdigest()
         headers = self.build_header(signature)
-        response = requests.post('https://ai.tu.qq.com/overseas/trpc.shadow_cv.ai_processor_cgi.AIProcessorCgi/Process', json=post_data, headers=headers)
+        response = requests.post(
+            "https://ai.tu.qq.com/overseas/trpc.shadow_cv.ai_processor_cgi.AIProcessorCgi/Process",
+            json=post_data,
+            headers=headers,
+        )
         res_json = response.json()
-        resimg = json.loads(res_json['extra'])['img_urls'][0]
+        resimg = json.loads(res_json["extra"])["img_urls"][0]
         return resimg
 
     def create_anime(self):
@@ -76,7 +81,9 @@ async def toanime(c: nlx, m):
     file_path = await m.download(file_id)
     anime_maker = AnimeMaker(file_path)
     anime_maker.create_anime()
-    await c.send_photo(m.chat.id, f"{anime_maker._filename}_anime.{anime_maker._file_extension}")
+    await c.send_photo(
+        m.chat.id, f"{anime_maker._filename}_anime.{anime_maker._file_extension}"
+    )
 
 
 """
