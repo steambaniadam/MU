@@ -56,7 +56,7 @@ async def _(c: nlx, m):
     em.initialize()
     args = m.text.split()[1:]
     rep = m.reply_to_message
-    pros = m.reply(cgr("proses").format(em.proses))
+    pros = await m.reply(cgr("proses").format(em.proses))
     if len(args) == 1 and rep and rep.photo:
         type_arg = random.choice(["face2paint", "paprika", "webtoon"])
         image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
