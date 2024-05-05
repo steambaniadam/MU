@@ -8,7 +8,7 @@ from pyrogram.types import InputMediaPhoto
 from Mix import *
 
 __modles__ = "Convert"
-__help__ = "Convert"
+__help__ = get_cgr("help_konpert")
 
 
 @ky.ubot("toanime", sudo=True)
@@ -25,7 +25,7 @@ async def _(c: nlx, message):
             elif message.reply_to_message.animation:
                 get_photo = await c.dln(message.reply_to_message)
             else:
-                return await pros.edit(f"{em.gagal} Silahkan balas ke media foto")
+                return await pros.edit(cgr("konpert_1").format(em.gagal))
         else:
             if message.command[1] in ["foto", "profil", "photo"]:
                 chat = (
@@ -37,7 +37,7 @@ async def _(c: nlx, message):
                 get_photo = await c.dln(photo)
     else:
         if len(message.command) < 2:
-            return await pros.edit(f"{em.gagal} Silahkan balas ke media foto")
+            return await pros.edit(cgr("konpert_1").format(em.gagal))
         else:
             try:
                 get = await c.get_chat(message.command[1])
@@ -45,7 +45,7 @@ async def _(c: nlx, message):
                 get_photo = await c.dln(photo)
             except Exception as error:
                 return await pros.edit(cgr("err").format(em.gagal, error))
-    await pros.edit(f"{em.proses} **Converting...**")
+    await pros.edit(cgr("konpert_2").format(em.proses))
     await c.unblock_user("@qq_neural_anime_bot")
     send_photo = await c.send_photo("@qq_neural_anime_bot", get_photo)
     await asyncio.sleep(30)
@@ -58,7 +58,7 @@ async def _(c: nlx, message):
     ):
         anime_photo.append(
             InputMediaPhoto(
-                anime.photo.file_id, caption=f"{em.sukses}<b>Maker: {c.me.mention}</b>"
+                anime.photo.file_id, caption=cgr("konpert_3").format(em.sukses, c.me.mention)
             )
         )
     if anime_photo:
@@ -72,7 +72,7 @@ async def _(c: nlx, message):
     else:
         await c.send_message(
             message.chat.id,
-            f"{em.gagal} <b>Error API AI!!</b>",
+            cgr("konpert_4").format(em.gagal),
             reply_to_message_id=message.id,
         )
         return await c.invoke(DeleteHistory(peer=info, max_id=0, revoke=True))
@@ -89,6 +89,7 @@ async def _(c: nlx, message):
         await c.send_photo(
             message.chat.id,
             file_io,
+            caption=cgr("konpert_5").format(em.sukses, c.me.mention),
             reply_to_message_id=message.id,
         )
         await pros.delete()
@@ -107,9 +108,7 @@ async def _(c: nlx, message):
     em.initialize()
     try:
         if not message.reply_to_message or not message.reply_to_message.photo:
-            return await message.reply_text(
-                f"{em.gagal} Silahkan balas ke media foto!!"
-            )
+            return await message.reply_text(cgr("konpert_1").format(em.gagal))
         sticker = await c.download_media(
             message.reply_to_message.photo.file_id,
             f"sticker_{message.from_user.id}.webp",
@@ -126,8 +125,8 @@ async def _(c: nlx, message):
     em.initialize()
     pros = await message.reply(cgr("proses").format(em.proses))
     if not message.reply_to_message.sticker:
-        return await pros.edit(f"{em.gagal} Silahkan balas ke sticker!!")
-    await pros.edit(f"{em.proses} **Converting...**.")
+        return await pros.edit(cgr("konpert_6").format(em.gagal))
+    await pros.edit(cgr("konpert_2").format(em.proses))
     file = await c.download_media(
         message.reply_to_message,
         f"gift_{message.from_user.id}.mp4",
@@ -149,22 +148,23 @@ async def _(c: nlx, message):
     replied = message.reply_to_message
     pros = await message.reply(cgr("proses").format(em.proses))
     if not replied:
-        return await pros.edit(f"{em.gagal} Silahkan balas ke media video!!")
+        return await pros.edit(cgr("konpert_7").format(em.gagal))
     if replied.video:
-        await pros.edit(f"{em.proses} **Converting...**")
+        await pros.edit(cgr("konpert_2").format(em.proses))
         file = await c.download_media(
             message=replied,
             file_name=f"toaudio_{replied.id}",
         )
         out_file = f"{file}.mp3"
         try:
-            await pros.edit(f"{em.proses} <b>Converting audio...</b>")
+            await pros.edit(cgr("konpert_8").format(em.proses))
             cmd = f"ffmpeg -i {file} -q:a 0 -map a {out_file}"
             await c.run_cmd(cmd)
-            await pros.edit(f"{em.proses} <b>Sending audio...</b>")
+            await pros.edit(cgr("konpert_9").format(em.proses))
             await c.send_voice(
                 message.chat.id,
                 voice=out_file,
+                caprtion=cgr("konpert_5").format(em.sukses, c.me.mention),
                 reply_to_message_id=message.id,
             )
             os.remove(file)
@@ -172,44 +172,9 @@ async def _(c: nlx, message):
         except Exception as error:
             await pros.edit(error)
     else:
-        return await pros.edit(f"{em.gagal} Silahkan balas ke media video!!")
+        return await pros.edit(cgr("konpert_7").format(em.gagal))
 
 
-list_efek = [
-    "bengek",
-    "robot",
-    "jedug",
-    "fast",
-    "echo",
-    "tremolo",
-    "reverse",
-    "flanger",
-    "pitch_up",
-    "pitch_down",
-    "high_pass",
-    "low_pass",
-    "band_pass",
-    "band_reject",
-    "fade_in",
-    "fade_out",
-    "chorus",
-    "vibrato",
-    "phaser",
-    "reverb",
-    "distortion",
-    "bitcrush",
-    "wahwah",
-    "compressor",
-    "delay",
-    "stereo_widen",
-    "phaser2",
-    "reverse_echo",
-    "low_pitch",
-    "high_pitch",
-    "megaphone",
-    "telephone",
-    "radio",
-]
 get_efek = {
     "bengek": '-filter_complex "rubberband=pitch=1.5"',
     "robot": "-filter_complex \"afftfilt=real='hypot(re,im)*sin(0)':imag='hypot(re,im)*cos(0)':win_size=512:overlap=0.75\"",
@@ -247,14 +212,89 @@ get_efek = {
 }
 
 
-@ky.ubot("list-efek|efeks|lefek", sudo=True)
+list_efek = [
+    "bengek",
+    "robot",
+    "jedug",
+    "fast",
+    "echo",
+    "tremolo",
+    "reverse",
+    "flanger",
+    "pitch_up",
+    "pitch_down",
+    "high_pass",
+    "low_pass",
+    "band_pass",
+    "band_reject",
+    "fade_in",
+    "fade_out",
+    "chorus",
+    "vibrato",
+    "phaser",
+    "reverb",
+    "distortion",
+    "bitcrush",
+    "wahwah",
+    "compressor",
+    "delay",
+    "stereo_widen",
+    "phaser2",
+    "reverse_echo",
+    "low_pitch",
+    "high_pitch",
+    "megaphone",
+    "telephone",
+    "radio",
+]
+
+
+list_efek_deskripsi = {
+    "bengek": "Mengubah suara menjadi seperti karakter yang berbicara dengan mulut penuh.",
+    "robot": "Mengubah suara menjadi seperti suara robot.",
+    "jedug": "Efek suara yang memberikan suara kedapatan atau kesan berat.",
+    "fast": "Mempercepat kecepatan suara.",
+    "echo": "Menambahkan efek gema atau pantulan suara.",
+    "tremolo": "Efek getaran yang berulang pada suara.",
+    "reverse": "Memutar suara ke belakang.",
+    "flanger": "Efek modulasi yang menciptakan suara paduan dengan suara asli.",
+    "pitch_up": "Meningkatkan nada suara.",
+    "pitch_down": "Menurunkan nada suara.",
+    "high_pass": "Menghilangkan frekuensi rendah dari sinyal audio.",
+    "low_pass": "Menghilangkan frekuensi tinggi dari sinyal audio.",
+    "band_pass": "Mengizinkan hanya frekuensi tertentu untuk melewati filter.",
+    "band_reject": "Memblokir frekuensi tertentu untuk mencegahnya melewati filter.",
+    "fade_in": "Meningkatkan volume secara bertahap dari awal suara.",
+    "fade_out": "Mengurangi volume secara bertahap ke akhir suara.",
+    "chorus": "Menciptakan efek suara yang terdengar seperti banyak suara yang sama.",
+    "vibrato": "Efek getaran kecil pada suara.",
+    "phaser": "Menciptakan efek suara yang bergetar seperti gelombang.",
+    "reverb": "Menambahkan suara gema atau pantulan alami.",
+    "distortion": "Mengubah suara menjadi kasar atau terdistorsi.",
+    "bitcrush": "Mengurangi resolusi sampel suara.",
+    "wahwah": "Efek suara yang menyerupai suara wah-wah dari gitar.",
+    "compressor": "Mengurangi dinamika suara dengan memampatkan rentang volume.",
+    "delay": "Mengulang kembali suara dengan jeda waktu tertentu.",
+    "stereo_widen": "Membuat suara terdengar lebih luas atau lebih menyebarkan di antara saluran stereo.",
+    "phaser2": "Variasi lain dari efek phaser.",
+    "reverse_echo": "Efek pantulan suara yang terbalik.",
+    "low_pitch": "Menurunkan pitch suara secara keseluruhan.",
+    "high_pitch": "Meningkatkan pitch suara secara keseluruhan.",
+    "megaphone": "Mengubah suara menjadi seperti melalui megaphone.",
+    "telephone": "Mengubah suara menjadi seperti melalui telepon.",
+    "radio": "Mengubah suara menjadi seperti transmisi radio.",
+}
+
+
+@ky.ubot("list-efek|efeks|list-effects", sudo=True)
 async def _(c: nlx, message):
     em = Emojik()
     em.initialize()
+
+    daftar_efek = "\n".join([f"• `{epek}` - `{list_efek_deskripsi.get(epek, 'Coba Sendiri')}`" for epek in list_efek])
+
     await message.reply(
-        f"""
-{em.sukses} Daftar Effect Suara:\n\n• {' '.join(list_efek)}"""
-    )
+        cgr("konpert_10").format(em.sukses, daftar_efek))
 
 
 @ky.ubot("efek|effect|voifek", sudo=True)
@@ -264,7 +304,7 @@ async def _(c: nlx, message):
     args = c.get_arg(message)
     reply = message.reply_to_message
     prefix = await c.get_prefix(c.me.id)
-    pros = await message.reply(f"{em.proses} **Proses mengubah suara ke : `{args}`**")
+    pros = await message.reply(cgr("konpert_11").format(em.proses, args))
     if reply and list_efek:
         if args in list_efek:
             indir = await c.download_media(reply, file_name=f"{c.me.id}.mp3")
@@ -273,23 +313,12 @@ async def _(c: nlx, message):
             )
             await ses.communicate()
             await message.reply_voice(
-                open("audio.mp3", "rb"), caption=f"{em.sukses} Efek {args}"
-            )
+                open("audio.mp3", "rb"), caption=cgr("konpert_12".format(em.sukses, args)))
             for files in ("audio.mp3", indir):
                 if files and os.path.exists(files):
                     os.remove(files)
             await pros.delete()
         else:
-            await message.reply(
-                "{} **Silahkan ketik `{}list_efek` untuk melihat daftar efek yang tersedia!!**".format(
-                    em.gagal, next((p) for p in prefix)
-                )
-            )
-            await pros.delete()
+            await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
     else:
-        await message.reply(
-            "{} **Silahkan ketik `{}list_efek` untuk melihat daftar efek yang tersedia!!**".format(
-                em.gagal, next((p) for p in prefix)
-            )
-        )
-        await pros.delete()
+        await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))

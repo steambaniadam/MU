@@ -506,6 +506,21 @@ enc_3: "{} **Gagal di {} pesannya tot!**"
 enc_4: "{} **Mampus!\nGagal :** `{}`"
 enc_5: "{} **Bego! Goblok! minimal kasih teks kalo ngga bales ke pesan kek anj!**"
 
+# efek
+konpert_1: "{} <b>Bales ke foto lah jink!</b>"
+konpert_2: "{} <b>Sabar! Lagi Gue Proses ...</b>"
+konpert_3: "{} <b>yang bikin : {}</b>"
+konpert_4: "{} <b>Error, jink! Coba lagi ntar.</b>"
+konpert_5: "{} <b>Sukses di konpersi sama si : {}</b>"
+konpert_6: "{} <b>Bales ke sticker Bego!!</b>"
+konpert_7: "{} <b>Bales ke media video Bego!!</b>"
+konpert_8: "{} <b>Sabar jink, lagi gue konpert ke Audio ...</b>"
+konpert_9: "{} <b>Udah jadi nih, bentar gue kirim ...</b>"
+konpert_10: "{} <b>Daftar Epek Suara:</b>\n\n{}"
+konpert_11: "{} <b>Bentar gue ubah dulu ke `{}` ...</b>"
+konpert_12: "{} <b>Udah gue ubah nih epeknya ke `{}`</b>"
+konpert_13: "{} <b>Salah jink! Ketik `{}list-efek` buat ngeliat daftar epeknya!</b>"
+
 # help_for
 help_afk: " **Afk**\n\n• Perintah : `{0}afk` [alesan]\n• Penjelasan : Buat mengaktifkan mode afk.\n\n• Perintah : `{0}unafk`\n• Penjelasan : Buat menonaktifkan mode afk."
 help_alive: " **Alive**\n\n• Perintah : `{0}alive`\n• Penjelasan : Alive."
@@ -578,4 +593,5 @@ help_waif: " **Waifu**\n\n• Perintah: `{0}waifu` [tags] [jumlah (Optional,Defa
 help_qur: " **Qur'an**\n\n• Perintah: `{0}qs [nama surah]`\n• Penjelasan: Untuk mengambil info surah tersebut.\n\n• Perintah: `{0}list-surah`\n• Penjelasan: Untuk mengambil daftar surah.\n"
 help_animstream: " **Anime Streaming**\n\n• Perintah: `{0}streaming` [Judul Film]\n• Penjelasan: Untuk mengambil link streaming film anime\n\n• Perintah: `{0}list_anime`\n• Penjelasan: Untuk mengambil daftar film anime yang tersedia.\n"
 help_pint: " **Pinterest**\n\n• Perintah: `{0}pint` [link pinterest]\n• Penjelasan: Untuk mengunduh file yang terdapat pada link.\n"
-help_enc: " **Base64 Encoder**\n\n• Perintah: `{0}encode` [teks|balas pesan]\n• Penjelasan: Untuk encode base64\n\n• Perintah: `{0}decode` [teks|balas pesan]\n• Penjelasan: Untuk decode base64"
+help_enc: " **Base64 Encoder**\n\n• Perintah: `{0}encode` [teks|balas pesan]\n• Penjelasan: Untuk encode base64\n\n• Perintah: `{0}decode` [teks|balas pesan]\n• Penjelasan: Untuk decode base64\n"
+help_konpert: " **Convert**\n\n• Perintah: `{0}toanime` [bales media]\n• Penjelasan: Ngerubah jadi pake epek animek.\n\n• Perintah: `{0}toimg [bales sticker]\n• Penjelasan: Ngerubah stiker jadi Poto.\n\n• Perintah: `{0}tosticker` kalo ngga `{0}tostick` [bales foto]\n• Penjelasan: Ngerubah poto jadi stiker.\n\n• Perintah: `{0}togif` [bales sticker]\n• Penjelasan: Ngerubah stiker jadi GIF.\n\n• Perintah: `{0}toaudio` [bales video]\n• Penjelasan : Ngerubah pidio jadi audio.\n\n• Perintah: `{0}list-efek`\n• Penjelasan: Buat nampilin daptar epek.\n\n• Perintah: `{0}effect` [bales ke audio]\n• Penjelasan: ngerubah epek audio.\n"
