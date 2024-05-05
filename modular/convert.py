@@ -226,22 +226,22 @@ get_efek = {
     "bengek": '-filter_complex "rubberband=pitch=1.5"',
     "bitcrush": '-filter_complex "acrusher=level_in=10:level_out=16:bits=4:mode=log:aa=1"',
     "chorus": '-filter_complex "chorus=0.7:0.9:55:0.4:0.25:2"',
-    "compressor": '-filter_complex "compand=0.3|0.8:6:-70/-70/-20/-20/-20/-20:6:0:-90:0.2"',
-    "delay": '-filter_complex "adelay=1000|1000"',
-    "distortion": '-filter_complex "distortion=gain=6"',
+    "compressor": '-filter_complex "compand=points=-90/-90|-70/-70|-40/-20|0/-20:delay=0:attack=0.3:release=0.1"',
+    "delay": '-filter_complex "adelay=500|500"',
+    "distortion": '-filter_complex "apulsator=mode=sine:attack=0.1:decay=1:frequency=4:depth=0.8"',
     "echo": '-filter_complex "aecho=0.8:0.9:500|1000:0.2|0.1"',
-    "fade_in": '-filter_complex "afade=t=in:ss=0:d=5"',
-    "fade_out": '-filter_complex "afade=t=out:st=5:d=5"',
+    "fade_in": '-filter_complex "afade=t=in:st=0:d=5"',
+    "fade_out": '-filter_complex "afade=t=out:st=150:d=5"',
     "fast": "-filter_complex \"afftfilt=real='hypot(re,im)*cos((random(0)*2-1)*2*3.14)':imag='hypot(re,im)*sin((random(1)*2-1)*2*3.14)':win_size=128:overlap=0.8\"",
-    "flanger": '-filter_complex "flanger"',
+    "flanger": '-filter_complex "afftfilt=real=\'hypot(re,im)*cos(PI*2*t*0.05)*0.7\':imag=\'hypot(re,im)*sin(PI*2*t*0.05)*0.7\':win_size=512:overlap=0.75"',
     "high_pass": '-filter_complex "highpass=f=200"',
-    "high_pitch": '-filter_complex "rubberband=pitch=1.3"',
+    "high_pitch": '-filter_complex "rubberband=pitch=1.1"',
     "jedug": '-filter_complex "acrusher=level_in=8:level_out=18:bits=8:mode=log:aa=1"',
     "low_pass": '-filter_complex "lowpass=f=1000"',
     "low_pitch": '-filter_complex "rubberband=pitch=0.7"',
-    "megaphone": '-filter_complex "amix=inputs=2:duration=first:dropout_transition=2,volume=volume=3"',
-    "phaser": '-filter_complex "aphaser=type=t:gain=0.2"',
-    "phaser2": '-filter_complex "aphaser=type=t:decay=1"',
+    "megaphone": '-filter_complex "afftfilt=real=\'hypot(re,im)*cos((random(0)*2-1)*2*3.14)\':imag=\'hypot(re,im)*sin((random(1)*2-1)*2*3.14)\':win_size=512:overlap=0.75"',
+    "phaser": '-filter_complex "aphaser=type=t"',
+    "phaser2": '-filter_complex "aphaser=type=t:decay=0.5"',
     "pitch_down": '-filter_complex "rubberband=pitch=0.5"',
     "pitch_up": '-filter_complex "rubberband=pitch=2.0"',
     "radio": '-filter_complex "amix=inputs=2:duration=first:dropout_transition=2,volume=volume=2.5"',
@@ -355,19 +355,20 @@ async def _(c: nlx, message):
     prefix = await c.get_prefix(c.me.id)
     pros = await message.reply(cgr("konpert_11").format(em.proses, args))
     if reply and args in get_efek:
-        indir = await c.download_media(reply, file_name=f"{c.me.id}.mp3")
-        nem_aud = "audio.mp3"
+        indir = await c.download_media(reply, file_name="audio.mp3")
+        converted_file = "converted_audio.mp3"
         ses = await asyncio.create_subprocess_shell(
-            f"ffmpeg -i '{indir}' {get_efek[args]} {nem_aud}"
+            f"ffmpeg -i '{indir}' {get_efek[args]} {converted_file}"
         )
         await ses.communicate()
         await message.reply_voice(
-            open(f"{nem_aud}", "rb"),
+            open(f"{converted_file}", "rb"),
             caption=cgr("konpert_12").format(em.sukses, args),
         )
-        for files in (f"{nem_aud}", indir):
+        for files in (f"{converted_file}", indir):
             if files and os.path.exists(files):
                 os.remove(files)
+                os.remove(indir)
         await pros.delete()
     else:
         await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
