@@ -1,8 +1,8 @@
-import os
 import asyncio
 import base64
 import hashlib
 import json
+import os
 from io import BytesIO
 
 import requests
@@ -102,10 +102,7 @@ async def _(c: nlx, message):
                 return await pros.edit(cgr("konpert_1").format(em.gagal))
         else:
             if message.command[1] in ["foto", "profil", "photo"]:
-                chat = (
-                    rep.from_user
-                    or rep.sender_chat
-                )
+                chat = rep.from_user or rep.sender_chat
                 get = await c.get_chat(chat.id)
                 photo = get.photo.big_file_id
                 get_photo = await c.dln(photo)
@@ -122,7 +119,8 @@ async def _(c: nlx, message):
     anime_maker = AnimeMaker(get_photo)
     await anime_maker.create_anime()
     await c.send_photo(
-        message.chat.id, f"{anime_maker._filename}_to_anime.{anime_maker._file_extension}"
+        message.chat.id,
+        f"{anime_maker._filename}_to_anime.{anime_maker._file_extension}",
     )
     await pros.delete()
 
