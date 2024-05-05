@@ -81,7 +81,6 @@ class AnimeMaker:
             print("Error: Failed to get anime image.")
 
 
-
 @ky.ubot("toanime", sudo=True)
 async def toanime(c: nlx, m):
     rep = m.reply_to_message
