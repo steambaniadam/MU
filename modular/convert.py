@@ -30,13 +30,9 @@ async def to_anime(c, chat_id, file_path, style, em):
             )
         else:
             error_message = response_json.get("error", "Unknown error")
-            await c.send_message(
-                chat_id,
-                cgr("err").format(em.gagal, error_message))
+            await c.send_message(chat_id, cgr("err").format(em.gagal, error_message))
     except Exception as error:
-        await c.send_message(
-            chat_id,
-            cgr("err").format(em.gagal, error))
+        await c.send_message(chat_id, cgr("err").format(em.gagal, error))
 
 
 @ky.ubot("toanime", sudo=True)
