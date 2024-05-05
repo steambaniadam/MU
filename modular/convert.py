@@ -40,7 +40,7 @@ class AnimeMaker:
         crop = img.crop((511, 25, 978, 727))
         crop.save(f"{self._filename}_anime.{self._file_extension}")
 
-    async def get_anime_image(self):
+    def get_anime_image(self):
         print("Create anime...")
         with open(self._source, "rb") as f:
             image_data = f.read()
@@ -54,8 +54,7 @@ class AnimeMaker:
             f"https://h5.tu.qq.com{json.dumps(post_data)}HQ31X02e".encode()
         ).hexdigest()
         headers = self.build_header(signature)
-        response = await asyncio.to_thread(
-            requests.post,
+        response = requests.post(
             "https://ai.tu.qq.com/overseas/trpc.shadow_cv.ai_processor_cgi.AIProcessorCgi/Process",
             json=post_data,
             headers=headers,
@@ -69,8 +68,8 @@ class AnimeMaker:
             print("Error: 'extra' key not found in response JSON")
             return None
 
-    async def create_anime(self):
-        resimg = await self.get_anime_image()
+    def create_anime(self):
+        resimg = self.get_anime_image()
         if resimg is not None:
             img_data = requests.get(resimg).content
             img = Image.open(BytesIO(img_data))
