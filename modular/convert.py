@@ -58,8 +58,12 @@ class AnimeMaker:
             headers=headers,
         )
         res_json = response.json()
-        resimg = json.loads(res_json["extra"])["img_urls"][0]
-        return resimg
+        if "extra" in res_json:
+            resimg = json.loads(res_json["extra"])["img_urls"][0]
+            return resimg
+        else:
+            print("Error: 'extra' key not found in response JSON")
+            return None
 
     def create_anime(self):
         resimg = self.get_anime_image()
