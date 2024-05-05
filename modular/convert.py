@@ -1,6 +1,7 @@
 import asyncio
 import os
 import random
+import re
 
 import assemblyai as aai
 import requests
@@ -410,63 +411,44 @@ async def _(c: nlx, message):
         await pros.edit(cgr("err").format(em.gagal, e))
 
 
-async def stt_cmd(c, m, upload_url, local_file_path, pros):
+async def stt_cmd(c, m, upload_url, pros):
     em = Emojik()
     em.initialize()
-    base_url = "https://api.assemblyai.com/v2"
-    headers = {"authorization": "e28239cb6ecc4d0090f36711b11e247a"}
-    with open(local_file_path, "rb") as f:
-        response = requests.post(base_url + "/upload", headers=headers, data=f)
-        upload_url = response.json()["upload_url"]
-    data = {"audio_url": upload_url}
-    url = base_url + "/transcript"
-    response = requests.post(url, json=data, headers=headers)
-    transcript_id = response.json()["id"]
-    polling_endpoint = f"https://api.assemblyai.com/v2/transcript/{transcript_id}"
-    while True:
-        transcription_result = requests.get(polling_endpoint, headers=headers).json()
-        status = transcription_result["status"]
-
-        if status == "completed":
-            paragraphs = transcription_result["paragraphs"]
-            text = "\n\n".join(paragraphs)
-            await pros.edit(f"{em.sukses} Sukses Convert Audio To :\n\n`{text}`")
-            os.remove(local_file_path)
-            break
-
-        elif status == "error":
-            error_msg = transcription_result["error"]
-            await pros.edit(f"{em.gagal} Gagal melakukan transkripsi: `{error_msg}`")
-            os.remove(local_file_path)
-            break
-
-        else:
-            await asyncio.sleep(3)
+    transcriber = aai.Transcriber()
+    transcript = transcriber.transcribe(upload_url)
+    if transcript.text:
+        await pros.edit(cgr("konpert_21").format(em.sukses, c.me.mention, transcript.text))
+        os.remove(upload_url)
+    else:
+        await pros.edit(cgr("konpert_22").format(em.gagal))
+        os.remove(upload_url)
 
 
 @ky.ubot("stt", sudo=True)
 async def transcribe_audio(c: nlx, m):
     em = Emojik()
     em.initialize()
-    rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
 
-    if rep:
-        if rep.audio:
-            local_file_path = await c.download_media(
-                rep.audio.file_id, file_name="stt.mp3"
+    if m.reply_to_message and (m.reply_to_message.audio or m.reply_to_message.voice):
+        if m.reply_to_message.audio:
+            upload_url = await c.download_media(
+                m.reply_to_message.audio.file_id, file_name="stt.mp3"
             )
-        elif rep.voice:
-            local_file_path = await c.download_media(
-                rep.voice.file_id, file_name="stt.ogg"
+        elif m.reply_to_message.voice:
+            upload_url = await c.download_media(
+                m.reply_to_message.voice.file_id, file_name="stt.ogg"
             )
+        await stt_cmd(c, m, upload_url, pros)
+    elif m.command and len(m.command) > 1:
+        url = m.command[1]
+        if re.match(r'^https?://.*\.(mp3|ogg)$', url):
+            await stt_cmd(c, m, url, pros)
         else:
-            await pros.edit(f"{em.gagal} Silakan balas dengan pesan suara atau audio.")
-            return
-
-        upload_url = f"https://cdn.assemblyai.com/upload/{local_file_path}"
-        await stt_cmd(c, m, upload_url, local_file_path, pros)
+            await pros.edit(
+                f"{em.gagal} URL yang diberikan bukan URL audio yang valid."
+            )
     else:
         await pros.edit(
-            f"{em.gagal} Mohon balas pesan dengan audio untuk mentranskripsinya."
+            f"{em.gagal} Mohon balas pesan dengan audio atau berikan URL audio yang valid untuk mentranskripsinya."
         )
