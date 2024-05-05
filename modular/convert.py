@@ -423,24 +423,14 @@ async def stt_cmd(c, m, audio_file, pros):
     try:
         transcript = transcriber.transcribe(audio_file)
         if transcript.text:
-            paragraphs = transcript.get_paragraphs()
-            for paragraph in paragraphs:
-                if paragraph.text:
-                    return await pros.edit(
-                        cgr("konpert_20").format(
-                            em.sukses, c.me.mention, paragraph.text
-                        )
-                    )
-                else:
-                    return await pros.edit(
-                        cgr("konpert_21").format(
-                            em.sukses, c.me.mention, transcript.text
-                        )
-                    )
+            await pros.edit(
+                cgr("konpert_21").format(em.sukses, c.me.mention, transcript.text))
             os.remove(audio_file)
+            return
         else:
             await pros.edit(cgr("konpert_22").format(em.gagal))
             os.remove(audio_file)
+            return
     except aai.exceptions.RequestError as e:
         await pros.edit(cgr("error").format(em.gagal, e))
         os.remove(audio_file)
