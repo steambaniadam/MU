@@ -46,14 +46,14 @@ async def _(c: nlx, m):
         if len(m.command) > 1:
             style = m.command[1]
             if m.reply_to_message.photo:
-                file_info = await c.get_file(m.reply_to_message.photo.file_id)
+                file_info = c.get_file(m.reply_to_message.photo.file_id)
                 file_path = file_info.file_path
             else:
                 return await pros.edit(cgr("konpert_1").format(em.gagal))
         elif len(m.command) == 1:
             style = random.choice(["webtoon", "paprika", "face2paint"])
             if m.reply_to_message.photo:
-                file_info = await c.get_file(m.reply_to_message.photo.file_id)
+                file_info = c.get_file(m.reply_to_message.photo.file_id)
                 file_path = file_info.file_path
             else:
                 return await pros.edit(cgr("konpert_1").format(em.gagal))
