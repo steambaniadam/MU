@@ -520,7 +520,7 @@ konpert_10: "{} <b>Daftar Epek Suara:</b>\n\n{}"
 konpert_11: "{} <b>Bentar gue ubah dulu ke `{}` ...</b>"
 konpert_12: "{} <b>Udah gue ubah nih epeknya ke `{}`</b>"
 konpert_13: "{} <b>Salah jink! Ketik `{}list-efek` buat ngeliat daftar epeknya!</b>"
-# konpert_14: "{} <b>Lagi ada masalah jon, Ntar bae coba lagi, kalo kaga ya reboot dulu!</b>"
+konpert_14: "{} <b>Lagi ada masalah jon, Ntar bae coba lagi, kalo kaga ya reboot dulu!</b>"
 
 # help_for
 help_afk: " **Afk**\n\n• Perintah : `{0}afk` [alesan]\n• Penjelasan : Buat mengaktifkan mode afk.\n\n• Perintah : `{0}unafk`\n• Penjelasan : Buat menonaktifkan mode afk."
