@@ -58,7 +58,7 @@ class Emonyet:
     def pong(self):
         if self.uprem == True:
             emoji_value = self.emojis.get("emo_pong", "")
-            return f"<emoji id={a}>🥵</emoji>"
+            return f"<emoji id={emoji_value}>🥵</emoji>"
         elif self.uprem == False:
             return f"{self.emo_pong}"
 
