@@ -61,15 +61,15 @@ async def _(c: nlx, m):
         type_arg = random.choice(["face2paint", "paprika", "webtoon"])
         image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
     elif len(args) == 1 and rep and rep.photo:
-        type_arg = m.command[1]
+        type_arg = m.command[0]
         image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
     elif len(args) == 2:
-        type_arg = m.command[1]
-        url = m.command[2]
+        type_arg = m.command[0]
+        url = m.command[1]
         image = {"image": open(requests.get(url, stream=True).raw, "rb")}
     elif len(args) == 1:
         type_arg = random.choice(["face2paint", "paprika", "webtoon"])
-        url = m.command[1]
+        url = m.command[0]
         image = {"image": open(requests.get(url, stream=True).raw, "rb")}
     else:
         await pros.edit(f"{em.gagal} Format perintah salah.")
