@@ -354,7 +354,6 @@ async def _(c: nlx, message):
     reply = message.reply_to_message
     prefix = await c.get_prefix(c.me.id)
     pros = await message.reply(cgr("konpert_11").format(em.proses, args))
-
     try:
         if reply and args in get_efek:
             converted_file = "converted_audio.mp3"
@@ -372,23 +371,18 @@ async def _(c: nlx, message):
                 timeout=30,
             ) as ses:
                 await ses.communicate()
-
             await message.reply_voice(
                 open(converted_file, "rb"),
                 caption=cgr("konpert_12").format(em.sukses, args),
             )
-
         else:
             await pros.edit(
                 cgr("konpert_13").format(em.gagal, next((p) for p in prefix))
             )
-
     except asyncio.TimeoutError:
         await pros.edit(cgr("konpert_14").format(em.gagal))
-
     except Exception as e:
         await pros.edit(cgr("err").format(em.gagal, e))
-
     finally:
         for files in (converted_file, indir):
             if os.path.exists(files):
