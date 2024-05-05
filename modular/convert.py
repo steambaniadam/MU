@@ -226,9 +226,9 @@ get_efek = {
     "bengek": '-filter_complex "rubberband=pitch=1.5"',
     "bitcrush": '-filter_complex "acrusher=level_in=10:level_out=16:bits=4:mode=log:aa=1"',
     "chorus": '-filter_complex "chorus=0.7:0.9:55:0.4:0.25:2"',
-    "compressor": '-filter_complex "compand=points=-90/-90|-70/-70|-40/-20|0/-20:delay=0:attack=3:release=10"',
+    "compressor": '-filter_complex "compand=points=-80/-105|-62/-80|-15.4/-15.4|0/-12|20/-7.6"',
     "delay": '-filter_complex "adelay=500|500"',
-    "distortion": '-filter_complex "apulsator=mode=sine:attack=1:decay=1:frequency=4:depth=0.8"',
+    "distortion": '-filter_complex "apulsator=mode=sine:decay=1:frequency=4:depth=0.8"',
     "echo": '-filter_complex "aecho=0.8:0.9:500|1000:0.2|0.1"',
     "fade_in": '-filter_complex "afade=t=in:st=0:d=5"',
     "fade_out": '-filter_complex "afade=t=out:st=150:d=5"',
@@ -245,15 +245,14 @@ get_efek = {
     "pitch_down": '-filter_complex "atempo=0.5"',
     "pitch_up": '-filter_complex "atempo=2.0"',
     "radio": '-af "equalizer=f=3000:width_type=h:width=200:g=-10"',
-    "reverb": '-filter_complex "[0:a]afir=dry=10:wet=10[audio]" -map "[audio]"',
+    "reverb": '-filter_complex "aecho=0.8:0.9:500|1000:0.2|0.1"',
     "reverse": '-filter_complex "areverse"',
     "reverse_echo": '-filter_complex "aecho=0.8:0.88:1000:0.5"',
     "robot": "-filter_complex \"afftfilt=real='hypot(re,im)*sin(0)':imag='hypot(re,im)*cos(0)':win_size=512:overlap=0.75\"",
-    "stereo_widen": '-filter_complex "stereowiden=level_in=0.5:level_out=1.0:delay=20:width=40"',
-    "telephone": '-filter_complex "amix=inputs=2:duration=first:dropout_transition=2,volume=volume=1.5"',
+    "stereo_widen": '-filter_complex "pan=stereo|c0=c0|c1=c1*0.5+c0|c2=c1|c3=c1*0.5+c0"',
+    "telephone": '-filter_complex "[0:a][0:a]amix=inputs=2:duration=first:dropout_transition=2[v];[v]volume=1.5[a]"',
     "tremolo": '-filter_complex "tremolo=f=5:d=0.5"',
     "vibrato": '-filter_complex "vibrato=f=10"',
-    "wahwah": '-filter_complex "wahwah"',
 }
 
 
@@ -290,7 +289,6 @@ list_efek = [
     "telephone",
     "tremolo",
     "vibrato",
-    "wahwah",
 ]
 
 
@@ -327,7 +325,6 @@ list_efek_deskripsi = {
     "telephone": "Suara seperti telepon.",
     "tremolo": "Efek getaran pada suara.",
     "vibrato": "Efek getaran kecil.",
-    "wahwah": "Efek suara wah-wah.",
 }
 
 
@@ -369,11 +366,11 @@ async def _(c: nlx, message):
             )
             await process.communicate()
             if os.path.exists(converted_file):
-                await pros.edit(cgr("konpert_12").format(em.sukses, args))
                 await message.reply_voice(
                     open(converted_file, "rb"),
                     caption=cgr("konpert_12").format(em.sukses, args),
                 )
+                await pros.delete()
                 if os.path.exists(converted_file):
                     os.remove(converted_file)
                 if os.path.exists(indir):
