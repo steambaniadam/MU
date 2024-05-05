@@ -15,11 +15,7 @@ async def process_toanime_command(m, image, tipe):
     em = Emojik()
     em.initialize()
 
-    tipe_map = {
-        'webtoon': 'webtoon',
-        'face2paint': 'face2paint',
-        'paprika': 'paprika'
-    }
+    tipe_map = {"webtoon": "webtoon", "face2paint": "face2paint", "paprika": "paprika"}
 
     if tipe not in tipe_map:
         available_types = "\n• ".join([f"`{i+1}`" for i in range(len(tipe_map))])
