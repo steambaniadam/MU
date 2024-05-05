@@ -1,13 +1,19 @@
 import asyncio
 import os
 import random
-
+import os
+import assemblyai as aai
 import requests
-
 from Mix import *
+from Mix.core.parser import kode_bahasa
+
 
 __modles__ = "Convert"
 __help__ = get_cgr("help_konpert")
+
+
+
+aai.settings.api_key = "e28239cb6ecc4d0090f36711b11e247a"
 
 
 async def process_toanime_command(m, image, style):
@@ -406,27 +412,33 @@ async def _(c: nlx, message):
         await pros.edit(cgr("err").format(em.gagal, e))
 
 
-import os
-
-import assemblyai as aai
-
-aai.settings.api_key = "e28239cb6ecc4d0090f36711b11e247a"
-
-
 async def stt_cmd(c, m, audio_file, pros):
     em = Emojik()
     em.initialize()
-    transcriber = aai.Transcriber()
+    bhs = c._translate[c.me.id]["negara"]
+    config = aai.TranscriptionConfig(
+        speech_model=aai.SpeechModel.nano,
+        language_detection=True,
+        language_code=bhs,
+        disfluencies=True,
+        filter_profanity=True,
+    )
+    transcriber = aai.Transcriber(config=config)
     try:
         transcript = transcriber.transcribe(audio_file)
         if transcript.text:
-            await c.send_message(
-                m.chat.id,
-                f"{em.sukses} Sukses Convert Audio To :\n\n`{transcript.text}`",
-            )
+            paragraphs = transcript.get_paragraphs()
+            for paragraph in paragraphs:
+                if paragraph.text:
+                    return await pros.edit(cgr("konpert_20").format(em.sukses, c.me.mention, paragraph.text))
+                else:
+                    return await pros.edit(cgr("konpert_21").format(em.sukses, c.me.mention, transcript.text))
+            os.remove(audio_file)
+        else:
+            await pros.edit(cgr("konpert_22").format(em.gagal))
             os.remove(audio_file)
     except aai.exceptions.RequestError as e:
-        await pros.edit(f"{em.gagal} Gagal melakukan transkripsi: {e}")
+        await pros.edit(cgr("error").format(em.gagal, e))
         os.remove(audio_file)
 
 
@@ -439,13 +451,11 @@ async def transcribe_audio(c: nlx, m):
     if rep:
         if rep.audio:
             audio_file = await c.download_media(rep.audio.file_id, file_name="stt.mp3")
-            await stt_cmd(c, m, audio_file, pros)
+            return await stt_cmd(c, m, audio_file, pros)
         elif rep.voice:
-            audio_file = await c.download_media(rep.voice.file_id, file_name="stt.mp3")
-            await stt_cmd(c, m, audio_file, pros)
+            audio_file = await c.download_media(rep.voice.file_id, file_name="stt.ogg")
+            return await stt_cmd(c, m, audio_file, pros)
         else:
-            return await pros.edit(f"Silahkan balas pesan audio.")
+            return await pros.edit(cgr("konpert_23").format(em.gagal))
     else:
-        return await pros.edit(
-            f"{em.gagal} Mohon balas pesan dengan audio untuk mentranskripsinya."
-        )
+        return await pros.edit(cgr("konpert_24").format(em.gagal))
