@@ -370,9 +370,7 @@ async def _(c: nlx, message):
                     f"ffmpeg -i '{indir}' {get_efek[args]} {converted_file}"
                 )
             )
-            convert_task = asyncio.create_task(
-                asyncio.sleep(30)
-            )
+            convert_task = asyncio.create_task(asyncio.sleep(30))
             await asyncio.wait(
                 [download_task, convert_task], return_when=asyncio.FIRST_COMPLETED
             )
