@@ -76,9 +76,9 @@ class AnimeMaker:
 
 @ky.ubot("toanime", sudo=True)
 async def toanime(c: nlx, m):
-    reply_message = m.reply_to_message
-    file_id = reply_message.photo.file_id
-    file_path = await m.download(file_id)
+    rep = m.reply_to_message
+    file_name = "picture.jpg"
+    file_path = await c.download_media(rep, file_name=file_name)
     anime_maker = AnimeMaker(file_path)
     anime_maker.create_anime()
     await c.send_photo(
