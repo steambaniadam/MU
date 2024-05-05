@@ -1,7 +1,7 @@
 import asyncio
 import os
 import random
-
+from PIL import Image
 import requests
 
 from Mix import *
@@ -11,8 +11,10 @@ __help__ = get_cgr("help_konpert")
 
 
 async def process_toanime_command(m, image, type_arg, args):
+    em = Emojik()
+    em.initialize()
     if isinstance(image, dict):
-        payload = {"url": image, "style": type_arg}
+        payload = {"url": image["image"], "style": type_arg}
     else:
         files = {"image": open(image, "rb")}
         payload = {"style": type_arg}
@@ -30,34 +32,45 @@ async def process_toanime_command(m, image, type_arg, args):
     )
 
     if response.status_code == 200:
-        await m.reply_photo(response.json()["body"]["imageUrl"])
+        result_image_url = response.json()["body"]["imageUrl"]
+        result_image_response = requests.get(result_image_url)
+        if result_image_response.status_code == 200:
+            with open("hasil_konversi.jpg", "wb") as f:
+                f.write(result_image_response.content)
+            await m.reply_photo("hasil_konversi.jpg", caption=f"{em.sukses} Sukses konversi gambar ke anime")
+            os.remove("hasil_konversi.jpg")
+        else:
+            await m.reply(f"{em.gagal} Gagal mengunduh hasil konversi gambar.")
     else:
-        await m.reply("Terjadi kesalahan saat mengonversi gambar menjadi anime.")
+        await m.reply(f"{em.gagal} Terjadi kesalahan saat mengonversi gambar menjadi anime.")
 
 
 @ky.ubot("toanime", sudo=True)
 async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
     args = m.text.split()[1:]
     rep = m.reply_to_message
-
-    if len(args) == 2 and rep and rep.photo:
-        type_arg = args[0]
-        image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
-    elif len(args) == 1 and rep and rep.photo:
+    pros = m.reply(cgr("proses").format(em.proses))
+    if len(args) == 1 and rep and rep.photo:
         type_arg = random.choice(["face2paint", "paprika", "webtoon"])
         image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
-    elif len(args) == 3:
+    elif len(args) == 2 and rep and rep.photo:
         type_arg = args[0]
-        url = args[2]
-        image = {"image": open(requests.get(url, stream=True).raw, "rb")}
+        image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
     elif len(args) == 2:
         type_arg = random.choice(["face2paint", "paprika", "webtoon"])
         url = args[1]
         image = {"image": open(requests.get(url, stream=True).raw, "rb")}
+    elif len(args) == 1:
+        type_arg = random.choice(["face2paint", "paprika", "webtoon"])
+        url = args[0]
+        image = {"image": open(requests.get(url, stream=True).raw, "rb")}
     else:
-        await m.reply("Format perintah salah.")
+        await pros.edit(f"{em.gagal} Format perintah salah.")
         return
     await process_toanime_command(m, image, type_arg, args)
+    await pros.delete()
 
 
 """
