@@ -89,11 +89,13 @@ async def _(c: nlx, message):
     em = Emojik()
     em.initialize()
     rep = message.reply_to_message
+    anim = AnimeMaker()
+    felnem = f"{anim._filename}.anime.{anim._file_extension}"
     pros = await message.reply(cgr("proses").format(em.proses))
     if rep:
         if len(message.command) < 2:
             if rep.photo:
-                get_photo = await c.dln(rep.photo[-1])
+                get_photo = await c.download_media(rep.photo, file_name=felnem)
             elif rep.sticker:
                 get_photo = await c.dln(rep.sticker.thumnail.file_id)
             elif rep.animation:
