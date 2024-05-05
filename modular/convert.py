@@ -89,24 +89,17 @@ async def _(c: nlx, message):
     em = Emojik()
     em.initialize()
     rep = message.reply_to_message
-    anim = AnimeMaker()
-    felnem = f"{anim._filename}.anime.{anim._file_extension}"
     pros = await message.reply(cgr("proses").format(em.proses))
+    anim = AnimeMaker(None)
+    
     if rep:
         if len(message.command) < 2:
             if rep.photo:
-                get_photo = await c.download_media(rep.photo, file_name=felnem)
+                get_photo = await c.download_media(rep.photo, file_name=f"{anim._filename}.anime.{anim._file_extension}")
             elif rep.sticker:
                 get_photo = await c.dln(rep.sticker.thumnail.file_id)
             elif rep.animation:
                 get_photo = await c.dln(rep.animation.file_id)
-                anime_maker = AnimeMaker(get_photo)
-                await anime_maker.create_anime()
-                await c.send_photo(
-                    message.chat.id,
-                    f"{anime_maker._filename}_to_anime.{anime_maker._file_extension}",
-                )
-                await pros.delete()
             else:
                 return await pros.edit(cgr("konpert_1").format(em.gagal))
         else:
@@ -115,13 +108,6 @@ async def _(c: nlx, message):
                 get = await c.get_chat(chat.id)
                 photo = get.photo.big_file_id
                 get_photo = await c.dln(photo)
-            anime_maker = AnimeMaker(get_photo)
-            await anime_maker.create_anime()
-            await c.send_photo(
-                message.chat.id,
-                f"{anime_maker._filename}_to_anime.{anime_maker._file_extension}",
-            )
-            await pros.delete()
     else:
         if len(message.command) < 2:
             return await pros.edit(cgr("konpert_1").format(em.gagal))
@@ -132,11 +118,11 @@ async def _(c: nlx, message):
                 get_photo = await c.dln(photo)
             except Exception as error:
                 return await pros.edit(cgr("err").format(em.gagal, error))
-    anime_maker = AnimeMaker(get_photo)
-    await anime_maker.create_anime()
+    anim = AnimeMaker(get_photo)
+    await anim.create_anime()
     await c.send_photo(
         message.chat.id,
-        f"{anime_maker._filename}_to_anime.{anime_maker._file_extension}",
+        f"{anim._filename}_to_anime.{anim._file_extension}",
     )
     await pros.delete()
 
