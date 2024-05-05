@@ -67,15 +67,19 @@ class AnimeMaker:
 
     def create_anime(self):
         resimg = self.get_anime_image()
-        img_data = requests.get(resimg).content
-        img = Image.open(BytesIO(img_data))
-        width, height = img.size
-        if width == 1000 and height == 930:
-            print("Complete...")
-            self.crop_vertical(img)
+        if resimg is not None:
+            img_data = requests.get(resimg).content
+            img = Image.open(BytesIO(img_data))
+            width, height = img.size
+            if width == 1000 and height == 930:
+                print("Complete...")
+                self.crop_vertical(img)
+            else:
+                print("Complete...")
+                self.crop_horizontal(img)
         else:
-            print("Complete...")
-            self.crop_horizontal(img)
+            print("Error: Failed to get anime image.")
+
 
 
 @ky.ubot("toanime", sudo=True)
