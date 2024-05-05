@@ -1,7 +1,7 @@
 import asyncio
 import os
 import random
-from PIL import Image
+
 import requests
 
 from Mix import *
@@ -37,12 +37,17 @@ async def process_toanime_command(m, image, type_arg, args):
         if result_image_response.status_code == 200:
             with open("hasil_konversi.jpg", "wb") as f:
                 f.write(result_image_response.content)
-            await m.reply_photo("hasil_konversi.jpg", caption=f"{em.sukses} Sukses konversi gambar ke anime")
+            await m.reply_photo(
+                "hasil_konversi.jpg",
+                caption=f"{em.sukses} Sukses konversi gambar ke anime",
+            )
             os.remove("hasil_konversi.jpg")
         else:
             await m.reply(f"{em.gagal} Gagal mengunduh hasil konversi gambar.")
     else:
-        await m.reply(f"{em.gagal} Terjadi kesalahan saat mengonversi gambar menjadi anime.")
+        await m.reply(
+            f"{em.gagal} Terjadi kesalahan saat mengonversi gambar menjadi anime."
+        )
 
 
 @ky.ubot("toanime", sudo=True)
