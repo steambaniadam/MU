@@ -410,12 +410,12 @@ async def _(c: nlx, message):
         await pros.edit(cgr("err").format(em.gagal, e))
 
 
-async def stt_cmd(c, m, upload_url, pros):
+async def stt_cmd(c, m, upload_url, local_file_path, pros):
     em = Emojik()
     em.initialize()
     base_url = "https://api.assemblyai.com/v2"
     headers = {"authorization": "e28239cb6ecc4d0090f36711b11e247a"}
-    with open(upload_url, "rb") as f:
+    with open(local_file_path, "rb") as f:
         response = requests.post(base_url + "/upload", headers=headers, data=f)
         upload_url = response.json()["upload_url"]
     data = {"audio_url": upload_url}
@@ -426,19 +426,20 @@ async def stt_cmd(c, m, upload_url, pros):
     while True:
         transcription_result = requests.get(polling_endpoint, headers=headers).json()
         status = transcription_result["status"]
-
+    
         if status == "completed":
-            text = transcription_result["text"]
+            paragraphs = transcription_result["paragraphs"]
+            text = "\n\n".join(paragraphs)
             await pros.edit(f"{em.sukses} Sukses Convert Audio To :\n\n`{text}`")
-            os.remove(upload_url)
+            os.remove(local_file_path)
             break
-
+    
         elif status == "error":
             error_msg = transcription_result["error"]
-            await pros.edit(f"{em.gagal} Gagal melakukan transkripsi: {error_msg}")
-            os.remove(upload_url)
+            await pros.edit(f"{em.gagal} Gagal melakukan transkripsi: `{error_msg}`")
+            os.remove(local_file_path)
             break
-
+    
         else:
             await asyncio.sleep(3)
 
@@ -449,17 +450,18 @@ async def transcribe_audio(c: nlx, m):
     em.initialize()
     rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
-
+    
     if rep:
         if rep.audio:
-            upload_url = await c.download_media(rep.audio.file_id, file_name="stt.mp3")
+            local_file_path = await c.download_media(rep.audio.file_id, file_name="stt.mp3")
         elif rep.voice:
-            upload_url = await c.download_media(rep.voice.file_id, file_name="stt.ogg")
+            local_file_path = await c.download_media(rep.voice.file_id, file_name="stt.ogg")
         else:
             await pros.edit(f"{em.gagal} Silakan balas dengan pesan suara atau audio.")
             return
-
-        await stt_cmd(c, m, upload_url, pros)
+    
+        upload_url = f"https://cdn.assemblyai.com/upload/{local_file_path}"
+        await stt_cmd(c, m, upload_url, local_file_path, pros)
     else:
         await pros.edit(
             f"{em.gagal} Mohon balas pesan dengan audio untuk mentranskripsinya."
