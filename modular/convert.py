@@ -407,9 +407,11 @@ async def _(c: nlx, message):
 
 
 import os
+
 import assemblyai as aai
 
 aai.settings.api_key = "e28239cb6ecc4d0090f36711b11e247a"
+
 
 async def stt_cmd(c, m, audio_file, pros):
     em = Emojik()
@@ -420,12 +422,13 @@ async def stt_cmd(c, m, audio_file, pros):
         if transcript.text:
             await c.send_message(
                 m.chat.id,
-                f"{em.sukses} Sukses Convert Audio To :\n\n`{transcript.text}`"
+                f"{em.sukses} Sukses Convert Audio To :\n\n`{transcript.text}`",
             )
             os.remove(audio_file)
     except aai.exceptions.RequestError as e:
         await pros.edit(f"{em.gagal} Gagal melakukan transkripsi: {e}")
         os.remove(audio_file)
+
 
 @ky.ubot("stt", sudo=True)
 async def transcribe_audio(c: nlx, m):
@@ -438,4 +441,6 @@ async def transcribe_audio(c: nlx, m):
         )
         await stt_cmd(c, m, audio_file, pros)
     else:
-        await pros.edit(f"{em.gagal} Mohon balas pesan dengan audio untuk mentranskripsinya.")
+        await pros.edit(
+            f"{em.gagal} Mohon balas pesan dengan audio untuk mentranskripsinya."
+        )
