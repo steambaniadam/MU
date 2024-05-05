@@ -15,6 +15,18 @@ async def process_toanime_command(m, image, tipe):
     em = Emojik()
     em.initialize()
 
+    tipe_map = {
+        'webtoon': 'webtoon',
+        'face2paint': 'face2paint',
+        'paprika': 'paprika'
+    }
+
+    if tipe not in tipe_map:
+        available_types = "\n• ".join([f"`{i+1}`" for i in range(len(tipe_map))])
+        error_message = f"{em.gagal} Tipe yang Anda masukkan tidak valid!\nBerikut adalah tipe yang tersedia:\n\n{available_types}"
+        await m.reply(error_message)
+        return
+
     if isinstance(image, dict):
         payload = {"url": image["image"], "style": tipe}
     else:
