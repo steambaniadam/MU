@@ -13,6 +13,7 @@ __help__ = get_cgr("help_konpert")
 async def process_toanime_command(m, image, type_arg):
     em = Emojik()
     em.initialize()
+
     if isinstance(image, dict):
         payload = {"url": image["image"], "style": type_arg}
     else:
@@ -31,19 +32,24 @@ async def process_toanime_command(m, image, type_arg):
         headers=headers,
     )
 
+    print("JSON Response:", response.json())
+
     if response.status_code == 200:
-        result_image_url = response.json()["body"]["imageUrl"]
-        result_image_response = requests.get(result_image_url)
-        if result_image_response.status_code == 200:
-            with open("hasil_konversi.jpg", "wb") as f:
-                f.write(result_image_response.content)
-            await m.reply_photo(
-                "hasil_konversi.jpg",
-                caption=f"{em.sukses} Sukses konversi gambar ke anime",
-            )
-            os.remove("hasil_konversi.jpg")
+        if "body" in response.json() and "imageUrl" in response.json()["body"]:
+            result_image_url = response.json()["body"]["imageUrl"]
+            result_image_response = requests.get(result_image_url)
+            if result_image_response.status_code == 200:
+                with open("hasil_konversi.jpg", "wb") as f:
+                    f.write(result_image_response.content)
+                await m.reply_photo(
+                    "hasil_konversi.jpg",
+                    caption=f"{em.sukses} Sukses konversi gambar ke anime",
+                )
+                os.remove("hasil_konversi.jpg")
+            else:
+                await m.reply(f"{em.gagal} Gagal mengunduh hasil konversi gambar.")
         else:
-            await m.reply(f"{em.gagal} Gagal mengunduh hasil konversi gambar.")
+            await m.reply(f"{em.gagal} Tidak dapat menemukan hasil konversi gambar.")
     else:
         await m.reply(
             f"{em.gagal} Terjadi kesalahan saat mengonversi gambar menjadi anime."
