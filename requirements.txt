@@ -46,3 +46,4 @@ pexpect
 proxybroker
 pyquery
 aiogram
+assemblyai
