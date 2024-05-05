@@ -1,9 +1,7 @@
 import asyncio
 import os
+
 import requests
-from pyrogram.enums import MessagesFilter
-from pyrogram.raw.functions.messages import DeleteHistory
-from pyrogram.types import InputMediaPhoto
 
 from Mix import *
 
@@ -14,14 +12,11 @@ __help__ = get_cgr("help_konpert")
 async def to_anime(c, chat_id, file_path, style, em):
     try:
         url = "https://phototoanime1.p.rapidapi.com/photo-to-anime"
-        files = { "image": open(file_path, 'rb') }
-        payload = {
-            "url": file_path,
-            "style": style
-        }
+        files = {"image": open(file_path, "rb")}
+        payload = {"url": file_path, "style": style}
         headers = {
             "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-            "X-RapidAPI-Host": "phototoanime1.p.rapidapi.com"
+            "X-RapidAPI-Host": "phototoanime1.p.rapidapi.com",
         }
         response = requests.post(url, data=payload, files=files, headers=headers)
         response_json = response.json()
