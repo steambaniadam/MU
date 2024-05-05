@@ -377,11 +377,6 @@ async def _(c: nlx, message):
                 open(converted_file, "rb"),
                 caption=cgr("konpert_12").format(em.sukses, args),
             )
-            for files in (converted_file, indir):
-                if files and os.path.exists(files):
-                    os.remove(files)
-                else:
-                    pass
 
         else:
             await pros.edit(
@@ -389,10 +384,15 @@ async def _(c: nlx, message):
             )
 
     except asyncio.TimeoutError:
+        await pros.edit(cgr("konpert_14").format(em.gagal))
+
+    except Exception as e:
+        await pros.edit(cgr("err").format(em.gagal, e))
+
+    finally:
         for files in (converted_file, indir):
             if files and os.path.exists(files):
                 os.remove(files)
-        await pros.edit(cgr("konpert_14").format(em.gagal))
 
 
 """
