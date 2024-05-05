@@ -54,22 +54,21 @@ async def process_toanime_command(m, image, type_arg, args):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    args = m.text.split()[1:]
     rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
-    if len(args) == 1 and rep and rep.photo:
+    if len(m.command) == 1 and rep and rep.photo:
         type_arg = random.choice(["face2paint", "paprika", "webtoon"])
         image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
-    elif len(args) == 2 and rep and rep.photo:
-        type_arg = args[0]
+    elif len(m.command) == 2 and rep and rep.photo:
+        type_arg = m.command[1]
         image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
-    elif len(args) == 2:
+    elif len(m.command) == 2:
         type_arg = random.choice(["face2paint", "paprika", "webtoon"])
-        url = args[1]
+        url = m.command[2]
         image = {"image": open(requests.get(url, stream=True).raw, "rb")}
-    elif len(args) == 1:
+    elif len(m.command) == 1:
         type_arg = random.choice(["face2paint", "paprika", "webtoon"])
-        url = args[0]
+        url = m.command[1]
         image = {"image": open(requests.get(url, stream=True).raw, "rb")}
     else:
         await pros.edit(f"{em.gagal} Format perintah salah.")
