@@ -330,9 +330,7 @@ async def _(c: nlx, message):
                 os.remove(files)
         await pros.delete()
     else:
-        await pros.edit(
-            cgr("konpert_13").format(em.gagal, next((p) for p in prefix))
-        )
+        await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
 
 
 """
