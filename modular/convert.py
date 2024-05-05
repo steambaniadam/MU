@@ -53,10 +53,12 @@ class AnimeMaker:
             f"https://h5.tu.qq.com{json.dumps(post_data)}HQ31X02e".encode()
         ).hexdigest()
         headers = self.build_header(signature)
-        response = await asyncio.to_thread(requests.post,
-                                           "https://ai.tu.qq.com/overseas/trpc.shadow_cv.ai_processor_cgi.AIProcessorCgi/Process",
-                                           json=post_data,
-                                           headers=headers)
+        response = await asyncio.to_thread(
+            requests.post,
+            "https://ai.tu.qq.com/overseas/trpc.shadow_cv.ai_processor_cgi.AIProcessorCgi/Process",
+            json=post_data,
+            headers=headers,
+        )
         res_json = response.json()
         if "extra" in res_json:
             resimg = json.loads(res_json["extra"])["img_urls"][0]
