@@ -1,16 +1,14 @@
 import asyncio
 import os
 import random
-import os
+
 import assemblyai as aai
 import requests
-from Mix import *
-from Mix.core.parser import kode_bahasa
 
+from Mix import *
 
 __modles__ = "Convert"
 __help__ = get_cgr("help_konpert")
-
 
 
 aai.settings.api_key = "e28239cb6ecc4d0090f36711b11e247a"
@@ -430,9 +428,17 @@ async def stt_cmd(c, m, audio_file, pros):
             paragraphs = transcript.get_paragraphs()
             for paragraph in paragraphs:
                 if paragraph.text:
-                    return await pros.edit(cgr("konpert_20").format(em.sukses, c.me.mention, paragraph.text))
+                    return await pros.edit(
+                        cgr("konpert_20").format(
+                            em.sukses, c.me.mention, paragraph.text
+                        )
+                    )
                 else:
-                    return await pros.edit(cgr("konpert_21").format(em.sukses, c.me.mention, transcript.text))
+                    return await pros.edit(
+                        cgr("konpert_21").format(
+                            em.sukses, c.me.mention, transcript.text
+                        )
+                    )
             os.remove(audio_file)
         else:
             await pros.edit(cgr("konpert_22").format(em.gagal))
