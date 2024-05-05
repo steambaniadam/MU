@@ -1,6 +1,6 @@
 import asyncio
 import os
-
+import random
 import requests
 
 from Mix import *
@@ -9,35 +9,25 @@ __modles__ = "Convert"
 __help__ = get_cgr("help_konpert")
 
 
-async def process_toanime_command(m, args):
-    rep = m.reply_to_message
-    if len(args) == 2 and rep and rep.photo:
-        type_arg = args[0]
-        image = rep.photo.file_id
-    elif len(args) == 1 and rep and rep.photo:
-        type_arg = args[0]
-        image = rep.photo.file_id
-    elif len(args) == 3:
-        type_arg = args[0]
-        url = args[2]
-        image = {"image": open(requests.get(url, stream=True).raw, "rb")}
-    elif len(args) == 2:
-        type_arg = args[0]
-        url = args[1]
-        image = {"image": open(requests.get(url, stream=True).raw, "rb")}
+async def process_toanime_command(m, image, type_arg, args):
+    if isinstance(image, dict):
+        payload = {"url": image, "style": type_arg}
     else:
-        await m.reply("Format perintah salah.")
-        return
-    payload = {"url": image, "style": type_arg}
+        files = {"image": open(image, "rb")}
+        payload = {"style": type_arg}
+
     headers = {
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
         "X-RapidAPI-Host": "phototoanime1.p.rapidapi.com",
     }
+
     response = requests.post(
         "https://phototoanime1.p.rapidapi.com/photo-to-anime",
         data=payload,
+        files=files if isinstance(image, str) else None,
         headers=headers,
     )
+
     if response.status_code == 200:
         await m.reply_photo(response.json()["body"]["imageUrl"])
     else:
@@ -47,7 +37,26 @@ async def process_toanime_command(m, args):
 @ky.ubot("toanime", sudo=True)
 async def _(c: nlx, m):
     args = m.text.split()[1:]
-    await process_toanime_command(m, args)
+    rep = m.reply_to_message
+
+    if len(args) == 2 and rep and rep.photo:
+        type_arg = args[0]
+        image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
+    elif len(args) == 1 and rep and rep.photo:
+        type_arg = random.choice(["face2paint", "paprika", "webtoon"])
+        image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
+    elif len(args) == 3:
+        type_arg = args[0]
+        url = args[2]
+        image = {"image": open(requests.get(url, stream=True).raw, "rb")}
+    elif len(args) == 2:
+        type_arg = random.choice(["face2paint", "paprika", "webtoon"])
+        url = args[1]
+        image = {"image": open(requests.get(url, stream=True).raw, "rb")}
+    else:
+        await m.reply("Format perintah salah.")
+        return
+    await process_toanime_command(m, image, type_arg, args)
 
 
 """
