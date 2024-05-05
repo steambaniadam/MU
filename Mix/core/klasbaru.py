@@ -1,5 +1,7 @@
 from team.nandev.database import udB
+
 from Mix import nlx
+
 
 class Emojik:
     def __init__(self):
@@ -32,7 +34,15 @@ class Emojik:
 
         for key, default_emoji in emojis.items():
             emoji_var = udB.get_var(nlx.me.id, key)
-            setattr(self, key, f"<emoji id={emoji_var}>{default_emoji}</emoji>" if self.uprem else emoji_var or emojis_default[key])
+            setattr(
+                self,
+                key,
+                (
+                    f"<emoji id={emoji_var}>{default_emoji}</emoji>"
+                    if self.uprem
+                    else emoji_var or emojis_default[key]
+                ),
+            )
 
     @property
     def ping(self):
