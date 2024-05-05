@@ -354,6 +354,7 @@ async def _(c: nlx, message):
     reply = message.reply_to_message
     prefix = await c.get_prefix(c.me.id)
     pros = await message.reply(cgr("konpert_11").format(em.proses, args))
+
     try:
         if reply and args in get_efek:
             converted_file = "converted_audio.mp3"
@@ -364,23 +365,31 @@ async def _(c: nlx, message):
                 os.remove(converted_file)
 
             indir = await c.download_media(reply, file_name=indir)
-            async with asyncio.wait_for(
+            download_task = asyncio.create_task(
                 asyncio.create_subprocess_shell(
                     f"ffmpeg -i '{indir}' {get_efek[args]} {converted_file}"
-                ),
-                timeout=30,
-            ) as ses:
-                await ses.communicate()
-            await message.reply_voice(
-                open(converted_file, "rb"),
-                caption=cgr("konpert_12").format(em.sukses, args),
+                )
             )
+            convert_task = asyncio.create_task(
+                asyncio.sleep(30)
+            )
+            await asyncio.wait(
+                [download_task, convert_task], return_when=asyncio.FIRST_COMPLETED
+            )
+            await download_task
+            if convert_task.done():
+                await pros.edit(cgr("konpert_12").format(em.sukses, args))
+                await message.reply_voice(
+                    open(converted_file, "rb"),
+                    caption=cgr("konpert_12").format(em.sukses, args),
+                )
+            else:
+                convert_task.cancel()
+                await pros.edit(cgr("konpert_14").format(em.gagal))
         else:
             await pros.edit(
                 cgr("konpert_13").format(em.gagal, next((p) for p in prefix))
             )
-    except asyncio.TimeoutError:
-        await pros.edit(cgr("konpert_14").format(em.gagal))
     except Exception as e:
         await pros.edit(cgr("err").format(em.gagal, e))
     finally:
