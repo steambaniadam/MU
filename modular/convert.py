@@ -165,7 +165,7 @@ async def _(c: nlx, message):
             await c.send_voice(
                 message.chat.id,
                 voice=out_file,
-                caprtion=cgr("konpert_5").format(em.sukses, c.me.mention),
+                caption=cgr("konpert_5").format(em.sukses, c.me.mention),
                 reply_to_message_id=message.id,
             )
             os.remove(file)
