@@ -119,40 +119,39 @@ async def _(c: nlx, message):
     em = Emojik()
     em.initialize()
     rep = message.reply_to_message
-    await message.reply(cgr("proses").format(em.proses))
-    fileID = rep.photo[-1].file_id
-    file = await c.get_file(fileID)
+    pros = await message.reply(cgr("proses").format(em.proses))
+    file_id = None
+    if rep and rep.photo:
+        file_id = rep.photo[-1].file_id
+    else:
+        await pros.edit("Error: No photo found in the replied message.")
+        return
+    file = await c.get_file(file_id)
     r = requests.get(
-        "https://api.telegram.org/file/bot"
-        + "6810163267:AAGQZnaPP2N2RxMHeETwVVAkcNKz9t6KXOI"
-        + "/"
-        + file.file_path,
+        "https://api.telegram.org/file/bot" + ndB.get("BOT_TOKEN") + "/" + file.file_path,
         timeout=None,
         stream=True,
     )
     base64_image_string = base64.b64encode(r.content).decode("utf-8")
-    me = await c.get_me()
-    tag = me.username
+    
     try:
         ai_image = get_ai_image(base64_image_string)["media_info_list"][0]["media_data"]
-        await c.send_photo(message.chat.id, ai_image, caption=f"@{tag}")
+        await c.send_photo(message.chat.id, ai_image)
         send_date = datetime.now() + timedelta(seconds=10)
         while datetime.now() <= send_date:
             await asyncio.sleep(1)
-            if datetime.now() >= send_date:
-                await send_message_media_types(
-                    bot=c,
-                    content_type=content_type,
-                    chat_id=message.chat.id,
-                    text=text,
-                    file_id=file_id,
-                    button_text=button_text,
-                    button_url=button_url,
-                )
-                break
+        await send_message_media_types(
+            bot=c,
+            content_type=content_type,
+            chat_id=message.chat.id,
+            text=text,
+            file_id=file_id,
+            button_text=button_text,
+            button_url=button_url
+        )
     except Exception as e:
         print(f"Error: {e}")
-        await c.send_message(message.chat.id, f"Error : {e}")
+        await pros.edit(f"Error: {e}")
 
 
 """
