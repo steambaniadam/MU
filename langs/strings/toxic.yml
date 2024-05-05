@@ -507,7 +507,7 @@ enc_4: "{} **Mampus!\nGagal :** `{}`"
 enc_5: "{} **Bego! Goblok! minimal kasih teks kalo ngga bales ke pesan kek anj!**"
 
 # efek
-konpert_1: "{} <b>Bales ke foto lah jink!</b>"
+konpert_1: "{} <b>Tipenya kaga bener itu GOBLOK!\nNih yang bener jink:</b>\n\n• {}"
 konpert_2: "{} <b>Sabar! Lagi Gue Proses ...</b>"
 konpert_3: "{} <b>yang bikin : {}</b>"
 konpert_4: "{} <b>Error, jink! Coba lagi ntar.</b>"
@@ -521,6 +521,11 @@ konpert_11: "{} <b>Bentar gue ubah dulu ke `{}` ...</b>"
 konpert_12: "{} <b>Udah gue ubah nih epeknya ke `{}`</b>"
 konpert_13: "{} <b>Salah jink! Ketik `{}list-efek` buat ngeliat daftar epeknya!</b>"
 konpert_14: "{} <b>Lagi ada masalah jon, Ntar bae coba lagi, kalo kaga ya reboot dulu!</b>"
+konpert_15: "{} <b>Perintahnya salah Goblok! Tolol! Idiot! Autis!.</b>"
+konpert_16: "{} <b>Yah Gagagl konpersi gambar!</b>"
+konpert_17: "{} <b>Kaga Ketemu Hasil konpersi gambar!</b>"
+konpert_18: "{} <b>Yah Error pas konpersi gambar jadi anime! Mending Lo aja yang jadi Animek, Jink!</b>"
+konpert_19: "{} <b>NIh Daftar style atau gaya nya nyet :</b>\n\n{} {}"
 
 # help_for
 help_afk: " **Afk**\n\n• Perintah : `{0}afk` [alesan]\n• Penjelasan : Buat mengaktifkan mode afk.\n\n• Perintah : `{0}unafk`\n• Penjelasan : Buat menonaktifkan mode afk."

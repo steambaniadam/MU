@@ -507,7 +507,7 @@ enc_4: "{} **Gagal :** `{}`"
 enc_5: "{} **Silahkan berikan pesan, text, atau balas pesan**"
 
 # efek
-konpert_1: "{} <b>Silahkan balas ke media foto</b>"
+konpert_1: "{} <b>Tipe yang Anda masukkan tidak valid!\nBerikut adalah tipe yang tersedia:</b>\n\n• {}"
 konpert_2: "{} <b>Proses Konversi ...</b>"
 konpert_3: "{} <b>Dibuat oleh : {}</b>"
 konpert_4: "{} <b>Error, Silahkan coba beberapa saat lagi.</b>"
@@ -521,6 +521,11 @@ konpert_11: "{} <b>Proses mengubah suara ke `{}` ...</b>"
 konpert_12: "{} <b>Berhasil merubah efek audio menjadi `{}`</b>"
 konpert_13: "{} <b>Silahkan ketik `{}list-efek` untuk melihat daftar efek yang tersedia</b>"
 konpert_14: "{} <b>Sedang terjadi masalah, silahkan coba beberapa saat lagi atau reboot.</b>"
+konpert_15: "{} <b>Format perintah salah.</b>"
+konpert_16: "{} <b>Gagal mengunduh hasil konversi gambar.</b>"
+konpert_17: "{} <b>Tidak dapat menemukan hasil konversi gambar.</b>"
+konpert_18: "{} <b>Terjadi kesalahan saat mengonversi gambar menjadi anime.</b>"
+konpert_19: "{} <b>Berikut adalah daftar style yang tersedia:</b>\n\n{} {}"
 
 # help_for
 help_afk: " **Afk**\n\n• Perintah : `{0}afk` [alasan]\n• Penjelasan : Untuk mengaktifkan mode afk.\n\n• Perintah : `{0}unafk`\n• Penjelasan : Untuk menonaktifkan mode afk."
@@ -595,4 +600,4 @@ help_qur: " **Qur'an**\n\n• Perintah: `{0}qs [nama surah]`\n• Penjelasan: Un
 help_animstream: " **Anime Streaming**\n\n• Perintah: `{0}streaming` [Judul Film]\n• Penjelasan: Untuk mengambil link streaming film anime\n\n• Perintah: `{0}list_anime`\n• Penjelasan: Untuk mengambil daftar film anime yang tersedia.\n"
 help_pint: " **Pinterest**\n\n• Perintah: `{0}pint` [link pinterest]\n• Penjelasan: Untuk mengunduh file yang terdapat pada link.\n"
 help_enc: " **Base64 Encoder**\n\n• Perintah: `{0}encode` [teks|balas pesan]\n• Penjelasan: Untuk encode base64.\n\n• Perintah: `{0}decode` [teks|balas pesan]\n• Penjelasan: Untuk decode base64\n"
-help_konpert: " **Convert**\n\n• Perintah: `{0}toanime` [balas media]\n• Penjelasan: Untuk merubah Media yang dibalas menjadi anime.\n\n• Perintah: `{0}toimg` [balas sticker]\n• Penjelasan: Untuk merubah sticker menjadi sebuah Foto.\n\n• Perintah: `{0}tosticker` atau `{0}tostick` [balas foto]\n• Penjelasan: Untuk merubah gambar/foto menjadi sticker.\n\n• Perintah: `{0}togif` [balas sticker]\n• Penjelasan: Untuk merubah sticker menjadi GIF.\n\n• Perintah: `{0}toaudio` [balas video]\n• Penjelasan : Untuk merubah video menjadi audio.\n\n• Perintah: `{0}list-efek`\n• Penjelasan: Untuk menampilkan daftar efek audio yang tersedia.\n\n• Perintah: `{0}efek` [nama-efek] [balas audio]\n• Penjelasan: Untuk merubah efek audio.\n"
+help_konpert: " **Convert**\n\n• Perintah: `{0}toanime` [style] [balas foto]\n• Penjelasan: Untuk merubah Foto yang dibalas menjadi anime.\n\n• Perintah: `{0}style-anime`\nPenjelasan: Untuk melihat daftar Style atau Gaya Anime.\n\n• Perintah: `{0}toimg` [balas sticker]\n• Penjelasan: Untuk merubah sticker menjadi sebuah Foto.\n\n• Perintah: `{0}tosticker` atau `{0}tostick` [balas foto]\n• Penjelasan: Untuk merubah gambar/foto menjadi sticker.\n\n• Perintah: `{0}togif` [balas sticker]\n• Penjelasan: Untuk merubah sticker menjadi GIF.\n\n• Perintah: `{0}toaudio` [balas video]\n• Penjelasan : Untuk merubah video menjadi audio.\n\n• Perintah: `{0}list-efek`\n• Penjelasan: Untuk menampilkan daftar efek audio yang tersedia.\n\n• Perintah: `{0}efek` [nama-efek] [balas audio]\n• Penjelasan: Untuk merubah efek audio.\n"

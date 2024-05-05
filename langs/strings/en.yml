@@ -521,6 +521,11 @@ konpert_11: "{} <b>Process of changing sound to `{}` ...</b>"
 konpert_12: "{} <b>Successfully changed the audio effect to `{}`</b>"
 konpert_13: "{} <b>Please type `{}list-effects` to see the list of available effects</b>"
 konpert_14: "{} <b>There is a problem, please try again later or reboot.</b>"
+konpert_15: "{} <b>Incorrect command format.</b>"
+konpert_16: "{} <b>Failed to download image conversion results.</b>"
+konpert_17: "{} <b>Unable to find image conversion results.</b>"
+konpert_18: "{} <b>An error occurred while converting the image to anime.</b>"
+konpert_19: "{} <b>Here is a list of available styles:</b>\n\n{} {}"
 
 # help_for
 help_afk: " **Afk**\n\n• Command: `{0}afk` [reason]\n• Description: To activate afk mode.\n\n• Command: `{0}unafk` [reason]\n• Description: To deactivate afk mode."
