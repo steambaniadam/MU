@@ -1,7 +1,7 @@
 import asyncio
 import os
 import random
-
+import shutil
 import requests
 
 from Mix import *
@@ -60,23 +60,36 @@ async def process_toanime_command(m, image, type_arg):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    args = m.command
     rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
-    if len(args) == 0 and rep and rep.photo:
-        type_arg = random.choice(["face2paint", "paprika", "webtoon"])
-        image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
-    elif len(args) == 1 and rep and rep.photo:
-        type_arg = m.command[0]
-        image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
-    elif len(args) == 2:
-        type_arg = m.command[0]
-        url = m.command[1]
-        image = {"image": open(requests.get(url, stream=True).raw, "rb")}
-    elif len(args) == 1:
-        type_arg = random.choice(["face2paint", "paprika", "webtoon"])
-        url = m.command[0]
-        image = {"image": open(requests.get(url, stream=True).raw, "rb")}
+    if rep:
+        if len(m.command) == 0 and rep.photo:
+            tipe = random.choice(['face2paint', 'paprika', 'webtoon'])
+            image = await c.download_media(rep.photo.file_id, file_name=f"{c.me.id}.jpg")
+        elif len(m.command) == 1 and rep.photo:
+            tipe = m.command[0]
+            image = await c.download_media(rep.photo.file_id, file_name=f"{c.me.id}.jpg")
+    elif not rep:
+        if len(m.command) == 1:
+            tipe = random.choice(['face2paint', 'paprika', 'webtoon'])
+            url = m.command[0]
+            response = requests.get(url, stream=True)
+            if response.status_code == 200:
+                with open("temp_image.jpg", "wb") as f:
+                    response.raw.decode_content = True
+                    shutil.copyfileobj(response.raw, f)
+                image = {"image": open("temp_image.jpg", "rb")}
+                os.remove("temp_image.jpg")
+        elif len(m.command) == 2:
+            tipe = m.command[0]
+            url = m.command[1]
+            response = requests.get(url, stream=True)
+            if response.status_code == 200:
+                with open("temp_image.jpg", "wb") as f:
+                    response.raw.decode_content = True
+                    shutil.copyfileobj(response.raw, f)
+                image = {"image": open("temp_image.jpg", "rb")}
+                os.remove("temp_image.jpg")
     else:
         await pros.edit(f"{em.gagal} Format perintah salah.")
         return
