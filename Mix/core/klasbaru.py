@@ -3,6 +3,7 @@ from team.nandev.database import udB
 from Mix import nlx
 
 
+"""
 class Emojik:
     def __init__(self):
         self.uprem = nlx.me.is_premium
@@ -139,3 +140,62 @@ class Emojik:
             return f"<emoji id={self.emo_block}>🚫</emoji>"
         elif self.uprem == False:
             return f"{self.emo_block}"
+"""
+
+
+class Emojik:
+    def __init__(self):
+        self.uprem = nlx.me.is_premium
+    
+    def initialize(self):
+        emojis = {
+            "emo_ping": "🏓",
+            "emo_pong": "🎈",
+            "emo_proses": "🔄",
+            "emo_sukses": "✅",
+            "emo_gagal": "❌",
+            "emo_profil": "👤",
+            "emo_alive": "🔥",
+            "emo_warn": "❗",
+            "emo_block": "🚫"
+        }
+        
+        for key, default_emoji in emojis.items():
+            emoji_var = udB.get_var(nlx.me.id, key)
+            setattr(self, key, emoji_var if emoji_var else default_emoji)
+
+    @property
+    def ping(self):
+        return f"{self.emo_ping}"
+
+    @property
+    def pong(self):
+        return f"{self.emo_pong}"
+
+    @property
+    def proses(self):
+        return f"{self.emo_proses}"
+
+    @property
+    def sukses(self):
+        return f"{self.emo_sukses}"
+
+    @property
+    def gagal(self):
+        return f"{self.emo_gagal}"
+
+    @property
+    def profil(self):
+        return f"{self.emo_profil}"
+
+    @property
+    def alive(self):
+        return f"{self.emo_alive}"
+            
+    @property
+    def warn(self):
+        return f"{self.emo_warn}"
+            
+    @property
+    def block(self):
+        return f"{self.emo_block}"
