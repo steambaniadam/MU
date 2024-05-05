@@ -406,32 +406,36 @@ async def _(c: nlx, message):
         await pros.edit(cgr("err").format(em.gagal, e))
 
 
+import os
 import assemblyai as aai
 
 aai.settings.api_key = "e28239cb6ecc4d0090f36711b11e247a"
 
-
-async def stt_cmd(c, m, audio_file):
-
+async def stt_cmd(c, m, audio_file, pros):
+    em = Emojik()
+    em.initialize()
     transcriber = aai.Transcriber()
-    transcript = transcriber.transcribe(audio_file)
-    print(transcript.text)
     try:
+        transcript = transcriber.transcribe(audio_file)
         if transcript.text:
             await c.send_message(
                 m.chat.id,
-                f"{transcript.text}",
+                f"{em.sukses} Sukses Convert Audio To :\n\n`{transcript.text}`"
             )
-    except Exception as e:
-        await m.reply(f"Error: {e}")
-
+            os.remove(audio_file)
+    except aai.exceptions.RequestError as e:
+        await pros.edit(f"{em.gagal} Gagal melakukan transkripsi: {e}")
+        os.remove(audio_file)
 
 @ky.ubot("stt", sudo=True)
 async def transcribe_audio(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    pros = await m.reply(cgr("proses").format(em.proses))
     if m.reply_to_message.audio:
         audio_file = await c.download_media(
             m.reply_to_message.audio.file_id, file_name="stt.mp3"
         )
-        await stt_cmd(c, m, audio_file)
+        await stt_cmd(c, m, audio_file, pros)
     else:
-        await m.reply("Mohon balas pesan dengan audio untuk mentranskripsinya.")
+        await pros.edit(f"{em.gagal} Mohon balas pesan dengan audio untuk mentranskripsinya.")
