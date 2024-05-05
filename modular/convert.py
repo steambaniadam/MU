@@ -240,7 +240,7 @@ get_efek = {
     "chorus": '-filter_complex "chorus=0.7:0.9:55:0.4:0.25:2"',
     "vibrato": '-filter_complex "vibrato=f=10"',
     "phaser": '-filter_complex "aphaser=type=t:gain=0.2"',
-    "reverb": '-filter_complex "reverb"',
+    "reverb": '-filter_complex "[0] [1] afir=dry=10:wet=10"',
     "distortion": '-filter_complex "distortion=gain=6"',
     "bitcrush": '-filter_complex "acrusher=level_in=10:level_out=16:bits=4:mode=log:aa=1"',
     "wahwah": '-filter_complex "wahwah"',
