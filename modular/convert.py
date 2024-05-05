@@ -1,7 +1,6 @@
 import asyncio
 import os
 import random
-import shutil
 
 import requests
 
@@ -51,9 +50,7 @@ async def process_toanime_command(m, image, style):
         else:
             await m.reply(cgr("konpert_17").format(em.gagal))
     else:
-        await m.reply(
-            cgr("konpert_18").format(em.gagal)
-        )
+        await m.reply(cgr("konpert_18").format(em.gagal))
 
 
 async def proccess_link_to_anime(m, url, style):
@@ -95,8 +92,7 @@ async def proccess_link_to_anime(m, url, style):
         else:
             await m.reply(cgr("konpert_17").format(em.gagal))
     else:
-        await m.reply(
-            cgr("konpert_18").format(em.gagal))
+        await m.reply(cgr("konpert_18").format(em.gagal))
 
 
 @ky.ubot("style-anime", sudo=True)
@@ -107,7 +103,6 @@ async def show_available_styles(c: nlx, m):
     available_types = f"\n{em.sukses} ".join([f"`{tipe_map[key]}`" for key in tipe_map])
     message = cgr("konpert_19").format(em.alive, em.sukses, available_types)
     await m.reply(message)
-
 
 
 @ky.ubot("toanime", sudo=True)
