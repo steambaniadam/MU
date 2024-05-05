@@ -13,10 +13,10 @@ async def process_toanime_command(m, args):
     rep = m.reply_to_message
     if len(args) == 2 and rep and rep.photo:
         type_arg = args[0]
-        image = rep.photo[-1].file_id
+        image = rep.photo.file_id
     elif len(args) == 1 and rep and rep.photo:
         type_arg = args[0]
-        image = rep.photo[-1].file_id
+        image = rep.photo.file_id
     elif len(args) == 3:
         type_arg = args[0]
         url = args[2]
