@@ -404,3 +404,29 @@ async def _(c: nlx, message):
 
     except Exception as e:
         await pros.edit(cgr("err").format(em.gagal, e))
+
+
+import assemblyai as aai
+
+aai.settings.api_key = "e28239cb6ecc4d0090f36711b11e247a" 
+
+transcriber = aai.Transcriber()
+
+
+@ky.ubot("stt")
+async def _(c: nlx, m):
+    if m.reply_to_message.audio:
+        audio = m.reply_to_message.audio
+        audio_file = await nlx.download_media(audio)
+        audio_url = audio_file
+        config = aai.TranscriptionConfig(speaker_labels=True)
+        transcript = transcriber.transcribe(audio_url, config)
+        if transcript.error:
+            await m.reply
+            print(transcript.error)
+        else:
+            await m.reply(f"{transcript.text}")
+            print(transcript.text)
+        for utterance in transcript.utterances:
+            await m.reply(f"{utterance.speaker} : {utterance.text}")
+            print(f"Speaker {utterance.speaker}: {utterance.text}")
