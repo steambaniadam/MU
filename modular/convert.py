@@ -159,8 +159,7 @@ async def _(c: nlx, message):
         out_file = f"{file}.mp3"
         try:
             await pros.edit(cgr("konpert_8").format(em.proses))
-            # cmd = f"ffmpeg -i {file} -q:a 0 -map a {out_file}"
-            cmd = f"ffmpeg -i {file} -vn -acodec copy {out_file}"
+            cmd = f"ffmpeg -i {file} -q:a 0 -map a {out_file}"
             await c.run_cmd(cmd)
             await pros.edit(cgr("konpert_9").format(em.proses))
             await c.send_voice(
@@ -170,10 +169,15 @@ async def _(c: nlx, message):
                 reply_to_message_id=message.id,
             )
             os.remove(file)
-            await pros.delete()
+            os.remove(out_file)
+            return await pros.delete()
         except Exception as error:
-            await pros.edit(error)
+            os.remove(file)
+            os.remove(out_file)
+            return await pros.edit(str(error))
     else:
+        os.remove(file)
+        os.remove(out_file)
         return await pros.edit(cgr("konpert_7").format(em.gagal))
 
 
