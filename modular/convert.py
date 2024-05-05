@@ -438,14 +438,10 @@ async def transcribe_audio(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     if rep:
         if rep.audio:
-            audio_file = await c.download_media(
-                rep.audio.file_id, file_name="stt.mp3"
-        )
+            audio_file = await c.download_media(rep.audio.file_id, file_name="stt.mp3")
             await stt_cmd(c, m, audio_file, pros)
         elif rep.voice:
-            audio_file = await c.download_media(
-                rep.voice.file_id, file_name="stt.mp3"
-            )
+            audio_file = await c.download_media(rep.voice.file_id, file_name="stt.mp3")
             await stt_cmd(c, m, audio_file, pros)
         else:
             return await pros.edit(f"Silahkan balas pesan audio.")
