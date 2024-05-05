@@ -91,11 +91,14 @@ async def _(c: nlx, message):
     rep = message.reply_to_message
     pros = await message.reply(cgr("proses").format(em.proses))
     anim = AnimeMaker(None)
-    
+
     if rep:
         if len(message.command) < 2:
             if rep.photo:
-                get_photo = await c.download_media(rep.photo, file_name=f"{anim._filename}.anime.{anim._file_extension}")
+                get_photo = await c.download_media(
+                    rep.photo,
+                    file_name=f"{anim._filename}.anime.{anim._file_extension}",
+                )
             elif rep.sticker:
                 get_photo = await c.dln(rep.sticker.thumnail.file_id)
             elif rep.animation:
