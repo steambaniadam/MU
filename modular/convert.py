@@ -358,39 +358,34 @@ async def _(c: nlx, message):
     try:
         if reply and args in get_efek:
             converted_file = "converted_audio.mp3"
-            if os.path.exists(converted_file):
-                os.replace(converted_file, converted_file)
             indir = f"audio_{message.chat.id}.mp3"
+            if os.path.exists(converted_file):
+                os.remove(converted_file)
             if os.path.exists(indir):
-                os.replace(indir, indir)
-
+                os.remove(indir)
             indir = await c.download_media(reply, file_name=indir)
-            download_task = asyncio.create_task(
-                asyncio.create_subprocess_shell(
-                    f"ffmpeg -i '{indir}' {get_efek[args]} {converted_file}"
-                )
+            process = await asyncio.create_subprocess_shell(
+                f"ffmpeg -i '{indir}' {get_efek[args]} {converted_file}"
             )
-            convert_task = asyncio.create_task(asyncio.sleep(30))
-            await asyncio.wait(
-                [download_task, convert_task], return_when=asyncio.FIRST_COMPLETED
-            )
-            await download_task
-            if convert_task.done():
+            await process.communicate()
+            if os.path.exists(converted_file):
                 await pros.edit(cgr("konpert_12").format(em.sukses, args))
                 await message.reply_voice(
                     open(converted_file, "rb"),
                     caption=cgr("konpert_12").format(em.sukses, args),
                 )
-                for files in (converted_file, indir):
-                    if os.path.exists(files):
-                        os.remove(files)
+                if os.path.exists(converted_file):
+                    os.remove(converted_file)
+                if os.path.exists(indir):
+                    os.remove(indir)
             else:
-                convert_task.cancel()
                 await pros.edit(cgr("konpert_14").format(em.gagal))
+
         else:
             await pros.edit(
                 cgr("konpert_13").format(em.gagal, next((p) for p in prefix))
             )
+
     except Exception as e:
         await pros.edit(cgr("err").format(em.gagal, e))
 
