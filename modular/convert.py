@@ -1,8 +1,5 @@
 import asyncio
-import base64
-import json
 import os
-from datetime import datetime, timedelta
 
 import requests
 
@@ -31,15 +28,16 @@ async def process_toanime_command(m, args):
     else:
         await m.reply("Format perintah salah.")
         return
-    payload = {
-        "url": image,
-        "style": type_arg
-    }
+    payload = {"url": image, "style": type_arg}
     headers = {
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-        "X-RapidAPI-Host": "phototoanime1.p.rapidapi.com"
+        "X-RapidAPI-Host": "phototoanime1.p.rapidapi.com",
     }
-    response = requests.post("https://phototoanime1.p.rapidapi.com/photo-to-anime", data=payload, headers=headers)
+    response = requests.post(
+        "https://phototoanime1.p.rapidapi.com/photo-to-anime",
+        data=payload,
+        headers=headers,
+    )
     if response.status_code == 200:
         await m.reply_photo(response.json()["body"]["imageUrl"])
     else:
