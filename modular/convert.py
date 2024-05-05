@@ -128,12 +128,15 @@ async def _(c: nlx, message):
         return
     file = await c.get_file(file_id)
     r = requests.get(
-        "https://api.telegram.org/file/bot" + ndB.get("BOT_TOKEN") + "/" + file.file_path,
+        "https://api.telegram.org/file/bot"
+        + ndB.get("BOT_TOKEN")
+        + "/"
+        + file.file_path,
         timeout=None,
         stream=True,
     )
     base64_image_string = base64.b64encode(r.content).decode("utf-8")
-    
+
     try:
         ai_image = get_ai_image(base64_image_string)["media_info_list"][0]["media_data"]
         await c.send_photo(message.chat.id, ai_image)
@@ -147,7 +150,7 @@ async def _(c: nlx, message):
             text=text,
             file_id=file_id,
             button_text=button_text,
-            button_url=button_url
+            button_url=button_url,
         )
     except Exception as e:
         print(f"Error: {e}")
