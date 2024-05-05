@@ -263,45 +263,6 @@ async def _(c: nlx, message):
         return await pros.edit(cgr("konpert_7").format(em.gagal))
 
 
-"""
-get_efek = {
-    "bengek": '-filter_complex "rubberband=pitch=1.5"',
-    "robot": "-filter_complex \"afftfilt=real='hypot(re,im)*sin(0)':imag='hypot(re,im)*cos(0)':win_size=512:overlap=0.75\"",
-    "jedug": '-filter_complex "acrusher=level_in=8:level_out=18:bits=8:mode=log:aa=1"',
-    "fast": "-filter_complex \"afftfilt=real='hypot(re,im)*cos((random(0)*2-1)*2*3.14)':imag='hypot(re,im)*sin((random(1)*2-1)*2*3.14)':win_size=128:overlap=0.8\"",
-    "echo": '-filter_complex "aecho=0.8:0.9:500|1000:0.2|0.1"',
-    "tremolo": '-filter_complex "tremolo=f=5:d=0.5"',
-    "reverse": '-filter_complex "areverse"',
-    "flanger": '-filter_complex "flanger"',
-    "pitch_up": '-filter_complex "rubberband=pitch=2.0"',
-    "pitch_down": '-filter_complex "rubberband=pitch=0.5"',
-    "high_pass": '-filter_complex "highpass=f=200"',
-    "low_pass": '-filter_complex "lowpass=f=1000"',
-    "band_pass": '-filter_complex "bandpass=f=500:width_type=h:w=100"',
-    "band_reject": '-filter_complex "bandreject=f=1000:width_type=h:w=100"',
-    "fade_in": '-filter_complex "afade=t=in:ss=0:d=5"',
-    "fade_out": '-filter_complex "afade=t=out:st=5:d=5"',
-    "chorus": '-filter_complex "chorus=0.7:0.9:55:0.4:0.25:2"',
-    "vibrato": '-filter_complex "vibrato=f=10"',
-    "phaser": '-filter_complex "aphaser=type=t:gain=0.2"',
-    "reverb": '-filter_complex "[0] [1] afir=dry=10:wet=10 [reverb]; [0] [reverb] amix=inputs=2:weights=10 1"',
-    "distortion": '-filter_complex "distortion=gain=6"',
-    "bitcrush": '-filter_complex "acrusher=level_in=10:level_out=16:bits=4:mode=log:aa=1"',
-    "wahwah": '-filter_complex "wahwah"',
-    "compressor": '-filter_complex "compand=0.3|0.8:6:-70/-70/-20/-20/-20/-20:6:0:-90:0.2"',
-    "delay": '-filter_complex "adelay=1000|1000"',
-    "stereo_widen": '-filter_complex "stereowiden=level_in=0.5:level_out=1.0:delay=20:width=40"',
-    "phaser2": '-filter_complex "aphaser=type=t:decay=1"',
-    "reverse_echo": '-filter_complex "aecho=0.8:0.88:1000:0.5"',
-    "low_pitch": '-filter_complex "rubberband=pitch=0.7"',
-    "high_pitch": '-filter_complex "rubberband=pitch=1.3"',
-    "megaphone": '-filter_complex "amix=inputs=2:duration=first:dropout_transition=2,volume=volume=3"',
-    "telephone": '-filter_complex "amix=inputs=2:duration=first:dropout_transition=2,volume=volume=1.5"',
-    "radio": '-filter_complex "amix=inputs=2:duration=first:dropout_transition=2,volume=volume=2.5"',
-}
-"""
-
-
 get_efek = {
     "band_pass": '-filter_complex "bandpass=f=500:width_type=h:w=100"',
     "band_reject": '-filter_complex "bandreject=f=1000:width_type=h:w=100"',
@@ -467,35 +428,3 @@ async def _(c: nlx, message):
 
     except Exception as e:
         await pros.edit(cgr("err").format(em.gagal, e))
-
-
-"""
-@ky.ubot("efek|effect|voifek", sudo=True)
-async def _(c: nlx, message):
-    em = Emojik()
-    em.initialize()
-    args = c.get_arg(message)
-    reply = message.reply_to_message
-    prefix = await c.get_prefix(c.me.id)
-    pros = await message.reply(cgr("konpert_11").format(em.proses, args))
-    if reply and list_efek:
-        if args in list_efek:
-            indir = await c.download_media(reply, file_name=f"{c.me.id}.mp3")
-            ses = await asyncio.create_subprocess_shell(
-                f"ffmpeg -i '{indir}' {get_efek[args]} audio.mp3"
-            )
-            await ses.communicate()
-            await message.reply_voice(
-                open("audio.mp3", "rb"),
-                caption=cgr("konpert_12").format(em.sukses, args)),
-            for files in ("audio.mp3", indir):
-                if files and os.path.exists(files):
-                    os.remove(files)
-            await pros.delete()
-        else:
-            await pros.edit(
-                cgr("konpert_13").format(em.gagal, next((p) for p in prefix))
-            )
-    else:
-        await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
-"""
