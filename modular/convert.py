@@ -42,7 +42,7 @@ async def _(c: nlx, m):
     em.initialize()
     chat_id = m.chat.id
     pros = await m.reply(cgr("proses").format(em.proses))
-    
+
     if m.reply_to_message:
         if len(m.command) > 2:
             style = m.command[1]
