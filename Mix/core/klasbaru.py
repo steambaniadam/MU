@@ -3,7 +3,7 @@ from team.nandev.database import udB
 from Mix import nlx
 
 
-class Emojik:
+class Emonyet:
     def __init__(self):
         self.uprem = nlx.me.is_premium
 
