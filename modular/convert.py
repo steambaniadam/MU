@@ -58,7 +58,8 @@ async def _(c: nlx, message):
     ):
         anime_photo.append(
             InputMediaPhoto(
-                anime.photo.file_id, caption=cgr("konpert_3").format(em.sukses, c.me.mention)
+                anime.photo.file_id,
+                caption=cgr("konpert_3").format(em.sukses, c.me.mention),
             )
         )
     if anime_photo:
@@ -291,10 +292,14 @@ async def _(c: nlx, message):
     em = Emojik()
     em.initialize()
 
-    daftar_efek = "\n".join([f"• `{epek}` - `{list_efek_deskripsi.get(epek, 'Coba Sendiri')}`" for epek in list_efek])
+    daftar_efek = "\n".join(
+        [
+            f"• `{epek}` - `{list_efek_deskripsi.get(epek, 'Coba Sendiri')}`"
+            for epek in list_efek
+        ]
+    )
 
-    await message.reply(
-        cgr("konpert_10").format(em.sukses, daftar_efek))
+    await message.reply(cgr("konpert_10").format(em.sukses, daftar_efek))
 
 
 @ky.ubot("efek|effect|voifek", sudo=True)
@@ -313,12 +318,16 @@ async def _(c: nlx, message):
             )
             await ses.communicate()
             await message.reply_voice(
-                open("audio.mp3", "rb"), caption=cgr("konpert_12".format(em.sukses, args)))
+                open("audio.mp3", "rb"),
+                caption=cgr("konpert_12".format(em.sukses, args)),
+            )
             for files in ("audio.mp3", indir):
                 if files and os.path.exists(files):
                     os.remove(files)
             await pros.delete()
         else:
-            await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
+            await pros.edit(
+                cgr("konpert_13").format(em.gagal, next((p) for p in prefix))
+            )
     else:
         await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
