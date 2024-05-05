@@ -417,7 +417,9 @@ async def stt_cmd(c, m, upload_url, pros):
     transcriber = aai.Transcriber()
     transcript = transcriber.transcribe(upload_url)
     if transcript.text:
-        await pros.edit(cgr("konpert_21").format(em.sukses, c.me.mention, transcript.text))
+        await pros.edit(
+            cgr("konpert_21").format(em.sukses, c.me.mention, transcript.text)
+        )
         os.remove(upload_url)
     else:
         await pros.edit(cgr("konpert_22").format(em.gagal))
@@ -442,7 +444,7 @@ async def transcribe_audio(c: nlx, m):
         await stt_cmd(c, m, upload_url, pros)
     elif m.command and len(m.command) > 1:
         url = m.command[1]
-        if re.match(r'^https?://.*\.(mp3|ogg)$', url):
+        if re.match(r"^https?://.*\.(mp3|ogg)$", url):
             await stt_cmd(c, m, url, pros)
         else:
             await pros.edit(
