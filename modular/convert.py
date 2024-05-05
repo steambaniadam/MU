@@ -449,7 +449,7 @@ async def transcribe_audio(c: nlx, m):
     em.initialize()
     rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
-    
+
     if rep:
         if rep.audio:
             upload_url = await c.download_media(rep.audio.file_id, file_name="stt.mp3")
@@ -458,7 +458,9 @@ async def transcribe_audio(c: nlx, m):
         else:
             await pros.edit(f"{em.gagal} Silakan balas dengan pesan suara atau audio.")
             return
-        
+
         await stt_cmd(c, m, upload_url, pros)
     else:
-        await pros.edit(f"{em.gagal} Mohon balas pesan dengan audio untuk mentranskripsinya.")
+        await pros.edit(
+            f"{em.gagal} Mohon balas pesan dengan audio untuk mentranskripsinya."
+        )
