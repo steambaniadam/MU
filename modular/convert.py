@@ -429,7 +429,9 @@ async def stt_cmd(c, m, audio_file):
 @ky.ubot("stt", sudo=True)
 async def transcribe_audio(c: nlx, m):
     if m.reply_to_message.audio:
-        audio_file = await c.download_media(m.reply_to_message.audio.file_id, file_name="stt.mp3")
+        audio_file = await c.download_media(
+            m.reply_to_message.audio.file_id, file_name="stt.mp3"
+        )
         await stt_cmd(c, m, audio_file)
     else:
         await m.reply("Mohon balas pesan dengan audio untuk mentranskripsinya.")
