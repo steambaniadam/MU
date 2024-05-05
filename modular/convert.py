@@ -1,13 +1,10 @@
 import asyncio
 import base64
-import hashlib
 import json
 import os
-from io import BytesIO
 from datetime import datetime, timedelta
-import aiohttp
+
 import requests
-from PIL import Image
 
 from Mix import *
 
@@ -71,12 +68,13 @@ def get_ai_image(base64_image_string):
 
 
 async def send_message_media_types(
-        bot: Bot,
-        content_type: str,
-        chat_id, text: str,
-        file_id: str = None,
-        button_text: str = None,
-        button_url: str = None
+    bot: Bot,
+    content_type: str,
+    chat_id,
+    text: str,
+    file_id: str = None,
+    button_text: str = None,
+    button_url: str = None,
 ):
     if button_text and button_url:
         keyboard = types.InlineKeyboardMarkup()
@@ -86,10 +84,7 @@ async def send_message_media_types(
     try:
         if content_type == "text":
             await bot.send_message(
-                chat_id,
-                text=text,
-                parse_mode="HTML",
-                reply_markup=keyboard
+                chat_id, text=text, parse_mode="HTML", reply_markup=keyboard
             )
         elif content_type == "photo":
             await bot.send_photo(
@@ -97,7 +92,7 @@ async def send_message_media_types(
                 photo=file_id,
                 caption=text,
                 parse_mode="HTML",
-                reply_markup=keyboard
+                reply_markup=keyboard,
             )
         elif content_type == "video":
             await bot.send_video(
@@ -105,7 +100,7 @@ async def send_message_media_types(
                 video=file_id,
                 caption=text,
                 parse_mode="HTML",
-                reply_markup=keyboard
+                reply_markup=keyboard,
             )
         elif content_type == "animation":
             await bot.send_animation(
@@ -113,7 +108,7 @@ async def send_message_media_types(
                 animation=file_id,
                 caption=text,
                 parse_mode="HTML",
-                reply_markup=keyboard
+                reply_markup=keyboard,
             )
     except Exception as e:
         print(f"Error : {e}")
@@ -124,11 +119,14 @@ async def _(c: nlx, message):
     em = Emojik()
     em.initialize()
     rep = message.reply_to_message
-    pros = await message.reply(cgr("proses").format(em.proses))
+    await message.reply(cgr("proses").format(em.proses))
     fileID = rep.photo[-1].file_id
     file = await c.get_file(fileID)
     r = requests.get(
-        "https://api.telegram.org/file/bot" + "6810163267:AAGQZnaPP2N2RxMHeETwVVAkcNKz9t6KXOI" + "/" + file.file_path,
+        "https://api.telegram.org/file/bot"
+        + "6810163267:AAGQZnaPP2N2RxMHeETwVVAkcNKz9t6KXOI"
+        + "/"
+        + file.file_path,
         timeout=None,
         stream=True,
     )
@@ -149,7 +147,7 @@ async def _(c: nlx, message):
                     text=text,
                     file_id=file_id,
                     button_text=button_text,
-                    button_url=button_url
+                    button_url=button_url,
                 )
                 break
     except Exception as e:
