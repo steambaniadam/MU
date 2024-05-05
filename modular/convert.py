@@ -159,7 +159,8 @@ async def _(c: nlx, message):
         out_file = f"{file}.mp3"
         try:
             await pros.edit(cgr("konpert_8").format(em.proses))
-            cmd = f"ffmpeg -i {file} -q:a 0 -map a {out_file}"
+            # cmd = f"ffmpeg -i {file} -q:a 0 -map a {out_file}"
+            cmd = f"ffmpeg -i {file} -vn -acodec copy {out_file}"
             await c.run_cmd(cmd)
             await pros.edit(cgr("konpert_9").format(em.proses))
             await c.send_voice(
