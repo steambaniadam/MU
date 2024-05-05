@@ -93,11 +93,18 @@ async def _(c: nlx, message):
     if rep:
         if len(message.command) < 2:
             if rep.photo:
-                get_photo = rep.photo.file_id
+                get_photo = await c.dln(rep.photo[-1])
             elif rep.sticker:
-                get_photo = await c.dln(rep)
+                get_photo = await c.dln(rep.sticker.thumnail.file_id)
             elif rep.animation:
-                get_photo = await c.dln(rep)
+                get_photo = await c.dln(rep.animation.file_id)
+                anime_maker = AnimeMaker(get_photo)
+                await anime_maker.create_anime()
+                await c.send_photo(
+                    message.chat.id,
+                    f"{anime_maker._filename}_to_anime.{anime_maker._file_extension}",
+                )
+                await pros.delete()
             else:
                 return await pros.edit(cgr("konpert_1").format(em.gagal))
         else:
@@ -106,6 +113,13 @@ async def _(c: nlx, message):
                 get = await c.get_chat(chat.id)
                 photo = get.photo.big_file_id
                 get_photo = await c.dln(photo)
+            anime_maker = AnimeMaker(get_photo)
+            await anime_maker.create_anime()
+            await c.send_photo(
+                message.chat.id,
+                f"{anime_maker._filename}_to_anime.{anime_maker._file_extension}",
+            )
+            await pros.delete()
     else:
         if len(message.command) < 2:
             return await pros.edit(cgr("konpert_1").format(em.gagal))
