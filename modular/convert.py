@@ -40,7 +40,7 @@ class AnimeMaker:
         crop = img.crop((511, 25, 978, 727))
         crop.save(f"{self._filename}_anime.{self._file_extension}")
 
-    def get_anime_image(self):
+    async def get_anime_image(self):
         print("Create anime...")
         with open(self._source, "rb") as f:
             image_data = f.read()
@@ -54,19 +54,21 @@ class AnimeMaker:
             f"https://h5.tu.qq.com{json.dumps(post_data)}HQ31X02e".encode()
         ).hexdigest()
         headers = self.build_header(signature)
-        response = requests.post(
+        response = await self.send_request(
             "https://ai.tu.qq.com/overseas/trpc.shadow_cv.ai_processor_cgi.AIProcessorCgi/Process",
             json=post_data,
             headers=headers,
         )
-        print("Response JSON:", response.json())
-        res_json = response.json()
-        if "extra" in res_json:
-            resimg = json.loads(res_json["extra"])["img_urls"][0]
-            return resimg
+        if response is not None:
+            res_json = response.json()
+            if "extra" in res_json:
+                resimg = json.loads(res_json["extra"])["img_urls"][0]
+                return resimg
+            else:
+                print("Error: 'extra' key not found in response JSON")
         else:
-            print("Error: 'extra' key not found in response JSON")
-            return None
+            print("Error: Failed to get anime image.")
+        return None
 
     async def create_anime(self):
         resimg = await self.get_anime_image()
@@ -82,6 +84,15 @@ class AnimeMaker:
                 self.crop_horizontal(img)
         else:
             print("Error: Failed to get anime image.")
+
+    async def send_request(self, url, json=None, headers=None):
+        try:
+            response = await requests.post(url, json=json, headers=headers)
+            response.raise_for_status()
+            return response
+        except requests.exceptions.RequestException as e:
+            print(f"Error sending request: {e}")
+            return None
 
 
 @ky.ubot("toanime", sudo=True)
