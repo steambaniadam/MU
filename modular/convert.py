@@ -84,38 +84,26 @@ class AnimeMaker:
 
 
 @ky.ubot("toanime", sudo=True)
-async def toanime(c: nlx, m):
-    rep = m.reply_to_message
-    anime_maker = AnimeMaker(file_path)
-    file_name = f"{anime_maker._filename}.{anime_maker._file_extension}"
-    file_path = await c.download_media(rep, file_name=file_name)
-    await anime_maker.create_anime()
-    await c.send_photo(
-        m.chat.id, f"{anime_maker._filename}_to_anime.{anime_maker._file_extension}"
-    )
-
-
-"""
-@ky.ubot("toanime", sudo=True)
 async def _(c: nlx, message):
     em = Emojik()
     em.initialize()
+    rep = message.reply_to_message
     pros = await message.reply(cgr("proses").format(em.proses))
-    if message.reply_to_message:
+    if rep:
         if len(message.command) < 2:
-            if message.reply_to_message.photo:
-                get_photo = message.reply_to_message.photo.file_id
-            elif message.reply_to_message.sticker:
-                get_photo = await c.dln(message.reply_to_message)
-            elif message.reply_to_message.animation:
-                get_photo = await c.dln(message.reply_to_message)
+            if rep.photo:
+                get_photo = rep.photo.file_id
+            elif rep.sticker:
+                get_photo = await c.dln(rep)
+            elif rep.animation:
+                get_photo = await c.dln(rep)
             else:
                 return await pros.edit(cgr("konpert_1").format(em.gagal))
         else:
             if message.command[1] in ["foto", "profil", "photo"]:
                 chat = (
-                    message.reply_to_message.from_user
-                    or message.reply_to_message.sender_chat
+                    rep.from_user
+                    or rep.sender_chat
                 )
                 get = await c.get_chat(chat.id)
                 photo = get.photo.big_file_id
@@ -130,6 +118,15 @@ async def _(c: nlx, message):
                 get_photo = await c.dln(photo)
             except Exception as error:
                 return await pros.edit(cgr("err").format(em.gagal, error))
+    anime_maker = AnimeMaker(get_photo)
+    await anime_maker.create_anime()
+    await c.send_photo(
+        message.chat.id, f"{anime_maker._filename}_to_anime.{anime_maker._file_extension}"
+    )
+    await pros.delete()
+
+
+"""
     await pros.edit(cgr("konpert_2").format(em.proses))
     await c.unblock_user("@qq_neural_anime_bot")
     send_photo = await c.send_photo("@qq_neural_anime_bot", get_photo)
