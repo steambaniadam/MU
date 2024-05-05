@@ -361,7 +361,7 @@ async def _(c: nlx, message):
             filter_complex = get_efek[args]
         else:
             filter_complex = f"-filter_complex '{get_efek[args]}'"
-        
+
         ses = await asyncio.create_subprocess_shell(
             f"ffmpeg -i '{indir}' {filter_complex} {nem_aud}"
         )
@@ -376,7 +376,6 @@ async def _(c: nlx, message):
         await pros.delete()
     else:
         await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
-
 
 
 """
