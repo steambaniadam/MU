@@ -424,7 +424,8 @@ async def stt_cmd(c, m, audio_file, pros):
         transcript = transcriber.transcribe(audio_file)
         if transcript.text:
             await pros.edit(
-                cgr("konpert_21").format(em.sukses, c.me.mention, transcript.text))
+                cgr("konpert_21").format(em.sukses, c.me.mention, transcript.text)
+            )
             os.remove(audio_file)
             return
         else:
