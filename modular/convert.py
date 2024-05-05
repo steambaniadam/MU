@@ -408,7 +408,7 @@ async def _(c: nlx, message):
 
 import assemblyai as aai
 
-aai.settings.api_key = "e28239cb6ecc4d0090f36711b11e247a" 
+aai.settings.api_key = "e28239cb6ecc4d0090f36711b11e247a"
 
 transcriber = aai.Transcriber()
 
