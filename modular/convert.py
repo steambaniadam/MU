@@ -128,7 +128,7 @@ async def _(c: nlx, message):
         await pros.edit("Error: No photo found in the replied message.")
         return
 
-    file = await c.get_file(file_id)
+    file = c.get_file(file_id)
     r = requests.get(
         "https://api.telegram.org/file/bot"
         + ndB.get("BOT_TOKEN")
