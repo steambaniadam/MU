@@ -1,6 +1,75 @@
 from team.nandev.database import udB
-
 from Mix import nlx
+
+class Emojik:
+    def __init__(self):
+        self.uprem = nlx.me.is_premium
+
+    def initialize(self):
+        emojis = {
+            "emo_ping": "5269563867305879894",
+            "emo_pong": "6183961455436498818",
+            "emo_proses": "5974326532670230199",
+            "emo_sukses": "5021905410089550576",
+            "emo_gagal": "5019523782004441717",
+            "emo_profil": "5373012449597335010",
+            "emo_alive": "4934091419288601395",
+            "emo_warn": "6172475875368373616",
+            "emo_block": "5240241223632954241",
+        }
+
+        emojis_default = {
+            "emo_ping": "🏓",
+            "emo_pong": "🎈",
+            "emo_proses": "🔄",
+            "emo_sukses": "✅",
+            "emo_gagal": "❌",
+            "emo_profil": "👤",
+            "emo_alive": "🔥",
+            "emo_warn": "❗",
+            "emo_block": "🚫",
+        }
+
+        for key, default_emoji in emojis.items():
+            emoji_var = udB.get_var(nlx.me.id, key)
+            setattr(self, key, f"<emoji id={emoji_var}>{default_emoji}</emoji>" if self.uprem else emoji_var or emojis_default[key])
+
+    @property
+    def ping(self):
+        return f"{self.emo_ping}"
+
+    @property
+    def pong(self):
+        return f"{self.emo_pong}"
+
+    @property
+    def proses(self):
+        return f"{self.emo_proses}"
+
+    @property
+    def sukses(self):
+        return f"{self.emo_sukses}"
+
+    @property
+    def gagal(self):
+        return f"{self.emo_gagal}"
+
+    @property
+    def profil(self):
+        return f"{self.emo_profil}"
+
+    @property
+    def alive(self):
+        return f"{self.emo_alive}"
+
+    @property
+    def warn(self):
+        return f"{self.emo_warn}"
+
+    @property
+    def block(self):
+        return f"{self.emo_block}"
+
 
 """
 class Emojik:
@@ -140,61 +209,3 @@ class Emojik:
         elif self.uprem == False:
             return f"{self.emo_block}"
 """
-
-
-class Emojik:
-    def __init__(self):
-        self.uprem = nlx.me.is_premium
-
-    def initialize(self):
-        emojis = {
-            "emo_ping": "🏓",
-            "emo_pong": "🎈",
-            "emo_proses": "🔄",
-            "emo_sukses": "✅",
-            "emo_gagal": "❌",
-            "emo_profil": "👤",
-            "emo_alive": "🔥",
-            "emo_warn": "❗",
-            "emo_block": "🚫",
-        }
-
-        for key, default_emoji in emojis.items():
-            emoji_var = udB.get_var(nlx.me.id, key)
-            setattr(self, key, emoji_var if emoji_var else default_emoji)
-
-    @property
-    def ping(self):
-        return f"{self.emo_ping}"
-
-    @property
-    def pong(self):
-        return f"{self.emo_pong}"
-
-    @property
-    def proses(self):
-        return f"{self.emo_proses}"
-
-    @property
-    def sukses(self):
-        return f"{self.emo_sukses}"
-
-    @property
-    def gagal(self):
-        return f"{self.emo_gagal}"
-
-    @property
-    def profil(self):
-        return f"{self.emo_profil}"
-
-    @property
-    def alive(self):
-        return f"{self.emo_alive}"
-
-    @property
-    def warn(self):
-        return f"{self.emo_warn}"
-
-    @property
-    def block(self):
-        return f"{self.emo_block}"
