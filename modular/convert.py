@@ -407,26 +407,90 @@ async def _(c: nlx, message):
 
 
 import assemblyai as aai
+import requests
 
 aai.settings.api_key = "e28239cb6ecc4d0090f36711b11e247a"
-
 transcriber = aai.Transcriber()
 
 
-@ky.ubot("stt")
-async def _(c: nlx, m):
+async def stt_script(audio_url):
+    response = requests.post(
+        "https://api.assemblyai.com/v2/transcript",
+        json={
+            "audio_url": audio_url,
+            "audio_end_at": 280,
+            "audio_start_from": 10,
+            "speaker_labels": True,
+            "auto_chapters": True,
+            "auto_highlights": True,
+            "boost_param": "high",
+            "content_safety": True,
+            "custom_spelling": [
+            {
+                "from": [
+                "dicarlo"
+                ],
+                "to": "Decarlo"
+            }
+            ],
+            "custom_topics": True,
+            "disfluencies": False,
+            "dual_channel": True,
+            "entity_detection": True,
+            "filter_profanity": True,
+            "format_text": True,
+            "iab_categories": True,
+            "language_code": "en_us",
+            "language_detection": False,
+            "punctuate": True,
+            "redact_pii": True,
+            "redact_pii_audio": True,
+            "redact_pii_audio_quality": "mp3",
+            "redact_pii_policies": [
+            "us_social_security_number",
+            "credit_card_number"
+            ],
+            "redact_pii_sub": "hash",
+            "sentiment_analysis": True,
+            "speaker_labels": True,
+            "speakers_expected": 2,
+            "speech_threshold": 0.5,
+            "summarization": True,
+            "summary_model": "informative",
+            "summary_type": "bullets",
+            "topics": [
+            "topics"
+            ],
+            "webhook_auth_header_name": "webhook-secret",
+            "webhook_auth_header_value": "webhook-secret-value",
+            "webhook_url": "https://your-webhook-url/path",
+            "word_boost": [
+                "aws",
+                "azure",
+                "google cloud"
+                ]
+            },
+            )
+    data = response.json()
+    print(data)
+
+    if "id" in data:
+        transcript_id = data["id"]
+        transcript_url = f"https://api.assemblyai.com/v2/transcript/{transcript_id}"
+        transcript_response = requests.get(transcript_url, headers={"Authorization": "e28239cb6ecc4d0090f36711b11e247a"})
+        transcript_data = transcript_response.json()
+        transcript_text = transcript_data.get("text", "")
+        print(transcript_text)
+        for utterance in transcript_data.get("utterances", []):
+            speaker = utterance.get("speaker")
+            text = utterance.get("text")
+            print(f"Speaker {speaker}: {text}")
+
+
+@ky.ubot("stt", sudo=True)
+async def transcribe_audio(c: nlx, m):
     if m.reply_to_message.audio:
-        audio = m.reply_to_message.audio
-        audio_file = await nlx.download_media(audio)
-        audio_url = audio_file
-        config = aai.TranscriptionConfig(speaker_labels=True)
-        transcript = transcriber.transcribe(audio_url, config)
-        if transcript.error:
-            await m.reply
-            print(transcript.error)
-        else:
-            await m.reply(f"{transcript.text}")
-            print(transcript.text)
-        for utterance in transcript.utterances:
-            await m.reply(f"{utterance.speaker} : {utterance.text}")
-            print(f"Speaker {utterance.speaker}: {utterance.text}")
+        audio_file = await c.download_media(m.reply_to_message.audio)
+        await stt_script(audio_file)
+    else:
+        await m.reply("Mohon balas pesan dengan audio untuk mentranskripsinya.")
