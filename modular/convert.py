@@ -354,24 +354,43 @@ async def _(c: nlx, message):
     reply = message.reply_to_message
     prefix = await c.get_prefix(c.me.id)
     pros = await message.reply(cgr("konpert_11").format(em.proses, args))
-    if reply and args in get_efek:
-        indir = await c.download_media(reply, file_name="audio.mp3")
-        converted_file = "converted_audio.mp3"
-        ses = await asyncio.create_subprocess_shell(
-            f"ffmpeg -i '{indir}' {get_efek[args]} {converted_file}"
-        )
-        await ses.communicate()
-        await message.reply_voice(
-            open(f"{converted_file}", "rb"),
-            caption=cgr("konpert_12").format(em.sukses, args),
-        )
-        for files in (f"{converted_file}", indir):
+
+    try:
+        if reply and args in get_efek:
+            converted_file = "converted_audio.mp3"
+            indir = f"audio_{message.chat.id}.mp3"
+            if os.path.exists(indir):
+                os.remove(indir)
+            if os.path.exists(converted_file):
+                os.remove(converted_file)
+
+            indir = await c.download_media(reply, file_name=indir)
+            async with asyncio.wait_for(
+                asyncio.create_subprocess_shell(
+                    f"ffmpeg -i '{indir}' {get_efek[args]} {converted_file}"
+                ),
+                timeout=30,
+            ) as ses:
+                await ses.communicate()
+
+            await message.reply_voice(
+                open(converted_file, "rb"),
+                caption=cgr("konpert_12").format(em.sukses, args),
+            )
+            for files in (converted_file, indir):
+                if files and os.path.exists(files):
+                    os.remove(files)
+                else:
+                    pass
+
+        else:
+            await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
+
+    except asyncio.TimeoutError:
+        for files in (converted_file, indir):
             if files and os.path.exists(files):
                 os.remove(files)
-                os.remove(indir)
-        await pros.delete()
-    else:
-        await pros.edit(cgr("konpert_13").format(em.gagal, next((p) for p in prefix)))
+        await pros.edit(cgr("konpert_14").format(em.gagal))
 
 
 """

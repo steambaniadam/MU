@@ -520,6 +520,7 @@ konpert_10: "{} <b>Daftar Effect Suara:</b>\n\n{}"
 konpert_11: "{} <b>Proses mengubah suara ke `{}` ...</b>"
 konpert_12: "{} <b>Berhasil merubah efek audio menjadi `{}`</b>"
 konpert_13: "{} <b>Silahkan ketik `{}list-efek` untuk melihat daftar efek yang tersedia</b>"
+konpert_14: "{} <b>"Sedang terjadi masalah, silahkan coba beberapa saat lagi atau reboot.</b>"
 
 # help_for
 help_afk: " **Afk**\n\n• Perintah : `{0}afk` [alasan]\n• Penjelasan : Untuk mengaktifkan mode afk.\n\n• Perintah : `{0}unafk`\n• Penjelasan : Untuk menonaktifkan mode afk."
