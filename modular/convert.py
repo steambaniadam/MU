@@ -1,6 +1,6 @@
 import asyncio
 import os
-
+import requests
 from pyrogram.enums import MessagesFilter
 from pyrogram.raw.functions.messages import DeleteHistory
 from pyrogram.types import InputMediaPhoto
@@ -11,6 +11,75 @@ __modles__ = "Convert"
 __help__ = get_cgr("help_konpert")
 
 
+async def to_anime(c, chat_id, file_path, style, em):
+    try:
+        url = "https://phototoanime1.p.rapidapi.com/photo-to-anime"
+        files = { "image": open(file_path, 'rb') }
+        payload = {
+            "url": file_path,
+            "style": style
+        }
+        headers = {
+            "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+            "X-RapidAPI-Host": "phototoanime1.p.rapidapi.com"
+        }
+        response = requests.post(url, data=payload, files=files, headers=headers)
+        response_json = response.json()
+        if response.status_code == 200:
+            image_url = response_json["body"]["imageUrl"]
+            await c.send_photo(
+                chat_id,
+                image_url,
+                caption=f"{em.sukses} Berhasil di konversi ke anime oleh : {c.me.mention}",
+            )
+            await pros.delete()
+        else:
+            error_message = response_json.get("error", "Unknown error")
+            await pros.edit(cgr("err").format(em.gagal, error_message))
+    except Exception as error:
+        await pros.edit(cgr("err").format(em.gagal, error))
+
+
+@ky.ubot("toanime", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    chat_id = m.chat.id
+    pros = await m.reply(cgr("proses").format(em.proses))
+    if m.reply_to_message:
+        if len(m.command) > 2:
+            style = m.command[1]
+            if m.reply_to_message.photo:
+                file_id = m.reply_to_message.photo.file_id
+                file_info = await c.get_file(file_id)
+                file_path = file_info.file_path
+            else:
+                return await pros.edit(cgr("konpert_1").format(em.gagal))
+        elif len(m.command) == 1:
+            style = random.choice(["webtoon", "paprika", "face2paint"])
+            if m.reply_to_message.photo:
+                file_id = m.reply_to_message.photo.file_id
+                file_info = await c.get_file(file_id)
+                file_path = file_info.file_path
+            else:
+                return await pros.edit(cgr("konpert_1").format(em.gagal))
+        else:
+            return await pros.edit(cgr("konpert_1").format(em.gagal))
+    else:
+        if len(m.command) == 3:
+            file_path = m.command[1]
+            style = m.command[2]
+        elif len(m.command) == 2:
+            style = random.choice(["webtoon", "paprika", "face2paint"])
+            file_path = m.command[1]
+        else:
+            return await pros.edit(cgr("konpert_1").format(em.gagal))
+
+    await pros.edit(cgr("konpert_2").format(em.proses))
+    await to_anime(c, chat_id, file_path, style, em)
+
+
+"""
 @ky.ubot("toanime", sudo=True)
 async def _(c: nlx, message):
     em = Emojik()
@@ -77,6 +146,7 @@ async def _(c: nlx, message):
             reply_to_message_id=message.id,
         )
         return await c.invoke(DeleteHistory(peer=info, max_id=0, revoke=True))
+"""
 
 
 @ky.ubot("toimg", sudo=True)
