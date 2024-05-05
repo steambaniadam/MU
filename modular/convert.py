@@ -10,7 +10,7 @@ __modles__ = "Convert"
 __help__ = get_cgr("help_konpert")
 
 
-async def process_toanime_command(m, image, type_arg, args):
+async def process_toanime_command(m, image, type_arg):
     em = Emojik()
     em.initialize()
     if isinstance(image, dict):
@@ -54,26 +54,27 @@ async def process_toanime_command(m, image, type_arg, args):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
+    args = m.command
     rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
-    if len(m.command) == 1 and rep and rep.photo:
+    if len(args) == 0 and rep and rep.photo:
         type_arg = random.choice(["face2paint", "paprika", "webtoon"])
         image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
-    elif len(m.command) == 2 and rep and rep.photo:
+    elif len(args) == 1 and rep and rep.photo:
         type_arg = m.command[1]
         image = await c.download_media(rep.photo, file_name=f"{c.me.id}.jpg")
-    elif len(m.command) == 2:
-        type_arg = random.choice(["face2paint", "paprika", "webtoon"])
+    elif len(args) == 2:
+        type_arg = m.command[1]
         url = m.command[2]
         image = {"image": open(requests.get(url, stream=True).raw, "rb")}
-    elif len(m.command) == 1:
+    elif len(args) == 1:
         type_arg = random.choice(["face2paint", "paprika", "webtoon"])
         url = m.command[1]
         image = {"image": open(requests.get(url, stream=True).raw, "rb")}
     else:
         await pros.edit(f"{em.gagal} Format perintah salah.")
         return
-    await process_toanime_command(m, image, type_arg, args)
+    await process_toanime_command(m, image, type_arg)
     await pros.delete()
 
 
