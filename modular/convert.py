@@ -380,6 +380,9 @@ async def _(c: nlx, message):
                     open(converted_file, "rb"),
                     caption=cgr("konpert_12").format(em.sukses, args),
                 )
+                for files in (converted_file, indir):
+                    if os.path.exists(files):
+                        os.remove(files)
             else:
                 convert_task.cancel()
                 await pros.edit(cgr("konpert_14").format(em.gagal))
@@ -389,10 +392,6 @@ async def _(c: nlx, message):
             )
     except Exception as e:
         await pros.edit(cgr("err").format(em.gagal, e))
-    finally:
-        for files in (converted_file, indir):
-            if os.path.exists(files):
-                os.remove(files)
 
 
 """
