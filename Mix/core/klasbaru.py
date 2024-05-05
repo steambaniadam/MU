@@ -45,15 +45,17 @@ class Emonyet:
             )
 
     @property
-    def ping(self):
+    def ping(self, emojis):
         if self.uprem == True:
-            return f"<emoji id={self.emo_ping}>🏓</emoji>"
+            emoji_value = emojis.get("emo_ping", "")
+            return f"<emoji id={emoji_value}>🏓</emoji>"
         elif self.uprem == False:
             return f"{self.emo_ping}"
 
     @property
-    def pong(self):
+    def pong(self, emojis):
         if self.uprem == True:
+            emoji_value = emojis.get("emo_pong", "")
             return f"<emoji id={self.emo_pong}>🥵</emoji>"
         elif self.uprem == False:
             return f"{self.emo_pong}"
