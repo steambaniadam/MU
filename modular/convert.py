@@ -391,7 +391,7 @@ async def _(c: nlx, message):
 
     finally:
         for files in (converted_file, indir):
-            if files and os.path.exists(files):
+            if os.path.exists(files):
                 os.remove(files)
 
 
