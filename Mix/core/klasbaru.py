@@ -2,7 +2,6 @@ from team.nandev.database import udB
 
 from Mix import nlx
 
-
 """
 class Emojik:
     def __init__(self):
@@ -146,7 +145,7 @@ class Emojik:
 class Emojik:
     def __init__(self):
         self.uprem = nlx.me.is_premium
-    
+
     def initialize(self):
         emojis = {
             "emo_ping": "🏓",
@@ -157,9 +156,9 @@ class Emojik:
             "emo_profil": "👤",
             "emo_alive": "🔥",
             "emo_warn": "❗",
-            "emo_block": "🚫"
+            "emo_block": "🚫",
         }
-        
+
         for key, default_emoji in emojis.items():
             emoji_var = udB.get_var(nlx.me.id, key)
             setattr(self, key, emoji_var if emoji_var else default_emoji)
@@ -191,11 +190,11 @@ class Emojik:
     @property
     def alive(self):
         return f"{self.emo_alive}"
-            
+
     @property
     def warn(self):
         return f"{self.emo_warn}"
-            
+
     @property
     def block(self):
         return f"{self.emo_block}"
