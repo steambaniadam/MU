@@ -202,7 +202,7 @@ get_efek = {
     "chorus": '-filter_complex "chorus=0.7:0.9:55:0.4:0.25:2"',
     "vibrato": '-filter_complex "vibrato=f=10"',
     "phaser": '-filter_complex "aphaser=type=t:gain=0.2"',
-    "reverb": '-filter_complex "reverb"',
+    "reverb": '-filter_complex "[0] [1] afir=dry=10:wet=10 [reverb]; [0] [reverb] amix=inputs=2:weights=10 1"',
     "distortion": '-filter_complex "distortion=gain=6"',
     "bitcrush": '-filter_complex "acrusher=level_in=10:level_out=16:bits=4:mode=log:aa=1"',
     "wahwah": '-filter_complex "wahwah"',
@@ -240,6 +240,7 @@ get_efek = {
     "chorus": '-filter_complex "chorus=0.7:0.9:55:0.4:0.25:2"',
     "vibrato": '-filter_complex "vibrato=f=10"',
     "phaser": '-filter_complex "aphaser=type=t:gain=0.2"',
+    "reverb": '-filter_complex "reverb"',
     "distortion": '-filter_complex "distortion=gain=6"',
     "bitcrush": '-filter_complex "acrusher=level_in=10:level_out=16:bits=4:mode=log:aa=1"',
     "wahwah": '-filter_complex "wahwah"',
@@ -294,39 +295,39 @@ list_efek = [
 
 
 list_efek_deskripsi = {
-    "bengek": "Mengubah suara menjadi seperti karakter yang berbicara dengan mulut penuh.",
-    "robot": "Mengubah suara menjadi seperti suara robot.",
-    "jedug": "Efek suara yang memberikan suara kedapatan atau kesan berat.",
-    "fast": "Mempercepat kecepatan suara.",
-    "echo": "Menambahkan efek gema atau pantulan suara.",
-    "tremolo": "Efek getaran yang berulang pada suara.",
+    "bengek": "Suara seperti berbicara dengan mulut penuh.",
+    "robot": "Suara seperti robot.",
+    "jedug": "Efek kedapatan suara.",
+    "fast": "Mempercepat suara.",
+    "echo": "Efek gema atau pantulan suara.",
+    "tremolo": "Efek getaran pada suara.",
     "reverse": "Memutar suara ke belakang.",
-    "flanger": "Efek modulasi yang menciptakan suara paduan dengan suara asli.",
+    "flanger": "Efek modulasi pada suara.",
     "pitch_up": "Meningkatkan nada suara.",
     "pitch_down": "Menurunkan nada suara.",
-    "high_pass": "Menghilangkan frekuensi rendah dari sinyal audio.",
-    "low_pass": "Menghilangkan frekuensi tinggi dari sinyal audio.",
-    "band_pass": "Mengizinkan hanya frekuensi tertentu untuk melewati filter.",
-    "band_reject": "Memblokir frekuensi tertentu untuk mencegahnya melewati filter.",
-    "fade_in": "Meningkatkan volume secara bertahap dari awal suara.",
-    "fade_out": "Mengurangi volume secara bertahap ke akhir suara.",
-    "chorus": "Menciptakan efek suara yang terdengar seperti banyak suara yang sama.",
-    "vibrato": "Efek getaran kecil pada suara.",
-    "phaser": "Menciptakan efek suara yang bergetar seperti gelombang.",
-    "reverb": "Menambahkan suara gema atau pantulan alami.",
-    "distortion": "Mengubah suara menjadi kasar atau terdistorsi.",
-    "bitcrush": "Mengurangi resolusi sampel suara.",
-    "wahwah": "Efek suara yang menyerupai suara wah-wah dari gitar.",
-    "compressor": "Mengurangi dinamika suara dengan memampatkan rentang volume.",
-    "delay": "Mengulang kembali suara dengan jeda waktu tertentu.",
-    "stereo_widen": "Membuat suara terdengar lebih luas atau lebih menyebarkan di antara saluran stereo.",
-    "phaser2": "Variasi lain dari efek phaser.",
-    "reverse_echo": "Efek pantulan suara yang terbalik.",
-    "low_pitch": "Menurunkan pitch suara secara keseluruhan.",
-    "high_pitch": "Meningkatkan pitch suara secara keseluruhan.",
-    "megaphone": "Mengubah suara menjadi seperti melalui megaphone.",
-    "telephone": "Mengubah suara menjadi seperti melalui telepon.",
-    "radio": "Mengubah suara menjadi seperti transmisi radio.",
+    "high_pass": "Menghilangkan frekuensi rendah.",
+    "low_pass": "Menghilangkan frekuensi tinggi.",
+    "band_pass": "Hanya melewati frekuensi tertentu.",
+    "band_reject": "Memblokir frekuensi tertentu.",
+    "fade_in": "Meningkatkan volume bertahap.",
+    "fade_out": "Mengurangi volume bertahap.",
+    "chorus": "Efek suara banyak.",
+    "vibrato": "Efek getaran kecil.",
+    "phaser": "Efek suara bergetar.",
+    "reverb": "Efek suara gema.",
+    "distortion": "Suara terdistorsi.",
+    "bitcrush": "Resolusi sampel berkurang.",
+    "wahwah": "Efek suara wah-wah.",
+    "compressor": "Mengurangi dinamika suara.",
+    "delay": "Mengulang suara dengan jeda waktu.",
+    "stereo_widen": "Suara terdengar lebih luas.",
+    "phaser2": "Variasi efek phaser.",
+    "reverse_echo": "Pantulan suara terbalik.",
+    "low_pitch": "Menurunkan pitch suara.",
+    "high_pitch": "Meningkatkan pitch suara.",
+    "megaphone": "Suara seperti megaphone.",
+    "telephone": "Suara seperti telepon.",
+    "radio": "Suara seperti radio.",
 }
 
 
@@ -355,15 +356,16 @@ async def _(c: nlx, message):
     pros = await message.reply(cgr("konpert_11").format(em.proses, args))
     if reply and args in get_efek:
         indir = await c.download_media(reply, file_name=f"{c.me.id}.mp3")
+        nem_aud = "audio.mp3"
         ses = await asyncio.create_subprocess_shell(
-            f"ffmpeg -i '{indir}' {get_efek[args]} audio.mp3"
+            f"ffmpeg -i '{indir}' {get_efek[args]} {nem_aud}"
         )
         await ses.communicate()
         await message.reply_voice(
-            open("audio.mp3", "rb"),
+            open(f"{nem_aud}", "rb"),
             caption=cgr("konpert_12").format(em.sukses, args),
         )
-        for files in ("audio.mp3", indir):
+        for files in (f"{nem_aud}", indir):
             if files and os.path.exists(files):
                 os.remove(files)
         await pros.delete()
