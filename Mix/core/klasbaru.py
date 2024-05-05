@@ -46,39 +46,66 @@ class Emonyet:
 
     @property
     def ping(self):
-        return f"{self.emo_ping}"
+        if self.uprem == True:
+            return f"<emoji id={self.emo_ping}>🏓</emoji>"
+        elif self.uprem == False:
+            return f"{self.emo_ping}"
 
     @property
     def pong(self):
-        return f"{self.emo_pong}"
+        if self.uprem == True:
+            return f"<emoji id={self.emo_pong}>🥵</emoji>"
+        elif self.uprem == False:
+            return f"{self.emo_pong}"
 
     @property
     def proses(self):
-        return f"{self.emo_proses}"
+        if self.uprem == True:
+            return f"<emoji id={self.emo_proses}>🔄</emoji>"
+        elif self.uprem == False:
+            return f"{self.emo_proses}"
 
     @property
     def sukses(self):
-        return f"{self.emo_sukses}"
+        if self.uprem == True:
+            return f"<emoji id={self.emo_sukses}>✅</emoji>"
+        elif self.uprem == False:
+            return f"{self.emo_sukses}"
 
     @property
     def gagal(self):
-        return f"{self.emo_gagal}"
+        if self.uprem == True:
+            return f"<emoji id={self.emo_gagal}>❌</emoji>"
+        elif self.uprem == False:
+            return f"{self.emo_gagal}"
 
     @property
     def profil(self):
-        return f"{self.emo_profil}"
+        if self.uprem == True:
+            return f"<emoji id={self.emo_profil}>👤</emoji>"
+        elif self.uprem == False:
+            return f"{self.emo_profil}"
 
     @property
     def alive(self):
-        return f"{self.emo_alive}"
+        if self.uprem == True:
+            return f"<emoji id={self.emo_alive}>⭐</emoji>"
+        elif self.uprem == False:
+            return f"{self.emo_alive}"
 
     @property
     def warn(self):
-        return f"{self.emo_warn}"
+        if self.uprem == True:
+            return f"<emoji id={self.emo_warn}>❗️</emoji>"
+        elif self.uprem == False:
+            return f"{self.emo_warn}"
 
     @property
     def block(self):
-        return f"{self.emo_block}"
+        if self.uprem == True:
+            return f"<emoji id={self.emo_block}>🚫</emoji>"
+        elif self.uprem == False:
+            return f"{self.emo_block}"
 
 
 """
