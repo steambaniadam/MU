@@ -546,7 +546,7 @@ async def _(c: nlx, m):
 
     if text:
         response = await process_image_request(c, text, pros)
-        result_response = await process_image_status(*response)
+        result_response = await process_image_status(*response, pros)
         await send_processed_images(c, result_response, m, pros)
     else:
         await pros.edit("Mohon berikan teks sebagai argumen.")
