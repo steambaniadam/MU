@@ -22,7 +22,7 @@ __help__ = get_cgr("help_carbon")
 anj = ClientSession()
 
 
-async def buat_bon(code, bgne, language, theme):
+async def buat_bon(code, bgne, theme, language):
     url = "https://carbonara.solopov.dev/api/cook"
     json_data = {
         "code": code,
@@ -48,6 +48,60 @@ async def buat_bon(code, bgne, language, theme):
     return image
 
 
+@ky.ubot("carbon|carbonara", sudo=True)
+async def _(c, m):
+    em = Emojik()
+    em.initialize()
+
+    if m.reply_to_message is None and len(m.command) < 2:
+        return await m.reply("Perintah ini harus digunakan sebagai balasan ke sebuah pesan atau menyertakan kode.")
+
+    text = m.reply_to_message.text or m.reply_to_message.caption
+    if len(m.command) >= 2:
+        text = m.command[1]
+
+    if not text:
+        return await m.reply(cgr("crbn_1").format(em.gagal, m.text))
+
+    bgne = None
+    theme = None
+    language = "python"
+
+    if len(m.command) > 2:
+        args = dict(arg.split('=') for arg in m.text.split()[2:])
+        bgne = args.get('bgne')
+        theme = args.get('theme')
+        language = args.get('language', 'python')
+
+    ex = await m.reply(cgr("proses").format(em.proses))
+    try:
+        acak = random.choice(loanjing)
+        tem = random.choice(loanjing)
+
+        if bgne == "random":
+            bgne = acak
+        if theme == "random":
+            theme = tem
+
+        meg = await buat_bon(text, bgne or acak, theme or "python", language)
+        with open("carbon.png", "wb") as f:
+            f.write(meg.getvalue())
+        await m.reply_photo(
+            "carbon.png",
+            caption=cgr("crbn_2").format(
+                em.sukses, nlx.me.mention, reply_to_message_id=ReplyCheck(m)
+            ),
+        )
+        os.remove("carbon.png")
+    except Exception as e:
+        await m.reply(f"Terjadi kesalahan: {str(e)}")
+    finally:
+        await ex.delete()
+        if "meg" in locals():
+            meg.close()
+
+
+"""
 @ky.ubot("carbon|carbonara", sudo=True)
 async def _(c, m):
     em = Emojik()
@@ -135,6 +189,7 @@ async def _(c, m):
         await ex.delete()
         if "meg" in locals():
             meg.close()
+"""
 
 
 @ky.ubot("bglist", sudo=True)
