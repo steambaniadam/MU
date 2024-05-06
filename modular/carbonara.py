@@ -52,14 +52,16 @@ async def buat_bon(code, bgne, language, theme):
 async def _(c, m):
     em = Emojik()
     em.initialize()
-    
+
     if m.reply_to_message is None:
-        return await m.reply("Perintah ini harus digunakan sebagai balasan ke sebuah pesan.")
+        return await m.reply(
+            "Perintah ini harus digunakan sebagai balasan ke sebuah pesan."
+        )
 
     text = m.reply_to_message.text or m.reply_to_message.caption
     if not text:
         return await m.reply(cgr("crbn_1").format(em.gagal, m.text))
-    
+
     ex = await m.reply(cgr("proses").format(em.proses))
     try:
         if len(m.command) == 1:
@@ -94,17 +96,29 @@ async def _(c, m):
             os.remove("carbon.png")
         # Penanganan untuk len(m.command) == 3 dan len(m.command) == 4
         else:
-            warna = m.text.split(None, len(m.command)-1)[1] if len(m.command) > 1 else None
+            warna = (
+                m.text.split(None, len(m.command) - 1)[1]
+                if len(m.command) > 1
+                else None
+            )
             if warna:
                 acak = warna
             else:
                 acak = random.choice(loanjing)
-            tema = m.text.split(None, len(m.command)-1)[2] if len(m.command) > 2 else None
+            tema = (
+                m.text.split(None, len(m.command) - 1)[2]
+                if len(m.command) > 2
+                else None
+            )
             if tema:
                 tem = tema
             else:
                 tem = random.choice(loanjing)
-            lague = m.text.split(None, len(m.command)-1)[3] if len(m.command) > 3 else "python"
+            lague = (
+                m.text.split(None, len(m.command) - 1)[3]
+                if len(m.command) > 3
+                else "python"
+            )
             meg = await buat_bon(text, acak, lague, tem)
             with open("carbon.png", "wb") as f:
                 f.write(meg.getvalue())
@@ -119,7 +133,7 @@ async def _(c, m):
         await m.reply(f"Terjadi kesalahan: {str(e)}")
     finally:
         await ex.delete()
-        if 'meg' in locals():
+        if "meg" in locals():
             meg.close()
 
 
