@@ -483,8 +483,6 @@ async def _(c: nlx, m):
 
 import aiohttp
 
-from aiohttp import ClientSession
-
 
 async def send_image(c, chat_id, file_url, pros):
     await c.send_photo(chat_id=chat_id, photo=file_url)
@@ -493,7 +491,6 @@ async def send_image(c, chat_id, file_url, pros):
 
 async def process_image_request(c, text, pros):
     url = "https://api.monsterapi.ai/v1/generate/txt2img"
-
 
     payload = {
         "samples": 1,
@@ -506,9 +503,9 @@ async def process_image_request(c, text, pros):
     headers = {
         "accept": "application/json",
         "content-type": "application/json",
-        "authorization": "Bearer YOUR_ACCESS_TOKEN"
+        "authorization": "Bearer YOUR_ACCESS_TOKEN",
     }
-    
+
     async with aiohttp.ClientSession() as session:
         async with session.post(url, json=payload, headers=headers) as response:
             return c, response, pros
@@ -517,7 +514,7 @@ async def process_image_request(c, text, pros):
 async def process_image_status(c, response, message, pros):
     if response.status == 200:
         response_data = await response.json()
-        status_url = response_data["status_url"]
+        response_data["status_url"]
         process_id = response_data["process_id"]
         await pros.edit("Sedang memproses gambar...")
 
