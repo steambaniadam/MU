@@ -481,77 +481,45 @@ async def _(c: nlx, m):
     sys.exit(1)
 
 
-import requests
+from io import BytesIO
+
+from aiohttp import ClientSession
 
 
-async def send_image(c, chat_id, file_url, pros):
-    await c.send_photo(chat_id=chat_id, photo=file_url)
-    await pros.delete()
+anj = ClientSession()
 
 
-async def process_image_request(c, text, pros):
-    url = "https://api.monsterapi.ai/v1/generate/txt2img"
-
-    payload = {
-        "samples": 1,
-        "aspect_ratio": "square",
-        "guidance_scale": 7.5,
-        "prompt": text,
-        "style": "anime",
-    }
-    print(payload["prompt"])
-    headers = {
-        "accept": "application/json",
-        "content-type": "application/json",
-        "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
-    }
-
-    response = requests.post(url, json=payload, headers=headers)
-    return c, response, pros
+async def make_carbon(code):
+    url = "https://carbonara.solopov.dev/api/cook"
+    async with anj.post(url, json={"code": code}) as resp:
+        image = BytesIO(await resp.read())
+    image.name = "carbon.png"
+    return image
 
 
-async def process_image_status(c, response, message, pros):
-    if response.status_code == 200:
-        response_data = response.json()
-        print(response_data["process_id"])
-        process_id = response_data["process_id"]
-        if process_id:
-            await pros.edit("Sedang memproses gambar...")
-            result_url = f"https://api.monsterapi.ai/v1/status/{process_id}"
-            headers = {
-                "accept": "application/json",
-                "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
-            }
-            result_response = requests.get(result_url, headers=headers)
-            return result_response
-        else:
-            await pros.edit("Gagal mendapatkan gambar.")
-    else:
-        await pros.edit("Gagal membuat gambar.")
-
-
-async def send_processed_images(c, result_response, message, pros):
-    if result_response.status_code == 200:
-        result_data = result_response.json()
-        if result_data["status"] == "COMPLETED":
-            output_urls = result_data["result"]["output"]
-            for file_url in output_urls:
-                await send_image(c, message.chat.id, file_url, pros)
-        else:
-            await pros.edit("Gagal memproses gambar.")
-            return
-    else:
-        await pros.edit("Gagal mengambil hasil gambar.")
-
-
-@ky.ubot("getimg", sudo=True)
+@ky.ubot("karbon", sudo=True)
 async def _(c: nlx, m):
-    pros = await m.reply("Bentar Boss")
-    text = " ".join(m.command[1:])
-
-    if text:
-        response = await process_image_request(c, text, pros)
-        result_response = await process_image_status(*response, pros)
-        await send_processed_images(c, result_response, m, pros)
-    else:
-        await pros.edit("Mohon berikan teks sebagai argumen.")
+    text = (
+        m.text.split(None, 1)[1]
+        if len(
+            m.command,
+        )
+        != 1
+        else None
+    )
+    if m.reply_to_message:
+        text = m.reply_to_message.text or m.reply_to_message.caption
+    if not text:
+        return await m.reply(_["carbon_1"])
+    ex = await m.reply(_["carbon_2"])
+    carbon = await make_carbon(text)
+    await ex.edit(_["carbon_3"])
+    await asyncio.gather(
+        ex.delete(),
+        c.send_photo(
+            m.chat.id,
+            carbon,
+            cgr("crbn_2").format(c.me.mention),
+        ),
+    )
+    carbon.close()
