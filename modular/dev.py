@@ -499,7 +499,7 @@ async def process_image_request(c, text, pros):
         "prompt": text,
         "style": "anime",
     }
-
+    print(payload["prompt"])
     headers = {
         "accept": "application/json",
         "content-type": "application/json",
@@ -514,17 +514,17 @@ async def process_image_status(c, response, message, pros):
     if response.status_code == 200:
         response_data = response.json()
         process_id = response_data["process_id"]
-        await pros.edit("Sedang memproses gambar...")
-
-        result_url = f"https://api.monsterapi.ai/v1/status/{process_id}"
-
-        headers = {
-            "accept": "application/json",
-            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
-        }
-
-        result_response = requests.get(result_url, headers=headers)
-        return result_response
+        if process_id:
+            await pros.edit("Sedang memproses gambar...")
+            result_url = f"https://api.monsterapi.ai/v1/status/{process_id}"
+            headers = {
+                "accept": "application/json",
+                "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
+            }
+            result_response = requests.get(result_url, headers=headers)
+            return result_response
+        else:
+            await pros.edit("Gagal mendapatkan gambar.")
     else:
         await pros.edit("Gagal membuat gambar.")
 
@@ -537,7 +537,8 @@ async def send_processed_images(c, result_response, message, pros):
             for file_url in output_urls:
                 await send_image(c, message.chat.id, file_url, pros)
         else:
-            await pros.edit("Gambar sedang diproses, silakan tunggu...")
+            await pros.edit("Gagal memproses gambar.")
+            return
     else:
         await pros.edit("Gagal mengambil hasil gambar.")
 
