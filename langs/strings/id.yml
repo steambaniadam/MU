@@ -153,6 +153,7 @@ afk_6: "**{} Sedang AFK!!**\n{} **Dari :** `{}` yang lalu.\n{} **Alasan:** `{}`.
 # carbon
 crbn_1: "{} **Teks tidak boleh kosong!!**"
 crbn_2: "{} **Carbonara oleh: {}.**"
+crbn_3: "{} **Proses Unggah hasil.**"
 
 # copy
 cpy_1: "{} **Gunakan format : `{}` [link].**"

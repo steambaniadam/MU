@@ -514,7 +514,7 @@ async def _(c: nlx, m):
         return await m.reply(cgr("crbn_1").format(em.gagal))
     ex = await m.reply(cgr("proses").format(em.proses))
     carbon = await make_carbon(text)
-    await ex.edit(_["carbon_3"])
+    await ex.edit(cgr("crbn_3").format(em.proses))
     await asyncio.gather(
         ex.delete(),
         c.send_photo(
