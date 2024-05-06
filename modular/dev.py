@@ -479,3 +479,55 @@ async def _(c: nlx, m):
     await pros.edit(f"{em.sukses} Done!! You Logout!!")
     await c.log_out()
     sys.exit(1)
+
+
+import requests
+import os.path
+
+
+def send_image(chat_id, file_url):
+    ext = os.path.splitext(file_url)[1].lower()
+    if ext in ('.jpg', '.jpeg', '.png', '.webp'):
+        nlx.send_photo(chat_id=chat_id, photo=file_url)
+    else:
+        nlx.send_message(chat_id=chat_id, text="Maaf, ekstensi gambar tidak didukung.")
+
+
+@ky.ubot("getimg", sudo=True)
+async def _(c: nlx, m):
+    text = " ".join(m.command[1:])
+
+    if text:
+        url = "https://api.monsterapi.ai/v1/generate/sdxl-base"
+
+        payload = {
+            "enhance": True,
+            "optimize": False,
+            "safe_filter": True,
+            "aspect_ratio": "square",
+            "samples": 2,
+            "style": "anime",
+            "prompt": text
+        }
+
+        headers = {
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY"
+        }
+
+        response = requests.post(url, json=payload, headers=headers)
+
+        if response.status_code == 200:
+            response_data = response.json()
+            status_url = response_data["status_url"]
+            file_response = requests.get(status_url)
+            if file_response.status_code == 200:
+                file_url = file_response.json()["result"]["url"]
+                send_image(m.chat.id, file_url)
+            else:
+                m.reply("Gagal mendapatkan gambar dari status URL.")
+        else:
+            m.reply("Gagal membuat gambar.")
+    else:
+        m.reply("Mohon berikan teks sebagai argumen.")
