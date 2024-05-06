@@ -135,8 +135,10 @@ from aiohttp import ClientSession
 anj = ClientSession()
 
 
-import aiohttp
 from io import BytesIO
+
+import aiohttp
+
 
 async def make_carbon(code):
     url = "https://carbonara.solopov.dev/api/cook"
@@ -166,14 +168,13 @@ async def make_carbon(code):
         "squaredImage": False,
         "hiddenCharacters": False,
         "name": "get_hda_wrapper.py",
-        "width": 680
+        "width": 680,
     }
     async with aiohttp.ClientSession() as session:
         async with session.post(url, json=json_data) as resp:
             image = BytesIO(await resp.read())
     image.name = "carbon.png"
     return image
-
 
 
 @ky.ubot("karbon", sudo=True)
