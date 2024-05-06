@@ -125,7 +125,7 @@ async def _(c, m):
                     ),
                 )
                 os.remove("carbon.png")
-        
+
         else:
             text = m.command[1:]
     except Exception as e:
