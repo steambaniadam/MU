@@ -142,7 +142,9 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    jadi = cgr("qot_1").format(em.sukses) + "\n".join([f"<b>{i+1}</b> <code>{theme}</code>" for i, theme in enumerate(loanjing)])
+    jadi = cgr("qot_1").format(em.sukses) + "\n".join(
+        [f"<b>{i+1}</b> <code>{theme}</code>" for i, theme in enumerate(loanjing)]
+    )
     if len(iymek) > 4096:
         with open("bglist.txt", "w") as file:
             file.write("\n".join(loanjing))
@@ -157,7 +159,9 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
-    jadi = cgr("them_1").format(em.sukses) + "\n".join([f"<b>{i+1}</b> <code>{theme}</code>" for i, theme in enumerate(tempik)])
+    jadi = cgr("them_1").format(em.sukses) + "\n".join(
+        [f"<b>{i+1}</b> <code>{theme}</code>" for i, theme in enumerate(tempik)]
+    )
     if len(iymek) > 4096:
         with open("temlist.txt", "w") as file:
             file.write("\n".join(tempik))
