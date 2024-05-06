@@ -481,13 +481,14 @@ async def _(c: nlx, m):
     sys.exit(1)
 
 
-import requests
 import os.path
+
+import requests
 
 
 def send_image(chat_id, file_url):
     ext = os.path.splitext(file_url)[1].lower()
-    if ext in ('.jpg', '.jpeg', '.png', '.webp'):
+    if ext in (".jpg", ".jpeg", ".png", ".webp"):
         nlx.send_photo(chat_id=chat_id, photo=file_url)
     else:
         nlx.send_message(chat_id=chat_id, text="Maaf, ekstensi gambar tidak didukung.")
@@ -507,13 +508,13 @@ async def _(c: nlx, m):
             "aspect_ratio": "square",
             "samples": 2,
             "style": "anime",
-            "prompt": text
+            "prompt": text,
         }
 
         headers = {
             "accept": "application/json",
             "content-type": "application/json",
-            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY"
+            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
         }
 
         response = requests.post(url, json=payload, headers=headers)
