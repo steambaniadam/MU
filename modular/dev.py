@@ -486,7 +486,6 @@ import os.path
 import requests
 
 
-
 async def send_image(chat_id, file_url):
     file_url = os.path.splitext(file_url)[0] + ".jpg"
     await nlx.send_photo(chat_id=chat_id, photo=file_url)
@@ -510,14 +509,14 @@ async def _(c: nlx, m):
         headers = {
             "accept": "application/json",
             "content-type": "application/json",
-            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY"
+            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
         }
 
         response = requests.post(url, json=payload, headers=headers)
 
         if response.status_code == 200:
             response_data = response.json()
-            status_url = response_data["status_url"]
+            response_data["status_url"]
             process_id = response_data["process_id"]
             await m.reply("Sedang memproses gambar...")
             result_url = f"https://api.monsterapi.ai/v1/status/{process_id}"
