@@ -20,38 +20,36 @@ from aiohttp import ClientSession
 
 anj = ClientSession()
 
-bgimg = "/Mix/core/mix-img.jpg"
-
 
 async def make_carbon(code):
     url = "https://carbonara.solopov.dev/api/cook"
     json_data = {
-        "code": code,
-        "paddingVertical": "56px",
-        "paddingHorizontal": "56px",
-        "backgroundImage": bgimg,
+        "paddingVertical": "114px",
+	    "paddingHorizontal": "56px",
+	    "backgroundImage": "https://images.unsplash.com/photo-1693901130777-1f1b0f125d85?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb",
         "backgroundImageSelection": None,
-        "backgroundMode": "image",
-        "backgroundColor": "rgba(171, 184, 195, 1)",
-        "dropShadow": True,
-        "dropShadowOffsetY": "20px",
-        "dropShadowBlurRadius": "68px",
-        "theme": "lucario",
-        "windowTheme": "none",
-        "language": "python",
-        "fontFamily": "Hack",
-        "fontSize": "14px",
-        "lineHeight": "133%",
-        "windowControls": True,
-        "widthAdjustment": True,
-        "lineNumbers": False,
-        "firstLineNumber": 1,
-        "exportSize": "2x",
-        "watermark": False,
-        "squaredImage": False,
-        "hiddenCharacters": False,
-        "name": "get_hda_wrapper.py",
-        "width": 680,
+        "backgroundMode": "color",
+	    "backgroundColor": "rgba(189,16,224,0)",
+	    "dropShadow": True,
+	    "dropShadowOffsetY": "53px",
+	    "dropShadowBlurRadius": "6px",
+	    "theme": "vscode",
+	    "windowTheme": "none",
+	    "language": "python",
+	    "fontFamily": "Source Code Pro",
+	    "fontSize": "13px",
+	    "lineHeight": "141%",
+	    "windowControls": True,
+	    "widthAdjustment": True,
+	    "lineNumbers": True,
+	    "firstLineNumber": 1,
+	    "exportSize": "2x",
+	    "watermark": False,
+	    "squaredImage": False,
+	    "hiddenCharacters": False,
+	    "name": "Mix-Userbot-Carbon",
+	    "width": 680,
+	    "highlights": None
     }
     async with aiohttp.ClientSession() as session:
         async with session.post(url, json=json_data) as resp:
