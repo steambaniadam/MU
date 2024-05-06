@@ -481,7 +481,7 @@ async def _(c: nlx, m):
     sys.exit(1)
 
 
-import aiohttp
+import requests
 
 
 async def send_image(c, chat_id, file_url, pros):
@@ -503,32 +503,29 @@ async def process_image_request(c, text, pros):
     headers = {
         "accept": "application/json",
         "content-type": "application/json",
-        "authorization": "Bearer YOUR_ACCESS_TOKEN",
+        "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
     }
 
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, json=payload, headers=headers) as response:
-            return c, response, pros
+    response = requests.post(url, json=payload, headers=headers)
+    return c, response, pros
 
 
 async def process_image_status(c, response, message, pros):
-    if response.status == 200:
-        response_data = await response.json()
-        response_data["status_url"]
+    if response.status_code == 200:
+        response_data = response.json()
         process_id = response_data["process_id"]
         await pros.edit("Sedang memproses gambar...")
 
         result_url = f"https://api.monsterapi.ai/v1/status/{process_id}"
-        async with aiohttp.ClientSession() as session:
-            async with session.get(result_url, headers=headers) as result_response:
-                return result_response
+        result_response = requests.get(result_url, headers=headers)
+        return result_response
     else:
         await pros.edit("Gagal membuat gambar.")
 
 
 async def send_processed_images(c, result_response, message, pros):
-    if result_response.status == 200:
-        result_data = await result_response.json()
+    if result_response.status_code == 200:
+        result_data = result_response.json()
         if result_data["status"] == "COMPLETED":
             output_urls = result_data["result"]["output"]
             for file_url in output_urls:
