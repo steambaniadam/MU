@@ -53,78 +53,81 @@ async def _(c, m):
     em = Emojik()
     em.initialize()
     rep = m.reply_to_message
+    text = None
     if rep:
         text = m.reply_to_message.text or m.reply_to_message.caption
-    else:
-        text = m.command[1:]
     if not text:
         return await m.reply(cgr("crbn_1").format(em.gagal, m.text))
     ex = await m.reply(cgr("proses").format(em.proses))
     try:
-        if len(m.command) == 1:
-            acak = random.choice(loanjing)
-            tem = random.choice(loanjing)
-            meg = await buat_bon(text, acak, "python", tem)
-            with open("carbon.png", "wb") as f:
-                f.write(meg.getvalue())
-            await m.reply_photo(
-                "carbon.png",
-                caption=cgr("crbn_2").format(
-                    em.sukses, nlx.me.mention, reply_to_message_id=ReplyCheck(m)
-                ),
-            )
-            os.remove("carbon.png")
-        elif len(m.command) == 2:
-            warna = m.text.split(None, 1)[1] if len(m.command) > 1 else None
-            if warna:
-                acak = warna
-            else:
+        if rep:
+            if len(m.command) == 1:
                 acak = random.choice(loanjing)
-            tem = random.choice(loanjing)
-            meg = await buat_bon(text, acak, "python", tem)
-            with open("carbon.png", "wb") as f:
-                f.write(meg.getvalue())
-            await m.reply_photo(
-                "carbon.png",
-                caption=cgr("crbn_2").format(
-                    em.sukses, nlx.me.mention, reply_to_message_id=ReplyCheck(m)
-                ),
-            )
-            os.remove("carbon.png")
-        else:
-            warna = (
-                m.text.split(None, len(m.command) - 1)[1]
-                if len(m.command) > 1
-                else None
-            )
-            if warna:
-                acak = warna
-            else:
-                acak = random.choice(loanjing)
-            tema = (
-                m.text.split(None, len(m.command) - 1)[2]
-                if len(m.command) > 2
-                else None
-            )
-            if tema:
-                tem = tema
-            else:
                 tem = random.choice(loanjing)
-            lague = (
-                m.text.split(None, len(m.command) - 1)[3]
-                if len(m.command) > 3
-                else "python"
-            )
-            meg = await buat_bon(text, acak, lague, tem)
-            with open("carbon.png", "wb") as f:
-                f.write(meg.getvalue())
-            await m.reply_photo(
-                "carbon.png",
-                caption=cgr("crbn_2").format(
-                    em.sukses, nlx.me.mention, reply_to_message_id=ReplyCheck(m)
-                ),
-            )
-            os.remove("carbon.png")
+                meg = await buat_bon(text, acak, "python", tem)
+                with open("carbon.png", "wb") as f:
+                    f.write(meg.getvalue())
+                await m.reply_photo(
+                    "carbon.png",
+                    caption=cgr("crbn_2").format(
+                        em.sukses, nlx.me.mention, reply_to_message_id=ReplyCheck(m)
+                    ),
+                )
+                os.remove("carbon.png")
+            elif len(m.command) == 2:
+                warna = m.text.split(None, 1)[1] if len(m.command) > 1 else None
+                if warna:
+                    acak = warna
+                else:
+                    acak = random.choice(loanjing)
+                tem = random.choice(loanjing)
+                meg = await buat_bon(text, acak, "python", tem)
+                with open("carbon.png", "wb") as f:
+                    f.write(meg.getvalue())
+                await m.reply_photo(
+                    "carbon.png",
+                    caption=cgr("crbn_2").format(
+                        em.sukses, nlx.me.mention, reply_to_message_id=ReplyCheck(m)
+                    ),
+                )
+                os.remove("carbon.png")
+            else:
+                warna = (
+                    m.text.split(None, len(m.command) - 1)[1]
+                    if len(m.command) > 1
+                    else None
+                )
+                if warna:
+                    acak = warna
+                else:
+                    acak = random.choice(loanjing)
+                tema = (
+                    m.text.split(None, len(m.command) - 1)[2]
+                    if len(m.command) > 2
+                    else None
+                )
+                if tema:
+                    tem = tema
+                else:
+                    tem = random.choice(loanjing)
+                lague = (
+                    m.text.split(None, len(m.command) - 1)[3]
+                    if len(m.command) > 3
+                    else "python"
+                )
+                meg = await buat_bon(text, acak, lague, tem)
+                with open("carbon.png", "wb") as f:
+                    f.write(meg.getvalue())
+                await m.reply_photo(
+                    "carbon.png",
+                    caption=cgr("crbn_2").format(
+                        em.sukses, nlx.me.mention, reply_to_message_id=ReplyCheck(m)
+                    ),
+                )
+                os.remove("carbon.png")
+        
+        else:
+            text = m.command[1:]
     except Exception as e:
         await m.reply(f"Terjadi kesalahan: {str(e)}")
     finally:
