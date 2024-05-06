@@ -6,7 +6,7 @@
 """
 ################################################################
 
-
+import asyncio
 from Mix import *
 from Mix.core.tools_quote import *
 
@@ -24,21 +24,22 @@ anj = ClientSession()
 async def make_carbon(code):
     url = "https://carbonara.solopov.dev/api/cook"
     json_data = {
-        "paddingVertical": "114px",
+        "code": code,
+        "paddingVertical": "56px",
         "paddingHorizontal": "56px",
         "backgroundImage": None,
         "backgroundImageSelection": None,
         "backgroundMode": "color",
-        "backgroundColor": "rgba(189,16,224,0)",
+        "backgroundColor": "rgba(171, 184, 195, 1)",
         "dropShadow": True,
-        "dropShadowOffsetY": "53px",
-        "dropShadowBlurRadius": "6px",
+        "dropShadowOffsetY": "20px",
+        "dropShadowBlurRadius": "68px",
         "theme": "vscode",
         "windowTheme": "none",
         "language": "python",
-        "fontFamily": "Source Code Pro",
-        "fontSize": "13px",
-        "lineHeight": "141%",
+        "fontFamily": "Cascadia Code",
+        "fontSize": "14px",
+        "lineHeight": "133%",
         "windowControls": True,
         "widthAdjustment": True,
         "lineNumbers": True,
@@ -49,8 +50,9 @@ async def make_carbon(code):
         "hiddenCharacters": False,
         "name": "Mix-Userbot-Carbon",
         "width": 680,
-        "highlights": None,
+        "highlights": None
     }
+
     async with aiohttp.ClientSession() as session:
         async with session.post(url, json=json_data) as resp:
             image = BytesIO(await resp.read())
