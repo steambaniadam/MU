@@ -145,7 +145,7 @@ async def _(c: nlx, m):
     jadi = cgr("qot_1").format(em.sukses) + "\n".join(
         [f"<b>{i+1}</b> <code>{theme}</code>" for i, theme in enumerate(loanjing)]
     )
-    if len(iymek) > 4096:
+    if len(jadi) > 4096:
         with open("bglist.txt", "w") as file:
             file.write("\n".join(loanjing))
         await m.reply_document("bglist.txt", caption=cgr("qot_2").format(em.sukses))
@@ -162,7 +162,7 @@ async def _(c: nlx, m):
     jadi = cgr("them_1").format(em.sukses) + "\n".join(
         [f"<b>{i+1}</b> <code>{theme}</code>" for i, theme in enumerate(tempik)]
     )
-    if len(iymek) > 4096:
+    if len(jadi) > 4096:
         with open("temlist.txt", "w") as file:
             file.write("\n".join(tempik))
         await m.reply_document("temlist.txt", caption=cgr("them_2").format(em.sukses))
