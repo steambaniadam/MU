@@ -126,3 +126,81 @@ async def _(c, m):
         await m.reply(cgr("crbn_1").format(em.gagal))
     await ex.delete()
     return
+
+
+from io import BytesIO
+
+from aiohttp import ClientSession
+
+anj = ClientSession()
+
+
+import aiohttp
+from io import BytesIO
+
+async def make_carbon(code):
+    url = "https://carbonara.solopov.dev/api/cook"
+    json_data = {
+        "code": code,
+        "paddingVertical": "56px",
+        "paddingHorizontal": "56px",
+        "backgroundImage": None,
+        "backgroundImageSelection": None,
+        "backgroundMode": "color",
+        "backgroundColor": "rgba(171, 184, 195, 1)",
+        "dropShadow": True,
+        "dropShadowOffsetY": "20px",
+        "dropShadowBlurRadius": "68px",
+        "theme": "lucario",
+        "windowTheme": "none",
+        "language": "python",
+        "fontFamily": "Hack",
+        "fontSize": "14px",
+        "lineHeight": "133%",
+        "windowControls": True,
+        "widthAdjustment": True,
+        "lineNumbers": False,
+        "firstLineNumber": 1,
+        "exportSize": "2x",
+        "watermark": False,
+        "squaredImage": False,
+        "hiddenCharacters": False,
+        "name": "get_hda_wrapper.py",
+        "width": 680
+    }
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, json=json_data) as resp:
+            image = BytesIO(await resp.read())
+    image.name = "carbon.png"
+    return image
+
+
+
+@ky.ubot("karbon", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    text = (
+        m.text.split(None, 1)[1]
+        if len(
+            m.command,
+        )
+        != 1
+        else None
+    )
+    if m.reply_to_message:
+        text = m.reply_to_message.text or m.reply_to_message.caption
+    if not text:
+        return await m.reply(cgr("crbn_1").format(em.gagal))
+    ex = await m.reply(cgr("proses").format(em.proses))
+    carbon = await make_carbon(text)
+    await ex.edit(cgr("crbn_3").format(em.proses))
+    await asyncio.gather(
+        ex.delete(),
+        c.send_photo(
+            m.chat.id,
+            carbon,
+            cgr("crbn_2").format(em.sukses, c.me.mention),
+        ),
+    )
+    carbon.close()
