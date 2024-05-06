@@ -112,14 +112,11 @@ async def _(c: nlx, m):
                         await msg.edit(updated_content)
             except MessageNotModified:
                 continue
-    updated_content = cgr("gcs_15").format(
-        em.alive, em.sukses, done, em.gagal, failed
-    )
+    updated_content = cgr("gcs_15").format(em.alive, em.sukses, done, em.gagal, failed)
     if msg is None:
         msg = await m.reply(updated_content)
     else:
         await msg.edit(updated_content)
-
 
 
 @ky.ubot("gucast", sudo=True)
