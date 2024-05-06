@@ -513,6 +513,7 @@ async def process_image_request(c, text, pros):
 async def process_image_status(c, response, message, pros):
     if response.status_code == 200:
         response_data = response.json()
+        print(response_data["process_id"])
         process_id = response_data["process_id"]
         if process_id:
             await pros.edit("Sedang memproses gambar...")
