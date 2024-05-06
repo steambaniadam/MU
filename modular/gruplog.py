@@ -50,8 +50,11 @@ async def _(c: nlx, m):
 async def _(c, m):
     if not udB.get_var(nlx.me.id, "TAG_LOGGER"):
         return
-
-    org = f"[{m.from_user.first_name} {m.from_user.last_name or ''}](tg://user?id={m.from_user.id})"
+    user = m.from_user
+    if user.first_name:
+        org = f"[{user.first_name} {user.last_name or ''}](tg://user?id={user.id})"
+    else:
+        org = f"[{user.first_name or ''} {user.last_name}](tg://user?id={user.id})"
     lenk = m.link
     media = None
     teks = None
