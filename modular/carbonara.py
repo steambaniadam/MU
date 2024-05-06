@@ -58,7 +58,9 @@ async def _(c, m):
             "Perintah ini harus digunakan sebagai balasan ke sebuah pesan atau menyertakan kode."
         )
 
-    text = m.reply_to_message.text or m.reply_to_message.caption
+    text = None
+    if m.reply_to_message:
+        text = m.reply_to_message.text or m.reply_to_message.caption
     if len(m.command) >= 2:
         text = m.command[1]
 
