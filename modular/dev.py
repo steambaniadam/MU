@@ -498,6 +498,8 @@ async def make_carbon(code):
 
 @ky.ubot("karbon", sudo=True)
 async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
     text = (
         m.text.split(None, 1)[1]
         if len(
@@ -509,8 +511,8 @@ async def _(c: nlx, m):
     if m.reply_to_message:
         text = m.reply_to_message.text or m.reply_to_message.caption
     if not text:
-        return await m.reply(_["carbon_1"])
-    ex = await m.reply(_["carbon_2"])
+        return await m.reply(cgr("crbn_1").format(em.gagal))
+    ex = await m.reply(cgr("proses").format(em.proses))
     carbon = await make_carbon(text)
     await ex.edit(_["carbon_3"])
     await asyncio.gather(
@@ -518,7 +520,7 @@ async def _(c: nlx, m):
         c.send_photo(
             m.chat.id,
             carbon,
-            cgr("crbn_2").format(c.me.mention),
+            cgr("crbn_2").format(em.sukses, c.me.mention),
         ),
     )
     carbon.close()
