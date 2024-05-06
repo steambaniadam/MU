@@ -7,6 +7,7 @@
 ################################################################
 
 import asyncio
+
 from Mix import *
 from Mix.core.tools_quote import *
 
@@ -50,7 +51,7 @@ async def make_carbon(code):
         "hiddenCharacters": False,
         "name": "Mix-Userbot-Carbon",
         "width": 680,
-        "highlights": None
+        "highlights": None,
     }
 
     async with aiohttp.ClientSession() as session:
