@@ -178,14 +178,23 @@ async def _(c: nlx, m):
                     await asyncio.sleep(0.3)
                 except Exception:
                     failed += 1
-                    updated_content = cgr("gcs_16").format(
-                        em.alive, em.sukses, done, em.gagal, failed
+                    updated_content = cgr("gcs_3").format(
+                        em.proses, em.sukses, done, em.gagal, failed
                     )
                     if msg is None:
                         msg = await m.reply(updated_content)
                     else:
                         await msg.edit(updated_content)
                     await asyncio.sleep(0.3)
+            except MessageNotModified:
+                continue
+    updated_content = cgr("gcs_16").format(
+        em.alive, em.sukses, done, em.gagal, failed
+    )
+    if msg is None:
+        msg = await m.reply(updated_content)
+    else:
+        await msg.edit(updated_content)
 
 
 @ky.ubot("addbl", sudo=True)
