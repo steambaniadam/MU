@@ -141,27 +141,27 @@ async def _(c, m):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    iymek = f"\n• ".join(loanjing)
-    jadi = cgr("qot_1").format(em.proses)
+    pros = await m.reply(cgr("proses").format(em.proses))
+    jadi = cgr("qot_1").format(em.sukses) + "\n".join([f"<b>{i+1}</b> <code>{theme}</code>" for i, theme in enumerate(loanjing)])
     if len(iymek) > 4096:
         with open("bglist.txt", "w") as file:
-            file.write(iymek)
+            file.write("\n".join(loanjing))
         await m.reply_document("bglist.txt", caption=cgr("qot_2").format(em.sukses))
         os.remove("bglist.txt")
     else:
-        await m.reply(jadi + iymek)
+        await pros.edit(jadi)
 
 
 @ky.ubot("temlist", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    iymek = f"\n• ".join(tempik)
-    jadi = cgr("them_1").format(em.proses)
+    pros = await m.reply(cgr("proses").format(em.proses))
+    jadi = cgr("them_1").format(em.sukses) + "\n".join([f"<b>{i+1}</b> <code>{theme}</code>" for i, theme in enumerate(tempik)])
     if len(iymek) > 4096:
-        with open("bglist.txt", "w") as file:
-            file.write(iymek)
-        await m.reply_document("bglist.txt", caption=cgr("them_2").format(em.sukses))
-        os.remove("bglist.txt")
+        with open("temlist.txt", "w") as file:
+            file.write("\n".join(tempik))
+        await m.reply_document("temlist.txt", caption=cgr("them_2").format(em.sukses))
+        os.remove("temlist.txt")
     else:
-        await m.reply(jadi + iymek)
+        await pros.edit(jadi)
