@@ -486,6 +486,7 @@ import os.path
 import requests
 
 
+
 async def send_image(chat_id, file_url):
     file_url = os.path.splitext(file_url)[0] + ".jpg"
     await nlx.send_photo(chat_id=chat_id, photo=file_url)
@@ -509,7 +510,7 @@ async def _(c: nlx, m):
         headers = {
             "accept": "application/json",
             "content-type": "application/json",
-            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
+            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY"
         }
 
         response = requests.post(url, json=payload, headers=headers)
@@ -517,12 +518,21 @@ async def _(c: nlx, m):
         if response.status_code == 200:
             response_data = response.json()
             status_url = response_data["status_url"]
-            file_response = requests.get(status_url)
-            if file_response.status_code == 200:
-                file_url = file_response.json()["result"]["url"]
-                await send_image(m.chat.id, file_url)
+            process_id = response_data["process_id"]
+            await m.reply("Sedang memproses gambar...")
+            result_url = f"https://api.monsterapi.ai/v1/status/{process_id}"
+            result_response = requests.get(result_url, headers=headers)
+
+            if result_response.status_code == 200:
+                result_data = result_response.json()
+                if result_data["status"] == "COMPLETED":
+                    output_urls = result_data["result"]["output"]
+                    for file_url in output_urls:
+                        await send_image(m.chat.id, file_url)
+                else:
+                    await m.reply("Gambar sedang diproses, silakan tunggu...")
             else:
-                await m.reply("Gagal mendapatkan gambar dari status URL.")
+                await m.reply("Gagal mengambil hasil gambar.")
         else:
             await m.reply("Gagal membuat gambar.")
     else:
