@@ -517,6 +517,12 @@ async def process_image_status(c, response, message, pros):
         await pros.edit("Sedang memproses gambar...")
 
         result_url = f"https://api.monsterapi.ai/v1/status/{process_id}"
+        
+        headers = {
+            "accept": "application/json",
+            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
+        }
+        
         result_response = requests.get(result_url, headers=headers)
         return result_response
     else:
