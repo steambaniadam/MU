@@ -130,7 +130,7 @@ afk_5: "**{} is AFK!!**\n{} **From:** `{}` ago."
 afk_6: "**{} is AFK!!**\n{} **From:** `{}` ago.\n{} **Reason:** `{}`."
 
 # carbon
-crbn_1: "{} **Text cannot be empty!!**"
+crbn_1: "{} **Example Command :\n\n• `{} [reply text]`\n• `{} [reply text] LimeGreen`\n• `{} [reply text] LimeGreen Dracula`\n • `{} [reply text] LimeGreen Dracula python`\n**"
 crbn_2: "{} **Carbonated by: {}.**"
 crbn_3: "{} **Proccess Uploading Results ..**"
 

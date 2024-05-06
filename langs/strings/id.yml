@@ -151,7 +151,7 @@ afk_5: "**{} Sedang AFK!!**\n{} **Dari :** `{}` yang lalu."
 afk_6: "**{} Sedang AFK!!**\n{} **Dari :** `{}` yang lalu.\n{} **Alasan:** `{}`."
 
 # carbon
-crbn_1: "{} **Contoh Perintah :\n\n• `{} [teks/balas teks]`\n• `{} [teks/balas teks] LimeGreen`\n• `{} [teks/balas teks] LimeGreen python`\n**"
+crbn_1: "{} **Contoh Perintah :\n\n• `{} [balas teks]`\n• `{} [balas teks] LimeGreen`\n• `{} [balas teks] LimeGreen Dracula`\n• `{} [balas teks] LimeGreen Dracula python`\n**"
 crbn_2: "{} **Carbonara oleh: {}.**"
 crbn_3: "{} **Proses Unggah hasil.**"
 

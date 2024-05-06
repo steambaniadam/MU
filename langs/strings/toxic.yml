@@ -150,7 +150,7 @@ afk_5: "**{} Gw AFK Tolol!!**\n{} **Dari :** `{}` yang lalu."
 afk_6: "**{} Gw AFK Tolol!!**\n{} **Dari :** `{}` yang lalu.\n{} **Gara-gara:** `{}`."
 
 # carbon
-crbn_1: "{} **Kasih teks lah minimal jing!!**"
+crbn_1: "{} **Contoh Perintah :\n\n• `{} [balas teks]`\n• `{} [balas teks] LimeGreen`\n• `{} [balas teks] LimeGreen Dracula`\n• `{} [balas teks] LimeGreen Dracula python`\n**"
 crbn_2: "{} **Carbonara oleh: {}.**"
 crbn_3: "{} **Sabar, nih gue aplot jink!**"
 
