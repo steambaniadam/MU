@@ -7,6 +7,10 @@
 ################################################################
 
 import asyncio
+import os
+from io import BytesIO
+import random
+from aiohttp import ClientSession
 
 from Mix import *
 from Mix.core.tools_quote import *
@@ -15,23 +19,18 @@ __modles__ = "Carbon"
 __help__ = get_cgr("help_carbon")
 
 
-from io import BytesIO
-
-from aiohttp import ClientSession
-
 anj = ClientSession()
 
-
-async def make_carbon(code):
+async def buat_bon(code, bgne, language, theme):
     url = "https://carbonara.solopov.dev/api/cook"
     json_data = {
         "code": code,
         "paddingVertical": "56px",
         "paddingHorizontal": "56px",
         "backgroundMode": "color",
-        "backgroundColor": "rgba(171, 184, 195, 1)",
-        "theme": "vscode",
-        "language": "python",
+        "backgroundColor": bgne,
+        "theme": theme,
+        "language": language,
         "fontFamily": "Cascadia Code",
         "fontSize": "14px",
         "windowControls": True,
@@ -46,67 +45,6 @@ async def make_carbon(code):
             image = BytesIO(await resp.read())
     image.name = "carbon.png"
     return image
-
-
-@ky.ubot("karbon", sudo=True)
-async def _(c: nlx, m):
-    em = Emojik()
-    em.initialize()
-    text = (
-        m.text.split(None, 1)[1]
-        if len(
-            m.command,
-        )
-        != 1
-        else None
-    )
-    if m.reply_to_message:
-        text = m.reply_to_message.text or m.reply_to_message.caption
-    if not text:
-        return await m.reply(cgr("crbn_1").format(em.gagal))
-    ex = await m.reply(cgr("proses").format(em.proses))
-    carbon = await make_carbon(text)
-    await ex.edit(cgr("crbn_3").format(em.proses))
-    await asyncio.gather(
-        ex.delete(),
-        c.send_photo(
-            m.chat.id,
-            carbon,
-            cgr("crbn_2").format(em.sukses, c.me.mention),
-        ),
-    )
-    carbon.close()
-
-
-"""
-async def buat_bon(code, bgne, language, theme):
-    meki = SafoneAPI()
-    bg = {
-        "backgroundColor": bgne,
-        "fontFamily": "Roboto",
-        "fontSize": "14px",
-        "language": language,
-        "theme": theme,
-    }
-    img = await meki.carbon(code, **bg)
-    with open("carbon.png", "wb") as file:
-        file.write(img.getvalue())
-    return "carbon.png"
-
-
-@ky.ubot("bglist", sudo=True)
-async def _(c: nlx, m):
-    em = Emojik()
-    em.initialize()
-    iymek = f"\n• ".join(loanjing)
-    jadi = cgr("qot_1").format(em.proses)
-    if len(iymek) > 4096:
-        with open("bglist.txt", "w") as file:
-            file.write(iymek)
-        await m.reply_document("bglist.txt", caption=cgr("qot_2").format(em.sukses))
-        os.remove("bglist.txt")
-    else:
-        await m.reply(jadi + iymek)
 
 
 @ky.ubot("carbon|carbonara", sudo=True)
@@ -184,7 +122,69 @@ async def _(c, m):
         )
         os.remove(meg)
     else:
-        await m.reply(cgr("crbn_1").format(em.gagal))
+        await m.reply(cgr("crbn_1").format(em.gagal, m.text))
     await ex.delete()
     return
+
+
+"""
+@ky.ubot("karbon", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    text = (
+        m.text.split(None, 1)[1]
+        if len(
+            m.command,
+        )
+        != 1
+        else None
+    )
+    if m.reply_to_message:
+        text = m.reply_to_message.text or m.reply_to_message.caption
+    if not text:
+        return await m.reply(cgr("crbn_1").format(em.gagal))
+    ex = await m.reply(cgr("proses").format(em.proses))
+    carbon = await make_carbon(text)
+    await ex.edit(cgr("crbn_3").format(em.proses))
+    await asyncio.gather(
+        ex.delete(),
+        c.send_photo(
+            m.chat.id,
+            carbon,
+            cgr("crbn_2").format(em.sukses, c.me.mention),
+        ),
+    )
+    carbon.close()
+
+
+async def buat_bon(code, bgne, language, theme):
+    meki = SafoneAPI()
+    bg = {
+        "backgroundColor": bgne,
+        "fontFamily": "Roboto",
+        "fontSize": "14px",
+        "language": language,
+        "theme": theme,
+    }
+    img = await meki.carbon(code, **bg)
+    with open("carbon.png", "wb") as file:
+        file.write(img.getvalue())
+    return "carbon.png"
+
+
+@ky.ubot("bglist", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    iymek = f"\n• ".join(loanjing)
+    jadi = cgr("qot_1").format(em.proses)
+    if len(iymek) > 4096:
+        with open("bglist.txt", "w") as file:
+            file.write(iymek)
+        await m.reply_document("bglist.txt", caption=cgr("qot_2").format(em.sukses))
+        os.remove("bglist.txt")
+    else:
+        await m.reply(jadi + iymek)
+
 """
