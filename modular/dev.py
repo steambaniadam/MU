@@ -503,13 +503,13 @@ async def _(c: nlx, m):
             "aspect_ratio": "square",
             "guidance_scale": 7.5,
             "prompt": text,
-            "style": "anime"
+            "style": "anime",
         }
 
         headers = {
             "accept": "application/json",
             "content-type": "application/json",
-            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY"
+            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
         }
 
         response = requests.post(url, json=payload, headers=headers)
