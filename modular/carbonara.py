@@ -72,7 +72,7 @@ async def _(c, m):
     language = "python"
 
     if len(m.command) > 2:
-        args = dict(arg.split("=") for arg in m.text.split()[2:])
+        args = dict(arg.split("=", 1) for arg in m.text.split()[2:])
         bgne = args.get("bgne")
         theme = args.get("theme")
         language = args.get("language", "python")
