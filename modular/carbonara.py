@@ -26,7 +26,7 @@ async def make_carbon(code):
     json_data = {
         "paddingVertical": "114px",
         "paddingHorizontal": "56px",
-        "backgroundImage": "https://images.unsplash.com/photo-1693901130777-1f1b0f125d85?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb",
+        "backgroundImage": None,
         "backgroundImageSelection": None,
         "backgroundMode": "color",
         "backgroundColor": "rgba(189,16,224,0)",
