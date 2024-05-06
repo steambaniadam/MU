@@ -481,58 +481,75 @@ async def _(c: nlx, m):
     sys.exit(1)
 
 
-import os.path
+import aiohttp
 
-import requests
+from aiohttp import ClientSession
 
 
-async def send_image(chat_id, file_url):
-    file_url = os.path.splitext(file_url)[0] + ".jpg"
-    await nlx.send_photo(chat_id=chat_id, photo=file_url)
+async def send_image(c, chat_id, file_url, pros):
+    await c.send_photo(chat_id=chat_id, photo=file_url)
+    await pros.delete()
+
+
+async def process_image_request(c, text, pros):
+    url = "https://api.monsterapi.ai/v1/generate/txt2img"
+
+
+    payload = {
+        "samples": 1,
+        "aspect_ratio": "square",
+        "guidance_scale": 7.5,
+        "prompt": text,
+        "style": "anime",
+    }
+
+    headers = {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "authorization": "Bearer YOUR_ACCESS_TOKEN"
+    }
+    
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, json=payload, headers=headers) as response:
+            return c, response, pros
+
+
+async def process_image_status(c, response, message, pros):
+    if response.status == 200:
+        response_data = await response.json()
+        status_url = response_data["status_url"]
+        process_id = response_data["process_id"]
+        await pros.edit("Sedang memproses gambar...")
+
+        result_url = f"https://api.monsterapi.ai/v1/status/{process_id}"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(result_url, headers=headers) as result_response:
+                return result_response
+    else:
+        await pros.edit("Gagal membuat gambar.")
+
+
+async def send_processed_images(c, result_response, message, pros):
+    if result_response.status == 200:
+        result_data = await result_response.json()
+        if result_data["status"] == "COMPLETED":
+            output_urls = result_data["result"]["output"]
+            for file_url in output_urls:
+                await send_image(c, message.chat.id, file_url, pros)
+        else:
+            await pros.edit("Gambar sedang diproses, silakan tunggu...")
+    else:
+        await pros.edit("Gagal mengambil hasil gambar.")
 
 
 @ky.ubot("getimg", sudo=True)
 async def _(c: nlx, m):
+    pros = await m.reply("Bentar Boss")
     text = " ".join(m.command[1:])
 
     if text:
-        url = "https://api.monsterapi.ai/v1/generate/txt2img"
-
-        payload = {
-            "samples": 1,
-            "aspect_ratio": "square",
-            "guidance_scale": 7.5,
-            "prompt": text,
-            "style": "anime",
-        }
-
-        headers = {
-            "accept": "application/json",
-            "content-type": "application/json",
-            "authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6IjcxNWFjMDc2ZWNhYzRlMmNkODM5NTI2MGU1MThmNDg2IiwiY3JlYXRlZF9hdCI6IjIwMjQtMDUtMDZUMTQ6MDk6MDIuODUwNjY0In0.MA_RO5czn7UPRue8v7stluzDWwnvWOqzt3gvhcuaJnY",
-        }
-
-        response = requests.post(url, json=payload, headers=headers)
-
-        if response.status_code == 200:
-            response_data = response.json()
-            response_data["status_url"]
-            process_id = response_data["process_id"]
-            await m.reply("Sedang memproses gambar...")
-            result_url = f"https://api.monsterapi.ai/v1/status/{process_id}"
-            result_response = requests.get(result_url, headers=headers)
-
-            if result_response.status_code == 200:
-                result_data = result_response.json()
-                if result_data["status"] == "COMPLETED":
-                    output_urls = result_data["result"]["output"]
-                    for file_url in output_urls:
-                        await send_image(m.chat.id, file_url)
-                else:
-                    await m.reply("Gambar sedang diproses, silakan tunggu...")
-            else:
-                await m.reply("Gagal mengambil hasil gambar.")
-        else:
-            await m.reply("Gagal membuat gambar.")
+        response = await process_image_request(c, text, pros)
+        result_response = await process_image_status(*response)
+        await send_processed_images(c, result_response, m, pros)
     else:
-        await m.reply("Mohon berikan teks sebagai argumen.")
+        await pros.edit("Mohon berikan teks sebagai argumen.")
