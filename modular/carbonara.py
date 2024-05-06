@@ -6,10 +6,10 @@
 """
 ################################################################
 
-import asyncio
 import os
-from io import BytesIO
 import random
+from io import BytesIO
+
 from aiohttp import ClientSession
 
 from Mix import *
@@ -20,6 +20,7 @@ __help__ = get_cgr("help_carbon")
 
 
 anj = ClientSession()
+
 
 async def buat_bon(code, bgne, language, theme):
     url = "https://carbonara.solopov.dev/api/cook"
