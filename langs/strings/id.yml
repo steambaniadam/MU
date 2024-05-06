@@ -384,10 +384,12 @@ pmper_9: "{} **Pesan Limit berhasil diatur menjadi : `{}`.**"
 pmper_10: "{} **Saya sudah memberi tahu `{}` peringatan\nTunggu Owner Saya menyetujui pesan anda, atau anda akan diblokir !**"
 
 # quote
-qot_1: "{} **Daftar Warna Quote :\n\n**"
+qot_1: "{} **Daftar Warna :\n\n**"
 qot_2: "{} **Ini adalah list warna untuk latar belakang quote.**"
 qot_3: "{} **Si anjing mengatasnamakan Developer!**"
 qot_4: "{} **Batas pesan adalah 10!**"
+them_1: "{} **Daftar Tema :\n\n**"
+them_2: "{} **Ini adalah list tema.**"
 
 # restrict
 res_1: "{} **Oh anda ingin menendang diri sendiri ?**"

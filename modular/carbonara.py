@@ -135,3 +135,33 @@ async def _(c, m):
     await ex.delete()
     meg.close()
     return
+
+
+@ky.ubot("bglist", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    iymek = f"\n• ".join(loanjing)
+    jadi = cgr("qot_1").format(em.proses)
+    if len(iymek) > 4096:
+        with open("bglist.txt", "w") as file:
+            file.write(iymek)
+        await m.reply_document("bglist.txt", caption=cgr("qot_2").format(em.sukses))
+        os.remove("bglist.txt")
+    else:
+        await m.reply(jadi + iymek)
+
+
+@ky.ubot("temlist", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    iymek = f"\n• ".join(tempik)
+    jadi = cgr("them_1").format(em.proses)
+    if len(iymek) > 4096:
+        with open("bglist.txt", "w") as file:
+            file.write(iymek)
+        await m.reply_document("bglist.txt", caption=cgr("them_2").format(em.sukses))
+        os.remove("bglist.txt")
+    else:
+        await m.reply(jadi + iymek)

@@ -167,6 +167,36 @@ loanjing = [
 ]
 
 
+tempik = [
+    "Dracula",
+    "Seti",
+    "One Dark",
+    "Monokai",
+    "Night Owl",
+    "Cobalt",
+    "Solarized Dark",
+    "Shades of Purple",
+    "Nord",
+    "Gruvbox Dark",
+    "SynthWave '84",
+    "Material Dark",
+    "GitHub Dark",
+    "GitHub Dark Dimmed",
+    "Hopscotch",
+    "Base16 Light",
+    "Base16 Dark",
+    "Panda",
+    "Shades of Purple",
+    "Duotone Dark",
+    "Duotone Sea",
+    "Duotone Space",
+    "Tokyo Night",
+    "Winter is Coming",
+    "Outrun Sunset",
+    "Dracula"
+]
+
+
 async def get_sender(m):
     if m.forward_date:
         if m.forward_sender_name:

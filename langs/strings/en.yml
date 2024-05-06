@@ -358,10 +358,12 @@ pmper_9: "{} **Message Limit successfully set to: `{}`.**"
 pmper_10: "{} **I've informed `{}` warning\nWait for my Owner to approve your message, or you'll be blocked!**"
 
 # quote
-qot_1: "{} **List of Quote Background Colors:\n\n**"
+qot_1: "{} **List of Colors:\n\n**"
 qot_2: "{} **These are the color options for the quote background.**"
 qot_3: "{} **The dog pretending to be a Developer!**"
 qot_4: "{} **Message limit is 10!**"
+them_1: "{} **List of Themes:\n\n**"
+them_2: "{} **This is a list of themes.**"
 
 # restrict
 res_1: "{} **Oh, you want to kick yourself?**"

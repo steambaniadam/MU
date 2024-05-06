@@ -385,9 +385,11 @@ pmper_10: "{} **Ehh Buta, Budeg, Congean!! Gw Dah Bilang `{}` Kali\nTungguin Bos
 
 # quote
 qot_1: "{} **Daftar Warna :\n\n**"
-qot_2: "{} **Dibaca ya dengan teliti Ya Setan!?**"
+qot_2: "{} **Dibaca dengan teliti Ya Setan!?**"
 qot_3: "{} **Yah Si Kontol!! Mo ilang Akun Beban Loe??**"
 qot_4: "{} **Batas pesannya 10 Anj!!**"
+them_1: "{} **Daftar Tema :\n\n**"
+them_2: "{} **Dibaca dengan teliti Ya Setan!?**"
 
 # restrict
 res_1: "{} **Kalo Bego, Dongo, Tolol Gausah Ngajak, Setan!!**"
