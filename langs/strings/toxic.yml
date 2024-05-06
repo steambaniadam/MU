@@ -201,8 +201,8 @@ em_25: "{} **Emoji status diatur ke : <emoji id={}>😭</emoji>.**"
 
 # gcast
 gcs_1: "{} **Eh Tolol!! Minimal mah kasih teks.**"
-gcs_2: "{} **Hasil Pesan Gcast :\n{} Masuk di `{}` Grup.\n{} Ketangkis di `{}` Grup.**"
-gcs_3: "{} **Hasil Pesan Gcast :\n{} Masuk di `{}` Pengguna.\n{} Ketangkis di `{}` Pengguna.**"
+gcs_2: "{} **Proses Gikes nih jink :\n{} Masuk di `{}` Grup.\n{} Ketangkis di `{}` Grup.**"
+gcs_3: "{} **Proses Gukes nih jink :\n{} Masuk di `{}` Pengguna.\n{} Ketangkis di `{}` Pengguna.**"
 gcs_4: "{} **Ini grup udah ada ya bangsat!!**"
 gcs_5: "{} **`{}` | `{}` Masuk jing ke blacklist.**"
 gcs_6: "{} **Grup `{}` udah ada Bego!!**"
@@ -214,6 +214,8 @@ gcs_11: "**• `{}` | `{}`**\n"
 gcs_12: "**• `{}`**\n"
 gcs_13: "{} **Daftar blacklistnya kosong nyet!!**"
 gcs_14: "{} **Done jing, semua grup-grup bajingan ilang dari blacklist!!**"
+gcs_15: "{} **Hasil Gikes nya mek :\n{} Masuk di `{}` Grup.\n{} Ketangkis di `{}` Grup.**"
+gcs_16: "{} **Hasil Gukes nya mek :\n{} Masuk di `{}` Grup.\n{} Ketangkis di `{}` Grup.**"
 
 # alive 
 alv_1: "**Author**"

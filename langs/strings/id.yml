@@ -201,8 +201,8 @@ em_25: "{} **Emoji status diatur ke : <emoji id={}>😭</emoji>.**"
 
 # gcast
 gcs_1: "{} **Silahkan balas ke pesan atau berikan pesan.**"
-gcs_2: "{} **Hasil Pesan Gcast :\n{} Berhasil di `{}` Grup.\n{} Gagal di `{}` Grup.**"
-gcs_3: "{} **Hasil Pesan Gcast :\n{} Berhasil di `{}` Pengguna.\n{} Gagal di `{}` Pengguna.**"
+gcs_2: "{} **Proses Broadcast Grup :\n{} Terkirim ke : `{}` Grup.\n{} Gagal Terkirim ke : `{}` Grup.**"
+gcs_3: "{} **Proses Broadcast Pengguna :\n{} Terkirim ke : `{}` Pengguna.\n{} Gagal Terkirim ke : `{}` Pengguna.**"
 gcs_4: "{} **Grup ini sudah ada dalam blacklist!!**"
 gcs_5: "{} **`{}` | `{}` Berhasil ditambahkan ke dalam blacklist.**"
 gcs_6: "{} **Grup `{}` sudah ada dalam blacklist!!**"
@@ -214,6 +214,8 @@ gcs_11: "**• `{}` | `{}`**\n"
 gcs_12: "**• `{}`**\n"
 gcs_13: "{} **Daftar blacklist kosong!!**"
 gcs_14: "{} **Semua daftar hitam telah berhasil dihapus.**"
+gcs_15: "{} **Hasil Broadcast Grup :\n{} Berhasil di `{}` Grup.\n{} Gagal di `{}` Grup.**"
+gcs_16: "{} **Hasil Broadcast Pengguna :\n{} Berhasil di `{}` Grup.\n{} Gagal di `{}` Grup.**"
 
 # alive 
 alv_1: "**Author**"

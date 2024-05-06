@@ -60,7 +60,7 @@ async def _(c: nlx, m):
                     await c.send_message(chat, send)
                 done += 1
                 updated_content = cgr("gcs_2").format(
-                    em.alive, em.sukses, done, em.gagal, failed
+                    em.proses, em.sukses, done, em.gagal, failed
                 )
                 if msg is None:
                     msg = await m.reply(updated_content)
@@ -76,7 +76,7 @@ async def _(c: nlx, m):
             except Exception:
                 failed += 1
                 updated_content = cgr("gcs_2").format(
-                    em.alive, em.sukses, done, em.gagal, failed
+                    em.proses, em.sukses, done, em.gagal, failed
                 )
                 if msg is None:
                     msg = await m.reply(updated_content)
@@ -92,7 +92,7 @@ async def _(c: nlx, m):
                         await c.send_message(chat, send)
                     done += 1
                     updated_content = cgr("gcs_2").format(
-                        em.alive, em.sukses, done, em.gagal, failed
+                        em.proses, em.sukses, done, em.gagal, failed
                     )
                     if msg is None:
                         msg = await m.reply(updated_content)
@@ -101,7 +101,7 @@ async def _(c: nlx, m):
                     await asyncio.sleep(0.3)
                 except Exception:
                     failed += 1
-                    updated_content = cgr("gcs_2").format(
+                    updated_content = cgr("gcs_15").format(
                         em.alive, em.sukses, done, em.gagal, failed
                     )
                     if msg is None:
@@ -133,7 +133,7 @@ async def _(c: nlx, m):
                     await c.send_message(chat, send)
                 done += 1
                 updated_content = cgr("gcs_3").format(
-                    em.alive, em.sukses, done, em.gagal, failed
+                    em.proses, em.sukses, done, em.gagal, failed
                 )
                 if msg is None:
                     msg = await m.reply(updated_content)
@@ -145,7 +145,7 @@ async def _(c: nlx, m):
             except Exception:
                 failed += 1
                 updated_content = cgr("gcs_3").format(
-                    em.alive, em.sukses, done, em.gagal, failed
+                    em.proses, em.sukses, done, em.gagal, failed
                 )
                 if msg is None:
                     msg = await m.reply(updated_content)
@@ -161,7 +161,7 @@ async def _(c: nlx, m):
                         await c.send_message(chat, send)
                     done += 1
                     updated_content = cgr("gcs_3").format(
-                        em.alive, em.sukses, done, em.gagal, failed
+                        em.proses, em.sukses, done, em.gagal, failed
                     )
                     if msg is None:
                         msg = await m.reply(updated_content)
@@ -170,7 +170,7 @@ async def _(c: nlx, m):
                     await asyncio.sleep(0.3)
                 except Exception:
                     failed += 1
-                    updated_content = cgr("gcs_3").format(
+                    updated_content = cgr("gcs_16").format(
                         em.alive, em.sukses, done, em.gagal, failed
                     )
                     if msg is None:

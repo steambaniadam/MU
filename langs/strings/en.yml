@@ -180,8 +180,8 @@ em_25: "{} **Emoji status set to: <emoji id={}>😭</emoji>.**"
 
 # gcast
 gcs_1: "{} **Please reply to a message or give a message.**"
-gcs_2: "{} **Gcast Message Result:\n{} Succeeded in `{}` Groups.\n{} Failed in `{}` Groups.**"
-gcs_3: "{} **Gcast Message Result:\n{} Succeeded in `{}` Users.\n{} Failed in `{}` Users.**"
+gcs_2: "{} **Group Broadcast Process :\n{} Sent to : `{}` Group.\n{} Failed to Send to : `{}` Group.**"
+gcs_3: "{} **User Broadcast Process :\n{} Sent to : `{}` User.\n{} Failed to Send to : `{}` User.**"
 gcs_4: "{} **This group is already in the blacklist!!**"
 gcs_5: "{} **`{}` | `{}` Added to the blacklist successfully.**"
 gcs_6: "{} **Group `{}` is already in the blacklist!!**"
@@ -193,6 +193,8 @@ gcs_11: "**• `{}` | `{}`**\n"
 gcs_12: "**• `{}`**\n"
 gcs_13: "{} **The blacklist list is empty!!**"
 gcs_14: "{} **All blacklist lists have been successfully deleted.**"
+gcs_15: "{} **Group Broadcast Result :\n{} Succeeded in `{}` Group.\n{} Failed in `{}` Group.**"
+gcs_16: "{} **User Broadcast Result :\n{} Succeeded in `{}` Group.\n{} Failed in `{}` Group.**"
 
 # alive 
 alv_1: "**Author**"
