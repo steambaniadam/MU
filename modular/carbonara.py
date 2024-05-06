@@ -54,7 +54,9 @@ async def _(c, m):
     em.initialize()
 
     if m.reply_to_message is None and len(m.command) < 2:
-        return await m.reply("Perintah ini harus digunakan sebagai balasan ke sebuah pesan atau menyertakan kode.")
+        return await m.reply(
+            "Perintah ini harus digunakan sebagai balasan ke sebuah pesan atau menyertakan kode."
+        )
 
     text = m.reply_to_message.text or m.reply_to_message.caption
     if len(m.command) >= 2:
@@ -68,10 +70,10 @@ async def _(c, m):
     language = "python"
 
     if len(m.command) > 2:
-        args = dict(arg.split('=') for arg in m.text.split()[2:])
-        bgne = args.get('bgne')
-        theme = args.get('theme')
-        language = args.get('language', 'python')
+        args = dict(arg.split("=") for arg in m.text.split()[2:])
+        bgne = args.get("bgne")
+        theme = args.get("theme")
+        language = args.get("language", "python")
 
     ex = await m.reply(cgr("proses").format(em.proses))
     try:
