@@ -224,6 +224,46 @@ async def _(c: nlx, m):
         await pros.edit(f"{em.gagal} {str(e)}")
 
 
+def get_temp_messages(email):
+    url = f"https://temp-mail44.p.rapidapi.com/api/v3/email/{email}/messages"
+    headers = {
+        "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+        "X-RapidAPI-Host": "temp-mail44.p.rapidapi.com"
+    }
+    response = requests.get(url, headers=headers)
+    return response.json()
+
+
+async def format_temp_messages(messages):
+    formatted_messages = ""
+    for email in messages:
+        formatted_messages += f"ID Pesan : {email['id']}\n"
+        formatted_messages += f"Pesan Dari : {email['from']}\n"
+        formatted_messages += f"Tujuan : {email['to']}\n"
+        formatted_messages += f"CC : {email.get('cc', 'Unknown')}\n"
+        formatted_messages += f"Subjek : {email['subject']}\n"
+        formatted_messages += f"Isi Teks : {email['body_text']}\n"
+        formatted_messages += f"Tanggal Dibuat : {email['created_at']}\n\n"
+    return formatted_messages
+
+
+@ky.ubot("gettemp", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    try:
+        if len(m.command) > 1:
+            email = m.command[1]
+            messages = get_temp_messages(email)
+            formatted_messages = await format_temp_messages(messages)
+            await m.reply(formatted_messages)
+        else:
+            await m.reply("Mohon berikan alamat email sebagai argumen.")
+    except Exception as e:
+        await m.reply(f"{em.gagal} Gagal mengambil pesan sementara: {str(e)}")
+
+
+
 """
 @ky.ubot("ipf|ipfake", sudo=True)
 async def _(c: nlx, m):
