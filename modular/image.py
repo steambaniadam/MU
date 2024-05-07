@@ -38,11 +38,11 @@ async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
     rep = m.reply_to_message
+    pros = await m.reply(cgr("proses").format(em.proses))
     try:
         if len(m.command) < 2 and not rep:
             await m.reply(f"{em.gagal} **MINIMAL KASIH QUERY BWANG!!**")
             return
-        pros = await m.reply(cgr("proses").format(em.proses))
         if rep:
             query = rep.text
         else:
