@@ -124,9 +124,7 @@ async def _(c: nlx, m):
     try:
         temp_gmail_info = await generate_temp_gmail()
         formatted_temp_gmail_info = await format_temp_gmail(temp_gmail_info)
-        await pros.edit(
-            f"{em.sukses} {formatted_temp_gmail_info}"
-        )
+        await pros.edit(f"{em.sukses} {formatted_temp_gmail_info}")
     except Exception as e:
         await pros.edit(f"{em.gagal} {str(e)}")
 
