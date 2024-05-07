@@ -40,16 +40,14 @@ def format_ip_info(ip_info):
     formatted_info += f"• Hostname : `{ip_info.get('hostname', 'Unknown')}`\n"
     formatted_info += f"• Kota : `{ip_info.get('city', 'Unknown')}`\n"
     formatted_info += f"• Region : `{ip_info.get('region', 'Unknown')}`\n"
-    formatted_info += (
-        f"• Negara : `{ip_info.get('country_name', 'Unknown')}`\n"
-    )
+    formatted_info += f"• Negara : `{ip_info.get('country_name', 'Unknown')}`\n"
     formatted_info += f"• Lokasi : [Tautan Lokasi]({google_maps_link})\n"
     formatted_info += f"• Kode Pos : `{ip_info.get('postal', 'Unknown')}`\n"
-    formatted_info += (
-        f"• Zona Waktu : `{ip_info.get('timezone', 'Unknown')}`\n"
-    )
+    formatted_info += f"• Zona Waktu : `{ip_info.get('timezone', 'Unknown')}`\n"
     formatted_info += f"• Bendera Negara : `{ip_info.get('country_flag', {}).get('emoji', 'Unknown')}`\n"
-    formatted_info += f"• Mata Uang : `{ip_info.get('country_currency', {}).get('code', 'Unknown')}`"
+    formatted_info += (
+        f"• Mata Uang : `{ip_info.get('country_currency', {}).get('code', 'Unknown')}`"
+    )
 
     return formatted_info
 
@@ -74,10 +72,10 @@ async def _(c: nlx, m):
                     [InlineKeyboardButton("Tutup", callback_data="close_ip")],
                 ],
             )
-            
+
             await pros.edit(
                 f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n{formatted_info}",
-                reply_markup=keyboard
+                reply_markup=keyboard,
             )
         else:
             await pros.edit(
@@ -90,6 +88,7 @@ async def _(c: nlx, m):
 @ky.callback("close_ip")
 async def _(c, cq):
     await cq.message.delete()
+
 
 """
 @ky.ubot("ipf|ipfake", sudo=True)
