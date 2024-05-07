@@ -69,7 +69,8 @@ async def _(c: nlx, m):
                 [[InlineKeyboardButton("Tutup", callback_data="close_ip")]],
             )
 
-            await m.reply(
+            await c.send_message(
+                m.chat.id,
                 f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n{formatted_info}",
                 reply_markup=keyboard,
                 reply_to_message_id=m.message_id,
