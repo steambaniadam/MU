@@ -18,7 +18,7 @@ __models__ = "Image"
 __help__ = get_cgr("help_img")
 
 
-async def search_images(query, m, max_results=5, pros=None):
+async def search_images(query, m, max_results, pros=None):
     url = "https://google-api31.p.rapidapi.com/imagesearch"
     headers = {
         "content-type": "application/json",
@@ -52,7 +52,7 @@ async def search_images(query, m, max_results=5, pros=None):
     except Exception as e:
         print(f"Error fetching images: {e}")
     finally:
-        os.remove(media_list)
+        os.remove(img)
         if pros:
             await pros.delete()
 
