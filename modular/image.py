@@ -8,7 +8,6 @@
 
 
 import requests
-from bs4 import BeautifulSoup
 
 from Mix import *
 
@@ -16,13 +15,12 @@ __models__ = "Image"
 __help__ = get_cgr("help_img")
 
 
-
 async def search_images(query, max_results=5):
     url = "https://google-api31.p.rapidapi.com/imagesearch"
     headers = {
         "content-type": "application/json",
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-        "X-RapidAPI-Host": "google-api31.p.rapidapi.com"
+        "X-RapidAPI-Host": "google-api31.p.rapidapi.com",
     }
     payload = {
         "text": query,
@@ -32,7 +30,7 @@ async def search_images(query, max_results=5):
         "size": "",
         "type_image": "",
         "layout": "",
-        "max_results": max_results
+        "max_results": max_results,
     }
     try:
         response = await requests.post(url, json=payload, headers=headers)
