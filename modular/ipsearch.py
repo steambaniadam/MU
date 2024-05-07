@@ -52,14 +52,17 @@ async def _(c: nlx, m):
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
     try:
-        ip = m.text.split("/ipinfo ", 1)[1]
-        ip_info = get_ip_info(ip)
-        formatted_info = format_ip_info(ip_info)
-        pros.edit(
-            f"{em.sukses} Sukses mendapatkan informasi dari IP `{m.command[1]}`:\n\n{formatted_info}"
-        )
+        if len(m.command) > 1:
+            ip = m.command[1]
+            ip_info = get_ip_info(ip)
+            formatted_info = format_ip_info(ip_info)
+            pros.edit(
+                f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n{formatted_info}"
+            )
+        else:
+            pros.edit(cgr("error").format(em.gagal, "Mohon masukkan IP yang valid."))
     except Exception as e:
-        pros.edit(cgr("error").format(em.gagal, e))
+        pros.edit(cgr("error").format(em.gagal, str(e)))
 
 
 """
