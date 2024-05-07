@@ -79,7 +79,9 @@ async def _(c: nlx, m):
             if len(m.command) == 2:
                 max_results = int(m.command[1])
         else:
-            return await m.reply(f"Contoh penggunaan : `{m.text} 5 kucing lucu` atau `{m.text} kucing lucu`")
+            return await m.reply(
+                f"Contoh penggunaan : `{m.text} 5 kucing lucu` atau `{m.text} kucing lucu`"
+            )
 
         pros = await m.reply(cgr("proses").format(em.proses))
         await search_images(query, m, max_results, pros)
