@@ -58,7 +58,7 @@ async def _(c: nlx, m):
                 max_results = int(m.command[1])
 
         pros = await m.reply(cgr("proses").format(em.proses))
-        images_response = search_images(query, max_results)
+        images_response = await search_images(query, max_results)
         if images_response and "result" in images_response:
             images = images_response["result"]
             for img_info in images:
