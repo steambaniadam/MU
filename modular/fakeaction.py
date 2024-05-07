@@ -27,8 +27,11 @@ async def _(c: nlx, m):
                 f"{em.sukses} Sukses : `{success_count}` grup.\n"
                 f"{em.gagal} Gagal : `{failure_count}` grup."
             )
+            if len(m.command) > 2:
+                reason = ' '.join(m.command[2:])
+                report_message += f"\n\nAlasan : {reason}"
             await pros.edit(report_message)
         else:
             await pros.edit("Mohon berikan username atau user ID sebagai argumen.")
     except Exception as e:
-        await pros.edit(f"{em.gagal} Gagal membuat laporan Globall Banned: {str(e)}")
+        await pros.edit(f"{em.gagal} Gagal membuat laporan Global Banned: {str(e)}")
