@@ -67,7 +67,7 @@ async def _(c: nlx, m):
             keyboard = InlineKeyboardMarkup(
                 [
                     [InlineKeyboardButton("Tautan Lokasi", url=google_maps_link)],
-                    [InlineKeyboardButton("Tutup", callback_data="close_ip")]
+                    [InlineKeyboardButton("Tutup", callback_data="close_ip")],
                 ]
             )
 
