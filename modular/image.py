@@ -6,8 +6,10 @@
 """
 ################################################################
 
-
+import os
+from io import BytesIO
 import requests
+from pyrogram.types import InputMediaPhoto
 
 from Mix import *
 
@@ -58,19 +60,25 @@ async def _(c: nlx, m):
                 max_results = int(m.command[1])
 
         pros = await m.reply(cgr("proses").format(em.proses))
-        images_response = await search_images(query, max_results)
-        if images_response and "result" in images_response:
-            images = images_response["result"]
-            for img_info in images:
-                await m.reply(img_info["image"])
-        else:
-            await m.reply(f"{em.gagal} **Gambar tidak ditemukan.**")
+        result = await search_images(query, max_results)
+        img_res = result.get("results", [])
+        for img_inf in img_res:
+            image_url = img_inf.get("image")
+            if image_url and image_url.startswith("http"):
+                response = requests.get(image_url)
+                if response.status_code == 200:
+                    img = BytesIO(response.content)
+                    media = InputMediaPhoto(img)
+                    await m.reply_media_group([media], reply_to_message_id=ReplyCheck(m))
+                    try:
+                        os.remove(media)
+                    except:
+                        pass
+                else:
+                    continue 
     except Exception as e:
-        print(f"Error processing image search: {e}")
-        await m.reply(f"{em.gagal} **Terjadi kesalahan saat mencari gambar.**")
-    finally:
-        await pros.delete()
-
+        print(f"Error: {e}")
+        return
 
 """
 @ky.ubot("imeg", sudo=True)
