@@ -174,6 +174,7 @@ async def _(c: nlx, m):
         await pros.edit(f"{em.gagal} {str(e)}")
 
 
+# COMING SOON! LIMIT BRE!
 def get_message(messid, addres, token):
     url = "https://temporary-gmail-account.p.rapidapi.com/GmailGetMessage"
 
@@ -189,6 +190,41 @@ def get_message(messid, addres, token):
     }
     response = requests.post(url, json=payload, headers=headers)
     return response.json()
+
+
+def gen_temp_mail():
+    url = "https://temp-mail44.p.rapidapi.com/api/v3/email/new"
+    payload = {
+	    "key1": "value",
+	    "key2": "value"
+    }
+    headers = {
+	    "content-type": "application/json",
+	    "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+	    "X-RapidAPI-Host": "temp-mail44.p.rapidapi.com"
+    }
+    response = requests.post(url, json=payload, headers=headers)
+    return response.json()
+
+
+async def format_temp_mail(temp_mail):
+    if "email" in temp_mail and "token" in temp_mail:
+        return f"Success Generated Temp Mail :\nEmail : `{temp_mail['email']}`\nToken : `{temp_mail['token']}`"
+    else:
+        raise ValueError("Missing address or token in temporary Gmail account info")
+
+
+@ky.ubot("tempmail", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    pros = await m.reply(cgr("proses").format(em.proses))
+    try:
+        temp_gmail_info = gen_temp_mail()
+        formatted_temp_mail = await format_temp_mail(temp_gmail_info)
+        await pros.edit(f"{em.sukses} {formatted_temp_mail}")
+    except Exception as e:
+        await pros.edit(f"{em.gagal} {str(e)}")
 
 
 """
