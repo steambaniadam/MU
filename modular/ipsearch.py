@@ -8,17 +8,15 @@
 """
 ################################################################
 
-import asyncio
+
 import requests
 from pyrogram import *
 from pyrogram.types import *
 
 from Mix import *
-from Mix.core import http
 
 __modles__ = "IpSearch"
 __help__ = get_cgr("help_ips")
-
 
 
 def get_ip_info(ip):
@@ -26,7 +24,7 @@ def get_ip_info(ip):
     querystring = {"ip": ip}
     headers = {
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-        "X-RapidAPI-Host": "ip-geolocation-find-ip-location-and-ip-info.p.rapidapi.com"
+        "X-RapidAPI-Host": "ip-geolocation-find-ip-location-and-ip-info.p.rapidapi.com",
     }
     response = requests.get(url, headers=headers, params=querystring)
     return response.json()
@@ -57,7 +55,9 @@ async def _(c: nlx, m):
         ip = m.text.split("/ipinfo ", 1)[1]
         ip_info = get_ip_info(ip)
         formatted_info = format_ip_info(ip_info)
-        pros.edit(f"{em.sukses} Sukses mendapatkan informasi dari IP `{m.command[1]}`:\n\n{formatted_info}")
+        pros.edit(
+            f"{em.sukses} Sukses mendapatkan informasi dari IP `{m.command[1]}`:\n\n{formatted_info}"
+        )
     except Exception as e:
         pros.edit(cgr("error").format(em.gagal, e))
 
