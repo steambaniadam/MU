@@ -65,15 +65,16 @@ async def _(c: nlx, m):
             latitude, longitude = ip_info.get("loc", "0,0").split(",")
             google_maps_link = f"https://www.google.com/maps?q={latitude},{longitude}"
             keyboard = InlineKeyboardMarkup(
-                [[InlineKeyboardButton("Tautan Lokasi", url=google_maps_link)]],
-                [[InlineKeyboardButton("Tutup", callback_data="close_ip")]],
+                [
+                    [InlineKeyboardButton("Tautan Lokasi", url=google_maps_link)],
+                    [InlineKeyboardButton("Tutup", callback_data="close_ip")]
+                ]
             )
 
-            await c.send_message(
-                m.chat.id,
+            await m.reply(
                 f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n{formatted_info}",
                 reply_markup=keyboard,
-                reply_to_message_id=m.message_id,
+                reply_to_message_id=ReplyCheck(m),
             )
             await pros.delete()
         else:
