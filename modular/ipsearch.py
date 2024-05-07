@@ -125,7 +125,7 @@ async def _(c: nlx, m):
         await pros.edit(f"{em.gagal} {str(e)}")
 
 
-async def get_messages_temp_email(gmail, token):
+def get_messages_temp_email(gmail, token):
     url = "https://temporary-gmail-account.p.rapidapi.com/GmailGetMessages"
     payload = {
         "address": gmail,
@@ -136,12 +136,8 @@ async def get_messages_temp_email(gmail, token):
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
         "X-RapidAPI-Host": "temporary-gmail-account.p.rapidapi.com",
     }
-    try:
-        response = await requests.post(url, json=payload, headers=headers)
-        response.raise_for_status()
-        return response.json()
-    except Exception as e:
-        raise Exception("Failed to get messages from temporary Gmail account") from e
+    response = requests.post(url, json=payload, headers=headers)
+    return response.json()
 
 
 async def format_messages(messages):
@@ -169,7 +165,7 @@ async def _(c: nlx, m):
         if len(m.command) >= 3:
             gmail = m.command[1]
             token = m.command[2]
-            messages = await get_messages_temp_email(gmail, token)
+            messages = get_messages_temp_email(gmail, token)
             formatted_messages = await format_messages(messages)
             await pros.edit(f"{em.sukses} {formatted_messages}")
         else:
