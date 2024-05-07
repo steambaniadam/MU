@@ -93,7 +93,7 @@ async def _(c, cq):
     await cq.message.delete()
 
 
-async def generate_temp_gmail():
+def generate_temp_gmail():
     url = "https://temporary-gmail-account.p.rapidapi.com/GmailGetAccount"
     payload = {"generateNewAccount": 1}
     headers = {
@@ -101,12 +101,8 @@ async def generate_temp_gmail():
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
         "X-RapidAPI-Host": "temporary-gmail-account.p.rapidapi.com",
     }
-    try:
-        response = await requests.post(url, json=payload, headers=headers)
-        response.raise_for_status()
-        return response.json()
-    except Exception as e:
-        raise Exception("Failed to generate temporary Gmail account") from e
+    response = requests.post(url, json=payload, headers=headers)
+    return response.json()
 
 
 async def format_temp_gmail(temp_gmail_info):
@@ -122,7 +118,7 @@ async def _(c: nlx, m):
     em.initialize()
     pros = await m.reply(cgr("proses").format(em.proses))
     try:
-        temp_gmail_info = await generate_temp_gmail()
+        temp_gmail_info = generate_temp_gmail()
         formatted_temp_gmail_info = await format_temp_gmail(temp_gmail_info)
         await pros.edit(f"{em.sukses} {formatted_temp_gmail_info}")
     except Exception as e:
