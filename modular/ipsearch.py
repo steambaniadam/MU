@@ -63,7 +63,9 @@ async def _(c: nlx, m):
                 f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n{formatted_info}"
             )
         else:
-            await pros.edit(cgr("error").format(em.gagal, "Mohon masukkan IP yang valid."))
+            await pros.edit(
+                cgr("error").format(em.gagal, "Mohon masukkan IP yang valid.")
+            )
     except Exception as e:
         await pros.edit(cgr("error").format(em.gagal, str(e)))
 
