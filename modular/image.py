@@ -62,7 +62,7 @@ async def _(c: nlx, m):
 
         await m.reply(cgr("proses").format(em.proses))
         result = await search_images(query, max_results)
-        img_res = result.get("results", [])
+        img_res = result.get("result", [])
         for img_inf in img_res:
             image_url = img_inf.get("image")
             if image_url and image_url.startswith("http"):
