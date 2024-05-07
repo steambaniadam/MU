@@ -36,20 +36,20 @@ def format_ip_info(ip_info):
     latitude, longitude = ip_info.get("loc", "0,0").split(",")
     google_maps_link = f"https://www.google.com/maps?q={latitude},{longitude}"
     formatted_info = ""
-    formatted_info += f"{em.sukses} IP Address : `{ip_info.get('ip', 'None')}`\n"
-    formatted_info += f"{em.sukses} Hostname : `{ip_info.get('hostname', 'None')}`\n"
-    formatted_info += f"{em.sukses} Kota : `{ip_info.get('city', 'Unknown')}`\n"
-    formatted_info += f"{em.sukses} Region : `{ip_info.get('region', 'Unknown')}`\n"
+    formatted_info += f"• IP Address : `{ip_info.get('ip', 'None')}`\n"
+    formatted_info += f"• Hostname : `{ip_info.get('hostname', 'Unknown')}`\n"
+    formatted_info += f"• Kota : `{ip_info.get('city', 'Unknown')}`\n"
+    formatted_info += f"• Region : `{ip_info.get('region', 'Unknown')}`\n"
     formatted_info += (
-        f"{em.sukses} Negara : `{ip_info.get('country_name', 'Unknown')}`\n"
+        f"• Negara : `{ip_info.get('country_name', 'Unknown')}`\n"
     )
-    formatted_info += f"{em.sukses} Lokasi : [Tautan Lokasi]({google_maps_link})\n"
-    formatted_info += f"{em.sukses} Kode Pos : `{ip_info.get('postal', 'Unknown')}`\n"
+    formatted_info += f"• Lokasi : [Tautan Lokasi]({google_maps_link})\n"
+    formatted_info += f"• Kode Pos : `{ip_info.get('postal', 'Unknown')}`\n"
     formatted_info += (
-        f"{em.sukses} Zona Waktu : `{ip_info.get('timezone', 'Unknown')}`\n"
+        f"• Zona Waktu : `{ip_info.get('timezone', 'Unknown')}`\n"
     )
-    formatted_info += f"{em.sukses} Bendera Negara : `{ip_info.get('country_flag', {}).get('emoji', 'Unknown')}`\n"
-    formatted_info += f"{em.sukses} Mata Uang : `{ip_info.get('country_currency', {}).get('code', 'Unknown')}`"
+    formatted_info += f"• Bendera Negara : `{ip_info.get('country_flag', {}).get('emoji', 'Unknown')}`\n"
+    formatted_info += f"• Mata Uang : `{ip_info.get('country_currency', {}).get('code', 'Unknown')}`"
 
     return formatted_info
 
@@ -64,8 +64,20 @@ async def _(c: nlx, m):
             ip = m.command[1]
             ip_info = get_ip_info(ip)
             formatted_info = format_ip_info(ip_info)
+            latitude, longitude = ip_info.get("loc", "0,0").split(",")
+            google_maps_link = f"https://www.google.com/maps?q={latitude},{longitude}"
+            keyboard = InlineKeyboardMarkup(
+                [
+                    [InlineKeyboardButton("Tautan Lokasi", url=google_maps_link)],
+                ],
+                [
+                    [InlineKeyboardButton("Tutup", callback_data="close_ip")],
+                ],
+            )
+            
             await pros.edit(
-                f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n{formatted_info}"
+                f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n{formatted_info}",
+                reply_markup=keyboard
             )
         else:
             await pros.edit(
@@ -74,6 +86,10 @@ async def _(c: nlx, m):
     except Exception as e:
         await pros.edit(cgr("error").format(em.gagal, str(e)))
 
+
+@ky.callback("close_ip")
+async def _(c, cq):
+    await cq.message.delete()
 
 """
 @ky.ubot("ipf|ipfake", sudo=True)
