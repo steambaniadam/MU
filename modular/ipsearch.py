@@ -65,10 +65,8 @@ async def _(c: nlx, m):
             latitude, longitude = ip_info.get("loc", "0,0").split(",")
             google_maps_link = f"https://www.google.com/maps?q={latitude},{longitude}"
             keyboard = InlineKeyboardMarkup(
-                [
-                    [InlineKeyboardButton("Tautan Lokasi", url=google_maps_link)]
-                ],
-                [[InlineKeyboardButton("Tutup", callback_data="close_ip")]]
+                [[InlineKeyboardButton("Tautan Lokasi", url=google_maps_link)]],
+                [[InlineKeyboardButton("Tutup", callback_data="close_ip")]],
             )
 
             await m.reply(
