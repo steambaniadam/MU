@@ -8,6 +8,7 @@
 
 import os
 from io import BytesIO
+
 import requests
 from pyrogram.types import InputMediaPhoto
 
@@ -59,7 +60,7 @@ async def _(c: nlx, m):
             if len(m.command) == 2:
                 max_results = int(m.command[1])
 
-        pros = await m.reply(cgr("proses").format(em.proses))
+        await m.reply(cgr("proses").format(em.proses))
         result = await search_images(query, max_results)
         img_res = result.get("results", [])
         for img_inf in img_res:
@@ -69,16 +70,19 @@ async def _(c: nlx, m):
                 if response.status_code == 200:
                     img = BytesIO(response.content)
                     media = InputMediaPhoto(img)
-                    await m.reply_media_group([media], reply_to_message_id=ReplyCheck(m))
+                    await m.reply_media_group(
+                        [media], reply_to_message_id=ReplyCheck(m)
+                    )
                     try:
                         os.remove(media)
                     except:
                         pass
                 else:
-                    continue 
+                    continue
     except Exception as e:
         print(f"Error: {e}")
         return
+
 
 """
 @ky.ubot("imeg", sudo=True)
