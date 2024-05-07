@@ -6,7 +6,6 @@
 """
 ################################################################
 
-import os
 from io import BytesIO
 
 import requests
@@ -48,7 +47,7 @@ async def search_images(query, m, max_results, pros=None):
                 if response.status_code == 200:
                     img = BytesIO(response.content)
                     media_list.append(InputMediaPhoto(img))
-        
+
         await m.reply_media_group(media_list, reply_to_message_id=ReplyCheck(m))
     except Exception as e:
         print(f"Error fetching images: {e}")
