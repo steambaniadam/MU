@@ -64,15 +64,20 @@ async def _(c: nlx, m):
         query = ""
         max_results = 3
         if len(m.command) == 2:
-            query = m.text.split(None, 1)[1]
+            if m.command[1].isdigit():
+                max_results = int(m.command[1])
+            else:
+                query = m.text.split(None, 1)[1]
         elif len(m.command) >= 3:
-            max_results = int(m.command[2])
+            if m.command[1].isdigit():
+                max_results = int(m.command[1])
+                query = m.text.split(None, 2)[2]
+            else:
+                query = m.text.split(None, 1)[1]
         elif m.reply_to_message:
             query = m.reply_to_message.text
             if len(m.command) == 2:
                 max_results = int(m.command[1])
-        else:
-            return await m.reply("Harap berikan kueri.")
 
         pros = await m.reply(cgr("proses").format(em.proses))
         await search_images(query, m, max_results, pros)
