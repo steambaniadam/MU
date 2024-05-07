@@ -238,15 +238,26 @@ async def get_temp_messages(email):
 async def format_temp_messages(messages):
     formatted_messages = ""
     for email in messages:
-        formatted_messages += f"ID Pesan : {email['id']}\n"
-        formatted_messages += f"Pesan Dari : {email['from']}\n"
-        formatted_messages += f"Tujuan : {email['to']}\n"
-        formatted_messages += f"CC : {email.get('cc', 'Unknown')}\n"
-        formatted_messages += f"Subjek : {email['subject']}\n"
-        formatted_messages += f"Isi Teks : {email['body_text']}\n"
-        formatted_messages += f"Tanggal Dibuat : {email['created_at']}\n\n"
-    print(formatted_messages)
+        from_email = email['from']
+        from_name_start = from_email.find('"') + 1
+        from_name_end = from_email.find('"', from_name_start)
+        from_name = from_email[from_name_start:from_name_end]
+        from_address_start = from_email.find('<') + 1
+        from_address_end = from_email.find('>', from_address_start)
+        from_address = from_email[from_address_start:from_address_end]
+
+        formatted_messages += f"ID Pesan : `{email['id']}`\n"
+        formatted_messages += f"Pesan Dari : `{from_name}`\n"
+        formatted_messages += f"Email Dari : `{from_address}`\n"
+        formatted_messages += f"Tujuan : `{email['to']}`\n"
+        formatted_messages += f"CC : `{email.get('cc', 'Unknown')}`\n"
+        formatted_messages += f"Subjek : `{email['subject']}`\n"
+        formatted_messages += f"Isi Teks : `{email['body_text']}`\n"
+        created_at = email['created_at']
+        formatted_created_at = datetime.strptime(created_at, '%Y-%m-%dT%H:%M:%S.%fZ').strftime('%d, %b %Y')
+        formatted_messages += f"Tanggal Dibuat : `{formatted_created_at}`\n\n"
     return formatted_messages
+
 
 
 @ky.ubot("gettemp", sudo=True)
