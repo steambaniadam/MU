@@ -7,8 +7,8 @@
 ################################################################
 
 
-import requests
 import aiohttp
+
 from Mix import *
 
 __models__ = "Image"
