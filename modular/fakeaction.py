@@ -1,0 +1,31 @@
+import asyncio
+import random
+from Mix import *
+
+from pyrogram import *
+from pyrogram.types import *
+
+__modles__ = "Fake Action"
+__help__ = "Fake Action"
+
+
+@ky.ubot("giben", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    pros = await m.reply(cgr("proses").format(em.proses))
+    await asyncio.sleep(3)
+    try:
+        if len(m.command) > 1:
+            success_count = random.randint(50, 200)
+            failure_count = random.randint(1, 20)
+            report_message = (
+                f"{em.warn} Laporan Global Banned :\n\n"
+                f"{em.sukses} Sukses : `{success_count}` grup.\n"
+                f"{em.gagal} Gagal : `{failure_count}` grup."
+            )
+            await pros.edit(report_message)
+        else:
+            await pros.edit("Mohon berikan username atau user ID sebagai argumen.")
+    except Exception as e:
+        await pros.edit(f"{em.gagal} Gagal membuat laporan Globall Banned: {str(e)}")
