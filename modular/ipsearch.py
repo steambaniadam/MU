@@ -228,7 +228,7 @@ def get_temp_messages(email):
     url = f"https://temp-mail44.p.rapidapi.com/api/v3/email/{email}/messages"
     headers = {
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-        "X-RapidAPI-Host": "temp-mail44.p.rapidapi.com"
+        "X-RapidAPI-Host": "temp-mail44.p.rapidapi.com",
     }
     response = requests.get(url, headers=headers)
     return response.json()
@@ -261,7 +261,6 @@ async def _(c: nlx, m):
             await m.reply("Mohon berikan alamat email sebagai argumen.")
     except Exception as e:
         await m.reply(f"{em.gagal} Gagal mengambil pesan sementara: {str(e)}")
-
 
 
 """
