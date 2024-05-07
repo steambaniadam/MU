@@ -173,11 +173,7 @@ async def _(c: nlx, m):
             formatted_messages = await format_messages(messages)
             await pros.edit(f"{em.sukses} {formatted_messages}")
         else:
-            await pros.edit(
-                cgr("error").format(
-                    em.gagal, "Mohon masukkan Gmail dan token yang valid."
-                )
-            )
+            await pros.edit(f"{em.gagal} Mohon masukkan Gmail dan token yang valid.")
     except Exception as e:
         await pros.edit(f"{em.gagal} {str(e)}")
 
