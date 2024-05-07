@@ -265,16 +265,17 @@ async def format_temp_messages(messages):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
+    pros = await m.reply(cgr("proses").format(em.proses))
     try:
         if len(m.command) > 1:
             email = m.command[1]
             messages = await get_temp_messages(email)
             formatted_messages = await format_temp_messages(messages)
-            await m.reply(formatted_messages)
+            await pros.edit(formatted_messages)
         else:
-            await m.reply("Mohon berikan alamat email sebagai argumen.")
+            await pros.edit("Mohon berikan alamat email sebagai argumen.")
     except Exception as e:
-        await m.reply(f"{em.gagal} Gagal mengambil pesan sementara: {str(e)}")
+        await pros.edit(f"{em.gagal} Gagal mengambil pesan sementara: {str(e)}")
 
 
 """
