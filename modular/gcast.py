@@ -67,8 +67,15 @@ async def _(c: nlx, m):
                 else:
                     await msg.edit(updated_content)
                 await asyncio.sleep(0.3)
-            except (SlowmodeWait, ChatWriteForbidden):
+            except SlowmodeWait:
                 failed += 1
+                updated_content = cgr("gcs_2").format(
+                    em.proses, em.sukses, done, em.gagal, failed
+                )
+                continue
+            except ChatWriteForbidden:
+                failed += 1
+                await c.leave_chat(chat)
                 updated_content = cgr("gcs_2").format(
                     em.proses, em.sukses, done, em.gagal, failed
                 )
