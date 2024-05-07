@@ -16,44 +16,55 @@ __models__ = "Image"
 __help__ = get_cgr("help_img")
 
 
-async def search_images(query):
-    url = f"https://www.google.com/search?q={query}&tbm=isch"
+
+async def search_images(query, max_results=5):
+    url = "https://google-api31.p.rapidapi.com/imagesearch"
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+        "X-RapidAPI-Host": "google-api31.p.rapidapi.com"
+    }
+    payload = {
+        "text": query,
+        "safesearch": "off",
+        "region": "wt-wt",
+        "color": "",
+        "size": "",
+        "type_image": "",
+        "layout": "",
+        "max_results": max_results
     }
     try:
-        response = requests.get(url, headers=headers)
+        response = await requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
-        soup = BeautifulSoup(response.text, "html.parser")
-        image_tags = soup.find_all("img", class_="t0fcAb")
-        image_urls = [img["src"] for img in image_tags]
-        return image_urls
+        return response.json()
     except Exception as e:
         print(f"Error fetching images: {e}")
-        return []
+        return None
 
 
 @ky.ubot("image|img", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    rep = m.reply_to_message
-    pros = await m.reply(cgr("proses").format(em.proses))
     try:
-        if len(m.command) < 2 and not rep:
-            await m.reply(f"{em.gagal} **MINIMAL KASIH QUERY BWANG!!**")
-            return
-        if rep:
-            query = rep.text
-        else:
+        query = ""
+        max_results = 1
+        if len(m.command) >= 2:
             query = m.text.split(None, 1)[1]
-        limit = 1
-        if len(m.command) == 3:
-            limit = int(m.text.split(None, 2)[2])
-        images = await search_images(query)
-        if images:
-            for img_url in images[:limit]:
-                await m.reply_photo(img_url)
+            if len(m.command) >= 3:
+                max_results = int(m.command[2])
+        elif m.reply_to_message:
+            query = m.reply_to_message.text
+            if len(m.command) == 2:
+                max_results = int(m.command[1])
+
+        pros = await m.reply(cgr("proses").format(em.proses))
+        images = await search_images(query, max_results)
+        if images and "result" in images:
+            for img_info in images["result"]:
+                caption = f"Judul: {img_info['title']}\nSumber: {img_info['source']}"
+                await m.reply_photo(photo=img_info["image"], caption=caption)
         else:
             await m.reply(f"{em.gagal} **Gambar tidak ditemukan.**")
     except Exception as e:
