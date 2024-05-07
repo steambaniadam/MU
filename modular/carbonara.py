@@ -57,7 +57,7 @@ async def _(c, m):
     if rep:
         text = m.reply_to_message.text or m.reply_to_message.caption
     if not text:
-        return await m.reply(cgr("crbn_1").format(em.gagal, m.text, m.text, m.text))
+        return await m.reply(cgr("crbn_1").format(em.gagal, m.text, m.text, m.text, m.text))
     ex = await m.reply(cgr("proses").format(em.proses))
     try:
         if rep:
