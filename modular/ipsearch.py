@@ -273,7 +273,8 @@ async def _(c: nlx, m):
             messages = await get_temp_messages(email)
             formatted_messages = await format_temp_messages(messages)
             await pros.edit(
-                f"{em.sukses} Berikut adalah isi pesan dari `{email}` :\n\n" + {formatted_messages}
+                f"{em.sukses} Berikut adalah isi pesan dari `{email}` :\n\n"
+                + {formatted_messages}
             )
         else:
             await pros.edit("Mohon berikan alamat email sebagai argumen.")
