@@ -8,7 +8,7 @@
 
 
 import requests
-
+import aiohttp
 from Mix import *
 
 __models__ = "Image"
@@ -33,9 +33,10 @@ async def search_images(query, max_results=5):
         "max_results": max_results,
     }
     try:
-        response = await requests.post(url, json=payload, headers=headers)
-        response.raise_for_status()
-        return response.json()
+        async with aiohttp.ClientSession() as session:
+            async with session.post(url, json=payload, headers=headers) as response:
+                response.raise_for_status()
+                return await response.json()
     except Exception as e:
         print(f"Error fetching images: {e}")
         return None
