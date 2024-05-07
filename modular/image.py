@@ -18,7 +18,7 @@ __models__ = "Image"
 __help__ = get_cgr("help_img")
 
 
-async def search_images(query, max_results=5):
+async def search_images(query, m, max_results=5):
     url = "https://google-api31.p.rapidapi.com/imagesearch"
     headers = {
         "content-type": "application/json",
@@ -39,7 +39,22 @@ async def search_images(query, max_results=5):
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
         img_res = response.json().get("result", [])
-        return img_res
+        for img_inf in img_res:
+            image_url = img_inf.get("image")
+            if image_url and image_url.endswith(".jpg"):
+                response = requests.get(image_url)
+                if response.status_code == 200:
+                    img = BytesIO(response.content)
+                    media = InputMediaPhoto(img)
+                    await m.reply_media_group(
+                        [media], reply_to_message_id=ReplyCheck(m)
+                    )
+                    try:
+                        os.remove(media)
+                    except:
+                        pass
+                else:
+                    continue
     except Exception as e:
         print(f"Error fetching images: {e}")
         return None
@@ -62,23 +77,8 @@ async def _(c: nlx, m):
                 max_results = int(m.command[1])
 
         await m.reply(cgr("proses").format(em.proses))
-        image_results = await search_images(query, max_results)
-        for img_inf in image_results:
-            image_url = img_inf.get("image")
-            if image_url and image_url.endswith(".jpg"):
-                response = requests.get(image_url)
-                if response.status_code == 200:
-                    img = BytesIO(response.content)
-                    media = InputMediaPhoto(img)
-                    await m.reply_media_group(
-                        [media], reply_to_message_id=ReplyCheck(m)
-                    )
-                    try:
-                        os.remove(media)
-                    except:
-                        pass
-                else:
-                    continue
+        await search_images(query, m, max_results)
+        return
     except Exception as e:
         print(f"Error: {e}")
 
