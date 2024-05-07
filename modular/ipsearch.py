@@ -231,6 +231,7 @@ async def get_temp_messages(email):
         "X-RapidAPI-Host": "temp-mail44.p.rapidapi.com",
     }
     response = requests.get(url, headers=headers)
+    print(response)
     return response.json()
 
 
@@ -244,6 +245,7 @@ async def format_temp_messages(messages):
         formatted_messages += f"Subjek : {email['subject']}\n"
         formatted_messages += f"Isi Teks : {email['body_text']}\n"
         formatted_messages += f"Tanggal Dibuat : {email['created_at']}\n\n"
+    print(formatted_messages)
     return formatted_messages
 
 
