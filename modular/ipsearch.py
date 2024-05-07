@@ -219,7 +219,9 @@ async def _(c: nlx, m):
     try:
         temp_gmail_info = gen_temp_mail()
         formatted_temp_mail = await format_temp_mail(temp_gmail_info)
-        await pros.edit(f"{em.sukses} Berikut Email Temp anda :\n\n{formatted_temp_mail}")
+        await pros.edit(
+            f"{em.sukses} Berikut Email Temp anda :\n\n{formatted_temp_mail}"
+        )
     except Exception as e:
         await pros.edit(f"{em.gagal} {str(e)}")
 
@@ -270,7 +272,9 @@ async def _(c: nlx, m):
             email = m.command[1]
             messages = await get_temp_messages(email)
             formatted_messages = await format_temp_messages(messages)
-            await pros.edit(f"{em.sukses} Berikut adalah isi pesan dari `{email}` :\n\n{formatted_messages}")
+            await pros.edit(
+                f"{em.sukses} Berikut adalah isi pesan dari `{email}` :\n\n{formatted_messages}"
+            )
         else:
             await pros.edit("Mohon berikan alamat email sebagai argumen.")
     except Exception as e:
