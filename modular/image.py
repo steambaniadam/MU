@@ -6,29 +6,27 @@
 """
 ################################################################
 
-import os
-from io import BytesIO
 
 import requests
 from bs4 import BeautifulSoup
-from pyrogram.types import InputMediaPhoto
-from Mix import *
 
+from Mix import *
 
 __models__ = "Image"
 __help__ = get_cgr("help_img")
 
 
-
 async def search_images(query):
     url = f"https://www.google.com/search?q={query}&tbm=isch"
-    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"}
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36"
+    }
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
-        image_tags = soup.find_all('img', class_='t0fcAb')
-        image_urls = [img['src'] for img in image_tags]
+        soup = BeautifulSoup(response.text, "html.parser")
+        image_tags = soup.find_all("img", class_="t0fcAb")
+        image_urls = [img["src"] for img in image_tags]
         return image_urls
     except Exception as e:
         print(f"Error fetching images: {e}")
