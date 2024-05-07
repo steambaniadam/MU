@@ -22,14 +22,14 @@ async def _(c: nlx, m):
             success_count = random.randint(50, 200)
             failure_count = random.randint(1, 20)
             report_message = (
-                f"{em.warn} Laporan Global Banned :\n\n"
-                f"{em.profil} Pengguna : `{pengguna}`\n"
-                f"{em.sukses} Sukses : `{success_count}` grup.\n"
-                f"{em.gagal} Gagal : `{failure_count}` grup."
+                f"{em.warn} <b>Laporan Global Banned :</b>\n\n"
+                f"{em.profil} <b>Pengguna : {pengguna}</b>\n"
+                f"{em.sukses} <b>Sukses : `{success_count}` grup.</b>\n"
+                f"{em.gagal} <b>Gagal : `{failure_count}` grup.</b>"
             )
             if len(m.command) > 2:
-                reason = " ".join(m.command[2:])
-                report_message += f"\n\nAlasan : {reason}"
+                reason = ' '.join(m.command[2:])
+                report_message += f"\n\n<b>Alasan : `{reason}`</b>"
             await pros.edit(report_message)
         else:
             await pros.edit("Mohon berikan username atau user ID sebagai argumen.")
