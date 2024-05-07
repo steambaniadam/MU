@@ -31,18 +31,17 @@ def get_ip_info(ip):
 
 
 def format_ip_info(ip_info):
-    formatted_info = (
-        f"IP Address : {ip_info['ip']}\n"
-        f"Hostname : {ip_info['hostname']}\n"
-        f"Kota : {ip_info['city']}\n"
-        f"Region : {ip_info['region']}\n"
-        f"Negara : {ip_info['country_name']}\n"
-        f"Lokasi : {ip_info['loc']}\n"
-        f"Kode Pos : {ip_info['postal']}\n"
-        f"Zona Waktu : {ip_info['timezone']}\n"
-        f"Bendera Negara : {ip_info['country_flag']['emoji']}\n"
-        f"Mata Uang : {ip_info['country_currency']['code']}"
-    )
+    formatted_info = ""
+    formatted_info += f"IP Address : {ip_info.get('ip', 'None')}\n"
+    formatted_info += f"Hostname : {ip_info.get('hostname', 'None')}\n"
+    formatted_info += f"Kota : {ip_info.get('city', 'Unknown')}\n"
+    formatted_info += f"Region : {ip_info.get('region', 'Unknown')}\n"
+    formatted_info += f"Negara : {ip_info.get('country_name', 'Unknown')}\n"
+    formatted_info += f"Lokasi : {ip_info.get('loc', 'Unknown')}\n"
+    formatted_info += f"Kode Pos : {ip_info.get('postal', 'Unknown')}\n"
+    formatted_info += f"Zona Waktu : {ip_info.get('timezone', 'Unknown')}\n"
+    formatted_info += f"Bendera Negara : {ip_info.get('country_flag', {}).get('emoji', 'Unknown')}\n"
+    formatted_info += f"Mata Uang : {ip_info.get('country_currency', {}).get('code', 'Unknown')}"
     return formatted_info
 
 
