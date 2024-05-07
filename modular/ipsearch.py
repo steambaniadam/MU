@@ -38,15 +38,15 @@ def format_ip_info(ip_info):
     formatted_info = ""
     formatted_info += f"• IP Address : `{ip_info.get('ip', 'None')}`\n"
     formatted_info += f"• Hostname : `{ip_info.get('hostname', 'Unknown')}`\n"
-    formatted_info += f"• Kota : `{ip_info.get('city', 'Unknown')}`\n"
+    formatted_info += f"• City : `{ip_info.get('city', 'Unknown')}`\n"
     formatted_info += f"• Region : `{ip_info.get('region', 'Unknown')}`\n"
-    formatted_info += f"• Negara : `{ip_info.get('country_name', 'Unknown')}`\n"
-    formatted_info += f"• Lokasi : [Tautan Lokasi]({google_maps_link})\n"
-    formatted_info += f"• Kode Pos : `{ip_info.get('postal', 'Unknown')}`\n"
-    formatted_info += f"• Zona Waktu : `{ip_info.get('timezone', 'Unknown')}`\n"
-    formatted_info += f"• Bendera Negara : `{ip_info.get('country_flag', {}).get('emoji', 'Unknown')}`\n"
+    formatted_info += f"• Country : `{ip_info.get('country_name', 'Unknown')}`\n"
+    formatted_info += f"• Location : [Location]({google_maps_link})\n"
+    formatted_info += f"• Postal Code : `{ip_info.get('postal', 'Unknown')}`\n"
+    formatted_info += f"• Timezone : `{ip_info.get('timezone', 'Unknown')}`\n"
+    formatted_info += f"• Flag : `{ip_info.get('country_flag', {}).get('emoji', 'Unknown')}`\n"
     formatted_info += (
-        f"• Mata Uang : `{ip_info.get('country_currency', {}).get('code', 'Unknown')}`"
+        f"• Currency : `{ip_info.get('country_currency', {}).get('code', 'Unknown')}`"
     )
 
     return formatted_info
@@ -89,6 +89,43 @@ async def _(c: nlx, m):
 @ky.callback("close_ip")
 async def _(c, cq):
     await cq.message.delete()
+
+
+def generate_temp_gmail():
+    url = "https://temporary-gmail-account.p.rapidapi.com/GmailGetAccount"
+    payload = { "generateNewAccount": 1 }
+    headers = {
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+        "X-RapidAPI-Host": "temporary-gmail-account.p.rapidapi.com"
+    }
+    response = requests.post(url, json=payload, headers=headers)
+    return response.json()
+
+
+def format_temp_gmail(temp_gmail_info):
+    em = Emojik()
+    em.initialize()
+    if 'address' in temp_gmail_info and 'token' in temp_gmail_info:
+        return f"{em.sukses} Success Generated Temp Gmail :\nEmail : `{temp_gmail_info['address']}`\nToken : `{temp_gmail_info['token']}`"
+    else:
+        return f"{em.gagal} Failed to generate temporary Gmail account."
+
+
+@ky.ubot("genmail", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    try:
+        temp_gmail_info = generate_temp_gmail()
+        formatted_temp_gmail_info = format_temp_gmail(temp_gmail_info)
+        await m.reply(
+            f"{em.sukses} {formatted_temp_gmail_info}"
+        )
+    except Exception as e:
+        await m.reply(
+            f"{em.gagal} Gagal membuat email sementara: {str(e)}"
+        )
 
 
 """
