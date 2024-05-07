@@ -1,9 +1,10 @@
 import asyncio
 import random
-from Mix import *
 
 from pyrogram import *
 from pyrogram.types import *
+
+from Mix import *
 
 __modles__ = "Fake Action"
 __help__ = "Fake Action"
