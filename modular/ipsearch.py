@@ -59,13 +59,13 @@ async def _(c: nlx, m):
             ip = m.command[1]
             ip_info = get_ip_info(ip)
             formatted_info = format_ip_info(ip_info)
-            pros.edit(
+            await pros.edit(
                 f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n{formatted_info}"
             )
         else:
-            pros.edit(cgr("error").format(em.gagal, "Mohon masukkan IP yang valid."))
+            await pros.edit(cgr("error").format(em.gagal, "Mohon masukkan IP yang valid."))
     except Exception as e:
-        pros.edit(cgr("error").format(em.gagal, str(e)))
+        await pros.edit(cgr("error").format(em.gagal, str(e)))
 
 
 """
