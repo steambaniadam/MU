@@ -28,7 +28,7 @@ async def _(c: nlx, m):
                 f"{em.gagal} Gagal : `{failure_count}` grup."
             )
             if len(m.command) > 2:
-                reason = ' '.join(m.command[2:])
+                reason = " ".join(m.command[2:])
                 report_message += f"\n\nAlasan : {reason}"
             await pros.edit(report_message)
         else:
