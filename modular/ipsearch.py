@@ -120,8 +120,8 @@ async def format_temp_gmail(temp_gmail_info):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    pros = await m.reply(cgr("pros").format(em.proses))
     try:
+        pros = await m.reply(cgr("pros").format(em.proses))
         temp_gmail_info = await generate_temp_gmail()
         formatted_temp_gmail_info = await format_temp_gmail(temp_gmail_info)
         await pros.edit(f"{em.sukses} {formatted_temp_gmail_info}")
