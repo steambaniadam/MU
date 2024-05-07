@@ -194,14 +194,11 @@ def get_message(messid, addres, token):
 
 def gen_temp_mail():
     url = "https://temp-mail44.p.rapidapi.com/api/v3/email/new"
-    payload = {
-	    "key1": "value",
-	    "key2": "value"
-    }
+    payload = {"key1": "value", "key2": "value"}
     headers = {
-	    "content-type": "application/json",
-	    "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
-	    "X-RapidAPI-Host": "temp-mail44.p.rapidapi.com"
+        "content-type": "application/json",
+        "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+        "X-RapidAPI-Host": "temp-mail44.p.rapidapi.com",
     }
     response = requests.post(url, json=payload, headers=headers)
     return response.json()
