@@ -39,7 +39,7 @@ async def search_images(query, m, max_results=5, pros=None):
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
         img_res = response.json().get("result", [])
-        
+
         media_list = []
         for img_inf in img_res:
             image_url = img_inf.get("image")
