@@ -7,8 +7,7 @@
 ################################################################
 
 
-import aiohttp
-
+import requests
 from Mix import *
 
 __models__ = "Image"
@@ -33,10 +32,9 @@ async def search_images(query, max_results=5):
         "max_results": max_results,
     }
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.post(url, json=payload, headers=headers) as response:
-                response.raise_for_status()
-                return await response.json()
+        response = requests.post(url, json=payload, headers=headers)
+        response.raise_for_status()
+        return response.json()
     except Exception as e:
         print(f"Error fetching images: {e}")
         return None
@@ -59,11 +57,11 @@ async def _(c: nlx, m):
                 max_results = int(m.command[1])
 
         pros = await m.reply(cgr("proses").format(em.proses))
-        images = await search_images(query, max_results)
-        if images and "result" in images:
-            for img_info in images["result"]:
-                caption = f"Judul: {img_info['title']}\nSumber: {img_info['source']}"
-                await m.reply_photo(photo=img_info["image"], caption=caption)
+        images_response = search_images(query, max_results)
+        if images_response and "result" in images_response:
+            images = images_response["result"]
+            for img_info in images:
+                await m.reply(img_info["image"])
         else:
             await m.reply(f"{em.gagal} **Gambar tidak ditemukan.**")
     except Exception as e:
