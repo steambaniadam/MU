@@ -56,8 +56,8 @@ def format_ip_info(ip_info):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    pros = await m.reply(cgr("proses").format(em.proses))
     try:
+        pros = await m.reply(cgr("proses").format(em.proses))
         if len(m.command) > 1:
             ip = m.command[1]
             ip_info = get_ip_info(ip)
@@ -66,24 +66,23 @@ async def _(c: nlx, m):
             google_maps_link = f"https://www.google.com/maps?q={latitude},{longitude}"
             keyboard = InlineKeyboardMarkup(
                 [
-                    [InlineKeyboardButton("Tautan Lokasi", url=google_maps_link)],
+                    [InlineKeyboardButton("Tautan Lokasi", url=google_maps_link)]
                 ],
-                [[InlineKeyboardButton("Tutup", callback_data="close_ip")]],
+                [[InlineKeyboardButton("Tutup", callback_data="close_ip")]]
             )
 
             await m.reply(
-                f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n",
-                {formatted_info},
+                f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n{formatted_info}",
                 reply_markup=keyboard,
-                reply_to_message_id=ReplyCheck(m),
+                reply_to_message_id=m.message_id,
             )
             await pros.delete()
         else:
             await pros.edit(
-                cgr("error").format(em.gagal, "Mohon masukkan IP yang valid.")
+                cgr("err").format(em.gagal, "Mohon masukkan IP yang valid.")
             )
     except Exception as e:
-        await pros.edit(cgr("error").format(em.gagal, str(e)))
+        await pros.edit(cgr("err").format(em.gagal, str(e)))
 
 
 @ky.callback("close_ip")
