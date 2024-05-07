@@ -41,7 +41,7 @@ def format_ip_info(ip_info):
     formatted_info += f"{em.sukses} Kota : `{ip_info.get('city', 'Unknown')}`\n"
     formatted_info += f"{em.sukses} Region : `{ip_info.get('region', 'Unknown')}`\n"
     formatted_info += f"{em.sukses} Negara : `{ip_info.get('country_name', 'Unknown')}`\n"
-    formatted_info += f"{em.sukses} Lokasi : `[Tautan Lokasi]({google_maps_link})\n"
+    formatted_info += f"{em.sukses} Lokasi : [Tautan Lokasi]({google_maps_link})\n"
     formatted_info += f"{em.sukses} Kode Pos : `{ip_info.get('postal', 'Unknown')}`\n"
     formatted_info += f"{em.sukses} Zona Waktu : `{ip_info.get('timezone', 'Unknown')}`\n"
     formatted_info += f"{em.sukses} Bendera Negara : `{ip_info.get('country_flag', {}).get('emoji', 'Unknown')}`\n"
