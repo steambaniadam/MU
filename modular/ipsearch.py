@@ -224,7 +224,7 @@ async def _(c: nlx, m):
         await pros.edit(f"{em.gagal} {str(e)}")
 
 
-def get_temp_messages(email):
+async def get_temp_messages(email):
     url = f"https://temp-mail44.p.rapidapi.com/api/v3/email/{email}/messages"
     headers = {
         "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
@@ -254,7 +254,7 @@ async def _(c: nlx, m):
     try:
         if len(m.command) > 1:
             email = m.command[1]
-            messages = get_temp_messages(email)
+            messages = await get_temp_messages(email)
             formatted_messages = await format_temp_messages(messages)
             await m.reply(formatted_messages)
         else:
