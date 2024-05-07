@@ -18,10 +18,12 @@ async def _(c: nlx, m):
     await asyncio.sleep(3)
     try:
         if len(m.command) > 1:
+            pengguna = m.command[1]
             success_count = random.randint(50, 200)
             failure_count = random.randint(1, 20)
             report_message = (
                 f"{em.warn} Laporan Global Banned :\n\n"
+                f"{em.profil} Pengguna : `{pengguna}`\n"
                 f"{em.sukses} Sukses : `{success_count}` grup.\n"
                 f"{em.gagal} Gagal : `{failure_count}` grup."
             )
