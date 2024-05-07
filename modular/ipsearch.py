@@ -31,21 +31,22 @@ def get_ip_info(ip):
 
 
 def format_ip_info(ip_info):
+    em = Emojik()
+    em.initialize()
+    latitude, longitude = ip_info.get('loc', '0,0').split(',')
+    google_maps_link = f"https://www.google.com/maps?q={latitude},{longitude}"
     formatted_info = ""
-    formatted_info += f"IP Address : {ip_info.get('ip', 'None')}\n"
-    formatted_info += f"Hostname : {ip_info.get('hostname', 'None')}\n"
-    formatted_info += f"Kota : {ip_info.get('city', 'Unknown')}\n"
-    formatted_info += f"Region : {ip_info.get('region', 'Unknown')}\n"
-    formatted_info += f"Negara : {ip_info.get('country_name', 'Unknown')}\n"
-    formatted_info += f"Lokasi : {ip_info.get('loc', 'Unknown')}\n"
-    formatted_info += f"Kode Pos : {ip_info.get('postal', 'Unknown')}\n"
-    formatted_info += f"Zona Waktu : {ip_info.get('timezone', 'Unknown')}\n"
-    formatted_info += (
-        f"Bendera Negara : {ip_info.get('country_flag', {}).get('emoji', 'Unknown')}\n"
-    )
-    formatted_info += (
-        f"Mata Uang : {ip_info.get('country_currency', {}).get('code', 'Unknown')}"
-    )
+    formatted_info += f"{em.sukses} IP Address : `{ip_info.get('ip', 'None')}`\n"
+    formatted_info += f"{em.sukses} Hostname : `{ip_info.get('hostname', 'None')}`\n"
+    formatted_info += f"{em.sukses} Kota : `{ip_info.get('city', 'Unknown')}`\n"
+    formatted_info += f"{em.sukses} Region : `{ip_info.get('region', 'Unknown')}`\n"
+    formatted_info += f"{em.sukses} Negara : `{ip_info.get('country_name', 'Unknown')}`\n"
+    formatted_info += f"{em.sukses} Lokasi : `[Tautan Lokasi]({google_maps_link})\n"
+    formatted_info += f"{em.sukses} Kode Pos : `{ip_info.get('postal', 'Unknown')}`\n"
+    formatted_info += f"{em.sukses} Zona Waktu : `{ip_info.get('timezone', 'Unknown')}`\n"
+    formatted_info += f"{em.sukses} Bendera Negara : `{ip_info.get('country_flag', {}).get('emoji', 'Unknown')}`\n"
+    formatted_info += f"{em.sukses} Mata Uang : `{ip_info.get('country_currency', {}).get('code', 'Unknown')}`"
+
     return formatted_info
 
 
