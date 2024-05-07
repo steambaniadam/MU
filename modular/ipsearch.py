@@ -9,10 +9,9 @@
 ################################################################
 
 import asyncio
-
+import requests
 from pyrogram import *
 from pyrogram.types import *
-from SafoneAPI import SafoneAPI
 
 from Mix import *
 from Mix.core import http
@@ -21,6 +20,49 @@ __modles__ = "IpSearch"
 __help__ = get_cgr("help_ips")
 
 
+
+def get_ip_info(ip):
+    url = "https://ip-geolocation-find-ip-location-and-ip-info.p.rapidapi.com/backend/ipinfo/"
+    querystring = {"ip": ip}
+    headers = {
+        "X-RapidAPI-Key": "24d6a3913bmsh3561d6af783658fp1a8240jsneef57a49ff14",
+        "X-RapidAPI-Host": "ip-geolocation-find-ip-location-and-ip-info.p.rapidapi.com"
+    }
+    response = requests.get(url, headers=headers, params=querystring)
+    return response.json()
+
+
+def format_ip_info(ip_info):
+    formatted_info = (
+        f"IP Address : {ip_info['ip']}\n"
+        f"Hostname : {ip_info['hostname']}\n"
+        f"Kota : {ip_info['city']}\n"
+        f"Region : {ip_info['region']}\n"
+        f"Negara : {ip_info['country_name']}\n"
+        f"Lokasi : {ip_info['loc']}\n"
+        f"Kode Pos : {ip_info['postal']}\n"
+        f"Zona Waktu : {ip_info['timezone']}\n"
+        f"Bendera Negara : {ip_info['country_flag']['emoji']}\n"
+        f"Mata Uang : {ip_info['country_currency']['code']}"
+    )
+    return formatted_info
+
+
+@ky.ubot("ipinfo", sudo=True)
+async def _(c: nlx, m):
+    em = Emojik()
+    em.initialize()
+    pros = await m.reply(cgr("proses").format(em.proses))
+    try:
+        ip = m.text.split("/ipinfo ", 1)[1]
+        ip_info = get_ip_info(ip)
+        formatted_info = format_ip_info(ip_info)
+        pros.edit(f"{em.sukses} Sukses mendapatkan informasi dari IP `{m.command[1]}`:\n\n{formatted_info}")
+    except Exception as e:
+        pros.edit(cgr("error").format(em.gagal, e))
+
+
+"""
 @ky.ubot("ipf|ipfake", sudo=True)
 async def _(c: nlx, m):
     em = Emojik()
@@ -93,3 +135,4 @@ async def _(c: nlx, m):
         disable_web_page_preview=True,
     )
     return
+"""
