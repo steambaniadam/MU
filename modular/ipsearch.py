@@ -75,6 +75,7 @@ async def _(c: nlx, m):
                 f"{em.sukses} Sukses mendapatkan informasi dari IP `{ip}`:\n\n{formatted_info}",
                 reply_markup=keyboard,
                 reply_to_message_id=ReplyCheck(m),
+                disable_web_page_preview=True,
             )
             await pros.delete()
         else:
