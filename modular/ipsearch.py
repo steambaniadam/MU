@@ -40,8 +40,12 @@ def format_ip_info(ip_info):
     formatted_info += f"Lokasi : {ip_info.get('loc', 'Unknown')}\n"
     formatted_info += f"Kode Pos : {ip_info.get('postal', 'Unknown')}\n"
     formatted_info += f"Zona Waktu : {ip_info.get('timezone', 'Unknown')}\n"
-    formatted_info += f"Bendera Negara : {ip_info.get('country_flag', {}).get('emoji', 'Unknown')}\n"
-    formatted_info += f"Mata Uang : {ip_info.get('country_currency', {}).get('code', 'Unknown')}"
+    formatted_info += (
+        f"Bendera Negara : {ip_info.get('country_flag', {}).get('emoji', 'Unknown')}\n"
+    )
+    formatted_info += (
+        f"Mata Uang : {ip_info.get('country_currency', {}).get('code', 'Unknown')}"
+    )
     return formatted_info
 
 
