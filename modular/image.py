@@ -78,43 +78,11 @@ async def _(c: nlx, m):
             query = m.reply_to_message.text
             if len(m.command) == 2:
                 max_results = int(m.command[1])
+        else:
+            return await m.reply(f"Contoh penggunaan : `{m.text} 5 kucing lucu` atau `{m.text} kucing lucu`")
 
         pros = await m.reply(cgr("proses").format(em.proses))
         await search_images(query, m, max_results, pros)
         return
     except Exception as e:
         print(f"Error: {e}")
-
-
-"""
-@ky.ubot("imeg", sudo=True)
-async def _(c: nlx, m):
-    query = m.text.split(1)
-    images = search_images(query)
-    for image in images:
-        print(image)
-
-
-
-
-async def search_image_and_reply(query, m, lim):
-    meki = SafoneAPI()
-    results = await meki.image(query, lim)
-    img_res = results.get("results", [])
-    for img_inf in img_res:
-        image_url = img_inf.get("imageUrl")
-        if image_url and image_url.startswith("http"):
-            response = requests.get(image_url)
-            if response.status_code == 200:
-                img = BytesIO(response.content)
-                media = InputMediaPhoto(img)
-                await m.reply_media_group([media], reply_to_message_id=ReplyCheck(m))
-                try:
-                    os.remove(media)
-                except:
-                    pass
-            else:
-                continue
-        else:
-            continue
-"""
