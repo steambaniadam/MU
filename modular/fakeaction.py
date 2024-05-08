@@ -131,11 +131,11 @@ async def _(c: nlx, m):
         if len(m.command) > 1:
             pengguna, alasan = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
-            random.randint(50000, 2000000)
+            duit = random.randint(50000, 2000000)
             report_message = (
                 f"{em.warn} <b>Laporan Transfer :</b>\n\n"
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
-                f"{em.sukses} <b>Nominal : `Rp.{sukses}`</b>\n"
+                f"{em.sukses} <b>Nominal : `Rp.{duit}`</b>\n"
             )
             if alasan:
                 report_message += f"\n\n<b>{em.block} Alasan : `{alasan}`</b>"
@@ -144,11 +144,11 @@ async def _(c: nlx, m):
             pengguna, alasan = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
             sukses = random.randint(50, 200)
-            random.randint(1, 20)
+            duit = random.randint(1, 20)
             report_message = (
                 f"{em.warn} <b>Laporan Transfer :</b>\n\n"
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
-                f"{em.sukses} <b>Nominal : Rp.`{sukses}`</b>\n"
+                f"{em.sukses} <b>Nominal : `Rp.{duit}`</b>\n"
             )
             await pros.edit(report_message)
     except Exception as e:
