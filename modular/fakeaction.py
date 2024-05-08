@@ -131,7 +131,9 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     await asyncio.sleep(3)
     if len(m.command) < 1 and not rep:
-        await pros.edit("Lah, mauu tf ke siapa si jink? minimal rep atau kasih username kek atau user id kek. GOBLOK!")
+        await pros.edit(
+            "Lah, mauu tf ke siapa si jink? minimal rep atau kasih username kek atau user id kek. GOBLOK!"
+        )
         return
     try:
         if rep:
