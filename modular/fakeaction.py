@@ -103,7 +103,7 @@ async def _(c: nlx, m):
                 f"{em.gagal} <b>Gagal : `{gagal}` grup.</b>"
             )
             if alasan:
-                report_message += f"\n\n<b>{em.block} Alasan : `{alasan}`</b>"
+                report_message += f"\n<b>{em.block} Alasan : `{alasan}`</b>"
             await pros.edit(report_message)
         else:
             pengguna, alasan = await c.extract_user_and_reason(m)
@@ -116,6 +116,8 @@ async def _(c: nlx, m):
                 f"{em.sukses} <b>Sukses : `{sukses}` grup.</b>\n"
                 f"{em.gagal} <b>Gagal : `{gagal}` grup.</b>"
             )
+            if alasan:
+                report_message += f"\n<b>{em.block} Alasan : `{alasan}`</b>"
             await pros.edit(report_message)
     except Exception as e:
         await pros.edit(f"{em.gagal} Gagal membuat laporan Global Kick: {str(e)}")
@@ -138,18 +140,19 @@ async def _(c: nlx, m):
                 f"{em.sukses} <b>Nominal : `Rp.{duit}`</b>\n"
             )
             if alasan:
-                report_message += f"\n\n<b>{em.block} Alasan : `{alasan}`</b>"
+                report_message += f"\n<b>{em.block} Alasan : `{alasan}`</b>"
             await pros.edit(report_message)
         else:
             pengguna, alasan = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
-            random.randint(50, 200)
-            duit = random.randint(1, 20)
+            duit = random.randint(50000, 2000000)
             report_message = (
                 f"{em.warn} <b>Laporan Transfer :</b>\n\n"
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
                 f"{em.sukses} <b>Nominal : `Rp.{duit}`</b>\n"
             )
+            if alasan:
+                report_message += f"\n<b>{em.block} Alasan : `{alasan}`</b>"
             await pros.edit(report_message)
     except Exception as e:
         await pros.edit(f"{em.gagal} Gagal membuat laporan Transfer: {str(e)}")
