@@ -146,7 +146,7 @@ async def _(c: nlx, m):
             await pros.edit(report_message)
         else:
             if len(m.command) > 1:
-                nominal = m.command[1].replace(".", "")
+                nominal = m.command[2].replace(".", "")
             else:
                 nominal = str(random.randint(500000, 2000000))
             pengguna, _ = await c.extract_user_and_reason(m)
