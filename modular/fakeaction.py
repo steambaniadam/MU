@@ -134,10 +134,11 @@ async def _(c: nlx, m):
             pengguna, alasan = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
             duit = random.randint(50000, 2000000)
+            formatted_duit = "{:,.0f}".format(duit).replace(",", ".")
             report_message = (
                 f"{em.warn} <b>Laporan Transfer :</b>\n\n"
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
-                f"{em.sukses} <b>Nominal : `Rp.{duit}`</b>\n"
+                f"{em.sukses} <b>Nominal : `Rp.{formatted_duit},-</b>\n"
             )
             if alasan:
                 report_message += f"\n<b>{em.block} Alasan : `{alasan}`</b>"
@@ -146,10 +147,11 @@ async def _(c: nlx, m):
             pengguna, alasan = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
             duit = random.randint(50000, 2000000)
+            formatted_duit = "{:,.0f}".format(duit).replace(",", ".")
             report_message = (
                 f"{em.warn} <b>Laporan Transfer :</b>\n\n"
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
-                f"{em.sukses} <b>Nominal : `Rp.{duit}`</b>\n"
+                f"{em.sukses} <b>Nominal : `Rp.{formatted_duit},-</b>\n"
             )
             if alasan:
                 report_message += f"\n<b>{em.block} Alasan : `{alasan}`</b>"
