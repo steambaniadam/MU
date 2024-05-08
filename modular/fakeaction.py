@@ -131,7 +131,7 @@ async def _(c: nlx, m):
         if len(m.command) > 1:
             pengguna, alasan = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
-            duit = random.randint(50000, 2000000)
+            random.randint(50000, 2000000)
             report_message = (
                 f"{em.warn} <b>Laporan Transfer :</b>\n\n"
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
@@ -144,7 +144,7 @@ async def _(c: nlx, m):
             pengguna, alasan = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
             sukses = random.randint(50, 200)
-            gagal = random.randint(1, 20)
+            random.randint(1, 20)
             report_message = (
                 f"{em.warn} <b>Laporan Transfer :</b>\n\n"
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
