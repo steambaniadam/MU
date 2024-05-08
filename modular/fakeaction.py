@@ -29,10 +29,20 @@ async def _(c: nlx, m):
                 f"{em.gagal} <b>Gagal : `{gagal}` grup.</b>"
             )
             if alasan:
-                report_message += f"\n\n<b>Alasan : `{alasan}`</b>"
+                report_message += f"\n\n<b>{em.block} Alasan : `{alasan}`</b>"
             await pros.edit(report_message)
         else:
-            await pros.edit("Mohon berikan username atau user ID sebagai argumen.")
+            pengguna = m.reply_to_message.from_user.id
+            mention = (await c.get_users(pengguna)).mention
+            sukses = random.randint(50, 200)
+            gagal = random.randint(1, 20)
+            report_message = (
+                f"{em.warn} <b>Laporan Global Banned :</b>\n\n"
+                f"{em.profil} <b>Pengguna : {mention}</b>\n"
+                f"{em.sukses} <b>Sukses : `{sukses}` grup.</b>\n"
+                f"{em.gagal} <b>Gagal : `{gagal}` grup.</b>"
+            )
+            await pros.edit(report_message)
     except Exception as e:
         await pros.edit(f"{em.gagal} Gagal membuat laporan Global Banned: {str(e)}")
 
