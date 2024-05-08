@@ -130,28 +130,36 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     await asyncio.sleep(3)
     try:
-        if len(m.command) > 1:
+        if m.reply_to_message:
+            if len(m.command) > 1:
+                nominal = m.command[1]
+                nominal = nominal.replace(".", "")
+            else:
+                nominal = str(random.randint(500000, 2000000))
             pengguna, alasan = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
-            duit = random.randint(50000, 2000000)
-            formatted_duit = "{:,.0f}".format(duit).replace(",", ".")
+            formatted_nominal = "{:,.0f}".format(int(nominal)).replace(",", ".")
             report_message = (
                 f"{em.warn} <b>Laporan Transfer :</b>\n\n"
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
-                f"{em.sukses} <b>Nominal : `Rp.{formatted_duit},-</b>\n"
+                f"{em.sukses} <b>Nominal : Rp {formatted_nominal},-</b>\n"
             )
             if alasan:
                 report_message += f"\n<b>{em.block} Alasan : `{alasan}`</b>"
             await pros.edit(report_message)
         else:
+            if len(m.command) > 1:
+                nominal = m.command[1]
+                nominal = nominal.replace(".", "")
+            else:
+                nominal = str(random.randint(500000, 2000000))
             pengguna, alasan = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
-            duit = random.randint(50000, 2000000)
-            formatted_duit = "{:,.0f}".format(duit).replace(",", ".")
+            formatted_nominal = "{:,.0f}".format(int(nominal)).replace(",", ".")
             report_message = (
                 f"{em.warn} <b>Laporan Transfer :</b>\n\n"
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
-                f"{em.sukses} <b>Nominal : `Rp.{formatted_duit},-</b>\n"
+                f"{em.sukses} <b>Nominal : Rp {formatted_nominal},-</b>\n"
             )
             if alasan:
                 report_message += f"\n<b>{em.block} Alasan : `{alasan}`</b>"
