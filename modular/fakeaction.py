@@ -127,20 +127,15 @@ async def _(c: nlx, m):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
-    rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
     await asyncio.sleep(3)
-    if len(m.command) < 1 and not rep:
-        await pros.edit(
-            "Lah, mauu tf ke siapa si jink? minimal rep atau kasih username kek atau user id kek. GOBLOK!"
-        )
-        return
     try:
-        if rep:
-            if len(m.command) > 2:
-                nominal = m.command[2].replace(".", "")
-            else:
-                nominal = str(random.randint(500000, 2000000))
+        if not m.reply_to_message and len(m.command) < 2:
+            await pros.edit("Mohon balas pesan pengguna atau berikan username dan nominal sebagai argumen.")
+            return
+
+        if m.reply_to_message:
+            nominal = m.command[1].replace(".", "") if len(m.command) > 1 else str(random.randint(500000, 2000000))
             pengguna, _ = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
             formatted_nominal = "{:,.0f}".format(int(nominal)).replace(",", ".")
@@ -151,10 +146,7 @@ async def _(c: nlx, m):
             )
             await pros.edit(report_message)
         else:
-            if len(m.command) > 1:
-                nominal = m.command[2].replace(".", "")
-            else:
-                nominal = str(random.randint(500000, 2000000))
+            nominal = m.command[1].replace(".", "")
             pengguna, _ = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
             formatted_nominal = "{:,.0f}".format(int(nominal)).replace(",", ".")
