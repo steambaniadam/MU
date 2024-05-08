@@ -136,7 +136,7 @@ async def _(c: nlx, m):
                 nominal = nominal.replace(".", "")
             else:
                 nominal = str(random.randint(500000, 2000000))
-            pengguna, alasan = await c.extract_user_and_reason(m)
+            pengguna = await c.extract_user(m)
             mention = (await c.get_users(pengguna)).mention
             formatted_nominal = "{:,.0f}".format(int(nominal)).replace(",", ".")
             report_message = (
@@ -144,8 +144,6 @@ async def _(c: nlx, m):
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
                 f"{em.sukses} <b>Nominal : Rp {formatted_nominal},-</b>\n"
             )
-            if alasan:
-                report_message += f"\n<b>{em.block} Alasan : `{alasan}`</b>"
             await pros.edit(report_message)
         else:
             if len(m.command) > 1:
@@ -153,7 +151,7 @@ async def _(c: nlx, m):
                 nominal = nominal.replace(".", "")
             else:
                 nominal = str(random.randint(500000, 2000000))
-            pengguna, alasan = await c.extract_user_and_reason(m)
+            pengguna = await c.extract_user(m)
             mention = (await c.get_users(pengguna)).mention
             formatted_nominal = "{:,.0f}".format(int(nominal)).replace(",", ".")
             report_message = (
@@ -161,8 +159,6 @@ async def _(c: nlx, m):
                 f"{em.profil} <b>Pengguna : {mention}</b>\n"
                 f"{em.sukses} <b>Nominal : Rp {formatted_nominal},-</b>\n"
             )
-            if alasan:
-                report_message += f"\n<b>{em.block} Alasan : `{alasan}`</b>"
             await pros.edit(report_message)
     except Exception as e:
         await pros.edit(f"{em.gagal} Gagal membuat laporan Transfer: {str(e)}")
