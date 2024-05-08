@@ -131,11 +131,17 @@ async def _(c: nlx, m):
     await asyncio.sleep(3)
     try:
         if not m.reply_to_message and len(m.command) < 2:
-            await pros.edit("Mohon balas pesan pengguna atau berikan username dan nominal sebagai argumen.")
+            await pros.edit(
+                "Mohon balas pesan pengguna atau berikan username dan nominal sebagai argumen."
+            )
             return
 
         if m.reply_to_message:
-            nominal = m.command[1].replace(".", "") if len(m.command) > 1 else str(random.randint(500000, 2000000))
+            nominal = (
+                m.command[1].replace(".", "")
+                if len(m.command) > 1
+                else str(random.randint(500000, 2000000))
+            )
             pengguna, _ = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
             formatted_nominal = "{:,.0f}".format(int(nominal)).replace(",", ".")
