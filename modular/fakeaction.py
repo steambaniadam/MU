@@ -130,13 +130,14 @@ async def _(c: nlx, m):
     pros = await m.reply(cgr("proses").format(em.proses))
     await asyncio.sleep(3)
     try:
-        if not m.reply_to_message and len(m.command) < 2:
+        rep = m.reply_to_message
+        if not rep and len(m.command) < 2:
             await pros.edit(
-                "Mohon balas pesan pengguna atau berikan username dan nominal sebagai argumen."
+                f"{em.gagal} Mohon balas pesan pengguna atau berikan username dan nominal sebagai argumen."
             )
             return
 
-        if m.reply_to_message:
+        if rep:
             nominal = (
                 m.command[1].replace(".", "")
                 if len(m.command) > 1
