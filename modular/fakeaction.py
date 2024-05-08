@@ -127,10 +127,14 @@ async def _(c: nlx, m):
 async def _(c: nlx, m):
     em = Emojik()
     em.initialize()
+    rep = m.reply_to_message
     pros = await m.reply(cgr("proses").format(em.proses))
     await asyncio.sleep(3)
+    if len(m.command) < 1 and not rep:
+        await pros.edit("Lah, mauu tf ke siapa si jink? minimal rep atau kasih username kek atau user id kek. GOBLOK!")
+        return
     try:
-        if m.reply_to_message:
+        if rep:
             if len(m.command) > 2:
                 nominal = m.command[2].replace(".", "")
             else:
