@@ -32,7 +32,7 @@ async def _(c: nlx, m):
                 report_message += f"\n\n<b>{em.block} Alasan : `{alasan}`</b>"
             await pros.edit(report_message)
         else:
-            pengguna = await c.extract_user_and_reason(m)
+            pengguna = await c.extract_user(m)
             mention = (await c.get_users(pengguna)).mention
             sukses = random.randint(50, 200)
             gagal = random.randint(1, 20)
