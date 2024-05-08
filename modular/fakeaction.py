@@ -131,12 +131,11 @@ async def _(c: nlx, m):
     await asyncio.sleep(3)
     try:
         if m.reply_to_message:
-            if len(m.command) > 1:
-                nominal = m.command[1]
-                nominal = nominal.replace(".", "")
+            if len(m.command) > 2:
+                nominal = m.command[2].replace(".", "")
             else:
                 nominal = str(random.randint(500000, 2000000))
-            pengguna = await c.extract_user(m)
+            pengguna, _ = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
             formatted_nominal = "{:,.0f}".format(int(nominal)).replace(",", ".")
             report_message = (
@@ -147,11 +146,10 @@ async def _(c: nlx, m):
             await pros.edit(report_message)
         else:
             if len(m.command) > 1:
-                nominal = m.command[1]
-                nominal = nominal.replace(".", "")
+                nominal = m.command[1].replace(".", "")
             else:
                 nominal = str(random.randint(500000, 2000000))
-            pengguna = await c.extract_user(m)
+            pengguna, _ = await c.extract_user_and_reason(m)
             mention = (await c.get_users(pengguna)).mention
             formatted_nominal = "{:,.0f}".format(int(nominal)).replace(",", ".")
             report_message = (
