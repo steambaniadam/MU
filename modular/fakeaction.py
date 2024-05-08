@@ -43,4 +43,4 @@ async def _(c: nlx, m):
         else:
             await pros.edit("Mohon berikan username atau user ID sebagai argumen.")
     except Exception as e:
-        await pros.edit(f"{em.gagal} Gagal membuat laporan Global Banned: {str(e)}")
+        await pros.edit(f"{em.gagal} Berikan Alasan!")
