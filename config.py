@@ -20,7 +20,7 @@ upstream_repo = getenv(
 )
 upstream_branch = getenv("upstream_branch", "dev")
 git_token = getenv("git_token", None)
-alive_pic = getenv("alive_pic", "https://github.com/steambaniadam/MU")
+alive_pic = getenv("alive_pic", "https://telegra.ph//file/be3ec296133b57581e773.jpg")
 log_channel = getenv("log_channel", None)
 genius_api = getenv(
     "genius_api",
